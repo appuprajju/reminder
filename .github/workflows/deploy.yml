@@ -11,14 +11,14 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between runs
+# Allow only one concurrent deployment, do not cancel in-progress to let deployment complete cleanly
 concurrency:
   group: 'pages'
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  test:
-    name: Test & Verify
+  build:
+    name: Build & Verify
     runs-on: ubuntu-latest
 
     steps:
@@ -44,17 +44,6 @@ jobs:
           node scripts/verify-client.js
           node scripts/verify-icons.js
 
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: test
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -63,6 +52,14 @@ jobs:
         with:
           path: 'public'
 
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
