@@ -370,7 +370,21 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   /* ---------------- sync ---------------- */
   let syncTimer = null;
   function setSync(t) { $('#syncState').textContent = t; }
-  function saveLocal() { try { localStorage.setItem(CACHE_KEY, JSON.stringify(reminders)); } catch (e) {} }
+  function getLocalAccounts() {
+    try { return JSON.parse(localStorage.getItem('glassy-local-users')) || {}; } catch (e) { return {}; }
+  }
+  function saveLocalAccounts(accs) {
+    try { localStorage.setItem('glassy-local-users', JSON.stringify(accs)); } catch (e) {}
+  }
+  function saveLocal() {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(reminders));
+      if (user && user.email) {
+        const accs = getLocalAccounts();
+        if (accs[user.email]) { accs[user.email].reminders = reminders; saveLocalAccounts(accs); }
+      }
+    } catch (e) {}
+  }
   function save() {
     saveLocal(); setSync('⏳ Saving…');
     clearTimeout(syncTimer);
@@ -769,7 +783,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   $('#authSwitch').onclick = e => { if (e.target.id === 'toSignup') setMode('signup'); if (e.target.id === 'toLogin') setMode('login'); };
   const bg = $('#btnGuest');
   if (bg) bg.onclick = () => {
-    const u = { name: 'My Daily', email: 'offline@device', tz: TZ };
+    const u = { name: 'My Daily', email: 'guest@device', tz: TZ };
     try { localStorage.setItem('glassy-daily-user', JSON.stringify(u)); } catch(x){}
     let existing = []; try { existing = JSON.parse(localStorage.getItem(CACHE_KEY)) || []; } catch(x){}
     start(u, existing.length ? existing : starterReminders());
@@ -777,7 +791,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   };
   $('#authForm').onsubmit = async e => {
     e.preventDefault();
-    const email = $('#aEmail').value.trim(), password = $('#aPass').value;
+    const email = $('#aEmail').value.trim().toLowerCase(), password = $('#aPass').value;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return $('#authErr').textContent = 'Enter a valid email address';
     if (password.length < 6) return $('#authErr').textContent = 'Password must be at least 6 characters';
     $('#authBtn').disabled = true; $('#authErr').textContent = '';
@@ -788,16 +802,50 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       $('#aPass').value = '';
       start(d.user, d.reminders);
     } catch (err) {
-      if (err.status === 404 || !err.status) {
-        const u = { name: (mode === 'signup' && $('#aName').value.trim()) || email.split('@')[0], email, tz: TZ };
-        try { localStorage.setItem('glassy-daily-user', JSON.stringify(u)); } catch(x){}
-        let existing = []; try { existing = JSON.parse(localStorage.getItem(CACHE_KEY)) || []; } catch(x){}
-        $('#aPass').value = '';
-        start(u, existing.length ? existing : starterReminders());
-        setSync('💾 Saved on this device');
-        toast('Logged in on this device ✓');
-      } else {
+      // If server returned 401 with a real error message from backend
+      if (err.status === 401 && err.message && !err.message.includes('405') && !err.message.includes('404')) {
         $('#authErr').textContent = err.message;
+        $('#authBtn').disabled = false;
+        return;
+      }
+      // On static hosts (GitHub Pages returning 405 Method Not Allowed, or 404, or network offline):
+      const accounts = getLocalAccounts();
+      if (mode === 'login') {
+        const existing = accounts[email];
+        if (existing) {
+          if (existing.password && existing.password !== password) {
+            $('#authErr').textContent = 'Incorrect password for this account';
+            $('#authBtn').disabled = false;
+            return;
+          }
+          const u = { name: existing.name || email.split('@')[0], email, tz: TZ };
+          try { localStorage.setItem('glassy-daily-user', JSON.stringify(u)); } catch(x){}
+          $('#aPass').value = '';
+          start(u, existing.reminders && existing.reminders.length ? existing.reminders : starterReminders());
+          setSync('💾 Saved on this device');
+          toast(`Welcome back, ${u.name}!`);
+        } else {
+          const u = { name: email.split('@')[0], email, tz: TZ };
+          accounts[email] = { name: u.name, password, reminders: starterReminders() };
+          saveLocalAccounts(accounts);
+          try { localStorage.setItem('glassy-daily-user', JSON.stringify(u)); } catch(x){}
+          $('#aPass').value = '';
+          start(u, accounts[email].reminders);
+          setSync('💾 Saved on this device');
+          toast(`Account created for ${email}`);
+        }
+      } else {
+        const name = $('#aName').value.trim() || email.split('@')[0];
+        const u = { name, email, tz: TZ };
+        let rList = starterReminders();
+        try { const cur = JSON.parse(localStorage.getItem(CACHE_KEY)); if (Array.isArray(cur) && cur.length) rList = cur; } catch(x){}
+        accounts[email] = { name, password, reminders: rList };
+        saveLocalAccounts(accounts);
+        try { localStorage.setItem('glassy-daily-user', JSON.stringify(u)); } catch(x){}
+        $('#aPass').value = '';
+        start(u, rList);
+        setSync('💾 Saved on this device');
+        toast(`Account created for ${name}!`);
       }
     }
     finally { $('#authBtn').disabled = false; }
@@ -856,16 +904,16 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       const d = await api('GET', '/api/me');
       start(d.user, d.reminders);
     } catch (e) {
-      if (e.status === 401) showAuth();
-      else {
+      if (e.status === 401) {
+        showAuth();
+      } else {
         let cachedUser = null;
         try { cachedUser = JSON.parse(localStorage.getItem('glassy-daily-user')); } catch (x) {}
-        let cached = []; try { cached = JSON.parse(localStorage.getItem(CACHE_KEY)) || []; } catch (x) {}
-        if (cachedUser) {
-          start(cachedUser, cached.length ? cached : starterReminders());
-          setSync('💾 Saved on this device');
-        } else if (cached.length) {
-          start({ name: 'User', email: '', tz: TZ }, cached);
+        if (cachedUser && cachedUser.email) {
+          const accs = getLocalAccounts();
+          const acc = accs[cachedUser.email];
+          const list = (acc && acc.reminders) || (JSON.parse(localStorage.getItem(CACHE_KEY)) || []);
+          start(cachedUser, list.length ? list : starterReminders());
           setSync('💾 Saved on this device');
         } else {
           showAuth();
