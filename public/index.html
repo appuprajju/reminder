@@ -198,6 +198,58 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 .toast.show{opacity:1;transform:translateX(-50%)}
 .steps{margin:0 0 14px;padding-left:20px;color:rgba(255,255,255,.88);line-height:1.6;font-size:15px}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Quick Add Bar */
+.quick-add{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:20px;background:rgba(255,255,255,.09);border:1px solid var(--stroke);margin-bottom:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.quick-add input{flex:1;background:none;border:0;color:#fff;font:inherit;font-size:15px;outline:none}
+.quick-add input::placeholder{color:var(--muted)}
+.mic-btn{background:none;border:0;color:#fff;font-size:20px;cursor:pointer;padding:6px;border-radius:50%;transition:all .2s;display:grid;place-items:center}
+.mic-btn:hover{background:rgba(255,255,255,.15);transform:scale(1.1)}
+.mic-btn.listening{color:#ff453a;animation:pulseMic 1s infinite alternate}
+@keyframes pulseMic{from{transform:scale(1)}to{transform:scale(1.25);filter:drop-shadow(0 0 10px #ff453a)}}
+
+/* View switcher */
+.view-tabs{display:flex;background:rgba(255,255,255,.1);border:1px solid var(--stroke);border-radius:999px;padding:3px}
+.view-tabs button{font:inherit;font-size:13px;font-weight:600;color:var(--muted);background:none;border:0;padding:6px 14px;border-radius:999px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.view-tabs button.on{background:rgba(255,255,255,.28);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+
+/* Calendar view */
+.cal-wrap{display:flex;flex-direction:column;gap:16px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;padding:0 6px}
+.cal-head h3{margin:0;font-size:20px;font-weight:700}
+.cal-nav{display:flex;gap:6px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.cal-dow{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;padding:6px 0}
+.cal-day{min-height:64px;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:8px 3px;cursor:pointer;transition:all .2s;position:relative}
+.cal-day:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3)}
+.cal-day.today{border-color:#30d158;box-shadow:inset 0 0 10px rgba(48,209,88,.25)}
+.cal-day.selected{background:rgba(10,132,255,.35);border-color:#5ac8fa;box-shadow:0 4px 16px rgba(10,132,255,.45)}
+.cal-day.other-month{opacity:.3}
+.cal-num{font-size:14px;font-weight:600}
+.cal-dots{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap;justify-content:center;max-width:100%}
+.cal-dot{width:6px;height:6px;border-radius:50%;background:var(--c,#0a84ff);box-shadow:0 0 6px var(--c,#0a84ff)}
+.cal-detail{padding:20px;border-radius:24px;background:rgba(255,255,255,.08);border:1px solid var(--stroke)}
+.cal-detail-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+
+/* Advanced reminder card action bar */
+.item-actions{display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap;transform:translateZ(15px);width:100%}
+.chip-btn{font:inherit;font-size:11px;font-weight:600;padding:5px 10px;border-radius:10px;border:1px solid var(--stroke);background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);cursor:pointer;display:inline-flex;align-items:center;gap:4px;text-decoration:none;transition:all .18s}
+.chip-btn:hover{background:rgba(255,255,255,.28);color:#fff;transform:translateY(-1px)}
+.badge-tag{font-size:10px;padding:3px 7px;border-radius:6px;background:rgba(255,255,255,.14);color:var(--muted);font-weight:700;text-transform:uppercase}
+.badge-priority{font-size:11px;font-weight:700}
+.undo-btn{font:inherit;font-size:12px;font-weight:700;color:#5ac8fa;background:none;border:0;cursor:pointer;margin-left:8px;text-decoration:underline}
+
+/* Confetti canvas */
+#confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:9999}
+
+/* Pomodoro timer */
+.pomodoro-ring{width:180px;height:180px;margin:18px auto;position:relative}
+.pomodoro-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.pomodoro-time{position:absolute;inset:0;display:grid;place-items:center;font-size:38px;font-weight:700;letter-spacing:-.03em}
+
+/* Card vanish animation for auto-delete */
+.item.vanish{animation:vanishOut .38s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes vanishOut{0%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.95) translateY(-8px)}100%{opacity:0;transform:scale(.85) translateY(-24px);max-height:0;padding-top:0;padding-bottom:0;margin:0}}
 </style>
 </head>
 <body>
@@ -257,13 +309,44 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   </section>
 
   <section class="listwrap">
+    <!-- Quick Add Bar -->
+    <div class="quick-add glass">
+      <input id="quickAddInput" placeholder="⚡ Quick add: 'Meeting at 3pm' or 'Drink water in 20 min'..." maxlength="100">
+      <button type="button" class="mic-btn" id="micBtn" title="Speak reminder">🎙️</button>
+      <button type="button" class="btn primary" id="quickAddBtn" style="padding:8px 14px;font-size:13px">+ Add</button>
+    </div>
+
     <div class="listhead">
-      <h2>Today</h2>
+      <div class="view-tabs" id="viewTabs">
+        <button type="button" data-v="list" class="on">📋 List</button>
+        <button type="button" data-v="cal">📅 Calendar</button>
+      </div>
       <div class="seg" id="seg">
         <button data-f="all" class="on">All</button><button data-f="todo">To do</button><button data-f="done">Done</button>
       </div>
     </div>
+
     <div id="list" class="listwrap" style="gap:12px"></div>
+
+    <!-- Calendar view container -->
+    <div id="calendarView" class="cal-wrap" hidden>
+      <div class="cal-head">
+        <h3 id="calMonthTitle">Calendar</h3>
+        <div class="cal-nav">
+          <button type="button" class="btn" id="calPrevBtn">‹</button>
+          <button type="button" class="btn" id="calTodayBtn">Today</button>
+          <button type="button" class="btn" id="calNextBtn">›</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-detail glass" id="calDetail">
+        <div class="cal-detail-head">
+          <h4 id="calSelectedDateTitle" style="margin:0;font-size:15px;color:#fff">Selected Day</h4>
+          <button type="button" class="btn primary" id="calAddBtn" style="padding:6px 12px;font-size:12px">+ Add for this day</button>
+        </div>
+        <div id="calDayList" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -278,6 +361,21 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     <label class="field"><span>Time</span><input id="fTime" type="time" required></label>
     <div class="field"><span>Repeat on</span><div class="days" id="days"></div></div>
     <div class="field"><span>Icon</span><div class="emojis" id="emojis"></div></div>
+    <div class="field"><span>Priority</span>
+      <div style="display:flex;gap:8px" id="priorityGroup">
+        <button type="button" class="btn on" data-p="high" style="flex:1;font-size:12px;padding:8px">🔥 High</button>
+        <button type="button" class="btn" data-p="med" style="flex:1;font-size:12px;padding:8px">⚡ Med</button>
+        <button type="button" class="btn" data-p="low" style="flex:1;font-size:12px;padding:8px">🌱 Normal</button>
+      </div>
+    </div>
+    <div class="field"><span>Tag</span>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="tagsGroup">
+        <button type="button" class="chip-btn on" data-tag="Health">#Health</button>
+        <button type="button" class="chip-btn" data-tag="Work">#Work</button>
+        <button type="button" class="chip-btn" data-tag="Personal">#Personal</button>
+        <button type="button" class="chip-btn" data-tag="Study">#Study</button>
+      </div>
+    </div>
     <div class="row">
       <button type="button" class="btn" data-close>Cancel</button>
       <button class="btn primary" type="submit">Add</button>
@@ -315,9 +413,52 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   <div class="glass sheet">
     <h3 id="uName">Account</h3>
     <p id="uInfo"></p>
+    <div style="border-top:1px solid rgba(255,255,255,.15);margin:14px 0;padding-top:14px">
+      <h4 style="margin:0 0 10px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Preferences</h4>
+      <label style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:pointer">
+        <span style="font-size:14px">Auto-delete completed tasks</span>
+        <input type="checkbox" id="autoDeleteToggle" checked style="width:18px;height:18px">
+      </label>
+      <label class="field" style="margin-bottom:12px">
+        <span>Chime sound</span>
+        <select id="soundPicker" style="width:100%;background:rgba(0,0,0,.3);border:1px solid var(--stroke);color:#fff;padding:8px 10px;border-radius:12px">
+          <option value="glass">Glass Chime</option>
+          <option value="zen">Zen Singing Bowl</option>
+          <option value="droplet">Water Droplet</option>
+          <option value="digital">Digital Tone</option>
+        </select>
+      </label>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button type="button" class="btn" id="btnExportBackup" style="flex:1;font-size:12px">📥 Export Backup</button>
+        <button type="button" class="btn" id="btnImportBackup" style="flex:1;font-size:12px">📤 Import Backup</button>
+        <input type="file" id="importFileInput" accept=".json" hidden>
+      </div>
+    </div>
     <div class="row">
       <button class="btn" data-close>Close</button>
       <button class="btn warn" id="btnLogout">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<!-- Focus Pomodoro -->
+<div class="overlay" id="focusOverlay">
+  <div class="glass sheet" style="text-align:center">
+    <h3>⏳ Focus Mode</h3>
+    <p id="focusTaskTitle" style="font-weight:600;color:#fff;font-size:17px">Focus on task</p>
+    <div class="pomodoro-ring">
+      <svg viewBox="0 0 120 120">
+        <circle class="track" cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="8"/>
+        <circle class="bar" id="focusRing" cx="60" cy="60" r="50" fill="none" stroke="#5ac8fa" stroke-width="8" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="0"/>
+      </svg>
+      <div class="pomodoro-time" id="focusTimer">25:00</div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px">
+      <button type="button" class="btn primary" id="focusStartBtn">Start Focus</button>
+      <button type="button" class="btn" id="focusResetBtn">Reset</button>
+    </div>
+    <div class="row" style="justify-content:center">
+      <button type="button" class="btn" data-close>Close</button>
     </div>
   </div>
 </div>
@@ -451,27 +592,207 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   });
   document.documentElement.addEventListener('pointerleave', () => { if (tiltEl) resetTilt(tiltEl); });
 
-  /* ---------------- sound ---------------- */
+  /* ---------------- sound themes & confetti ---------------- */
   let actx;
-  function chime(){
+  let currentSound = localStorage.getItem('glassy-sound') || 'glass';
+  function chime(theme = currentSound){
     try{
       actx = actx || new (window.AudioContext||window.webkitAudioContext)();
       if (actx.state==='suspended') actx.resume();
-      [[880,0],[1318.5,.12],[1760,.26]].forEach(([f,t])=>{
+      if (theme === 'zen') {
         const o=actx.createOscillator(), g=actx.createGain();
-        o.type='sine'; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
-        const s=actx.currentTime+t;
-        g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.18,s+.02); g.gain.exponentialRampToValueAtTime(.001,s+.9);
-        o.start(s); o.stop(s+1);
-      });
+        o.type='sine'; o.frequency.value=432; o.connect(g); g.connect(actx.destination);
+        const s=actx.currentTime;
+        g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.25,s+.05); g.gain.exponentialRampToValueAtTime(.001,s+2.4);
+        o.start(s); o.stop(s+2.5);
+      } else if (theme === 'droplet') {
+        const o=actx.createOscillator(), g=actx.createGain();
+        o.type='sine'; o.frequency.setValueAtTime(600, actx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(1400, actx.currentTime+.08);
+        o.connect(g); g.connect(actx.destination);
+        const s=actx.currentTime;
+        g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.2,s+.01); g.gain.exponentialRampToValueAtTime(.001,s+.4);
+        o.start(s); o.stop(s+.42);
+      } else if (theme === 'digital') {
+        [[1046,0],[1318,.08],[2093,.16]].forEach(([f,t])=>{
+          const o=actx.createOscillator(), g=actx.createGain();
+          o.type='triangle'; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
+          const s=actx.currentTime+t;
+          g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.15,s+.01); g.gain.exponentialRampToValueAtTime(.001,s+.2);
+          o.start(s); o.stop(s+.22);
+        });
+      } else {
+        [[880,0],[1318.5,.12],[1760,.26]].forEach(([f,t])=>{
+          const o=actx.createOscillator(), g=actx.createGain();
+          o.type='sine'; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
+          const s=actx.currentTime+t;
+          g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.18,s+.02); g.gain.exponentialRampToValueAtTime(.001,s+.9);
+          o.start(s); o.stop(s+1);
+        });
+      }
     }catch(e){}
   }
+
+  // Lightweight glass confetti particles
+  const confettiCanvas = document.createElement('canvas');
+  confettiCanvas.id = 'confettiCanvas';
+  document.body.appendChild(confettiCanvas);
+  const cctx = confettiCanvas.getContext('2d');
+  function resizeConfetti() { confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
+  resizeConfetti();
+  addEventListener('resize', resizeConfetti);
+  let confettiParticles = [];
+  function fireConfetti(x = window.innerWidth / 2, y = window.innerHeight / 3) {
+    const colors = ['#0a84ff', '#30d158', '#ffd60a', '#ff453a', '#bf5af2', '#64d2ff'];
+    for (let i = 0; i < 48; i++) {
+      confettiParticles.push({
+        x, y,
+        vx: (Math.random() - 0.5) * 14,
+        vy: (Math.random() - 0.8) * 16,
+        size: Math.random() * 8 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1,
+        tilt: Math.random() * 10
+      });
+    }
+    if (confettiParticles.length <= 48) requestAnimationFrame(renderConfetti);
+  }
+  function renderConfetti() {
+    cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    confettiParticles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.42;
+      p.alpha -= 0.016;
+      cctx.save();
+      cctx.globalAlpha = Math.max(0, p.alpha);
+      cctx.fillStyle = p.color;
+      cctx.fillRect(p.x, p.y, p.size, p.size * 0.6);
+      cctx.restore();
+    });
+    confettiParticles = confettiParticles.filter(p => p.alpha > 0);
+    if (confettiParticles.length) requestAnimationFrame(renderConfetti);
+  }
+
+  /* ---------------- Google Calendar, .ICS & Email ---------------- */
+  function getGoogleCalUrl(r) {
+    const title = encodeURIComponent((r.emoji ? r.emoji + ' ' : '') + r.title);
+    const details = encodeURIComponent((r.note ? r.note + '\n\n' : '') + 'Created in Glassy Daily\nhttps://reminder.makeuperfect.in');
+    const [h, m] = r.time.split(':').map(Number);
+    const now = new Date();
+    now.setHours(h, m, 0, 0);
+    const end = new Date(now.getTime() + 30 * 60000);
+    const pad2 = n => String(n).padStart(2, '0');
+    const toGDate = d => `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}T${pad2(d.getHours())}${pad2(d.getMinutes())}00`;
+    let url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&dates=${toGDate(now)}/${toGDate(end)}`;
+    if (!r.days || r.days.length === 7) {
+      url += '&recur=RRULE:FREQ=DAILY';
+    } else if (r.days && r.days.length) {
+      const dayCodes = ['SU','MO','TU','WE','TH','FR','SA'];
+      const byDay = r.days.map(d => dayCodes[d]).join(',');
+      url += `&recur=RRULE:FREQ=WEEKLY;BYDAY=${byDay}`;
+    }
+    return url;
+  }
+
+  function downloadIcs(r) {
+    const [h, m] = r.time.split(':').map(Number);
+    const now = new Date();
+    const pad2 = n => String(n).padStart(2, '0');
+    const dtstart = `${now.getFullYear()}${pad2(now.getMonth()+1)}${pad2(now.getDate())}T${pad2(h)}${pad2(m)}00`;
+    const dtend = `${now.getFullYear()}${pad2(now.getMonth()+1)}${pad2(now.getDate())}T${pad2(h)}${pad2(m+30 > 59 ? 59 : m+30)}00`;
+    const stamp = `${now.getFullYear()}${pad2(now.getMonth()+1)}${pad2(now.getDate())}T000000Z`;
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Glassy Daily//EN',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      `UID:glassy-${r.id}-${Date.now()}@reminder`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART:${dtstart}`,
+      `DTEND:${dtend}`,
+      `SUMMARY:${r.emoji || '🔔'} ${r.title}`,
+      `DESCRIPTION:${r.note || ''}`,
+      'RRULE:FREQ=DAILY',
+      'BEGIN:VALARM',
+      'TRIGGER:-PT0M',
+      'ACTION:DISPLAY',
+      `DESCRIPTION:Reminder: ${r.title}`,
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${r.title.replace(/[^a-z0-9]/gi, '_')}.ics`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('📅 Calendar invite (.ics) downloaded');
+  }
+
+  function sendEmailReminder(r) {
+    const subject = encodeURIComponent(`Reminder: ${r.emoji || '🔔'} ${r.title}`);
+    const body = encodeURIComponent(`Hi!\n\nHere is your scheduled reminder from Glassy Daily:\n\n• Task: ${r.title}\n• Time: ${fmt(r.time)}\n• Notes: ${r.note || 'None'}\n\nStay on track!\nhttps://reminder.makeuperfect.in`);
+    window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+    toast('✉️ Email reminder opened in your mail client');
+  }
+
+  /* ---------------- Pomodoro Focus Timer ---------------- */
+  let focusInterval = null;
+  let focusSecondsLeft = 25 * 60;
+  let focusRunning = false;
+  function startFocusForReminder(r) {
+    $('#focusTaskTitle').textContent = `${r.emoji || '🔔'} ${r.title}`;
+    focusSecondsLeft = 25 * 60;
+    updateFocusDisplay();
+    openSheet('#focusOverlay');
+  }
+  function updateFocusDisplay() {
+    const m = Math.floor(focusSecondsLeft / 60);
+    const s = focusSecondsLeft % 60;
+    $('#focusTimer').textContent = `${pad(m)}:${pad(s)}`;
+    const pct = focusSecondsLeft / (25 * 60);
+    $('#focusRing').style.strokeDashoffset = 314.16 * (1 - pct);
+  }
+  $('#focusStartBtn').onclick = () => {
+    if (focusRunning) {
+      clearInterval(focusInterval);
+      focusRunning = false;
+      $('#focusStartBtn').textContent = 'Resume Focus';
+    } else {
+      focusRunning = true;
+      $('#focusStartBtn').textContent = 'Pause Focus';
+      focusInterval = setInterval(() => {
+        if (focusSecondsLeft > 0) {
+          focusSecondsLeft--;
+          updateFocusDisplay();
+        } else {
+          clearInterval(focusInterval);
+          focusRunning = false;
+          chime('zen');
+          fireConfetti();
+          toast('🎉 25 min focus complete! Take a break.');
+          $('#focusStartBtn').textContent = 'Start Focus';
+        }
+      }, 1000);
+    }
+  };
+  $('#focusResetBtn').onclick = () => {
+    clearInterval(focusInterval);
+    focusRunning = false;
+    focusSecondsLeft = 25 * 60;
+    updateFocusDisplay();
+    $('#focusStartBtn').textContent = 'Start Focus';
+  };
 
   /* ---------------- helpers ---------------- */
   function fmt(t){ const [h,m]=t.split(':').map(Number); return `${((h+11)%12)+1}:${pad(m)} ${h<12?'AM':'PM'}`; }
   function minsOf(t){ const [h,m]=t.split(':').map(Number); return h*60+m; }
   let toastT;
-  function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2800); }
+  function toast(msg){ const t=$('#toast'); t.innerHTML=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),3200); }
   const isDone = r => r.doneDate===todayKey();
   const activeToday = r => !r.days || r.days.includes(new Date().getDay());
   function openSheet(id){ $(id).classList.add('open'); }
@@ -514,16 +835,51 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     el.addEventListener('mouseleave', () => { if(!el.classList.contains('expanded')) timer=setTimeout(dismiss,3500); });
     const snz = el.querySelector('.snz'), ok = el.querySelector('.ok'), cls = el.querySelector('.cls');
     if (snz) snz.onclick = () => { snooze(reminder); dismiss(); };
-    if (ok) ok.onclick = () => { markDone(reminder); dismiss(); };
+    if (ok) ok.onclick = () => { markDone(reminder, null); dismiss(); };
     if (cls) cls.onclick = dismiss;
     while (bannerHost.children.length > 4) bannerHost.lastChild.remove();
   }
-  async function markDone(r) {
+
+  let lastCompletedReminder = null;
+  function isAutoDelete() {
+    return localStorage.getItem('glassy-auto-delete') !== 'false';
+  }
+  async function markDone(r, fromEl) {
     const real = reminders.find(x => x.id === r.id);
     if (!real) return;
-    real.doneDate = todayKey(); saveLocal(); render(); toast('Marked done ✓');
+    fireConfetti();
+    chime();
+    track('reminder_done', { reminder: r.id });
+
+    if (isAutoDelete()) {
+      if (fromEl) fromEl.classList.add('vanish');
+      lastCompletedReminder = Object.assign({}, real);
+      reminders = reminders.filter(x => x.id !== r.id);
+      saveLocal();
+      save();
+      setTimeout(() => { render(); renderCalendar(); }, 320);
+      toast('✓ Task completed & removed! <button id="undoCompleteBtn" class="undo-btn">Undo</button>');
+      setTimeout(() => {
+        const ub = $('#undoCompleteBtn');
+        if (ub) {
+          ub.onclick = () => {
+            if (lastCompletedReminder) {
+              reminders.push(lastCompletedReminder);
+              lastCompletedReminder = null;
+              saveLocal(); save(); render(); renderCalendar();
+              toast('Restored task ✓');
+            }
+          };
+        }
+      }, 50);
+    } else {
+      real.doneDate = todayKey();
+      saveLocal(); render(); renderCalendar();
+      toast('Marked done ✓');
+    }
     try { await api('POST', `/api/reminders/${encodeURIComponent(r.id)}/done`, { source: 'banner' }); } catch (e) { save(); }
   }
+
   async function snooze(r) {
     if (!reminders.find(x => x.id === r.id)) return;
     localSnoozes[r.id] = Date.now() + 10*60*1000;
@@ -536,22 +892,38 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     const sorted = [...reminders].sort((a,b)=>minsOf(a.time)-minsOf(b.time));
     const list = $('#list'); list.innerHTML='';
     const shown = sorted.filter(r => filter==='all' || (filter==='done'?isDone(r):!isDone(r)));
-    if (!shown.length) list.innerHTML = `<div class="glass empty">${reminders.length?'Nothing here — nice.':'No reminders yet. Tap + to add one.'}</div>`;
+    if (!shown.length) list.innerHTML = `<div class="glass empty">${reminders.length?'Nothing here — nice.':'No reminders yet. Tap + or Quick Add above.'}</div>`;
     shown.forEach((r,i) => {
       const d = document.createElement('div');
       d.className = 'glass item' + (isDone(r)?' done':''); d.setAttribute('data-tilt',''); d.style.animationDelay = (i*60)+'ms';
       d.style.setProperty('--c', r.color);
-      d.innerHTML = `<div class="ico"></div><div class="meta"><div class="t"></div><div class="s"></div></div>
-        <button class="del" title="Delete" aria-label="Delete reminder">✕</button><button class="check" aria-label="Toggle done">✓</button>`;
+      const priorityBadge = r.priority === 'high' ? '<span class="badge-priority" style="color:#ff453a">🔥 High</span>' : r.priority === 'med' ? '<span class="badge-priority" style="color:#ffd60a">⚡ Med</span>' : '';
+      const tagBadge = r.tag ? `<span class="badge-tag">#${r.tag}</span>` : '';
+      d.innerHTML = `
+        <div class="ico"></div>
+        <div class="meta">
+          <div class="t"></div>
+          <div class="s"></div>
+          <div class="item-actions">
+            <a class="chip-btn" href="${getGoogleCalUrl(r)}" target="_blank" title="Add to Google Calendar">📅 Google Cal</a>
+            <button type="button" class="chip-btn btn-ics" title="Download .ics for Apple/Outlook">📥 .ICS</button>
+            <button type="button" class="chip-btn btn-email" title="Email this reminder">✉️ Email</button>
+            <button type="button" class="chip-btn btn-focus" title="Start Focus Timer">⏳ Focus</button>
+          </div>
+        </div>
+        <button class="del" title="Delete" aria-label="Delete reminder">✕</button>
+        <button class="check" aria-label="Toggle done">✓</button>
+      `;
       d.querySelector('.ico').textContent = r.emoji;
       d.querySelector('.t').textContent = r.title;
       const rep = !r.days || r.days.length === 7 ? 'every day' : r.days.length === 5 && !r.days.includes(0) && !r.days.includes(6) ? 'weekdays' : r.days.map(x => ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][x]).join(', ');
-      d.querySelector('.s').textContent = `${fmt(r.time)} · ${rep}`;
-      d.querySelector('.check').onclick = () => {
-        const was = isDone(r); r.doneDate = was ? null : todayKey();
-        track(was ? 'reminder_undone' : 'reminder_done', { reminder: r.id }); save(); render();
-      };
-      d.querySelector('.del').onclick = () => { reminders = reminders.filter(x=>x!==r); track('reminder_delete'); save(); render(); toast('Reminder deleted'); };
+      d.querySelector('.s').innerHTML = `${fmt(r.time)} · ${rep} ${priorityBadge} ${tagBadge}`;
+      
+      d.querySelector('.check').onclick = () => markDone(r, d);
+      d.querySelector('.del').onclick = () => { reminders = reminders.filter(x=>x!==r); track('reminder_delete'); save(); render(); renderCalendar(); toast('Reminder deleted'); };
+      d.querySelector('.btn-ics').onclick = () => downloadIcs(r);
+      d.querySelector('.btn-email').onclick = () => sendEmailReminder(r);
+      d.querySelector('.btn-focus').onclick = () => startFocusForReminder(r);
       list.appendChild(d);
     });
     const today = reminders.filter(activeToday);
@@ -923,32 +1295,405 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     if (u.tz !== TZ) api('PATCH', '/api/me', { tz: TZ }).catch(() => {});
     track('app_open', { standalone: isStandalone, ios: isIOS });
     lastRenderMin = -1; tick(); updatePermButton();
+    renderCalendar();
     setTimeout(() => banner({ title: `Hi ${u.name} 👋`, body: Notification && 'Notification' in window && Notification.permission === 'granted' ? 'Your reminders are synced and alerts are on.' : 'Tap 🔔 Enable alerts to get reminders on this phone even when the app is closed.', emoji: '🔔' }), 700);
   }
 
   /* ---------------- new reminder sheet ---------------- */
   let selEmoji = EMOJIS[0], selDays = [0,1,2,3,4,5,6];
+  let selPriority = 'high';
+  let selTag = 'Health';
   $('#emojis').innerHTML = EMOJIS.map((e,i)=>`<button type="button" data-e="${e}" class="${i?'':'on'}">${e}</button>`).join('');
   $('#emojis').onclick = e => { const b=e.target.closest('button'); if(!b) return; selEmoji=b.dataset.e; [...$('#emojis').children].forEach(x=>x.classList.toggle('on',x===b)); };
   $('#days').innerHTML = DAYS.map((d,i)=>`<button type="button" data-d="${i}" class="on" aria-label="${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][i]}">${d}</button>`).join('');
   $('#days').onclick = e => { const b=e.target.closest('button'); if(!b) return; b.classList.toggle('on'); selDays=[...$('#days').children].filter(x=>x.classList.contains('on')).map(x=>Number(x.dataset.d)); };
+  
+  const pGroup = $('#priorityGroup');
+  if (pGroup) {
+    pGroup.onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      selPriority = b.dataset.p;
+      [...pGroup.children].forEach(x => x.classList.toggle('on', x === b));
+    };
+  }
+  const tGroup = $('#tagsGroup');
+  if (tGroup) {
+    tGroup.onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (selTag === b.dataset.tag) {
+        selTag = null;
+        b.classList.remove('on');
+      } else {
+        selTag = b.dataset.tag;
+        [...tGroup.children].forEach(x => x.classList.toggle('on', x === b));
+      }
+    };
+  }
+
   $('#fab').onclick = () => { const n=new Date(Date.now()+60000); $('#fTime').value = pad(n.getHours())+':'+pad(n.getMinutes()); openSheet('#overlay'); setTimeout(()=>$('#fTitle').focus(),300); };
   $('#form').onsubmit = e => {
     e.preventDefault();
     if (!selDays.length) return toast('Pick at least one day');
     const r = { id: 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2,6), title:$('#fTitle').value.trim(), note:$('#fNote').value.trim(), time:$('#fTime').value,
-      emoji:selEmoji, color:COLORS[Math.floor(Math.random()*COLORS.length)], days: selDays.length === 7 ? null : selDays.slice(), createdAt: Date.now() };
-    reminders.push(r); track('reminder_add', { emoji: r.emoji, days: selDays.length });
-    save(); render(); closeSheets(); $('#form').reset();
+      emoji:selEmoji, color:COLORS[Math.floor(Math.random()*COLORS.length)], days: selDays.length === 7 ? null : selDays.slice(), priority: selPriority, tag: selTag, createdAt: Date.now() };
+    reminders.push(r); track('reminder_add', { emoji: r.emoji, days: selDays.length, priority: selPriority, tag: selTag });
+    save(); render(); renderCalendar(); closeSheets(); $('#form').reset();
     [...$('#days').children].forEach(x=>x.classList.add('on')); selDays=[0,1,2,3,4,5,6];
     toast(Notification && 'Notification' in window && Notification.permission === 'granted' ? 'Reminder added — it will notify this phone' : 'Reminder added — tap 🔔 Enable alerts to get it on your phone');
   };
   $('#seg').onclick = e => { const b=e.target.closest('button'); if(!b) return; filter=b.dataset.f; [...$('#seg').children].forEach(x=>x.classList.toggle('on',x===b)); track('filter_change', { filter }); render(); };
 
+  /* ---------------- View switcher (List vs Calendar) ---------------- */
+  let currentView = 'list';
+  const vTabs = $('#viewTabs');
+  if (vTabs) {
+    vTabs.onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      currentView = b.dataset.v;
+      [...vTabs.children].forEach(x => x.classList.toggle('on', x === b));
+      $('#list').hidden = currentView !== 'list';
+      $('#seg').hidden = currentView !== 'list';
+      $('#calendarView').hidden = currentView !== 'cal';
+      if (currentView === 'cal') renderCalendar();
+    };
+  }
+
+  /* ---------------- Interactive 3D Glass Calendar ---------------- */
+  let calCurrentDate = new Date();
+  let calSelectedDate = new Date();
+
+  function renderCalendar() {
+    const year = calCurrentDate.getFullYear();
+    const month = calCurrentDate.getMonth();
+    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    if ($('#calMonthTitle')) $('#calMonthTitle').textContent = `${monthNames[month]} ${year}`;
+
+    const firstDayIndex = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+    const grid = $('#calGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
+      const dh = document.createElement('div');
+      dh.className = 'cal-day-header';
+      dh.textContent = d;
+      grid.appendChild(dh);
+    });
+
+    const today = new Date();
+    const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
+
+    for (let i = firstDayIndex - 1; i >= 0; i--) {
+      const cd = document.createElement('div');
+      cd.className = 'cal-cell other-month';
+      cd.textContent = daysInPrevMonth - i;
+      grid.appendChild(cd);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const cd = document.createElement('div');
+      cd.className = 'cal-cell';
+      const cellDate = new Date(year, month, day);
+      const dayOfWeek = cellDate.getDay();
+
+      if (isCurrentMonth && day === today.getDate()) cd.classList.add('today');
+      if (calSelectedDate.getFullYear() === year && calSelectedDate.getMonth() === month && calSelectedDate.getDate() === day) {
+        cd.classList.add('selected');
+      }
+
+      const matching = reminders.filter(r => {
+        if (!r.days || r.days.length === 7) return true;
+        return r.days.includes(dayOfWeek);
+      });
+
+      cd.innerHTML = `<span class="cal-day-num">${day}</span>`;
+      if (matching.length) {
+        const dots = document.createElement('div');
+        dots.className = 'cal-dots';
+        matching.slice(0, 3).forEach(r => {
+          const dot = document.createElement('span');
+          dot.className = 'cal-dot';
+          dot.style.background = r.color || '#0a84ff';
+          dots.appendChild(dot);
+        });
+        if (matching.length > 3) {
+          const plus = document.createElement('span');
+          plus.style.fontSize = '9px';
+          plus.style.opacity = '0.7';
+          plus.textContent = '+';
+          dots.appendChild(plus);
+        }
+        cd.appendChild(dots);
+      }
+
+      cd.onclick = () => {
+        calSelectedDate = cellDate;
+        [...grid.querySelectorAll('.cal-cell')].forEach(c => c.classList.remove('selected'));
+        cd.classList.add('selected');
+        renderCalSelectedDay();
+      };
+      grid.appendChild(cd);
+    }
+
+    renderCalSelectedDay();
+  }
+
+  function renderCalSelectedDay() {
+    if (!$('#calSelectedDateTitle') || !$('#calDayList')) return;
+    const y = calSelectedDate.getFullYear(), m = calSelectedDate.getMonth(), d = calSelectedDate.getDate();
+    const dow = calSelectedDate.getDay();
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    $('#calSelectedDateTitle').textContent = `${dayNames[dow]}, ${monthNames[m]} ${d}`;
+
+    const dayReminders = reminders.filter(r => !r.days || r.days.includes(dow)).sort((a,b) => minsOf(a.time) - minsOf(b.time));
+    const container = $('#calDayList');
+    if (!dayReminders.length) {
+      container.innerHTML = '<div class="glass empty" style="padding:16px;">No tasks for this day. Tap "+ Add for this day" above.</div>';
+      return;
+    }
+    container.innerHTML = '';
+    dayReminders.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'glass item' + (isDone(r) ? ' done' : '');
+      row.style.setProperty('--c', r.color);
+      const priorityBadge = r.priority === 'high' ? '<span class="badge-priority" style="color:#ff453a">🔥 High</span>' : r.priority === 'med' ? '<span class="badge-priority" style="color:#ffd60a">⚡ Med</span>' : '';
+      const tagBadge = r.tag ? `<span class="badge-tag">#${r.tag}</span>` : '';
+      row.innerHTML = `
+        <div class="ico">${r.emoji}</div>
+        <div class="meta">
+          <div class="t">${r.title}</div>
+          <div class="s">${fmt(r.time)} ${priorityBadge} ${tagBadge}</div>
+        </div>
+        <button class="check" aria-label="Toggle done">✓</button>
+      `;
+      row.querySelector('.check').onclick = () => markDone(r, row);
+      container.appendChild(row);
+    });
+  }
+
+  if ($('#calPrevBtn')) $('#calPrevBtn').onclick = () => { calCurrentDate.setMonth(calCurrentDate.getMonth() - 1); renderCalendar(); };
+  if ($('#calNextBtn')) $('#calNextBtn').onclick = () => { calCurrentDate.setMonth(calCurrentDate.getMonth() + 1); renderCalendar(); };
+  if ($('#calTodayBtn')) $('#calTodayBtn').onclick = () => { calCurrentDate = new Date(); calSelectedDate = new Date(); renderCalendar(); };
+  if ($('#calAddBtn')) {
+    $('#calAddBtn').onclick = () => {
+      const dow = calSelectedDate.getDay();
+      selDays = [dow];
+      [...$('#days').children].forEach((x, i) => x.classList.toggle('on', i === dow));
+      const n = new Date();
+      $('#fTime').value = pad(n.getHours()) + ':' + pad(n.getMinutes());
+      openSheet('#overlay');
+      setTimeout(() => $('#fTitle').focus(), 300);
+    };
+  }
+
+  /* ---------------- Natural Language Quick-Add & Voice ---------------- */
+  function parseQuickAdd(text) {
+    let clean = text.trim();
+    let foundTime = null;
+    let emoji = '🔔';
+    let tag = null;
+    let priority = 'low';
+
+    if (/water|drink|hydrate/i.test(clean)) emoji = '💧';
+    else if (/pill|medicine|vitamin|doctor/i.test(clean)) emoji = '💊';
+    else if (/walk|run|gym|workout|exercise|stretch/i.test(clean)) emoji = '🏃';
+    else if (/eat|lunch|dinner|breakfast|meal|cook|food/i.test(clean)) emoji = '🥗';
+    else if (/read|book|study|learn/i.test(clean)) emoji = '📚';
+    else if (/call|phone|mom|dad|family|friend/i.test(clean)) emoji = '📞';
+    else if (/meeting|zoom|sync|standup|call with/i.test(clean)) emoji = '💼';
+    else if (/sleep|bed|rest/i.test(clean)) emoji = '🌙';
+    else if (/journal|write/i.test(clean)) emoji = '✍️';
+
+    if (/urgent|important|asap|high priority/i.test(clean)) priority = 'high';
+    else if (/med priority|medium priority/i.test(clean)) priority = 'med';
+
+    const tagMatch = clean.match(/#(\w+)/);
+    if (tagMatch) {
+      tag = tagMatch[1];
+      clean = clean.replace(tagMatch[0], '').trim();
+    } else if (/health|workout|doctor|pill|water|vitamins/i.test(clean)) {
+      tag = 'Health';
+    } else if (/work|meeting|project|client|sync/i.test(clean)) {
+      tag = 'Work';
+    } else if (/study|exam|homework|read/i.test(clean)) {
+      tag = 'Study';
+    }
+
+    const inMatch = clean.match(/in\s+(\d+)\s*(m|min|mins|minute|minutes|h|hr|hrs|hour|hours)/i);
+    if (inMatch) {
+      const val = parseInt(inMatch[1], 10);
+      const unit = inMatch[2].toLowerCase();
+      const targetDate = new Date(Date.now() + (unit.startsWith('h') ? val * 60 : val) * 60000);
+      foundTime = pad(targetDate.getHours()) + ':' + pad(targetDate.getMinutes());
+      clean = clean.replace(inMatch[0], '').trim();
+    }
+
+    const atMatch = clean.match(/(?:at\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i) || clean.match(/at\s+(\d{1,2}):(\d{2})/i);
+    if (atMatch) {
+      let h = parseInt(atMatch[1], 10);
+      const m = atMatch[2] ? parseInt(atMatch[2], 10) : 0;
+      const meridiem = (atMatch[3] || '').toLowerCase();
+      if (meridiem === 'pm' && h < 12) h += 12;
+      if (meridiem === 'am' && h === 12) h = 0;
+      foundTime = pad(h) + ':' + pad(m);
+      clean = clean.replace(atMatch[0], '').trim();
+    }
+
+    if (!foundTime) {
+      const def = new Date(Date.now() + 60 * 60000);
+      foundTime = pad(def.getHours()) + ':' + pad(def.getMinutes());
+    }
+
+    clean = clean.replace(/^(tomorrow|today|reminder\s+to|remind\s+me\s+to)\s+/i, '').trim();
+    if (!clean) clean = 'Reminder';
+
+    return {
+      id: 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      title: clean,
+      note: 'Quick added',
+      time: foundTime,
+      emoji,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      priority,
+      tag,
+      days: null,
+      createdAt: Date.now()
+    };
+  }
+
+  function handleQuickAddSubmit() {
+    const input = $('#quickAddInput');
+    if (!input) return;
+    const val = input.value.trim();
+    if (!val) return;
+    const r = parseQuickAdd(val);
+    reminders.push(r);
+    track('reminder_add', { quick: true, emoji: r.emoji });
+    save();
+    render();
+    renderCalendar();
+    input.value = '';
+    chime();
+    toast(`Added "${r.title}" at ${fmt(r.time)}!`);
+  }
+  if ($('#quickAddBtn')) $('#quickAddBtn').onclick = handleQuickAddSubmit;
+  if ($('#quickAddInput')) $('#quickAddInput').onkeydown = e => { if (e.key === 'Enter') handleQuickAddSubmit(); };
+
+  // Voice speech-to-text
+  const micBtn = $('#micBtn');
+  if (micBtn && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRec();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    micBtn.onclick = () => {
+      try {
+        recognition.start();
+        micBtn.classList.add('recording');
+        micBtn.textContent = '🔴';
+        toast('🎙️ Listening... Speak your reminder');
+      } catch (e) {
+        recognition.stop();
+        micBtn.classList.remove('recording');
+        micBtn.textContent = '🎙️';
+      }
+    };
+
+    recognition.onresult = e => {
+      const transcript = e.results[0][0].transcript;
+      micBtn.classList.remove('recording');
+      micBtn.textContent = '🎙️';
+      if ($('#quickAddInput')) $('#quickAddInput').value = transcript;
+      handleQuickAddSubmit();
+    };
+
+    recognition.onerror = () => {
+      micBtn.classList.remove('recording');
+      micBtn.textContent = '🎙️';
+      toast('Voice input cancelled or unavailable');
+    };
+
+    recognition.onend = () => {
+      micBtn.classList.remove('recording');
+      micBtn.textContent = '🎙️';
+    };
+  } else if (micBtn) {
+    micBtn.onclick = () => toast('Voice speech recognition available on Chrome, Edge & Safari');
+  }
+
+  /* ---------------- Preferences & Backup / Restore ---------------- */
+  const adToggle = $('#autoDeleteToggle');
+  if (adToggle) {
+    adToggle.checked = isAutoDelete();
+    adToggle.onchange = () => {
+      localStorage.setItem('glassy-auto-delete', adToggle.checked ? 'true' : 'false');
+      toast(adToggle.checked ? '✓ Auto-delete completed tasks is ON' : 'Auto-delete is OFF');
+    };
+  }
+
+  const sp = $('#soundPicker');
+  if (sp) {
+    sp.value = currentSound;
+    sp.onchange = () => {
+      currentSound = sp.value;
+      localStorage.setItem('glassy-sound', sp.value);
+      chime(currentSound);
+      toast(`Sound set to: ${sp.options[sp.selectedIndex].text}`);
+    };
+  }
+
+  if ($('#btnExportBackup')) {
+    $('#btnExportBackup').onclick = () => {
+      const data = {
+        version: 'glassy-backup-v1',
+        exportDate: new Date().toISOString(),
+        user: user,
+        reminders: reminders
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `glassy_daily_backup_${todayKey()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast('💾 Backup downloaded as JSON');
+    };
+  }
+
+  if ($('#btnImportBackup') && $('#importFileInput')) {
+    $('#btnImportBackup').onclick = () => $('#importFileInput').click();
+    $('#importFileInput').onchange = e => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          const importedList = Array.isArray(parsed) ? parsed : (parsed.reminders || []);
+          if (!importedList.length) return toast('No reminders found in file');
+          reminders = importedList;
+          saveLocal(); save(); render(); renderCalendar();
+          toast(`Restored ${reminders.length} reminders from backup!`);
+        } catch (err) {
+          toast('Failed to parse backup JSON file');
+        }
+      };
+      reader.readAsText(file);
+    };
+  }
+
   /* ---------------- boot ---------------- */
   (async function boot() {
     registerSW().then(updatePermButton);
     setInterval(tick, 1000);
+    renderCalendar();
     try {
       const d = await api('GET', '/api/me');
       start(d.user, d.reminders);
