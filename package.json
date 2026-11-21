@@ -1,0 +1,16 @@
+{
+  "name": "glassy-daily",
+  "version": "2.0.0",
+  "description": "Glassy Daily - 3D glass daily reminder PWA with login, cloud sync, analytics and real Web Push.",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "icons": "node scripts/make-icons.js",
+    "test": "sh scripts/verify-server.sh"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "web-push": "^3.6.7"
+  }
+}
