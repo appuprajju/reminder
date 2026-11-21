@@ -1,0 +1,53 @@
+name: CI & Deployment
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test & Verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify JavaScript Syntax
+        run: |
+          node --check server.js
+          node --check public/sw.js
+
+      - name: Run Client & Icon Checks
+        run: |
+          node scripts/verify-client.js
+          node scripts/verify-icons.js
+
+      - name: Run Server Verification
+        run: sh scripts/verify-server.sh
+
+  deploy:
+    name: Trigger Render Deployment
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Deploy to Render via Deploy Hook
+        if: env.RENDER_DEPLOY_HOOK_URL != ''
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          echo "Triggering Render Deploy Hook..."
+          curl -f -X POST "$RENDER_DEPLOY_HOOK_URL"
