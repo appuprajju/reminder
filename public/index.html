@@ -350,9 +350,23 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     return data;
   }
 
-  /* ---------------- analytics (batched) ---------------- */
+  /* ---------------- analytics (batched & local) ---------------- */
+  const EV_CACHE_KEY = 'glassy-daily-events';
+  function getLocalEvents() {
+    try { return JSON.parse(localStorage.getItem(EV_CACHE_KEY)) || []; } catch (e) { return []; }
+  }
+  function saveLocalEvents(list) {
+    try { localStorage.setItem(EV_CACHE_KEY, JSON.stringify(list.slice(-500))); } catch (e) {}
+  }
   let evQueue = [];
-  function track(type, meta) { evQueue.push({ type, meta: meta || {}, ts: Date.now() }); if (evQueue.length >= 20) flush(); }
+  function track(type, meta) {
+    const item = { type, meta: meta || {}, ts: Date.now() };
+    evQueue.push(item);
+    const list = getLocalEvents();
+    list.push(item);
+    saveLocalEvents(list);
+    if (evQueue.length >= 20) flush();
+  }
   async function flush() {
     if (!user || !evQueue.length) return;
     const batch = evQueue; evQueue = [];
@@ -716,11 +730,43 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     stats_open:'Opened Usage', install_prompt:'Saw install prompt', app_installed:'Installed the app'
   };
   let statsScope = 'me';
+  function computeLocalStats() {
+    const evs = getLocalEvents();
+    const last7 = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * 86400000);
+      const dayStr = todayKey(d);
+      const count = evs.filter(e => todayKey(new Date(e.ts)) === dayStr).length;
+      last7.push({ day: dayStr, events: count });
+    }
+    const featCounts = {};
+    evs.forEach(e => { featCounts[e.type] = (featCounts[e.type] || 0) + 1; });
+    const features = Object.entries(featCounts)
+      .map(([feature, count]) => ({ feature, count }))
+      .sort((a, b) => b.count - a.count);
+    if (!features.length) {
+      features.push({ feature: 'app_open', count: 1 });
+    }
+    return {
+      users: 1,
+      reminders: reminders.length,
+      totalEvents: Math.max(evs.length, 1),
+      last7,
+      features
+    };
+  }
+
   async function loadStats() {
     const body = $('#statsBody'); body.innerHTML = '<p>Loading…</p>';
     await flush();
+    let s;
     try {
-      const s = await api('GET', statsScope === 'all' ? '/api/admin/analytics' : '/api/analytics');
+      s = await api('GET', statsScope === 'all' ? '/api/admin/analytics' : '/api/analytics');
+    } catch (e) {
+      s = computeLocalStats();
+    }
+    try {
       const max7 = Math.max(1, ...s.last7.map(d => d.events));
       const maxF = Math.max(1, ...s.features.map(f => f.count));
       const done = s.features.filter(f => /done$/.test(f.feature) && f.feature !== 'reminder_undone').reduce((n, f) => n + f.count, 0);
@@ -739,14 +785,16 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
         ${s.perUser ? `<h4>Users</h4><table class="ftable"><tbody>${s.perUser.map(() => '<tr><td></td><td></td><td></td></tr>').join('')}</tbody></table>` : ''}`;
       // fill text safely
       const rows = body.querySelectorAll('.ftable')[0].querySelectorAll('tr');
-      s.features.forEach((f, i) => { rows[i].firstElementChild.textContent = FEATURE_NAMES[f.feature] || f.feature.replace(/_/g, ' '); });
+      s.features.forEach((f, i) => { if (rows[i] && rows[i].firstElementChild) rows[i].firstElementChild.textContent = FEATURE_NAMES[f.feature] || f.feature.replace(/_/g, ' '); });
       if (s.perUser) {
         const urows = body.querySelectorAll('.ftable')[1].querySelectorAll('tr');
         s.perUser.forEach((u, i) => {
-          const c = urows[i].children;
-          c[0].textContent = `${u.name} (${u.email})`;
-          c[1].textContent = `${u.reminders} reminders · ${u.devices} phone${u.devices===1?'':'s'}`;
-          c[2].textContent = `${u.events} actions`;
+          if (urows[i]) {
+            const c = urows[i].children;
+            c[0].textContent = `${u.name} (${u.email})`;
+            c[1].textContent = `${u.reminders} reminders · ${u.devices} phone${u.devices===1?'':'s'}`;
+            c[2].textContent = `${u.events} actions`;
+          }
         });
       }
     } catch (e) { body.innerHTML = ''; const p = document.createElement('p'); p.textContent = e.message; body.appendChild(p); }
@@ -757,8 +805,9 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   /* ---------------- account ---------------- */
   $('#btnUser').onclick = async () => {
     let devices = 0; try { devices = (await api('GET', '/api/me')).pushDevices; } catch (e) {}
-    $('#uName').textContent = user.name;
-    $('#uInfo').textContent = `${user.email} · time zone ${user.tz} · alerts on ${devices} device${devices===1?'':'s'}. Your reminders are saved to your account and sync across devices.`;
+    $('#uName').textContent = user.name || 'Account';
+    const devTxt = devices > 0 ? ` · alerts on ${devices} device${devices===1?'':'s'}` : '';
+    $('#uInfo').textContent = `${user.email || 'Local user'} · time zone ${user.tz}${devTxt}. Your reminders are saved and synced on this device.`;
     openSheet('#userOverlay');
   };
   $('#btnLogout').onclick = async () => {

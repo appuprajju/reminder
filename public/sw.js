@@ -1,5 +1,5 @@
 /* Glassy Daily service worker: offline shell + real push notifications with actions. */
-const CACHE = 'glassy-daily-v3';
+const CACHE = 'glassy-daily-v4';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/badge-96.png', '/icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
