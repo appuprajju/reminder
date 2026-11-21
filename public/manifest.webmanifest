@@ -1,7 +1,7 @@
 {
-  "name": "Glassy Daily — Reminders",
-  "short_name": "Glassy Daily",
-  "description": "3D glass daily reminders with real phone notifications.",
+  "name": "reminderme — Smart Reminders",
+  "short_name": "reminderme",
+  "description": "Smart 3D daily reminders with calendar, voice add, and notifications.",
   "id": "/",
   "start_url": "/",
   "scope": "/",

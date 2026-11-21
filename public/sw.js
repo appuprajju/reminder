@@ -1,5 +1,5 @@
-/* Glassy Daily service worker: offline shell + real push notifications with actions. */
-const CACHE = 'glassy-daily-v5';
+/* reminderme service worker: offline shell + real push notifications with actions. */
+const CACHE = 'reminderme-v1';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/badge-96.png', '/icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -22,13 +22,13 @@ self.addEventListener('fetch', e => {
 
 self.addEventListener('push', e => {
   let data = {};
-  try { data = e.data ? e.data.json() : {}; } catch (err) { data = { title: 'Glassy Daily', body: e.data ? e.data.text() : '' }; }
-  const title = data.title || 'Glassy Daily';
+  try { data = e.data ? e.data.json() : {}; } catch (err) { data = { title: 'reminderme', body: e.data ? e.data.text() : '' }; }
+  const title = data.title || 'reminderme';
   const options = {
     body: data.body || '',
     icon: '/icons/icon-192.png',
     badge: '/icons/badge-96.png',
-    tag: data.tag || 'glassy',
+    tag: data.tag || 'reminderme',
     renotify: true,
     requireInteraction: !!data.reminderId,
     vibrate: [30, 60, 30],
