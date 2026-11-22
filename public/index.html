@@ -556,6 +556,49 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   margin-top: 8px;
 }
 
+/* Full Mobile Screen Gesture HUD and Animations */
+.screen-gesture-hud {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  padding: 16px 28px;
+  border-radius: 999px;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #fff;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 1000000;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: 0 16px 45px rgba(0,0,0,0.65);
+}
+.screen-gesture-hud.show-dismiss {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  background: rgba(48,209,88,0.92);
+  box-shadow: 0 16px 45px rgba(48,209,88,0.6);
+}
+.screen-gesture-hud.show-snooze {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  background: rgba(10,132,255,0.92);
+  box-shadow: 0 16px 45px rgba(10,132,255,0.6);
+}
+
+@keyframes alarmPulse {
+  0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,69,58,0)); }
+  50% { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(255,69,58,0.8)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,69,58,0)); }
+}
+.alarm-icon-pulse {
+  display: inline-block;
+  animation: alarmPulse 1.8s infinite ease-in-out;
+}
+
 /* ============ CINEMATIC APP START ANIMATION ============ */
 .splash-screen {
   position: fixed;
@@ -796,7 +839,10 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   </header>
 
   <section class="glass hero" data-tilt id="hero">
-    <div class="date layer" style="--z:30px" id="date"></div>
+    <div class="date layer" style="--z:30px;display:flex;align-items:center;justify-content:center;gap:10px" id="dateWrap">
+      <span id="date"></span>
+      <button type="button" class="chip-btn" id="btnTimeFormat" style="font-size:11px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;cursor:pointer;white-space:nowrap" title="Switch 12h / 24h format">🕒 12H</button>
+    </div>
     <div class="clock layer" style="--z:70px" id="clock">--:--</div>
     <div class="greet layer" style="--z:45px" id="greet"></div>
     <div class="ringrow layer" style="--z:55px">
@@ -902,7 +948,13 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     <label class="field"><span>What</span><input id="fTitle" placeholder="Wake up / Drink water" maxlength="60" required></label>
     <label class="field"><span>Note (optional)</span><input id="fNote" placeholder="Stay hydrated" maxlength="90"></label>
     <label class="field"><span>Time</span><input id="fTime" type="time" required></label>
-    <div class="field"><span>Repeat on</span><div class="days" id="days"></div></div>
+    <div class="field">
+      <span>Repeat on</span>
+      <div class="days" id="days"></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:5px;line-height:1.4">
+        💡 <em>1-day alarms auto-delete when turned off. Multi-day repeating alarms stay in your schedule.</em>
+      </div>
+    </div>
     <div class="field"><span>Icon</span><div class="emojis" id="emojis"></div></div>
     <div class="field"><span>Priority</span>
       <div style="display:flex;gap:8px" id="priorityGroup">
@@ -1020,6 +1072,15 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
         </div>
       </div>
 
+      <!-- 12-Hour vs 24-Hour Time Format -->
+      <label class="field" style="margin-bottom:12px">
+        <span>🕒 Clock & Reminder Time Format</span>
+        <select id="userTimeFormatPicker" style="width:100%;background:rgba(0,0,0,.3);border:1px solid var(--stroke);color:#fff;padding:8px 10px;border-radius:12px">
+          <option value="12h">12-Hour (07:30 AM / PM)</option>
+          <option value="24h">24-Hour (19:30)</option>
+        </select>
+      </label>
+
       <!-- Alarm Ring Duration -->
       <label class="field" style="margin-bottom:12px">
         <span>Alarm Ring Duration</span>
@@ -1077,7 +1138,8 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 </div>
 
 <!-- Alarm Ringing Fullscreen Overlay -->
-<div class="overlay" id="alarmRingOverlay" style="z-index:999999;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);background:rgba(5,6,15,.88)">
+<div class="overlay" id="alarmRingOverlay" style="z-index:999999;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);background:rgba(5,6,15,.88);touch-action:none">
+  <div id="screenGestureHud" class="screen-gesture-hud"></div>
   <div class="glass sheet" id="alarmRingCard" style="max-width:440px;text-align:center;padding:32px 22px;border:1px solid rgba(255,255,255,.3);box-shadow:0 25px 80px rgba(255,69,58,.45), inset 0 2px 0 rgba(255,255,255,.5);touch-action:none">
     <div class="alarm-bell-anim">
       <div class="alarm-ripple-ring"></div>
@@ -1109,6 +1171,12 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       <div class="alarm-gesture-subhint">Slide right to Turn Off · Slide left to Snooze (5m)</div>
     </div>
 
+    <!-- Full-Screen Swipe Guide for Mobile Screen Gestures -->
+    <div id="alarmScreenGestureGuide" style="margin-top:10px;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);font-size:12px;color:rgba(255,255,255,0.85);line-height:1.45">
+      📱 <strong>Screen Gestures:</strong> Swipe anywhere across the screen<br>
+      <span style="color:#30d158;font-weight:700">👉 Swipe Right / Up</span> to Turn Off · <span style="color:#5ac8fa;font-weight:700">👈 Swipe Left / Down</span> to Snooze
+    </div>
+
     <!-- Direct tap buttons -->
     <div style="display:flex;flex-direction:column;gap:10px;width:100%;margin-top:8px">
       <button type="button" class="btn primary" id="btnDismissAlarm" style="padding:14px;font-size:16px;font-weight:750;background:linear-gradient(135deg,#30d158,#1b873a);box-shadow:0 8px 24px rgba(48,209,88,.45)">
@@ -1133,7 +1201,8 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   const $ = s => document.querySelector(s);
   const pad = n => String(n).padStart(2,'0');
   const todayKey = (d=new Date()) => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-  const EMOJIS = ['💧','💊','🧘','🏃','📖','☕','🍎','😴','📞','✍️','🌿','💼'];
+  let timeFormat = localStorage.getItem('reminderme-time-format') || '12h';
+  const EMOJIS = ['⏰','🔔','⏱️','⏲️','🚨','🔊','⚡','🌅','🌙','💧','💊','🧘','🏃','📖','☕','🍎','😴','📞','✍️','🌿','💼','🎯'];
   const COLORS = ['#0a84ff','#bf5af2','#ff9f0a','#30d158','#ff375f','#64d2ff','#5e5ce6'];
   const DAYS = ['S','M','T','W','T','F','S'];
   const TZ = (Intl.DateTimeFormat().resolvedOptions().timeZone) || 'UTC';
@@ -1655,8 +1724,10 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 
   function triggerAlarm(r) {
     currentActiveAlarmReminder = r;
-    const now = new Date(), h = now.getHours();
-    const timeStr = `${((h+11)%12)+1}:${pad(now.getMinutes())} ${h<12?'AM':'PM'}`;
+    const now = new Date(), h = now.getHours(), m = now.getMinutes();
+    const timeStr = timeFormat === '24h'
+      ? `${pad(h)}:${pad(m)}`
+      : `${((h+11)%12)+1}:${pad(m)} ${h<12?'AM':'PM'}`;
 
     if ($('#alarmRingIcon')) $('#alarmRingIcon').textContent = r.emoji || '⏰';
     if ($('#alarmRingClock')) $('#alarmRingClock').textContent = timeStr;
@@ -1876,7 +1947,18 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   };
 
   /* ---------------- helpers ---------------- */
-  function fmt(t){ const [h,m]=t.split(':').map(Number); return `${((h+11)%12)+1}:${pad(m)} ${h<12?'AM':'PM'}`; }
+  function fmt(t){
+    if (!t) return '';
+    const [h,m]=t.split(':').map(Number);
+    if (timeFormat === '24h') return `${pad(h)}:${pad(m)}`;
+    return `${((h+11)%12)+1}:${pad(m)} ${h<12?'AM':'PM'}`;
+  }
+  function isSingleDaySchedule(r) {
+    if (!r) return false;
+    if (r.oneTime) return true;
+    if (Array.isArray(r.days) && r.days.length === 1) return true;
+    return false;
+  }
   function minsOf(t){ const [h,m]=t.split(':').map(Number); return h*60+m; }
   let toastT;
   function toast(msg){ const t=$('#toast'); t.innerHTML=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),3200); }
@@ -1938,14 +2020,14 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     chime();
     track('reminder_done', { reminder: r.id });
 
-    if (isAutoDelete()) {
+    if (isSingleDaySchedule(real)) {
       if (fromEl) fromEl.classList.add('vanish');
       lastCompletedReminder = Object.assign({}, real);
       reminders = reminders.filter(x => x.id !== r.id);
       saveLocal();
       save();
       setTimeout(() => { render(); renderCalendar(); }, 320);
-      toast('✓ Task completed & removed! <button id="undoCompleteBtn" class="undo-btn">Undo</button>');
+      toast('✓ 1-day reminder completed & deleted! <button id="undoCompleteBtn" class="undo-btn">Undo</button>');
       setTimeout(() => {
         const ub = $('#undoCompleteBtn');
         if (ub) {
@@ -1961,8 +2043,11 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       }, 50);
     } else {
       real.doneDate = todayKey();
-      saveLocal(); render(); renderCalendar();
-      toast('Marked done ✓');
+      saveLocal();
+      save();
+      render();
+      renderCalendar();
+      toast('✓ Marked done for today — repeats next scheduled day');
     }
     try { await api('POST', `/api/reminders/${encodeURIComponent(r.id)}/done`, { source: 'banner' }); } catch (e) { save(); }
   }
@@ -1995,8 +2080,9 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       d.style.setProperty('--c', r.color);
       const priorityBadge = r.priority === 'high' ? '<span class="badge-priority" style="color:#ff453a">🔥 High</span>' : r.priority === 'med' ? '<span class="badge-priority" style="color:#ffd60a">⚡ Med</span>' : '';
       const tagBadge = r.tag ? `<span class="badge-tag">#${r.tag}</span>` : '';
+      const isSingle = isSingleDaySchedule(r);
       const alertBadge = r.isAlarm !== false
-        ? '<span class="badge-tag" style="background:rgba(255,69,58,.22);color:#ff453a;border:1px solid rgba(255,69,58,.45)">⏰ ALARM</span>'
+        ? `<span class="badge-tag" style="background:rgba(255,69,58,.24);color:#ff453a;border:1px solid rgba(255,69,58,.5);box-shadow:0 0 10px rgba(255,69,58,.25);font-weight:750"><span class="alarm-icon-pulse">⏰</span> ALARM</span> ${isSingle ? '<span class="badge-tag" style="background:rgba(255,214,10,.18);color:#ffd60a;border:1px solid rgba(255,214,10,.4)">1-Day Only</span>' : '<span class="badge-tag" style="background:rgba(48,209,88,.18);color:#30d158;border:1px solid rgba(48,209,88,.4)">Repeating</span>'}`
         : '<span class="badge-tag" style="background:rgba(10,132,255,.16);color:#5ac8fa;border:1px solid rgba(10,132,255,.35)">🔔 NOTIF</span>';
       d.innerHTML = `
         <div class="ico"></div>
@@ -2057,8 +2143,14 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   let lastRenderMin = -1;
   const firedLocal = {};
   function tick(){
-    const now = new Date(), h = now.getHours();
-    $('#clock').innerHTML = `${((h+11)%12)+1}:${pad(now.getMinutes())}<small>${h<12?'AM':'PM'}</small>`;
+    const now = new Date(), h = now.getHours(), m = now.getMinutes();
+    if (timeFormat === '24h') {
+      $('#clock').innerHTML = `${pad(h)}:${pad(m)}<small style="font-size:0.35em;opacity:0.75;margin-left:4px">24H</small>`;
+    } else {
+      $('#clock').innerHTML = `${((h+11)%12)+1}:${pad(m)}<small>${h<12?'AM':'PM'}</small>`;
+    }
+    const btnFmt = $('#btnTimeFormat');
+    if (btnFmt) btnFmt.textContent = timeFormat === '24h' ? '🕒 24H' : '🕒 12H';
     $('#date').textContent = now.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
     $('#greet').textContent = (h<5?'Still up':h<12?'Good morning':h<18?'Good afternoon':'Good evening') + (user ? `, ${user.name}` : '') + (h<5?' 🌙':h<12?' ☀️':h<18?' 🌤':' 🌆');
     if (!user) return;
@@ -2428,6 +2520,10 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       selIsAlarm = b.dataset.type === 'alarm';
       [...aTypeGroup.children].forEach(x => x.classList.toggle('on', x === b));
       if ($('#formSoundField')) $('#formSoundField').style.display = selIsAlarm ? 'block' : 'none';
+      if (selIsAlarm) {
+        selEmoji = '⏰';
+        [...$('#emojis').children].forEach(x => x.classList.toggle('on', x.dataset.e === '⏰'));
+      }
     };
   }
 
@@ -2468,6 +2564,10 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     }
     if ($('#fSound')) $('#fSound').value = currentAlarmSound || 'radar';
     if ($('#formSoundField')) $('#formSoundField').style.display = selIsAlarm ? 'block' : 'none';
+    if (selIsAlarm) {
+      selEmoji = '⏰';
+      [...$('#emojis').children].forEach(x => x.classList.toggle('on', x.dataset.e === '⏰'));
+    }
     openSheet('#overlay');
     setTimeout(() => $('#fTitle').focus(), 300);
   };
@@ -3023,14 +3123,53 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     const r = currentActiveAlarmReminder;
     stopAlarmSound();
     closeSheets();
-    if (r) markDone(r, null);
-    toast('⏰ Alarm turned off ✓');
+    clearMediaSession();
+    releaseWakeLock();
+    if (!r) return;
+
+    const real = reminders.find(x => x.id === r.id);
+    if (!real) return;
+
+    if (isSingleDaySchedule(real)) {
+      // Single-day alarm: automatically delete from list
+      lastCompletedReminder = Object.assign({}, real);
+      reminders = reminders.filter(x => x.id !== real.id);
+      saveLocal();
+      save();
+      render();
+      renderCalendar();
+      toast('⏰ 1-day alarm turned off & removed from list ✓ <button id="undoCompleteBtn" class="undo-btn">Undo</button>');
+      setTimeout(() => {
+        const ub = $('#undoCompleteBtn');
+        if (ub) {
+          ub.onclick = () => {
+            if (lastCompletedReminder) {
+              reminders.push(lastCompletedReminder);
+              lastCompletedReminder = null;
+              saveLocal(); save(); render(); renderCalendar();
+              toast('Restored alarm ✓');
+            }
+          };
+        }
+      }, 50);
+    } else {
+      // Multi-day repeating alarm: keep in list!
+      real.doneDate = todayKey();
+      saveLocal();
+      save();
+      render();
+      renderCalendar();
+      toast('⏰ Repeating alarm turned off — kept active for next scheduled day ✓');
+    }
+    try { api('POST', `/api/reminders/${encodeURIComponent(r.id)}/done`, { source: 'alarm-turnoff' }); } catch(e){}
   }
 
   function snoozeActiveAlarm(mins = 5) {
     const r = currentActiveAlarmReminder;
     stopAlarmSound();
     closeSheets();
+    clearMediaSession();
+    releaseWakeLock();
     if (r) snooze(r, mins);
   }
 
@@ -3050,7 +3189,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     btnSnooze10.onclick = () => snoozeActiveAlarm(10);
   }
 
-  // Interactive iOS & Android Dual-Direction Gesture Slider
+  // Interactive iOS & Android Dual-Direction Gesture Slider + Full-Screen Gestures
   function setupAlarmGestureSlider() {
     const track = $('#alarmSliderTrack');
     const thumb = $('#alarmSliderThumb');
@@ -3058,6 +3197,8 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     const fillRight = $('#sliderFillRight');
     const thumbIcon = $('#sliderThumbIcon');
     const ringCard = $('#alarmRingCard');
+    const overlay = $('#alarmRingOverlay');
+    const hud = $('#screenGestureHud');
     if (!track || !thumb) return;
 
     let isDragging = false;
@@ -3152,43 +3293,156 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     window.addEventListener('pointerup', onEnd);
     window.addEventListener('pointercancel', onEnd);
 
-    // Vertical card swipe: Swipe UP = Turn Off, Swipe DOWN = Snooze
-    if (ringCard) {
-      let cardStartY = 0;
-      let cardDeltaY = 0;
-      let cardSwiping = false;
+    // Full Mobile Screen Swipe Gestures (Anywhere on the screen during ringing)
+    if (overlay && hud) {
+      let screenStartX = 0, screenStartY = 0;
+      let screenDragging = false;
+      let screenDeltaX = 0, screenDeltaY = 0;
+      let screenHaptic = false;
 
-      ringCard.addEventListener('touchstart', e => {
+      const onScreenStart = e => {
         if (e.target.closest('#alarmSliderTrack') || e.target.closest('button')) return;
-        cardSwiping = true;
-        cardStartY = e.touches[0].clientY;
-        cardDeltaY = 0;
-      }, { passive: true });
+        screenDragging = true;
+        screenStartX = (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX);
+        screenStartY = (e.touches && e.touches[0] ? e.touches[0].clientY : e.clientY);
+        screenDeltaX = 0;
+        screenDeltaY = 0;
+        screenHaptic = false;
+      };
 
-      ringCard.addEventListener('touchmove', e => {
-        if (!cardSwiping) return;
-        cardDeltaY = e.touches[0].clientY - cardStartY;
-        ringCard.style.transform = `translateY(${cardDeltaY * 0.35}px)`;
-      }, { passive: true });
+      const onScreenMove = e => {
+        if (!screenDragging) return;
+        const curX = (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX);
+        const curY = (e.touches && e.touches[0] ? e.touches[0].clientY : e.clientY);
+        screenDeltaX = curX - screenStartX;
+        screenDeltaY = curY - screenStartY;
 
-      ringCard.addEventListener('touchend', () => {
-        if (!cardSwiping) return;
-        cardSwiping = false;
-        ringCard.style.transition = 'transform 0.25s ease';
-        ringCard.style.transform = '';
-        setTimeout(() => { ringCard.style.transition = ''; }, 260);
-
-        if (cardDeltaY < -75) {
-          if (navigator.vibrate) try { navigator.vibrate(40); } catch(err){}
-          dismissActiveAlarm();
-        } else if (cardDeltaY > 75) {
-          if (navigator.vibrate) try { navigator.vibrate(40); } catch(err){}
-          snoozeActiveAlarm(5);
+        const isHorizontal = Math.abs(screenDeltaX) > Math.abs(screenDeltaY);
+        if (isHorizontal) {
+          if (screenDeltaX > 45) {
+            hud.textContent = '🛑 Turn Off';
+            hud.className = 'screen-gesture-hud show-dismiss';
+            if (screenDeltaX >= 75 && !screenHaptic) {
+              if (navigator.vibrate) try { navigator.vibrate(35); } catch(x){}
+              screenHaptic = true;
+            }
+          } else if (screenDeltaX < -45) {
+            hud.textContent = '😴 Snooze 5m';
+            hud.className = 'screen-gesture-hud show-snooze';
+            if (screenDeltaX <= -75 && !screenHaptic) {
+              if (navigator.vibrate) try { navigator.vibrate(35); } catch(x){}
+              screenHaptic = true;
+            }
+          } else {
+            hud.className = 'screen-gesture-hud';
+            screenHaptic = false;
+          }
+        } else {
+          if (screenDeltaY < -45) {
+            hud.textContent = '🛑 Turn Off';
+            hud.className = 'screen-gesture-hud show-dismiss';
+            if (screenDeltaY <= -75 && !screenHaptic) {
+              if (navigator.vibrate) try { navigator.vibrate(35); } catch(x){}
+              screenHaptic = true;
+            }
+          } else if (screenDeltaY > 45) {
+            hud.textContent = '😴 Snooze 5m';
+            hud.className = 'screen-gesture-hud show-snooze';
+            if (screenDeltaY >= 75 && !screenHaptic) {
+              if (navigator.vibrate) try { navigator.vibrate(35); } catch(x){}
+              screenHaptic = true;
+            }
+          } else {
+            hud.className = 'screen-gesture-hud';
+            screenHaptic = false;
+          }
         }
-      }, { passive: true });
+      };
+
+      const onScreenEnd = () => {
+        if (!screenDragging) return;
+        screenDragging = false;
+        hud.className = 'screen-gesture-hud';
+
+        const isHorizontal = Math.abs(screenDeltaX) > Math.abs(screenDeltaY);
+        if (isHorizontal) {
+          if (screenDeltaX >= 70) {
+            if (navigator.vibrate) try { navigator.vibrate([30, 40, 50]); } catch(err){}
+            dismissActiveAlarm();
+          } else if (screenDeltaX <= -70) {
+            if (navigator.vibrate) try { navigator.vibrate([40, 40]); } catch(err){}
+            snoozeActiveAlarm(5);
+          }
+        } else {
+          if (screenDeltaY <= -70) {
+            if (navigator.vibrate) try { navigator.vibrate([30, 40, 50]); } catch(err){}
+            dismissActiveAlarm();
+          } else if (screenDeltaY >= 70) {
+            if (navigator.vibrate) try { navigator.vibrate([40, 40]); } catch(err){}
+            snoozeActiveAlarm(5);
+          }
+        }
+        screenDeltaX = 0; screenDeltaY = 0;
+      };
+
+      overlay.addEventListener('touchstart', onScreenStart, { passive: true });
+      overlay.addEventListener('touchmove', onScreenMove, { passive: true });
+      overlay.addEventListener('touchend', onScreenEnd, { passive: true });
+      overlay.addEventListener('touchcancel', onScreenEnd, { passive: true });
+
+      overlay.addEventListener('pointerdown', onScreenStart);
+      overlay.addEventListener('pointermove', onScreenMove);
+      overlay.addEventListener('pointerup', onScreenEnd);
+      overlay.addEventListener('pointercancel', onScreenEnd);
     }
   }
   setupAlarmGestureSlider();
+
+  // 12H vs 24H Time Format Toggle Buttons
+  const btnTimeFmt = $('#btnTimeFormat');
+  if (btnTimeFmt) {
+    btnTimeFmt.onclick = () => {
+      timeFormat = timeFormat === '12h' ? '24h' : '12h';
+      localStorage.setItem('reminderme-time-format', timeFormat);
+      btnTimeFmt.textContent = timeFormat === '24h' ? '🕒 24H' : '🕒 12H';
+      const up = $('#userTimeFormatPicker');
+      if (up) up.value = timeFormat;
+      tick();
+      render();
+      renderCalendar();
+      toast(`Switched to ${timeFormat === '24h' ? '24-Hour (13:30)' : '12-Hour (1:30 PM)'} time format`);
+    };
+  }
+
+  const userTimeFmtPicker = $('#userTimeFormatPicker');
+  if (userTimeFmtPicker) {
+    userTimeFmtPicker.value = timeFormat;
+    userTimeFmtPicker.onchange = () => {
+      timeFormat = userTimeFmtPicker.value;
+      localStorage.setItem('reminderme-time-format', timeFormat);
+      if (btnTimeFmt) btnTimeFmt.textContent = timeFormat === '24h' ? '🕒 24H' : '🕒 12H';
+      tick();
+      render();
+      renderCalendar();
+      toast(`Time format updated: ${timeFormat === '24h' ? '24-Hour' : '12-Hour'}`);
+    };
+  }
+
+  // Background audio keepalive for locked screen & home screen alarm reliability
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      const hasAlarms = reminders.some(r => r.isAlarm !== false && activeToday(r) && !isDone(r));
+      if (hasAlarms) {
+        try {
+          if (!silentMediaEl) {
+            silentMediaEl = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==');
+            silentMediaEl.loop = true;
+          }
+          silentMediaEl.play().catch(() => {});
+        } catch(e){}
+      }
+    }
+  });
 
   // Listen to Service Worker messages from Lock Screen Notifications
   if ('serviceWorker' in navigator) {

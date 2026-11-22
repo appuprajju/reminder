@@ -151,7 +151,16 @@ async function pushTo(uid, payload) {
   return sent;
 }
 function reminderPayload(r) {
-  return { title: `${r.emoji} ${r.title}`, body: r.note || `It's ${r.time} — time for this.`, tag: 'r-' + r.id, reminderId: r.id, url: '/' };
+  const isAlarm = r.isAlarm !== false;
+  return {
+    title: isAlarm ? `⏰ ALARM: ${r.title}` : `${r.emoji || '🔔'} ${r.title}`,
+    body: r.note || (isAlarm ? `Alarm ringing for ${r.time} — Swipe / tap to Turn Off` : `It's ${r.time} — time for this.`),
+    tag: 'r-' + r.id,
+    reminderId: r.id,
+    isAlarm: isAlarm,
+    sound: r.sound || 'radar',
+    url: '/'
+  };
 }
 async function tick() {
   const now = Date.now();
@@ -278,7 +287,12 @@ async function api(req, res, url) {
     if (!r) return send(res, 404, { error: 'Reminder not found' });
     const b = await readBody(req).catch(() => ({}));
     if (m[2] === 'done') {
-      r.doneDate = localParts(user.tz).date;
+      const isSingleDay = Array.isArray(r.days) && r.days.length === 1;
+      if (isSingleDay) {
+        db.reminders[user.id] = (db.reminders[user.id] || []).filter(x => x.id !== r.id);
+      } else {
+        r.doneDate = localParts(user.tz).date;
+      }
       db.snoozes = db.snoozes.filter(s => !(s.uid === user.id && s.rid === r.id));
       track(user.id, b.source === 'push' ? 'push_done' : 'reminder_done', { reminder: r.id });
     } else {
