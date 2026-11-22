@@ -418,6 +418,38 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 .item.vanish{animation:vanishOut .38s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes vanishOut{0%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.95) translateY(-8px)}100%{opacity:0;transform:scale(.85) translateY(-24px);max-height:0;padding-top:0;padding-bottom:0;margin:0}}
 
+/* Alarm Ringing Animations */
+.alarm-bell-anim {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+}
+.alarm-ripple-ring {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 69, 58, 0.75);
+  animation: alarmRipple 1.4s ease-out infinite;
+}
+@keyframes alarmRipple {
+  0% { transform: scale(0.75); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.alarm-bell-icon {
+  font-size: 52px;
+  line-height: 1;
+  animation: alarmWiggle 0.55s ease-in-out infinite alternate;
+  transform-origin: 50% 15%;
+  filter: drop-shadow(0 0 20px rgba(255, 69, 58, 0.75));
+}
+@keyframes alarmWiggle {
+  0% { transform: rotate(-22deg) scale(1.06); }
+  100% { transform: rotate(22deg) scale(1.06); }
+}
+
 /* ============ CINEMATIC APP START ANIMATION ============ */
 .splash-screen {
   position: fixed;
@@ -690,7 +722,8 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 
     <div class="listhead">
       <div class="view-tabs" id="viewTabs">
-        <button type="button" data-v="list" class="on">📋 List</button>
+        <button type="button" data-v="list" class="on">📋 All</button>
+        <button type="button" data-v="alarms">⏰ Alarms</button>
         <button type="button" data-v="cal">📅 Calendar</button>
       </div>
       <div class="seg" id="seg">
@@ -727,8 +760,18 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 <!-- new reminder -->
 <div class="overlay" id="overlay">
   <form class="glass sheet" id="form" autocomplete="off">
-    <h3>New reminder</h3>
-    <label class="field"><span>What</span><input id="fTitle" placeholder="Drink a glass of water" maxlength="60" required></label>
+    <h3 id="formHeading">New reminder</h3>
+    <div class="field"><span>Alert Style</span>
+      <div style="display:flex;gap:8px" id="alertTypeGroup">
+        <button type="button" class="btn on" data-type="alarm" id="btnTypeAlarm" style="flex:1;font-size:12px;padding:9px;display:flex;align-items:center;justify-content:center;gap:6px">
+          ⏰ Loud Alarm
+        </button>
+        <button type="button" class="btn" data-type="notification" id="btnTypeNotify" style="flex:1;font-size:12px;padding:9px;display:flex;align-items:center;justify-content:center;gap:6px">
+          🔔 Notification
+        </button>
+      </div>
+    </div>
+    <label class="field"><span>What</span><input id="fTitle" placeholder="Wake up / Drink water" maxlength="60" required></label>
     <label class="field"><span>Note (optional)</span><input id="fNote" placeholder="Stay hydrated" maxlength="90"></label>
     <label class="field"><span>Time</span><input id="fTime" type="time" required></label>
     <div class="field"><span>Repeat on</span><div class="days" id="days"></div></div>
@@ -791,14 +834,78 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
         <span style="font-size:14px">Auto-delete completed tasks</span>
         <input type="checkbox" id="autoDeleteToggle" checked style="width:18px;height:18px">
       </label>
+      <!-- Sounds & Alarm Settings -->
+      <h4 style="margin:16px 0 10px;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Sounds & Alarm Settings</h4>
+      
+      <!-- Notification Sound -->
       <label class="field" style="margin-bottom:12px">
-        <span>Chime sound</span>
+        <span style="display:flex;justify-content:space-between;align-items:center">
+          <span>🔔 Notification Sound (Short Chime)</span>
+          <button type="button" class="chip-btn" id="btnPreviewNotifSound" style="padding:2px 8px;font-size:11px">▶️ Test</button>
+        </span>
         <select id="soundPicker" style="width:100%;background:rgba(0,0,0,.3);border:1px solid var(--stroke);color:#fff;padding:8px 10px;border-radius:12px">
-          <option value="glass">Glass Chime</option>
-          <option value="zen">Zen Singing Bowl</option>
-          <option value="droplet">Water Droplet</option>
-          <option value="digital">Digital Tone</option>
+          <option value="glass">Glass Chime (Crystal Bell)</option>
+          <option value="digital">Digital Ping (Tri-tone)</option>
+          <option value="bell">Soft Vibraphone Bell</option>
+          <option value="zen">Zen Singing Bowl (432Hz)</option>
+          <option value="droplet">Water Droplet Pop</option>
         </select>
+      </label>
+
+      <!-- Alarm Ringtone -->
+      <label class="field" style="margin-bottom:12px">
+        <span style="display:flex;justify-content:space-between;align-items:center">
+          <span>⏰ Alarm Ringtone (Rings Out Loud)</span>
+          <button type="button" class="chip-btn" id="btnPreviewAlarmSound" style="padding:2px 8px;font-size:11px">▶️ Test Alarm</button>
+        </span>
+        <select id="alarmSoundPicker" style="width:100%;background:rgba(0,0,0,.3);border:1px solid var(--stroke);color:#fff;padding:8px 10px;border-radius:12px">
+          <option value="digital-alarm">Classic Digital Alarm (Beep-Beep)</option>
+          <option value="radar">Sonar Radar Pulse (iOS Style)</option>
+          <option value="morning">Morning Breeze Melody</option>
+          <option value="synth">Retro Arcade Arp</option>
+          <option value="gong">Deep Zen Gong</option>
+          <option value="custom" id="optCustomAudio" disabled>🎵 Device Song / Ringtone (Select Below)</option>
+        </select>
+      </label>
+
+      <!-- Custom Device Song / Ringtone Access -->
+      <div style="padding:12px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid var(--stroke);margin-bottom:14px">
+        <div style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:4px">
+          <span>🎵 Custom Device Songs / Ringtones</span>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin:0 0 10px;line-height:1.4">
+          Pick any MP3, AAC, or ringtone audio file from your device files or music library to ring as your alarm.
+        </p>
+        <button type="button" class="btn" id="btnPickDeviceAudio" style="font-size:12px;padding:8px 14px;width:100%;background:linear-gradient(135deg,rgba(10,132,255,.35),rgba(94,92,230,.25))">
+          📂 Choose from Device Files...
+        </button>
+        <input type="file" id="customAudioInput" accept="audio/*" hidden>
+        
+        <div id="customAudioStatus" style="margin-top:10px;font-size:12px;color:#5ac8fa;display:none;align-items:center;justify-content:space-between;background:rgba(0,0,0,.3);padding:8px 12px;border-radius:10px">
+          <span id="customAudioName" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px"></span>
+          <div style="display:flex;gap:6px">
+            <button type="button" class="chip-btn" id="btnPlayCustomAudio">▶️ Play</button>
+            <button type="button" class="chip-btn" id="btnDeleteCustomAudio" style="color:#ff453a" title="Delete custom ringtone">🗑️</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alarm Ring Duration -->
+      <label class="field" style="margin-bottom:12px">
+        <span>Alarm Ring Duration</span>
+        <select id="alarmDurationPicker" style="width:100%;background:rgba(0,0,0,.3);border:1px solid var(--stroke);color:#fff;padding:8px 10px;border-radius:12px">
+          <option value="15">15 seconds</option>
+          <option value="30" selected>30 seconds (Default)</option>
+          <option value="60">1 minute</option>
+          <option value="120">2 minutes</option>
+          <option value="0">Continuous (Until dismissed)</option>
+        </select>
+      </label>
+
+      <!-- Vibration Alert Toggle -->
+      <label style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;cursor:pointer">
+        <span style="font-size:14px">📳 Vibration during alarms & alerts</span>
+        <input type="checkbox" id="vibrateToggle" checked style="width:18px;height:18px">
       </label>
       <div style="display:flex;gap:8px;margin-top:10px">
         <button type="button" class="btn" id="btnExportBackup" style="flex:1;font-size:12px">📥 Export Backup</button>
@@ -835,6 +942,40 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     </div>
     <div class="row" style="justify-content:center">
       <button type="button" class="btn" data-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Alarm Ringing Fullscreen Overlay -->
+<div class="overlay" id="alarmRingOverlay" style="z-index:999999;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);background:rgba(5,6,15,.88)">
+  <div class="glass sheet" style="max-width:440px;text-align:center;padding:32px 22px;border:1px solid rgba(255,255,255,.3);box-shadow:0 25px 80px rgba(255,69,58,.45), inset 0 2px 0 rgba(255,255,255,.5)">
+    <div class="alarm-bell-anim">
+      <div class="alarm-ripple-ring"></div>
+      <div class="alarm-bell-icon" id="alarmRingIcon">⏰</div>
+    </div>
+    <div style="font-size:12px;font-weight:750;letter-spacing:.14em;text-transform:uppercase;color:#ff453a;margin-top:16px" id="alarmRingBadge">⏰ ALARM RINGING</div>
+    <div style="font-size:clamp(40px, 11vw, 56px);font-weight:800;letter-spacing:-.04em;margin:8px 0;line-height:1" id="alarmRingClock">07:00 AM</div>
+    <h2 style="margin:4px 0 6px;font-size:24px;font-weight:750" id="alarmRingTitle">Reminder</h2>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:15px" id="alarmRingNote">Time to wake up</p>
+
+    <!-- Countdown Progress bar -->
+    <div style="width:100%;height:6px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin-bottom:24px">
+      <div id="alarmRingProgress" style="height:100%;background:linear-gradient(90deg,#ff453a,#ff9f0a);width:100%;transition:width 0.5s linear"></div>
+    </div>
+
+    <!-- Ringing action buttons -->
+    <div style="display:flex;flex-direction:column;gap:12px;width:100%">
+      <button type="button" class="btn primary" id="btnDismissAlarm" style="padding:16px;font-size:17px;font-weight:750;background:linear-gradient(135deg,#30d158,#1b873a);box-shadow:0 8px 24px rgba(48,209,88,.45)">
+        ✓ Turn Off / Dismiss
+      </button>
+      <div style="display:flex;gap:10px;width:100%">
+        <button type="button" class="btn" id="btnSnoozeAlarm5" style="flex:1;padding:12px;font-size:14px;font-weight:600">
+          😴 Snooze 5m
+        </button>
+        <button type="button" class="btn" id="btnSnoozeAlarm10" style="flex:1;padding:12px;font-size:14px;font-weight:600">
+          😴 Snooze 10m
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -970,45 +1111,320 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   }, { passive: true });
   document.documentElement.addEventListener('pointerleave', () => { if (tiltEl) resetTilt(tiltEl); });
 
-  /* ---------------- sound themes & confetti ---------------- */
+  /* ---------------- IndexedDB for custom device audio ---------------- */
+  const AUDIO_DB_NAME = 'reminderme_audio_db';
+  const AUDIO_STORE_NAME = 'audio_files';
+  let cachedCustomAudio = null;
+  let customAudioObjectUrl = null;
+
+  function openAudioDB() {
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) return reject(new Error('IndexedDB not supported'));
+      const req = indexedDB.open(AUDIO_DB_NAME, 1);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(AUDIO_STORE_NAME)) {
+          db.createObjectStore(AUDIO_STORE_NAME);
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async function saveCustomAudioFile(file) {
+    try {
+      const db = await openAudioDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(AUDIO_STORE_NAME, 'readwrite');
+        const store = tx.objectStore(AUDIO_STORE_NAME);
+        store.put(file, 'custom_alarm_blob');
+        store.put({ name: file.name, size: file.size, type: file.type }, 'custom_alarm_meta');
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    } catch(e) {
+      console.warn('Could not save custom audio', e);
+    }
+  }
+
+  async function loadCustomAudioFile() {
+    try {
+      const db = await openAudioDB();
+      return new Promise((resolve) => {
+        const tx = db.transaction(AUDIO_STORE_NAME, 'readonly');
+        const store = tx.objectStore(AUDIO_STORE_NAME);
+        const reqBlob = store.get('custom_alarm_blob');
+        const reqMeta = store.get('custom_alarm_meta');
+        tx.oncomplete = () => {
+          resolve({ blob: reqBlob.result || null, meta: reqMeta.result || null });
+        };
+        tx.onerror = () => resolve({ blob: null, meta: null });
+      });
+    } catch(e) {
+      return { blob: null, meta: null };
+    }
+  }
+
+  async function deleteCustomAudioFile() {
+    try {
+      const db = await openAudioDB();
+      return new Promise((resolve) => {
+        const tx = db.transaction(AUDIO_STORE_NAME, 'readwrite');
+        const store = tx.objectStore(AUDIO_STORE_NAME);
+        store.delete('custom_alarm_blob');
+        store.delete('custom_alarm_meta');
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => resolve();
+      });
+    } catch(e) {}
+  }
+
+  /* ---------------- Audio Engine: Notifications & Alarms ---------------- */
   let actx;
   let currentSound = localStorage.getItem('glassy-sound') || 'glass';
-  function chime(theme = currentSound){
-    try{
-      actx = actx || new (window.AudioContext||window.webkitAudioContext)();
-      if (actx.state==='suspended') actx.resume();
+  let currentAlarmSound = localStorage.getItem('reminderme-alarm-sound') || 'digital-alarm';
+  let alarmDurationSec = parseInt(localStorage.getItem('reminderme-alarm-duration') || '30', 10);
+  let isVibrateOn = localStorage.getItem('reminderme-vibrate') !== 'false';
+
+  function getAudioCtx() {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+    return actx;
+  }
+
+  document.addEventListener('pointerdown', () => {
+    try { if (actx && actx.state === 'suspended') actx.resume(); } catch(e){}
+  }, { once: true, passive: true });
+
+  // Short, pleasant reminder notification sound (0.4s - 1.2s)
+  function playNotificationSound(theme = currentSound) {
+    try {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
       if (theme === 'zen') {
-        const o=actx.createOscillator(), g=actx.createGain();
-        o.type='sine'; o.frequency.value=432; o.connect(g); g.connect(actx.destination);
-        const s=actx.currentTime;
-        g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.25,s+.05); g.gain.exponentialRampToValueAtTime(.001,s+2.4);
-        o.start(s); o.stop(s+2.5);
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = 432; o.connect(g); g.connect(ctx.destination);
+        g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(.25, now + .05); g.gain.exponentialRampToValueAtTime(.001, now + 2.2);
+        o.start(now); o.stop(now + 2.3);
       } else if (theme === 'droplet') {
-        const o=actx.createOscillator(), g=actx.createGain();
-        o.type='sine'; o.frequency.setValueAtTime(600, actx.currentTime);
-        o.frequency.exponentialRampToValueAtTime(1400, actx.currentTime+.08);
-        o.connect(g); g.connect(actx.destination);
-        const s=actx.currentTime;
-        g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.2,s+.01); g.gain.exponentialRampToValueAtTime(.001,s+.4);
-        o.start(s); o.stop(s+.42);
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sine'; o.frequency.setValueAtTime(600, now);
+        o.frequency.exponentialRampToValueAtTime(1400, now + .08);
+        o.connect(g); g.connect(ctx.destination);
+        g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(.22, now + .01); g.gain.exponentialRampToValueAtTime(.001, now + .4);
+        o.start(now); o.stop(now + .42);
       } else if (theme === 'digital') {
-        [[1046,0],[1318,.08],[2093,.16]].forEach(([f,t])=>{
-          const o=actx.createOscillator(), g=actx.createGain();
-          o.type='triangle'; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
-          const s=actx.currentTime+t;
-          g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.15,s+.01); g.gain.exponentialRampToValueAtTime(.001,s+.2);
-          o.start(s); o.stop(s+.22);
+        [[1046,0],[1318,.08],[2093,.16]].forEach(([f,t]) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'triangle'; o.frequency.value = f; o.connect(g); g.connect(ctx.destination);
+          const s = now + t;
+          g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(.16, s + .01); g.gain.exponentialRampToValueAtTime(.001, s + .2);
+          o.start(s); o.stop(s + .22);
+        });
+      } else if (theme === 'bell') {
+        [[587,0],[880,.09],[1174,.18]].forEach(([f,t]) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = f; o.connect(g); g.connect(ctx.destination);
+          const s = now + t;
+          g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(.2, s + .02); g.gain.exponentialRampToValueAtTime(.001, s + 1.2);
+          o.start(s); o.stop(s + 1.25);
         });
       } else {
-        [[880,0],[1318.5,.12],[1760,.26]].forEach(([f,t])=>{
-          const o=actx.createOscillator(), g=actx.createGain();
-          o.type='sine'; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
-          const s=actx.currentTime+t;
-          g.gain.setValueAtTime(0,s); g.gain.linearRampToValueAtTime(.18,s+.02); g.gain.exponentialRampToValueAtTime(.001,s+.9);
-          o.start(s); o.stop(s+1);
+        // default: glass chime
+        [[880,0],[1318.5,.12],[1760,.26]].forEach(([f,t]) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = f; o.connect(g); g.connect(ctx.destination);
+          const s = now + t;
+          g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(.18, s + .02); g.gain.exponentialRampToValueAtTime(.001, s + .9);
+          o.start(s); o.stop(s + 1);
         });
       }
-    }catch(e){}
+    } catch(e) {}
+  }
+  function chime(theme = currentSound) {
+    playNotificationSound(theme);
+  }
+
+  // Repeating Alarm Motifs (louder, rhythmic and urgent)
+  function playAlarmMotif(theme = currentAlarmSound) {
+    try {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+      if (theme === 'radar') {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(460, now);
+        o.frequency.exponentialRampToValueAtTime(920, now + 0.08);
+        o.frequency.setValueAtTime(920, now + 0.08);
+        g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(0.32, now + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+        o.connect(g); g.connect(ctx.destination);
+        o.start(now); o.stop(now + 0.75);
+      } else if (theme === 'morning') {
+        [523.25, 659.25, 783.99, 987.77, 1046.5].forEach((f, idx) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = f;
+          const s = now + (idx * 0.16);
+          g.gain.setValueAtTime(0, s);
+          g.gain.linearRampToValueAtTime(0.24, s + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.001, s + 0.9);
+          o.connect(g); g.connect(ctx.destination);
+          o.start(s); o.stop(s + 0.95);
+        });
+      } else if (theme === 'synth') {
+        [440, 554.37, 659.25, 880, 1108.73, 1318.5].forEach((f, idx) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'square'; o.frequency.value = f;
+          const s = now + (idx * 0.07);
+          g.gain.setValueAtTime(0, s);
+          g.gain.linearRampToValueAtTime(0.12, s + 0.01);
+          g.gain.exponentialRampToValueAtTime(0.001, s + 0.18);
+          o.connect(g); g.connect(ctx.destination);
+          o.start(s); o.stop(s + 0.2);
+        });
+      } else if (theme === 'gong') {
+        [150, 300, 450].forEach((f, idx) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = f;
+          g.gain.setValueAtTime(0, now);
+          g.gain.linearRampToValueAtTime(0.28 / (idx + 1), now + 0.04);
+          g.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+          o.connect(g); g.connect(ctx.destination);
+          o.start(now); o.stop(now + 2.25);
+        });
+      } else {
+        // Classic Digital Alarm
+        [0, 0.12, 0.24, 0.36].forEach(offset => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'square';
+          o.frequency.value = 1046.5;
+          const s = now + offset;
+          g.gain.setValueAtTime(0, s);
+          g.gain.linearRampToValueAtTime(0.22, s + 0.01);
+          g.gain.exponentialRampToValueAtTime(0.001, s + 0.09);
+          o.connect(g); g.connect(ctx.destination);
+          o.start(s); o.stop(s + 0.095);
+        });
+      }
+    } catch(e) {}
+  }
+
+  let alarmActive = false;
+  let alarmLoopTimer = null;
+  let alarmVibrateInterval = null;
+  let alarmCountdownTimer = null;
+  let alarmDeviceAudioEl = null;
+  let currentActiveAlarmReminder = null;
+
+  function startAlarmSound(theme = currentAlarmSound) {
+    stopAlarmSound();
+    alarmActive = true;
+
+    if (theme === 'custom' && cachedCustomAudio) {
+      try {
+        if (!alarmDeviceAudioEl) {
+          alarmDeviceAudioEl = new Audio();
+          alarmDeviceAudioEl.loop = true;
+        }
+        if (!customAudioObjectUrl) {
+          customAudioObjectUrl = URL.createObjectURL(cachedCustomAudio);
+        }
+        alarmDeviceAudioEl.src = customAudioObjectUrl;
+        alarmDeviceAudioEl.currentTime = 0;
+        alarmDeviceAudioEl.play().catch(() => {
+          playAlarmMotif('digital-alarm');
+          alarmLoopTimer = setInterval(() => { if (alarmActive) playAlarmMotif('digital-alarm'); }, 850);
+        });
+      } catch(e) {
+        playAlarmMotif('digital-alarm');
+        alarmLoopTimer = setInterval(() => { if (alarmActive) playAlarmMotif('digital-alarm'); }, 850);
+      }
+    } else {
+      const intervalMap = {
+        'digital-alarm': 850,
+        'radar': 1200,
+        'morning': 2000,
+        'synth': 1000,
+        'gong': 2400
+      };
+      const intervalMs = intervalMap[theme] || 850;
+      playAlarmMotif(theme);
+      alarmLoopTimer = setInterval(() => {
+        if (!alarmActive) return;
+        playAlarmMotif(theme);
+      }, intervalMs);
+    }
+
+    if (isVibrateOn && navigator.vibrate) {
+      try {
+        navigator.vibrate([400, 200, 400, 200, 700, 300]);
+        alarmVibrateInterval = setInterval(() => {
+          if (!alarmActive) return;
+          try { navigator.vibrate([400, 200, 400, 200, 700, 300]); } catch(e){}
+        }, 2200);
+      } catch(e){}
+    }
+  }
+
+  function stopAlarmSound() {
+    alarmActive = false;
+    if (alarmLoopTimer) { clearInterval(alarmLoopTimer); alarmLoopTimer = null; }
+    if (alarmVibrateInterval) { clearInterval(alarmVibrateInterval); alarmVibrateInterval = null; }
+    if (alarmCountdownTimer) { clearInterval(alarmCountdownTimer); alarmCountdownTimer = null; }
+    if (alarmDeviceAudioEl) {
+      try { alarmDeviceAudioEl.pause(); alarmDeviceAudioEl.currentTime = 0; } catch(e){}
+    }
+    if (navigator.vibrate) {
+      try { navigator.vibrate(0); } catch(e){}
+    }
+  }
+
+  function triggerAlarm(r) {
+    currentActiveAlarmReminder = r;
+    const now = new Date(), h = now.getHours();
+    const timeStr = `${((h+11)%12)+1}:${pad(now.getMinutes())} ${h<12?'AM':'PM'}`;
+
+    if ($('#alarmRingIcon')) $('#alarmRingIcon').textContent = r.emoji || '⏰';
+    if ($('#alarmRingClock')) $('#alarmRingClock').textContent = timeStr;
+    if ($('#alarmRingTitle')) $('#alarmRingTitle').textContent = r.title || 'Alarm';
+    if ($('#alarmRingNote')) $('#alarmRingNote').textContent = r.note || `Scheduled for ${fmt(r.time)}`;
+    if ($('#alarmRingProgress')) $('#alarmRingProgress').style.width = '100%';
+
+    openSheet('#alarmRingOverlay');
+    startAlarmSound(currentAlarmSound);
+
+    if ('Notification' in window && Notification.permission === 'granted') {
+      try {
+        const notifTitle = `⏰ ALARM: ${r.title}`;
+        const notifOpts = {
+          body: r.note || `Alarm ringing for ${fmt(r.time)} — tap to dismiss`,
+          icon: '/icons/icon-192.png',
+          badge: '/icons/badge-96.png',
+          tag: 'reminderme-alarm',
+          requireInteraction: true,
+          vibrate: [400, 200, 400, 200, 800],
+          data: { reminderId: r.id }
+        };
+        if (swReg) swReg.showNotification(notifTitle, notifOpts);
+        else new Notification(notifTitle, notifOpts);
+      } catch(e){}
+    }
+
+    if (alarmDurationSec > 0) {
+      let remaining = alarmDurationSec;
+      alarmCountdownTimer = setInterval(() => {
+        remaining -= 1;
+        const pct = Math.max(0, (remaining / alarmDurationSec) * 100);
+        if ($('#alarmRingProgress')) $('#alarmRingProgress').style.width = `${pct}%`;
+        if (remaining <= 0) {
+          stopAlarmSound();
+          closeSheets();
+          toast('⏰ Alarm finished ringing');
+        }
+      }, 1000);
+    }
   }
 
   // Lightweight glass confetti particles
@@ -1258,31 +1674,44 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     try { await api('POST', `/api/reminders/${encodeURIComponent(r.id)}/done`, { source: 'banner' }); } catch (e) { save(); }
   }
 
-  async function snooze(r) {
+  async function snooze(r, minutes = 10) {
     if (!reminders.find(x => x.id === r.id)) return;
-    localSnoozes[r.id] = Date.now() + 10*60*1000;
-    toast('Snoozed for 10 minutes');
-    try { await api('POST', `/api/reminders/${encodeURIComponent(r.id)}/snooze`, { minutes: 10, source: 'banner' }); } catch (e) {}
+    localSnoozes[r.id] = Date.now() + minutes*60*1000;
+    toast(`Snoozed for ${minutes} minutes`);
+    try { await api('POST', `/api/reminders/${encodeURIComponent(r.id)}/snooze`, { minutes, source: 'banner' }); } catch (e) {}
   }
 
   /* ---------------- render ---------------- */
   function render(){
     const sorted = [...reminders].sort((a,b)=>minsOf(a.time)-minsOf(b.time));
     const list = $('#list'); list.innerHTML='';
-    const shown = sorted.filter(r => filter==='all' || (filter==='done'?isDone(r):!isDone(r)));
-    if (!shown.length) list.innerHTML = `<div class="glass empty">${reminders.length?'Nothing here — nice.':'No reminders yet. Tap + or Quick Add above.'}</div>`;
+    let shown = sorted.filter(r => filter==='all' || (filter==='done'?isDone(r):!isDone(r)));
+    if (currentView === 'alarms') {
+      shown = shown.filter(r => r.isAlarm !== false);
+    }
+    if (!shown.length) {
+      list.innerHTML = `<div class="glass empty">${
+        currentView === 'alarms'
+          ? 'No alarms set yet. Tap + to set an alarm with custom ringtones.'
+          : (reminders.length ? 'Nothing here — nice.' : 'No reminders yet. Tap + or Quick Add above.')
+      }</div>`;
+    }
     shown.forEach((r,i) => {
       const d = document.createElement('div');
       d.className = 'glass item' + (isDone(r)?' done':''); d.setAttribute('data-tilt',''); d.style.animationDelay = (i*60)+'ms';
       d.style.setProperty('--c', r.color);
       const priorityBadge = r.priority === 'high' ? '<span class="badge-priority" style="color:#ff453a">🔥 High</span>' : r.priority === 'med' ? '<span class="badge-priority" style="color:#ffd60a">⚡ Med</span>' : '';
       const tagBadge = r.tag ? `<span class="badge-tag">#${r.tag}</span>` : '';
+      const alertBadge = r.isAlarm !== false
+        ? '<span class="badge-tag" style="background:rgba(255,69,58,.22);color:#ff453a;border:1px solid rgba(255,69,58,.45)">⏰ ALARM</span>'
+        : '<span class="badge-tag" style="background:rgba(10,132,255,.16);color:#5ac8fa;border:1px solid rgba(10,132,255,.35)">🔔 NOTIF</span>';
       d.innerHTML = `
         <div class="ico"></div>
         <div class="meta">
           <div class="t"></div>
           <div class="s"></div>
           <div class="item-actions">
+            <button type="button" class="chip-btn btn-test-sound" title="Test how this sounds">${r.isAlarm !== false ? '⏰ Ring Test' : '🔔 Chime Test'}</button>
             <a class="chip-btn" href="${getGoogleCalUrl(r)}" target="_blank" title="Add to Google Calendar">📅 Google Cal</a>
             <button type="button" class="chip-btn btn-ics" title="Download .ics for Apple/Outlook">📥 .ICS</button>
             <button type="button" class="chip-btn btn-email" title="Email this reminder">✉️ Email</button>
@@ -1295,10 +1724,17 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       d.querySelector('.ico').textContent = r.emoji;
       d.querySelector('.t').textContent = r.title;
       const rep = !r.days || r.days.length === 7 ? 'every day' : r.days.length === 5 && !r.days.includes(0) && !r.days.includes(6) ? 'weekdays' : r.days.map(x => ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][x]).join(', ');
-      d.querySelector('.s').innerHTML = `${fmt(r.time)} · ${rep} ${priorityBadge} ${tagBadge}`;
+      d.querySelector('.s').innerHTML = `${fmt(r.time)} · ${rep} ${alertBadge} ${priorityBadge} ${tagBadge}`;
       
       d.querySelector('.check').onclick = () => markDone(r, d);
       d.querySelector('.del').onclick = () => { reminders = reminders.filter(x=>x!==r); track('reminder_delete'); save(); render(); renderCalendar(); toast('Reminder deleted'); };
+      d.querySelector('.btn-test-sound').onclick = () => {
+        if (r.isAlarm !== false) triggerAlarm(r);
+        else {
+          chime();
+          banner({ title: r.title, body: r.note || `It's ${fmt(r.time)}`, emoji: r.emoji, reminder: r });
+        }
+      };
       d.querySelector('.btn-ics').onclick = () => downloadIcs(r);
       d.querySelector('.btn-email').onclick = () => sendEmailReminder(r);
       d.querySelector('.btn-focus').onclick = () => startFocusForReminder(r);
@@ -1339,24 +1775,32 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       // if this device has push, the service worker shows the system notification; show only the in-app banner while visible
       if (r.time===cur && !firedLocal[k] && !isDone(r) && activeToday(r)) {
         firedLocal[k] = 1;
-        if (document.visibilityState === 'visible') {
-          banner({ title: r.title, body: r.note || `It's ${fmt(r.time)}`, emoji: r.emoji, reminder: r });
-        } else if ('Notification' in window && Notification.permission === 'granted') {
-          try {
-            if (swReg) swReg.showNotification(r.title, { body: r.note || `It's ${fmt(r.time)}`, icon: '/icons/icon-192.png', badge: '/icons/badge-96.png' });
-            else new Notification(r.title, { body: r.note || `It's ${fmt(r.time)}`, icon: '/icons/icon-192.png' });
-          } catch (e) {}
+        if (r.isAlarm !== false) {
+          triggerAlarm(r);
+        } else {
+          if (document.visibilityState === 'visible') {
+            banner({ title: r.title, body: r.note || `It's ${fmt(r.time)}`, emoji: r.emoji, reminder: r });
+          } else if ('Notification' in window && Notification.permission === 'granted') {
+            try {
+              if (swReg) swReg.showNotification(r.title, { body: r.note || `It's ${fmt(r.time)}`, icon: '/icons/icon-192.png', badge: '/icons/badge-96.png' });
+              else new Notification(r.title, { body: r.note || `It's ${fmt(r.time)}`, icon: '/icons/icon-192.png' });
+            } catch (e) {}
+          }
         }
       }
       if (localSnoozes[r.id] && Date.now() >= localSnoozes[r.id]) {
         delete localSnoozes[r.id];
         if (!isDone(r)) {
-          if (document.visibilityState === 'visible') banner({ title: r.title, body: r.note || 'Snoozed reminder', emoji: r.emoji, reminder: r });
-          else if ('Notification' in window && Notification.permission === 'granted') {
-            try {
-              if (swReg) swReg.showNotification(r.title, { body: r.note || 'Snoozed reminder', icon: '/icons/icon-192.png' });
-              else new Notification(r.title, { body: r.note || 'Snoozed reminder', icon: '/icons/icon-192.png' });
-            } catch (e) {}
+          if (r.isAlarm !== false) {
+            triggerAlarm(r);
+          } else {
+            if (document.visibilityState === 'visible') banner({ title: r.title, body: r.note || 'Snoozed reminder', emoji: r.emoji, reminder: r });
+            else if ('Notification' in window && Notification.permission === 'granted') {
+              try {
+                if (swReg) swReg.showNotification(r.title, { body: r.note || 'Snoozed reminder', icon: '/icons/icon-192.png' });
+                else new Notification(r.title, { body: r.note || 'Snoozed reminder', icon: '/icons/icon-192.png' });
+              } catch (e) {}
+            }
           }
         }
       }
@@ -1652,13 +2096,14 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   function starterReminders() {
     // carry over reminders from the old offline version, otherwise a friendly starter set
     let old = null; try { old = JSON.parse(localStorage.getItem('glassy-daily-v1')); } catch (e) {}
-    if (Array.isArray(old) && old.length) return old.map(r => Object.assign({}, r, { id: String(r.id) }));
+    if (Array.isArray(old) && old.length) return old.map(r => Object.assign({}, r, { id: String(r.id), isAlarm: r.isAlarm !== false }));
     return [
-      {id:'s1',title:'Take vitamins',note:'With breakfast',time:'08:00',emoji:'💊',color:COLORS[2]},
-      {id:'s2',title:'Drink water',note:'Stay hydrated',time:'10:30',emoji:'💧',color:COLORS[0]},
-      {id:'s3',title:'Stretch break',note:'Stand up and move for 5 minutes',time:'13:00',emoji:'🧘',color:COLORS[1]},
-      {id:'s4',title:'Evening walk',note:'Get some fresh air',time:'18:30',emoji:'🏃',color:COLORS[3]},
-      {id:'s5',title:'Journal',note:'Three things you are grateful for',time:'21:30',emoji:'✍️',color:COLORS[4]}
+      {id:'s1',title:'Wake up & hydrate',note:'Start your day energized',time:'07:00',emoji:'⏰',color:COLORS[0],isAlarm:true},
+      {id:'s2',title:'Take vitamins',note:'With breakfast',time:'08:00',emoji:'💊',color:COLORS[2],isAlarm:false},
+      {id:'s3',title:'Focus session',note:'Deep work sprint',time:'10:30',emoji:'💼',color:COLORS[1],isAlarm:false},
+      {id:'s4',title:'Stretch & move',note:'Stand up and stretch for 5 minutes',time:'13:00',emoji:'🧘',color:COLORS[5],isAlarm:false},
+      {id:'s5',title:'Evening workout',note:'Stay active and healthy',time:'18:30',emoji:'🏃',color:COLORS[3],isAlarm:true},
+      {id:'s6',title:'Wind down & read',note:'Relax before sleep',time:'21:30',emoji:'📖',color:COLORS[4],isAlarm:false}
     ];
   }
   function showAuth() {
@@ -1681,6 +2126,17 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   let selEmoji = EMOJIS[0], selDays = [0,1,2,3,4,5,6];
   let selPriority = 'high';
   let selTag = 'Health';
+  let selIsAlarm = true;
+
+  const aTypeGroup = $('#alertTypeGroup');
+  if (aTypeGroup) {
+    aTypeGroup.onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      selIsAlarm = b.dataset.type === 'alarm';
+      [...aTypeGroup.children].forEach(x => x.classList.toggle('on', x === b));
+    };
+  }
+
   $('#emojis').innerHTML = EMOJIS.map((e,i)=>`<button type="button" data-e="${e}" class="${i?'':'on'}">${e}</button>`).join('');
   $('#emojis').onclick = e => { const b=e.target.closest('button'); if(!b) return; selEmoji=b.dataset.e; [...$('#emojis').children].forEach(x=>x.classList.toggle('on',x===b)); };
   $('#days').innerHTML = DAYS.map((d,i)=>`<button type="button" data-d="${i}" class="on" aria-label="${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][i]}">${d}</button>`).join('');
@@ -1708,20 +2164,43 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     };
   }
 
-  $('#fab').onclick = () => { const n=new Date(Date.now()+60000); $('#fTime').value = pad(n.getHours())+':'+pad(n.getMinutes()); openSheet('#overlay'); setTimeout(()=>$('#fTitle').focus(),300); };
+  $('#fab').onclick = () => {
+    const n = new Date(Date.now() + 60000);
+    $('#fTime').value = pad(n.getHours()) + ':' + pad(n.getMinutes());
+    selIsAlarm = currentView === 'alarms' || true;
+    if (aTypeGroup) {
+      $('#btnTypeAlarm').classList.toggle('on', selIsAlarm);
+      $('#btnTypeNotify').classList.toggle('on', !selIsAlarm);
+    }
+    openSheet('#overlay');
+    setTimeout(() => $('#fTitle').focus(), 300);
+  };
+
   $('#form').onsubmit = e => {
     e.preventDefault();
     if (!selDays.length) return toast('Pick at least one day');
-    const r = { id: 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2,6), title:$('#fTitle').value.trim(), note:$('#fNote').value.trim(), time:$('#fTime').value,
-      emoji:selEmoji, color:COLORS[Math.floor(Math.random()*COLORS.length)], days: selDays.length === 7 ? null : selDays.slice(), priority: selPriority, tag: selTag, createdAt: Date.now() };
-    reminders.push(r); track('reminder_add', { emoji: r.emoji, days: selDays.length, priority: selPriority, tag: selTag });
+    const r = {
+      id: 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+      title: $('#fTitle').value.trim(),
+      note: $('#fNote').value.trim(),
+      time: $('#fTime').value,
+      emoji: selEmoji,
+      color: COLORS[Math.floor(Math.random()*COLORS.length)],
+      days: selDays.length === 7 ? null : selDays.slice(),
+      priority: selPriority,
+      tag: selTag,
+      isAlarm: selIsAlarm,
+      createdAt: Date.now()
+    };
+    reminders.push(r);
+    track('reminder_add', { emoji: r.emoji, days: selDays.length, priority: selPriority, tag: selTag, isAlarm: r.isAlarm });
     save(); render(); renderCalendar(); closeSheets(); $('#form').reset();
-    [...$('#days').children].forEach(x=>x.classList.add('on')); selDays=[0,1,2,3,4,5,6];
-    toast(Notification && 'Notification' in window && Notification.permission === 'granted' ? 'Reminder added — it will notify this phone' : 'Reminder added — tap 🔔 Enable alerts to get it on your phone');
+    [...$('#days').children].forEach(x => x.classList.add('on')); selDays = [0,1,2,3,4,5,6];
+    toast(r.isAlarm ? '⏰ Alarm set — it will ring out loud when due' : '🔔 Reminder added — it will notify this phone');
   };
   $('#seg').onclick = e => { const b=e.target.closest('button'); if(!b) return; filter=b.dataset.f; [...$('#seg').children].forEach(x=>x.classList.toggle('on',x===b)); track('filter_change', { filter }); render(); };
 
-  /* ---------------- View switcher (List vs Calendar) ---------------- */
+  /* ---------------- View switcher (List vs Alarms vs Calendar) ---------------- */
   let currentView = 'list';
   const vTabs = $('#viewTabs');
   if (vTabs) {
@@ -1729,10 +2208,11 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       const b = e.target.closest('button'); if (!b) return;
       currentView = b.dataset.v;
       [...vTabs.children].forEach(x => x.classList.toggle('on', x === b));
-      $('#list').hidden = currentView !== 'list';
-      $('#seg').hidden = currentView !== 'list';
+      $('#list').hidden = currentView === 'cal';
+      $('#seg').hidden = currentView === 'cal';
       $('#calendarView').hidden = currentView !== 'cal';
       if (currentView === 'cal') renderCalendar();
+      else render();
     };
   }
 
@@ -1875,6 +2355,16 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     let emoji = '🔔';
     let tag = null;
     let priority = 'low';
+    let isAlarm = true;
+
+    if (/alarm|wake up|wake-up/i.test(clean)) {
+      isAlarm = true;
+      emoji = '⏰';
+      clean = clean.replace(/\b(set alarm for|set alarm|alarm for|alarm at|alarm)\b/gi, '').trim();
+    } else if (/silent|notification|chime|notif/i.test(clean)) {
+      isAlarm = false;
+      clean = clean.replace(/\b(silent|notification|chime|notif)\b/gi, '').trim();
+    }
 
     if (/water|drink|hydrate/i.test(clean)) emoji = '💧';
     else if (/pill|medicine|vitamin|doctor/i.test(clean)) emoji = '💊';
@@ -1938,6 +2428,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
       priority,
       tag,
+      isAlarm,
       days: null,
       createdAt: Date.now()
     };
@@ -2015,14 +2506,201 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     };
   }
 
+  /* ---------------- Sound & Alarm Preferences Wire-Up ---------------- */
   const sp = $('#soundPicker');
   if (sp) {
     sp.value = currentSound;
     sp.onchange = () => {
       currentSound = sp.value;
       localStorage.setItem('glassy-sound', sp.value);
-      chime(currentSound);
-      toast(`Sound set to: ${sp.options[sp.selectedIndex].text}`);
+      playNotificationSound(currentSound);
+      toast(`Notification sound: ${sp.options[sp.selectedIndex].text}`);
+    };
+  }
+
+  const btnPrevNotif = $('#btnPreviewNotifSound');
+  if (btnPrevNotif) {
+    btnPrevNotif.onclick = () => {
+      const snd = sp ? sp.value : currentSound;
+      playNotificationSound(snd);
+      if (isVibrateOn && navigator.vibrate) navigator.vibrate([30, 60, 30]);
+    };
+  }
+
+  const asp = $('#alarmSoundPicker');
+  if (asp) {
+    asp.value = currentAlarmSound;
+    asp.onchange = () => {
+      currentAlarmSound = asp.value;
+      localStorage.setItem('reminderme-alarm-sound', asp.value);
+      toast(`Alarm ringtone: ${asp.options[asp.selectedIndex].text}`);
+    };
+  }
+
+  let testAlarmTimer = null;
+  const btnPrevAlarm = $('#btnPreviewAlarmSound');
+  if (btnPrevAlarm) {
+    btnPrevAlarm.onclick = () => {
+      if (alarmActive) {
+        stopAlarmSound();
+        btnPrevAlarm.textContent = '▶️ Test Alarm';
+        if (testAlarmTimer) clearTimeout(testAlarmTimer);
+        return;
+      }
+      const snd = asp ? asp.value : currentAlarmSound;
+      btnPrevAlarm.textContent = '⏹️ Stop';
+      toast('⏰ Testing alarm sound (4s)...');
+      startAlarmSound(snd);
+      testAlarmTimer = setTimeout(() => {
+        stopAlarmSound();
+        btnPrevAlarm.textContent = '▶️ Test Alarm';
+      }, 4000);
+    };
+  }
+
+  const durPicker = $('#alarmDurationPicker');
+  if (durPicker) {
+    durPicker.value = String(alarmDurationSec);
+    durPicker.onchange = () => {
+      alarmDurationSec = parseInt(durPicker.value, 10);
+      localStorage.setItem('reminderme-alarm-duration', alarmDurationSec);
+      toast(`Alarm duration: ${durPicker.options[durPicker.selectedIndex].text}`);
+    };
+  }
+
+  const vibToggle = $('#vibrateToggle');
+  if (vibToggle) {
+    vibToggle.checked = isVibrateOn;
+    vibToggle.onchange = () => {
+      isVibrateOn = vibToggle.checked;
+      localStorage.setItem('reminderme-vibrate', isVibrateOn ? 'true' : 'false');
+      if (isVibrateOn && navigator.vibrate) navigator.vibrate([60, 80, 60]);
+      toast(isVibrateOn ? '📳 Vibration is ON' : 'Vibration is OFF');
+    };
+  }
+
+  function updateCustomAudioUI(name, size) {
+    const opt = $('#optCustomAudio');
+    if (opt) {
+      opt.disabled = false;
+      opt.textContent = `🎵 Device: ${name}`;
+    }
+    const nameEl = $('#customAudioName');
+    if (nameEl) nameEl.textContent = `${name} (${(size / (1024 * 1024)).toFixed(1)} MB)`;
+    const statusBox = $('#customAudioStatus');
+    if (statusBox) statusBox.style.display = 'flex';
+  }
+
+  // Load custom audio from IndexedDB on startup
+  loadCustomAudioFile().then(res => {
+    if (res && res.blob && res.meta) {
+      cachedCustomAudio = res.blob;
+      updateCustomAudioUI(res.meta.name, res.meta.size);
+      if (currentAlarmSound === 'custom' && asp) {
+        asp.value = 'custom';
+      }
+    }
+  });
+
+  const btnPickAudio = $('#btnPickDeviceAudio');
+  const customAudioInput = $('#customAudioInput');
+  if (btnPickAudio && customAudioInput) {
+    btnPickAudio.onclick = () => customAudioInput.click();
+    customAudioInput.onchange = async e => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('audio/') && !/\.(mp3|wav|ogg|m4a|aac|flac|weba)$/i.test(file.name)) {
+        return toast('⚠️ Please choose an audio file (MP3, M4A, WAV, etc.)');
+      }
+      await saveCustomAudioFile(file);
+      cachedCustomAudio = file;
+      if (customAudioObjectUrl) { URL.revokeObjectURL(customAudioObjectUrl); customAudioObjectUrl = null; }
+      customAudioObjectUrl = URL.createObjectURL(file);
+      updateCustomAudioUI(file.name, file.size);
+      currentAlarmSound = 'custom';
+      localStorage.setItem('reminderme-alarm-sound', 'custom');
+      if (asp) asp.value = 'custom';
+      toast(`🎵 Custom audio loaded: ${file.name}`);
+    };
+  }
+
+  let customAudioPreviewPlaying = false;
+  let customAudioPreviewEl = null;
+  const btnPlayCustom = $('#btnPlayCustomAudio');
+  if (btnPlayCustom) {
+    btnPlayCustom.onclick = () => {
+      if (!cachedCustomAudio) return;
+      if (customAudioPreviewPlaying) {
+        if (customAudioPreviewEl) { customAudioPreviewEl.pause(); customAudioPreviewEl.currentTime = 0; }
+        customAudioPreviewPlaying = false;
+        btnPlayCustom.textContent = '▶️ Play';
+      } else {
+        if (!customAudioObjectUrl) customAudioObjectUrl = URL.createObjectURL(cachedCustomAudio);
+        if (!customAudioPreviewEl) customAudioPreviewEl = new Audio();
+        customAudioPreviewEl.src = customAudioObjectUrl;
+        customAudioPreviewEl.currentTime = 0;
+        customAudioPreviewEl.play().catch(() => toast('Could not play audio'));
+        customAudioPreviewPlaying = true;
+        btnPlayCustom.textContent = '⏹️ Stop';
+        customAudioPreviewEl.onended = () => {
+          customAudioPreviewPlaying = false;
+          btnPlayCustom.textContent = '▶️ Play';
+        };
+      }
+    };
+  }
+
+  const btnDelCustom = $('#btnDeleteCustomAudio');
+  if (btnDelCustom) {
+    btnDelCustom.onclick = async () => {
+      if (customAudioPreviewEl) customAudioPreviewEl.pause();
+      customAudioPreviewPlaying = false;
+      await deleteCustomAudioFile();
+      cachedCustomAudio = null;
+      if (customAudioObjectUrl) { URL.revokeObjectURL(customAudioObjectUrl); customAudioObjectUrl = null; }
+      const statusBox = $('#customAudioStatus');
+      if (statusBox) statusBox.style.display = 'none';
+      const opt = $('#optCustomAudio');
+      if (opt) {
+        opt.disabled = true;
+        opt.textContent = '🎵 Device Song / Ringtone (Select Below)';
+      }
+      currentAlarmSound = 'digital-alarm';
+      localStorage.setItem('reminderme-alarm-sound', 'digital-alarm');
+      if (asp) asp.value = 'digital-alarm';
+      toast('Custom device audio removed');
+    };
+  }
+
+  /* ---------------- Alarm Ringing Overlay Buttons ---------------- */
+  const btnDismiss = $('#btnDismissAlarm');
+  if (btnDismiss) {
+    btnDismiss.onclick = () => {
+      const r = currentActiveAlarmReminder;
+      stopAlarmSound();
+      closeSheets();
+      if (r) markDone(r, null);
+      toast('⏰ Alarm turned off ✓');
+    };
+  }
+
+  const btnSnooze5 = $('#btnSnoozeAlarm5');
+  if (btnSnooze5) {
+    btnSnooze5.onclick = () => {
+      const r = currentActiveAlarmReminder;
+      stopAlarmSound();
+      closeSheets();
+      if (r) snooze(r, 5);
+    };
+  }
+
+  const btnSnooze10 = $('#btnSnoozeAlarm10');
+  if (btnSnooze10) {
+    btnSnooze10.onclick = () => {
+      const r = currentActiveAlarmReminder;
+      stopAlarmSound();
+      closeSheets();
+      if (r) snooze(r, 10);
     };
   }
 

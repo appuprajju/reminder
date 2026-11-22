@@ -1,5 +1,5 @@
 /* reminderme service worker: offline shell + real push notifications with actions. */
-const CACHE = 'reminderme-v2';
+const CACHE = 'reminderme-v3';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/badge-96.png', '/icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
