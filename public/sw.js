@@ -1,5 +1,5 @@
-/* reminderme service worker: offline shell + real push notifications with actions. */
-const CACHE = 'reminderme-v3';
+/* reminderme service worker: offline shell + push + lock-screen alarms with actions. */
+const CACHE = 'reminderme-v4';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/badge-96.png', '/icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -20,21 +20,50 @@ self.addEventListener('fetch', e => {
   );
 });
 
+/* Message handler from client window (e.g. alarm firing on locked/background screen) */
+self.addEventListener('message', e => {
+  const data = e.data || {};
+  if (data.type === 'alarm-firing' && data.reminder) {
+    const r = data.reminder;
+    const title = `⏰ ALARM: ${r.title || 'Reminder'}`;
+    const options = {
+      body: r.note || `Alarm ringing for ${r.time} — Slide or tap to Turn Off`,
+      icon: '/icons/icon-192.png',
+      badge: '/icons/badge-96.png',
+      tag: 'reminderme-alarm',
+      requireInteraction: true,
+      renotify: true,
+      vibrate: [400, 200, 400, 200, 800, 300, 800],
+      timestamp: Date.now(),
+      data: { url: '/', reminderId: r.id },
+      actions: [
+        { action: 'dismiss', title: '🛑 Turn Off' },
+        { action: 'snooze', title: '😴 Snooze 5m' }
+      ]
+    };
+    e.waitUntil(self.registration.showNotification(title, options));
+  }
+});
+
 self.addEventListener('push', e => {
   let data = {};
   try { data = e.data ? e.data.json() : {}; } catch (err) { data = { title: 'reminderme', body: e.data ? e.data.text() : '' }; }
   const title = data.title || 'reminderme';
+  const isAlarm = !!data.isAlarm || (data.title && data.title.includes('ALARM'));
   const options = {
     body: data.body || '',
     icon: '/icons/icon-192.png',
     badge: '/icons/badge-96.png',
-    tag: data.tag || 'reminderme',
+    tag: data.tag || (isAlarm ? 'reminderme-alarm' : 'reminderme'),
     renotify: true,
     requireInteraction: !!data.reminderId,
-    vibrate: [30, 60, 30],
+    vibrate: isAlarm ? [400, 200, 400, 200, 800, 300, 800] : [30, 60, 30],
     timestamp: Date.now(),
     data: { url: data.url || '/', reminderId: data.reminderId || null },
-    actions: data.reminderId ? [{ action: 'done', title: '✓ Mark done' }, { action: 'snooze', title: 'Snooze 10 min' }] : []
+    actions: data.reminderId ? [
+      { action: 'dismiss', title: '🛑 Turn Off' },
+      { action: 'snooze', title: '😴 Snooze 5m' }
+    ] : []
   };
   e.waitUntil(
     self.registration.showNotification(title, options).then(() =>
@@ -48,12 +77,33 @@ self.addEventListener('notificationclick', e => {
   const rid = n.data && n.data.reminderId;
   n.close();
   const act = e.action;
-  if (rid && (act === 'done' || act === 'snooze')) {
+  if (act === 'dismiss' || act === 'done') {
     e.waitUntil(
-      fetch(`/api/reminders/${encodeURIComponent(rid)}/${act}`, {
-        method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source: 'push', minutes: 10 })
-      }).then(() => self.clients.matchAll({ type: 'window' }).then(list => list.forEach(c => c.postMessage({ type: 'refresh' })))).catch(() => {})
+      self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+        list.forEach(c => c.postMessage({ type: 'alarm-dismissed', reminderId: rid }));
+      }).then(() => {
+        if (rid) {
+          return fetch(`/api/reminders/${encodeURIComponent(rid)}/done`, {
+            method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ source: 'notification-dismiss' })
+          }).catch(() => {});
+        }
+      })
+    );
+    return;
+  }
+  if (act === 'snooze') {
+    e.waitUntil(
+      self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+        list.forEach(c => c.postMessage({ type: 'alarm-snoozed', reminderId: rid, minutes: 5 }));
+      }).then(() => {
+        if (rid) {
+          return fetch(`/api/reminders/${encodeURIComponent(rid)}/snooze`, {
+            method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ source: 'notification-snooze', minutes: 5 })
+          }).catch(() => {});
+        }
+      })
     );
     return;
   }

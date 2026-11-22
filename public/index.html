@@ -127,6 +127,20 @@ header.top{grid-column:1/-1;display:flex;align-items:center;justify-content:spac
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
+  /* iOS Layout & Auto-Zoom Prevention */
+  input, select, textarea {
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100%;
+  }
+  select {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%228%22%20viewBox%3D%220%200%2012%208%22%3E%3Cpath%20fill%3D%22rgba(255%2C255%2C255%2C0.6)%22%20d%3D%22M1.41%200L6%204.58%2010.59%200%2012%201.41l-6%206-6-6z%22%2F%3E%3C%2Fsvg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    padding-right: 36px !important;
+  }
   .app {
     display: flex !important;
     flex-direction: column !important;
@@ -135,12 +149,21 @@ header.top{grid-column:1/-1;display:flex;align-items:center;justify-content:spac
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto !important;
-    padding: calc(env(safe-area-inset-top, 0px) + 12px) 14px calc(env(safe-area-inset-bottom, 0px) + 110px) !important;
+    padding-top: calc(env(safe-area-inset-top, 20px) + 12px) !important;
+    padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 110px) !important;
+    padding-left: max(14px, env(safe-area-inset-left, 14px)) !important;
+    padding-right: max(14px, env(safe-area-inset-right, 14px)) !important;
     perspective: none !important;
     transform: none !important;
     gap: 16px !important;
     overflow: visible !important;
     box-sizing: border-box !important;
+  }
+  .sheet {
+    max-height: calc(88vh - env(safe-area-inset-bottom, 0px)) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain;
   }
   header.top, .hero, .listwrap, .cal-wrap {
     width: 100% !important;
@@ -448,6 +471,89 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 @keyframes alarmWiggle {
   0% { transform: rotate(-22deg) scale(1.06); }
   100% { transform: rotate(22deg) scale(1.06); }
+}
+
+/* Interactive iOS & Android Dual-Direction Gesture Slider */
+.alarm-gesture-box {
+  width: 100%;
+  margin: 18px 0 14px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+.alarm-gesture-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+.gesture-hint.left { color: #5ac8fa; }
+.gesture-hint.right { color: #30d158; }
+.alarm-slider-track {
+  position: relative;
+  width: 100%;
+  height: 62px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+}
+.alarm-slider-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out;
+  opacity: 0;
+}
+.alarm-slider-fill.left {
+  right: 50%;
+  left: 0;
+  background: linear-gradient(270deg, rgba(10,132,255,0.35), rgba(90,200,250,0.65));
+}
+.alarm-slider-fill.right {
+  left: 50%;
+  right: 0;
+  background: linear-gradient(90deg, rgba(48,209,88,0.35), rgba(48,209,88,0.7));
+}
+.alarm-slider-thumb {
+  position: absolute;
+  left: calc(50% - 30px);
+  width: 60px;
+  height: 52px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffffff, #d8e5ff);
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5), inset 0 2px 0 #fff;
+  display: grid;
+  place-items: center;
+  cursor: grab;
+  font-size: 19px;
+  color: #070816;
+  font-weight: 800;
+  touch-action: none;
+  transition: transform 0.05s ease-out, background 0.2s, box-shadow 0.2s;
+  z-index: 2;
+}
+.alarm-slider-thumb:active, .alarm-slider-thumb.dragging {
+  cursor: grabbing;
+  transform: scale(1.08);
+  box-shadow: 0 8px 26px rgba(255,255,255,0.7);
+}
+.alarm-gesture-subhint {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 8px;
 }
 
 /* ============ CINEMATIC APP START ANIMATION ============ */
@@ -771,6 +877,28 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
         </button>
       </div>
     </div>
+    <div class="field" id="formSoundField">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span>Alarm Ringtone / Music</span>
+        <button type="button" class="chip-btn" id="btnFormTestSound" style="padding:2px 8px;font-size:11px">▶️ Test</button>
+      </div>
+      <div style="display:flex;gap:8px">
+        <select id="fSound" style="flex:1;background:rgba(0,0,0,.35);border:1px solid var(--stroke);color:#fff;padding:9px 12px;border-radius:12px;font:inherit;font-size:14px">
+          <option value="radar">iOS Radar Sonar</option>
+          <option value="marimba">iOS Marimba Chimes</option>
+          <option value="apex">iOS Apex Alert</option>
+          <option value="digital-alarm">Classic Digital Alarm</option>
+          <option value="morning">Morning Breeze Melody</option>
+          <option value="synth">Retro 8-bit Arcade</option>
+          <option value="gong">Deep Zen Gong</option>
+          <option value="custom" id="fOptCustomAudio">🎵 Select Device Music / Song...</option>
+        </select>
+        <button type="button" class="btn" id="btnFormPickMusic" style="padding:8px 12px;font-size:12px;white-space:nowrap" title="Select song from device">📂 Music</button>
+      </div>
+      <div id="fCustomMusicInfo" style="display:none;margin-top:6px;font-size:12px;color:#5ac8fa;align-items:center;justify-content:space-between">
+        <span id="fCustomMusicName" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:220px"></span>
+      </div>
+    </div>
     <label class="field"><span>What</span><input id="fTitle" placeholder="Wake up / Drink water" maxlength="60" required></label>
     <label class="field"><span>Note (optional)</span><input id="fNote" placeholder="Stay hydrated" maxlength="90"></label>
     <label class="field"><span>Time</span><input id="fTime" type="time" required></label>
@@ -859,8 +987,10 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
           <button type="button" class="chip-btn" id="btnPreviewAlarmSound" style="padding:2px 8px;font-size:11px">▶️ Test Alarm</button>
         </span>
         <select id="alarmSoundPicker" style="width:100%;background:rgba(0,0,0,.3);border:1px solid var(--stroke);color:#fff;padding:8px 10px;border-radius:12px">
+          <option value="radar">iOS Radar Sonar Pulse</option>
+          <option value="marimba">iOS Marimba Chimes</option>
+          <option value="apex">iOS Apex Alert</option>
           <option value="digital-alarm">Classic Digital Alarm (Beep-Beep)</option>
-          <option value="radar">Sonar Radar Pulse (iOS Style)</option>
           <option value="morning">Morning Breeze Melody</option>
           <option value="synth">Retro Arcade Arp</option>
           <option value="gong">Deep Zen Gong</option>
@@ -948,7 +1078,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 
 <!-- Alarm Ringing Fullscreen Overlay -->
 <div class="overlay" id="alarmRingOverlay" style="z-index:999999;backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);background:rgba(5,6,15,.88)">
-  <div class="glass sheet" style="max-width:440px;text-align:center;padding:32px 22px;border:1px solid rgba(255,255,255,.3);box-shadow:0 25px 80px rgba(255,69,58,.45), inset 0 2px 0 rgba(255,255,255,.5)">
+  <div class="glass sheet" id="alarmRingCard" style="max-width:440px;text-align:center;padding:32px 22px;border:1px solid rgba(255,255,255,.3);box-shadow:0 25px 80px rgba(255,69,58,.45), inset 0 2px 0 rgba(255,255,255,.5);touch-action:none">
     <div class="alarm-bell-anim">
       <div class="alarm-ripple-ring"></div>
       <div class="alarm-bell-icon" id="alarmRingIcon">⏰</div>
@@ -956,23 +1086,39 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     <div style="font-size:12px;font-weight:750;letter-spacing:.14em;text-transform:uppercase;color:#ff453a;margin-top:16px" id="alarmRingBadge">⏰ ALARM RINGING</div>
     <div style="font-size:clamp(40px, 11vw, 56px);font-weight:800;letter-spacing:-.04em;margin:8px 0;line-height:1" id="alarmRingClock">07:00 AM</div>
     <h2 style="margin:4px 0 6px;font-size:24px;font-weight:750" id="alarmRingTitle">Reminder</h2>
-    <p style="color:var(--muted);margin:0 0 20px;font-size:15px" id="alarmRingNote">Time to wake up</p>
+    <p style="color:var(--muted);margin:0 0 16px;font-size:15px" id="alarmRingNote">Time to wake up</p>
 
     <!-- Countdown Progress bar -->
-    <div style="width:100%;height:6px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin-bottom:24px">
+    <div style="width:100%;height:6px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin-bottom:14px">
       <div id="alarmRingProgress" style="height:100%;background:linear-gradient(90deg,#ff453a,#ff9f0a);width:100%;transition:width 0.5s linear"></div>
     </div>
 
-    <!-- Ringing action buttons -->
-    <div style="display:flex;flex-direction:column;gap:12px;width:100%">
-      <button type="button" class="btn primary" id="btnDismissAlarm" style="padding:16px;font-size:17px;font-weight:750;background:linear-gradient(135deg,#30d158,#1b873a);box-shadow:0 8px 24px rgba(48,209,88,.45)">
+    <!-- Interactive Dual-Direction Gesture Slider for iOS & Android -->
+    <div class="alarm-gesture-box" id="alarmGestureBox">
+      <div class="alarm-gesture-labels">
+        <span class="gesture-hint left">😴 Slide to Snooze</span>
+        <span class="gesture-hint right">Turn Off 🛑</span>
+      </div>
+      <div class="alarm-slider-track" id="alarmSliderTrack">
+        <div class="alarm-slider-fill left" id="sliderFillLeft"></div>
+        <div class="alarm-slider-fill right" id="sliderFillRight"></div>
+        <div class="alarm-slider-thumb" id="alarmSliderThumb" role="slider" aria-label="Slide left for snooze, slide right to turn off">
+          <span id="sliderThumbIcon">⟷</span>
+        </div>
+      </div>
+      <div class="alarm-gesture-subhint">Slide right to Turn Off · Slide left to Snooze (5m)</div>
+    </div>
+
+    <!-- Direct tap buttons -->
+    <div style="display:flex;flex-direction:column;gap:10px;width:100%;margin-top:8px">
+      <button type="button" class="btn primary" id="btnDismissAlarm" style="padding:14px;font-size:16px;font-weight:750;background:linear-gradient(135deg,#30d158,#1b873a);box-shadow:0 8px 24px rgba(48,209,88,.45)">
         ✓ Turn Off / Dismiss
       </button>
       <div style="display:flex;gap:10px;width:100%">
-        <button type="button" class="btn" id="btnSnoozeAlarm5" style="flex:1;padding:12px;font-size:14px;font-weight:600">
+        <button type="button" class="btn" id="btnSnoozeAlarm5" style="flex:1;padding:11px;font-size:13.5px;font-weight:600">
           😴 Snooze 5m
         </button>
-        <button type="button" class="btn" id="btnSnoozeAlarm10" style="flex:1;padding:12px;font-size:14px;font-weight:600">
+        <button type="button" class="btn" id="btnSnoozeAlarm10" style="flex:1;padding:11px;font-size:13.5px;font-weight:600">
           😴 Snooze 10m
         </button>
       </div>
@@ -1183,9 +1329,12 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   /* ---------------- Audio Engine: Notifications & Alarms ---------------- */
   let actx;
   let currentSound = localStorage.getItem('glassy-sound') || 'glass';
-  let currentAlarmSound = localStorage.getItem('reminderme-alarm-sound') || 'digital-alarm';
+  let currentAlarmSound = localStorage.getItem('reminderme-alarm-sound') || 'radar';
   let alarmDurationSec = parseInt(localStorage.getItem('reminderme-alarm-duration') || '30', 10);
   let isVibrateOn = localStorage.getItem('reminderme-vibrate') !== 'false';
+  let audioUnlocked = false;
+  let silentMediaEl = null;
+  let wakeLockSentinel = null;
 
   function getAudioCtx() {
     actx = actx || new (window.AudioContext || window.webkitAudioContext)();
@@ -1193,9 +1342,84 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     return actx;
   }
 
-  document.addEventListener('pointerdown', () => {
-    try { if (actx && actx.state === 'suspended') actx.resume(); } catch(e){}
-  }, { once: true, passive: true });
+  // iOS Safari audio unlock & background media session priming
+  function ensureAudioUnlocked() {
+    try {
+      const ctx = getAudioCtx();
+      if (ctx.state === 'suspended') ctx.resume();
+      const buffer = ctx.createBuffer(1, 1, 22050);
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.connect(ctx.destination);
+      source.start(0);
+
+      if (!silentMediaEl) {
+        silentMediaEl = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==');
+        silentMediaEl.loop = true;
+      }
+      silentMediaEl.play().then(() => {
+        if (!alarmActive) silentMediaEl.pause();
+        audioUnlocked = true;
+      }).catch(() => { audioUnlocked = true; });
+    } catch(e) {}
+  }
+
+  ['touchstart', 'touchend', 'pointerdown', 'click', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, ensureAudioUnlocked, { once: true, passive: true });
+  });
+
+  async function acquireWakeLock() {
+    try {
+      if ('wakeLock' in navigator && !wakeLockSentinel) {
+        wakeLockSentinel = await navigator.wakeLock.request('screen');
+        wakeLockSentinel.addEventListener('release', () => { wakeLockSentinel = null; });
+      }
+    } catch(e) {}
+  }
+
+  function releaseWakeLock() {
+    try {
+      if (wakeLockSentinel) {
+        wakeLockSentinel.release();
+        wakeLockSentinel = null;
+      }
+    } catch(e) {}
+  }
+
+  function setupMediaSession(r) {
+    if (!('mediaSession' in navigator)) return;
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: `⏰ ${r ? r.title : 'Alarm Ringing'}`,
+        artist: 'reminderme Alarm',
+        album: r ? `${fmt(r.time)} · Turn Off or Snooze` : 'Alarm',
+        artwork: [
+          { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' }
+        ]
+      });
+      navigator.mediaSession.playbackState = 'playing';
+
+      const dismissHandler = () => dismissActiveAlarm();
+      const snoozeHandler = () => snoozeActiveAlarm(5);
+
+      try { navigator.mediaSession.setActionHandler('stop', dismissHandler); } catch(e){}
+      try { navigator.mediaSession.setActionHandler('pause', snoozeHandler); } catch(e){}
+      try { navigator.mediaSession.setActionHandler('nexttrack', dismissHandler); } catch(e){}
+      try { navigator.mediaSession.setActionHandler('previoustrack', snoozeHandler); } catch(e){}
+    } catch(e) {}
+  }
+
+  function clearMediaSession() {
+    if (!('mediaSession' in navigator)) return;
+    try {
+      navigator.mediaSession.playbackState = 'none';
+      try { navigator.mediaSession.setActionHandler('stop', null); } catch(e){}
+      try { navigator.mediaSession.setActionHandler('pause', null); } catch(e){}
+      try { navigator.mediaSession.setActionHandler('nexttrack', null); } catch(e){}
+      try { navigator.mediaSession.setActionHandler('previoustrack', null); } catch(e){}
+    } catch(e){}
+  }
 
   // Short, pleasant reminder notification sound (0.4s - 1.2s)
   function playNotificationSound(theme = currentSound) {
@@ -1252,16 +1476,45 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       const ctx = getAudioCtx();
       const now = ctx.currentTime;
       if (theme === 'radar') {
-        const o = ctx.createOscillator(), g = ctx.createGain();
-        o.type = 'sine';
-        o.frequency.setValueAtTime(460, now);
-        o.frequency.exponentialRampToValueAtTime(920, now + 0.08);
-        o.frequency.setValueAtTime(920, now + 0.08);
-        g.gain.setValueAtTime(0, now);
-        g.gain.linearRampToValueAtTime(0.32, now + 0.02);
-        g.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
-        o.connect(g); g.connect(ctx.destination);
-        o.start(now); o.stop(now + 0.75);
+        // Authentic iOS Sonar Radar Pulse (double chirp)
+        [0, 0.16].forEach(offset => {
+          const s = now + offset;
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine';
+          o.frequency.setValueAtTime(460, s);
+          o.frequency.exponentialRampToValueAtTime(920, s + 0.08);
+          g.gain.setValueAtTime(0, s);
+          g.gain.linearRampToValueAtTime(0.32, s + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.001, s + 0.42);
+          o.connect(g); g.connect(ctx.destination);
+          o.start(s); o.stop(s + 0.45);
+        });
+      } else if (theme === 'marimba') {
+        // iOS Marimba Bell Chimes: 4 woody resonant notes (C5, E5, G5, C6)
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, idx) => {
+          const s = now + (idx * 0.11);
+          const o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain();
+          o1.type = 'sine'; o1.frequency.value = f;
+          o2.type = 'triangle'; o2.frequency.value = f * 3.01;
+          g.gain.setValueAtTime(0, s);
+          g.gain.linearRampToValueAtTime(0.28, s + 0.006);
+          g.gain.exponentialRampToValueAtTime(0.001, s + 0.38);
+          o1.connect(g); o2.connect(g); g.connect(ctx.destination);
+          o1.start(s); o1.stop(s + 0.4);
+          o2.start(s); o2.stop(s + 0.4);
+        });
+      } else if (theme === 'apex') {
+        // iOS Apex Alert: energetic rising triple-pulse (E5, A5, E6)
+        [659.25, 880, 1318.5].forEach((f, idx) => {
+          const s = now + (idx * 0.09);
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = 'sine'; o.frequency.value = f;
+          g.gain.setValueAtTime(0, s);
+          g.gain.linearRampToValueAtTime(0.32, s + 0.008);
+          g.gain.exponentialRampToValueAtTime(0.001, s + 0.28);
+          o.connect(g); g.connect(ctx.destination);
+          o.start(s); o.stop(s + 0.3);
+        });
       } else if (theme === 'morning') {
         [523.25, 659.25, 783.99, 987.77, 1046.5].forEach((f, idx) => {
           const o = ctx.createOscillator(), g = ctx.createGain();
@@ -1321,6 +1574,18 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   function startAlarmSound(theme = currentAlarmSound) {
     stopAlarmSound();
     alarmActive = true;
+    acquireWakeLock();
+
+    // Start silent audio loop to prime audio pipeline on iOS and enable lock-screen media session
+    try {
+      if (!silentMediaEl) {
+        silentMediaEl = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==');
+        silentMediaEl.loop = true;
+      }
+      silentMediaEl.play().catch(() => {});
+    } catch(e) {}
+
+    setupMediaSession(currentActiveAlarmReminder);
 
     if (theme === 'custom' && cachedCustomAudio) {
       try {
@@ -1334,22 +1599,24 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
         alarmDeviceAudioEl.src = customAudioObjectUrl;
         alarmDeviceAudioEl.currentTime = 0;
         alarmDeviceAudioEl.play().catch(() => {
-          playAlarmMotif('digital-alarm');
-          alarmLoopTimer = setInterval(() => { if (alarmActive) playAlarmMotif('digital-alarm'); }, 850);
+          playAlarmMotif('radar');
+          alarmLoopTimer = setInterval(() => { if (alarmActive) playAlarmMotif('radar'); }, 1200);
         });
       } catch(e) {
-        playAlarmMotif('digital-alarm');
-        alarmLoopTimer = setInterval(() => { if (alarmActive) playAlarmMotif('digital-alarm'); }, 850);
+        playAlarmMotif('radar');
+        alarmLoopTimer = setInterval(() => { if (alarmActive) playAlarmMotif('radar'); }, 1200);
       }
     } else {
       const intervalMap = {
         'digital-alarm': 850,
         'radar': 1200,
+        'marimba': 1100,
+        'apex': 900,
         'morning': 2000,
         'synth': 1000,
         'gong': 2400
       };
-      const intervalMs = intervalMap[theme] || 850;
+      const intervalMs = intervalMap[theme] || 1000;
       playAlarmMotif(theme);
       alarmLoopTimer = setInterval(() => {
         if (!alarmActive) return;
@@ -1376,9 +1643,14 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     if (alarmDeviceAudioEl) {
       try { alarmDeviceAudioEl.pause(); alarmDeviceAudioEl.currentTime = 0; } catch(e){}
     }
+    if (silentMediaEl) {
+      try { silentMediaEl.pause(); } catch(e){}
+    }
     if (navigator.vibrate) {
       try { navigator.vibrate(0); } catch(e){}
     }
+    releaseWakeLock();
+    clearMediaSession();
   }
 
   function triggerAlarm(r) {
@@ -1393,19 +1665,40 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     if ($('#alarmRingProgress')) $('#alarmRingProgress').style.width = '100%';
 
     openSheet('#alarmRingOverlay');
-    startAlarmSound(currentAlarmSound);
+    startAlarmSound((r && r.sound) ? r.sound : currentAlarmSound);
+
+    // Notify Service Worker so lock-screen notifications with actions appear on home/lock screen
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      try {
+        navigator.serviceWorker.controller.postMessage({
+          type: 'alarm-firing',
+          reminder: {
+            id: r.id,
+            title: r.title,
+            note: r.note,
+            time: r.time,
+            emoji: r.emoji
+          }
+        });
+      } catch(e){}
+    }
 
     if ('Notification' in window && Notification.permission === 'granted') {
       try {
         const notifTitle = `⏰ ALARM: ${r.title}`;
         const notifOpts = {
-          body: r.note || `Alarm ringing for ${fmt(r.time)} — tap to dismiss`,
+          body: r.note || `Alarm ringing for ${fmt(r.time)} — Slide or tap to Turn Off`,
           icon: '/icons/icon-192.png',
           badge: '/icons/badge-96.png',
           tag: 'reminderme-alarm',
           requireInteraction: true,
-          vibrate: [400, 200, 400, 200, 800],
-          data: { reminderId: r.id }
+          renotify: true,
+          vibrate: [400, 200, 400, 200, 800, 300, 800],
+          data: { url: '/', reminderId: r.id },
+          actions: [
+            { action: 'dismiss', title: '🛑 Turn Off' },
+            { action: 'snooze', title: '😴 Snooze 5m' }
+          ]
         };
         if (swReg) swReg.showNotification(notifTitle, notifOpts);
         else new Notification(notifTitle, notifOpts);
@@ -2134,6 +2427,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       const b = e.target.closest('button'); if (!b) return;
       selIsAlarm = b.dataset.type === 'alarm';
       [...aTypeGroup.children].forEach(x => x.classList.toggle('on', x === b));
+      if ($('#formSoundField')) $('#formSoundField').style.display = selIsAlarm ? 'block' : 'none';
     };
   }
 
@@ -2172,6 +2466,8 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       $('#btnTypeAlarm').classList.toggle('on', selIsAlarm);
       $('#btnTypeNotify').classList.toggle('on', !selIsAlarm);
     }
+    if ($('#fSound')) $('#fSound').value = currentAlarmSound || 'radar';
+    if ($('#formSoundField')) $('#formSoundField').style.display = selIsAlarm ? 'block' : 'none';
     openSheet('#overlay');
     setTimeout(() => $('#fTitle').focus(), 300);
   };
@@ -2190,6 +2486,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       priority: selPriority,
       tag: selTag,
       isAlarm: selIsAlarm,
+      sound: selIsAlarm ? ($('#fSound') ? $('#fSound').value : (currentAlarmSound || 'radar')) : null,
       createdAt: Date.now()
     };
     reminders.push(r);
@@ -2585,10 +2882,19 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       opt.disabled = false;
       opt.textContent = `🎵 Device: ${name}`;
     }
+    const fOpt = $('#fOptCustomAudio');
+    if (fOpt) {
+      fOpt.disabled = false;
+      fOpt.textContent = `🎵 Device: ${name}`;
+    }
     const nameEl = $('#customAudioName');
     if (nameEl) nameEl.textContent = `${name} (${(size / (1024 * 1024)).toFixed(1)} MB)`;
     const statusBox = $('#customAudioStatus');
     if (statusBox) statusBox.style.display = 'flex';
+    const fNameEl = $('#fCustomMusicName');
+    if (fNameEl) fNameEl.textContent = `🎵 ${name} (${(size / (1024 * 1024)).toFixed(1)} MB)`;
+    const fBox = $('#fCustomMusicInfo');
+    if (fBox) fBox.style.display = 'flex';
   }
 
   // Load custom audio from IndexedDB on startup
@@ -2598,6 +2904,9 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       updateCustomAudioUI(res.meta.name, res.meta.size);
       if (currentAlarmSound === 'custom' && asp) {
         asp.value = 'custom';
+      }
+      if ($('#fSound') && currentAlarmSound === 'custom') {
+        $('#fSound').value = 'custom';
       }
     }
   });
@@ -2620,7 +2929,36 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       currentAlarmSound = 'custom';
       localStorage.setItem('reminderme-alarm-sound', 'custom');
       if (asp) asp.value = 'custom';
+      if ($('#fSound')) $('#fSound').value = 'custom';
       toast(`🎵 Custom audio loaded: ${file.name}`);
+    };
+  }
+
+  // Form sheet custom music selection and preview buttons
+  const btnFormPick = $('#btnFormPickMusic');
+  if (btnFormPick) {
+    btnFormPick.onclick = () => {
+      if (customAudioInput) customAudioInput.click();
+    };
+  }
+
+  const btnFormTest = $('#btnFormTestSound');
+  if (btnFormTest) {
+    let formPreviewTimer = null;
+    btnFormTest.onclick = () => {
+      const snd = $('#fSound') ? $('#fSound').value : 'radar';
+      if (alarmActive) {
+        stopAlarmSound();
+        btnFormTest.textContent = '▶️ Test';
+        if (formPreviewTimer) clearTimeout(formPreviewTimer);
+        return;
+      }
+      btnFormTest.textContent = '⏹️ Stop';
+      startAlarmSound(snd);
+      formPreviewTimer = setTimeout(() => {
+        stopAlarmSound();
+        btnFormTest.textContent = '▶️ Test';
+      }, 3500);
     };
   }
 
@@ -2660,48 +2998,208 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       if (customAudioObjectUrl) { URL.revokeObjectURL(customAudioObjectUrl); customAudioObjectUrl = null; }
       const statusBox = $('#customAudioStatus');
       if (statusBox) statusBox.style.display = 'none';
+      const fBox = $('#fCustomMusicInfo');
+      if (fBox) fBox.style.display = 'none';
       const opt = $('#optCustomAudio');
       if (opt) {
         opt.disabled = true;
         opt.textContent = '🎵 Device Song / Ringtone (Select Below)';
       }
-      currentAlarmSound = 'digital-alarm';
-      localStorage.setItem('reminderme-alarm-sound', 'digital-alarm');
-      if (asp) asp.value = 'digital-alarm';
+      const fOpt = $('#fOptCustomAudio');
+      if (fOpt) {
+        fOpt.disabled = true;
+        fOpt.textContent = '🎵 Select Device Music / Song...';
+      }
+      currentAlarmSound = 'radar';
+      localStorage.setItem('reminderme-alarm-sound', 'radar');
+      if (asp) asp.value = 'radar';
+      if ($('#fSound')) $('#fSound').value = 'radar';
       toast('Custom device audio removed');
     };
   }
 
-  /* ---------------- Alarm Ringing Overlay Buttons ---------------- */
+  /* ---------------- Global Alarm Dismiss & Snooze Functions ---------------- */
+  function dismissActiveAlarm() {
+    const r = currentActiveAlarmReminder;
+    stopAlarmSound();
+    closeSheets();
+    if (r) markDone(r, null);
+    toast('⏰ Alarm turned off ✓');
+  }
+
+  function snoozeActiveAlarm(mins = 5) {
+    const r = currentActiveAlarmReminder;
+    stopAlarmSound();
+    closeSheets();
+    if (r) snooze(r, mins);
+  }
+
+  /* ---------------- Alarm Ringing Overlay Buttons & Gestures ---------------- */
   const btnDismiss = $('#btnDismissAlarm');
   if (btnDismiss) {
-    btnDismiss.onclick = () => {
-      const r = currentActiveAlarmReminder;
-      stopAlarmSound();
-      closeSheets();
-      if (r) markDone(r, null);
-      toast('⏰ Alarm turned off ✓');
-    };
+    btnDismiss.onclick = () => dismissActiveAlarm();
   }
 
   const btnSnooze5 = $('#btnSnoozeAlarm5');
   if (btnSnooze5) {
-    btnSnooze5.onclick = () => {
-      const r = currentActiveAlarmReminder;
-      stopAlarmSound();
-      closeSheets();
-      if (r) snooze(r, 5);
-    };
+    btnSnooze5.onclick = () => snoozeActiveAlarm(5);
   }
 
   const btnSnooze10 = $('#btnSnoozeAlarm10');
   if (btnSnooze10) {
-    btnSnooze10.onclick = () => {
-      const r = currentActiveAlarmReminder;
-      stopAlarmSound();
-      closeSheets();
-      if (r) snooze(r, 10);
+    btnSnooze10.onclick = () => snoozeActiveAlarm(10);
+  }
+
+  // Interactive iOS & Android Dual-Direction Gesture Slider
+  function setupAlarmGestureSlider() {
+    const track = $('#alarmSliderTrack');
+    const thumb = $('#alarmSliderThumb');
+    const fillLeft = $('#sliderFillLeft');
+    const fillRight = $('#sliderFillRight');
+    const thumbIcon = $('#sliderThumbIcon');
+    const ringCard = $('#alarmRingCard');
+    if (!track || !thumb) return;
+
+    let isDragging = false;
+    let startX = 0;
+    let deltaX = 0;
+    let maxOffset = 100;
+    let hapticFired = false;
+
+    function resetThumb() {
+      thumb.classList.remove('dragging');
+      thumb.style.transition = 'transform 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      thumb.style.transform = 'translateX(0px)';
+      if (fillLeft) { fillLeft.style.transition = 'opacity 0.2s'; fillLeft.style.opacity = '0'; }
+      if (fillRight) { fillRight.style.transition = 'opacity 0.2s'; fillRight.style.opacity = '0'; }
+      if (thumbIcon) thumbIcon.textContent = '⟷';
+      hapticFired = false;
+      isDragging = false;
+      deltaX = 0;
+    }
+
+    const onStart = e => {
+      isDragging = true;
+      const clientX = (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX);
+      startX = clientX;
+      deltaX = 0;
+      hapticFired = false;
+      const rect = track.getBoundingClientRect();
+      maxOffset = Math.max(70, (rect.width / 2) - 34);
+      thumb.classList.add('dragging');
+      thumb.style.transition = 'none';
+      if (fillLeft) fillLeft.style.transition = 'none';
+      if (fillRight) fillRight.style.transition = 'none';
     };
+
+    const onMove = e => {
+      if (!isDragging) return;
+      if (e.cancelable) e.preventDefault();
+      const clientX = (e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX);
+      deltaX = clientX - startX;
+      deltaX = Math.max(-maxOffset, Math.min(maxOffset, deltaX));
+      thumb.style.transform = `translateX(${deltaX}px) scale(1.06)`;
+
+      const threshold = maxOffset * 0.72;
+      if (deltaX > 15) {
+        const pct = Math.min(1, deltaX / threshold);
+        if (fillRight) fillRight.style.opacity = String(pct);
+        if (fillLeft) fillLeft.style.opacity = '0';
+        if (thumbIcon) thumbIcon.textContent = deltaX >= threshold ? '🛑' : '→';
+        if (deltaX >= threshold && !hapticFired) {
+          if (navigator.vibrate) try { navigator.vibrate(35); } catch(err){}
+          hapticFired = true;
+        }
+      } else if (deltaX < -15) {
+        const pct = Math.min(1, Math.abs(deltaX) / threshold);
+        if (fillLeft) fillLeft.style.opacity = String(pct);
+        if (fillRight) fillRight.style.opacity = '0';
+        if (thumbIcon) thumbIcon.textContent = Math.abs(deltaX) >= threshold ? '😴' : '←';
+        if (Math.abs(deltaX) >= threshold && !hapticFired) {
+          if (navigator.vibrate) try { navigator.vibrate(35); } catch(err){}
+          hapticFired = true;
+        }
+      } else {
+        if (fillLeft) fillLeft.style.opacity = '0';
+        if (fillRight) fillRight.style.opacity = '0';
+        if (thumbIcon) thumbIcon.textContent = '⟷';
+        hapticFired = false;
+      }
+    };
+
+    const onEnd = () => {
+      if (!isDragging) return;
+      const threshold = maxOffset * 0.72;
+      const finalDelta = deltaX;
+      resetThumb();
+
+      if (finalDelta >= threshold) {
+        if (navigator.vibrate) try { navigator.vibrate([30, 40, 50]); } catch(err){}
+        dismissActiveAlarm();
+      } else if (finalDelta <= -threshold) {
+        if (navigator.vibrate) try { navigator.vibrate([40, 40]); } catch(err){}
+        snoozeActiveAlarm(5);
+      }
+    };
+
+    thumb.addEventListener('touchstart', onStart, { passive: false });
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('touchend', onEnd, { passive: true });
+    window.addEventListener('touchcancel', onEnd, { passive: true });
+
+    thumb.addEventListener('pointerdown', onStart);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onEnd);
+    window.addEventListener('pointercancel', onEnd);
+
+    // Vertical card swipe: Swipe UP = Turn Off, Swipe DOWN = Snooze
+    if (ringCard) {
+      let cardStartY = 0;
+      let cardDeltaY = 0;
+      let cardSwiping = false;
+
+      ringCard.addEventListener('touchstart', e => {
+        if (e.target.closest('#alarmSliderTrack') || e.target.closest('button')) return;
+        cardSwiping = true;
+        cardStartY = e.touches[0].clientY;
+        cardDeltaY = 0;
+      }, { passive: true });
+
+      ringCard.addEventListener('touchmove', e => {
+        if (!cardSwiping) return;
+        cardDeltaY = e.touches[0].clientY - cardStartY;
+        ringCard.style.transform = `translateY(${cardDeltaY * 0.35}px)`;
+      }, { passive: true });
+
+      ringCard.addEventListener('touchend', () => {
+        if (!cardSwiping) return;
+        cardSwiping = false;
+        ringCard.style.transition = 'transform 0.25s ease';
+        ringCard.style.transform = '';
+        setTimeout(() => { ringCard.style.transition = ''; }, 260);
+
+        if (cardDeltaY < -75) {
+          if (navigator.vibrate) try { navigator.vibrate(40); } catch(err){}
+          dismissActiveAlarm();
+        } else if (cardDeltaY > 75) {
+          if (navigator.vibrate) try { navigator.vibrate(40); } catch(err){}
+          snoozeActiveAlarm(5);
+        }
+      }, { passive: true });
+    }
+  }
+  setupAlarmGestureSlider();
+
+  // Listen to Service Worker messages from Lock Screen Notifications
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', e => {
+      const d = e.data || {};
+      if (d.type === 'alarm-dismissed') {
+        dismissActiveAlarm();
+      } else if (d.type === 'alarm-snoozed') {
+        snoozeActiveAlarm(d.minutes || 5);
+      }
+    });
   }
 
   if ($('#btnExportBackup')) {
