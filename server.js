@@ -7,13 +7,31 @@ const path = require('path');
 const crypto = require('crypto');
 const webpush = require('web-push');
 
+// Load .env file if present (without external dependencies)
+try {
+  const envPath = path.join(__dirname, '.env');
+  if (fs.existsSync(envPath)) {
+    const lines = fs.readFileSync(envPath, 'utf8').split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const idx = trimmed.indexOf('=');
+      if (idx > 0) {
+        const key = trimmed.slice(0, idx).trim();
+        const val = trimmed.slice(idx + 1).trim().replace(/^['"]|['"]$/g, '');
+        if (!process.env[key]) process.env[key] = val;
+      }
+    }
+  }
+} catch (e) {}
+
 const PORT = Number(process.env.PORT) || 3000;
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
 const PUBLIC = path.join(__dirname, 'public');
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
 const SESSION_DAYS = 30;
-const TICK_MS = Number(process.env.TICK_MS) || 20000;
+const TICK_MS = Number(process.env.TICK_MS) || 60000;
 
 /* ---------------- storage ---------------- */
 fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -37,7 +55,7 @@ if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
   db.vapid = webpush.generateVAPIDKeys();
   persist(true);
 }
-webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:admin@glassy-daily.app', db.vapid.publicKey, db.vapid.privateKey);
+webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:admin@reminderme.app', db.vapid.publicKey, db.vapid.privateKey);
 
 /* ---------------- helpers ---------------- */
 const id = (n = 12) => crypto.randomBytes(n).toString('hex');
@@ -96,15 +114,69 @@ function rateLimited(key) {
   return list.length > 20;
 }
 
+function computeNextDueAtUtc(timeStr, days, tz = 'UTC', fromDate = new Date()) {
+  const [targetH, targetM] = (timeStr || '09:00').split(':').map(Number);
+  const userTz = validTz(tz) ? tz : 'UTC';
+
+  for (let offsetDays = 0; offsetDays <= 7; offsetDays++) {
+    const candidateBase = new Date(fromDate.getTime() + offsetDays * 86400000);
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+      timeZone: userTz, year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
+    }).formatToParts(candidateBase).map(p => [p.type, p.value]));
+
+    const dateStr = `${parts.year}-${parts.month}-${parts.day}`;
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const dayOfWeek = new Date(Date.UTC(y, m - 1, d, 12, 0, 0)).getUTCDay();
+
+    if (days && days.length && !days.includes(dayOfWeek)) continue;
+
+    const utcEstimate = new Date(Date.UTC(y, m - 1, d, targetH, targetM, 0));
+    const pEst = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+      timeZone: userTz, year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    }).formatToParts(utcEstimate).map(p => [p.type, p.value]));
+
+    const estH = pEst.hour === '24' ? 0 : Number(pEst.hour);
+    const estM = Number(pEst.minute);
+
+    let diffMinutes = (targetH * 60 + targetM) - (estH * 60 + estM);
+    if (diffMinutes > 720) diffMinutes -= 1440;
+    if (diffMinutes < -720) diffMinutes += 1440;
+
+    const exactUtcMs = utcEstimate.getTime() + diffMinutes * 60000;
+    // Allow matching within current minute or future
+    if (exactUtcMs >= fromDate.getTime() - 45000) {
+      return exactUtcMs;
+    }
+  }
+
+  return fromDate.getTime() + 86400000;
+}
+
 const str = (v, max) => String(v == null ? '' : v).slice(0, max);
-function cleanReminder(r) {
+function cleanReminder(r, userTz = 'UTC') {
   const time = /^([01]\d|2[0-3]):[0-5]\d$/.test(r.time) ? r.time : '09:00';
   const days = Array.isArray(r.days) ? r.days.filter(d => Number.isInteger(d) && d >= 0 && d <= 6) : null;
+  const isAlarm = r.isAlarm !== false;
+  const nextDue = computeNextDueAtUtc(time, days, userTz);
+  const dueAt = Number(r.dueAt) && Number(r.dueAt) > Date.now() - 3600000 ? Number(r.dueAt) : nextDue;
   return {
-    id: str(r.id || id(6), 40), title: str(r.title, 60) || 'Reminder', note: str(r.note, 90), time,
-    emoji: str(r.emoji, 8) || '🔔', color: /^#[0-9a-fA-F]{6}$/.test(r.color) ? r.color : '#0a84ff',
-    doneDate: typeof r.doneDate === 'string' ? r.doneDate.slice(0, 10) : null,
+    id: str(r.id || id(6), 40),
+    title: str(r.title, 60) || 'Reminder',
+    note: str(r.note, 90),
+    time,
+    dueAt,
+    dueAtUtc: new Date(dueAt).toISOString(),
+    sent: !!r.sent,
     days: days && days.length ? days : null,
+    emoji: str(r.emoji, 8) || (isAlarm ? '⏰' : '🔔'),
+    color: /^#[0-9a-fA-F]{6}$/.test(r.color) ? r.color : '#0a84ff',
+    priority: ['high', 'med', 'low'].includes(r.priority) ? r.priority : 'low',
+    tag: str(r.tag, 30) || null,
+    isAlarm: isAlarm,
+    sound: str(r.sound, 40) || (isAlarm ? 'radar' : null),
+    doneDate: typeof r.doneDate === 'string' ? r.doneDate.slice(0, 10) : null,
     createdAt: Number(r.createdAt) || Date.now()
   };
 }
@@ -162,34 +234,64 @@ function reminderPayload(r) {
     url: '/'
   };
 }
-async function tick() {
+async function checkDueReminders() {
   const now = Date.now();
   const due = [];
+  let sentCount = 0;
+  const initialSubCount = Object.values(db.subs).reduce((acc, list) => acc + (list ? list.length : 0), 0);
+
   for (const uid of Object.keys(db.subs)) {
     if (!(db.subs[uid] || []).length || !db.users[uid]) continue;
-    const { date, time } = localParts(db.users[uid].tz);
+    const user = db.users[uid];
+    const { date, time } = localParts(user.tz);
     const dow = new Date(date + 'T12:00:00Z').getUTCDay();
+
     for (const r of db.reminders[uid] || []) {
-      if (r.doneDate === date || r.time !== time) continue;
-      if (r.days && !r.days.includes(dow)) continue;
+      // Check 1: Due by UTC timestamp (dueAt <= now and !sent)
+      const isDueUtc = (typeof r.dueAt === 'number' && r.dueAt <= now && !r.sent);
+      // Check 2: Due by local time (date match & time match) for recurring daily checks
+      const isDueLocal = (r.doneDate !== date && r.time === time && (!r.days || r.days.includes(dow)));
+
+      if (!isDueUtc && !isDueLocal) continue;
+
       const key = `${uid}:${r.id}:${date}`;
       if (db.fired[key]) continue;
-      db.fired[key] = now; due.push([uid, r]);
+      db.fired[key] = now;
+      r.sent = true;
+      due.push([uid, r]);
     }
   }
+
   for (const sn of db.snoozes.filter(s => s.at <= now)) {
     const r = (db.reminders[sn.uid] || []).find(x => x.id === sn.rid);
-    if (r) due.push([sn.uid, r]);
+    if (r) {
+      r.sent = true;
+      due.push([sn.uid, r]);
+    }
   }
   db.snoozes = db.snoozes.filter(s => s.at > now);
+
   for (const k of Object.keys(db.fired)) if (now - db.fired[k] > 3 * 864e5) delete db.fired[k];
   if (due.length) persist();
+
   for (const [uid, r] of due) {
     const n = await pushTo(uid, reminderPayload(r));
+    sentCount += n;
     track(uid, 'push_sent', { reminder: r.id, devices: n });
   }
+
+  const finalSubCount = Object.values(db.subs).reduce((acc, list) => acc + (list ? list.length : 0), 0);
+  const prunedSubs = Math.max(0, initialSubCount - finalSubCount);
+
+  return {
+    checkedAt: new Date(now).toISOString(),
+    dueCount: due.length,
+    sentCount,
+    prunedSubs
+  };
 }
-setInterval(() => tick().catch(e => console.error('tick', e)), TICK_MS).unref();
+const tick = checkDueReminders;
+setInterval(() => checkDueReminders().catch(e => console.error('tick', e)), TICK_MS).unref();
 
 /* ---------------- static files ---------------- */
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json', '.json': 'application/json', '.ico': 'image/x-icon' };
@@ -205,7 +307,8 @@ function serveStatic(req, res, pathname) {
     }
     const ext = path.extname(file);
     const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream', 'X-Content-Type-Options': 'nosniff' };
-    headers['Cache-Control'] = (ext === '.html' || p === '/sw.js' || ext === '.webmanifest') ? 'no-cache' : 'public, max-age=86400';
+    if (p === '/manifest.json') headers['Content-Type'] = 'application/manifest+json; charset=utf-8';
+    headers['Cache-Control'] = (ext === '.html' || p === '/sw.js' || ext === '.webmanifest' || p === '/manifest.json') ? 'no-cache' : 'public, max-age=86400';
     if (p === '/sw.js') headers['Service-Worker-Allowed'] = '/';
     res.writeHead(200, headers); res.end(data);
   });
@@ -219,6 +322,19 @@ async function api(req, res, url) {
 
   if (route === 'GET /api/health') return send(res, 200, { ok: true, time: Date.now() });
 
+  if (route === 'POST /api/cron/check-reminders' || route === 'GET /api/cron/check-reminders') {
+    const cronSecret = process.env.CRON_SECRET;
+    if (cronSecret) {
+      const auth = req.headers['authorization'] || '';
+      const token = auth.startsWith('Bearer ') ? auth.slice(7) : (req.headers['x-cron-secret'] || url.searchParams.get('key'));
+      if (token !== cronSecret && !isAdmin(user)) {
+        return send(res, 401, { error: 'Unauthorized cron request' });
+      }
+    }
+    const result = await checkDueReminders();
+    return send(res, 200, Object.assign({ ok: true }, result));
+  }
+
   if (route === 'POST /api/signup' || route === 'POST /api/login') {
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     if (rateLimited(ip)) return send(res, 429, { error: 'Too many attempts. Try again in a few minutes.' });
@@ -231,7 +347,7 @@ async function api(req, res, url) {
       if (u) return send(res, 409, { error: 'An account with this email already exists — sign in instead' });
       u = Object.assign({ id: id(8), email, name: str(b.name, 40).trim() || email.split('@')[0], tz: validTz(b.tz) ? b.tz : 'UTC', createdAt: Date.now() }, hashPassword(password));
       db.users[u.id] = u;
-      db.reminders[u.id] = Array.isArray(b.reminders) ? b.reminders.slice(0, 100).map(cleanReminder) : [];
+      db.reminders[u.id] = Array.isArray(b.reminders) ? b.reminders.slice(0, 100).map(r => cleanReminder(r, u.tz)) : [];
       track(u.id, 'signup');
     } else {
       if (!u || !checkPassword(password, u)) return send(res, 401, { error: 'Wrong email or password' });
@@ -275,7 +391,7 @@ async function api(req, res, url) {
     if (!needUser()) return;
     const b = await readBody(req);
     if (!Array.isArray(b.reminders)) return send(res, 400, { error: 'reminders must be an array' });
-    db.reminders[user.id] = b.reminders.slice(0, 100).map(cleanReminder);
+    db.reminders[user.id] = b.reminders.slice(0, 100).map(r => cleanReminder(r, user.tz));
     persist();
     return send(res, 200, { reminders: db.reminders[user.id] });
   }
@@ -292,14 +408,21 @@ async function api(req, res, url) {
         db.reminders[user.id] = (db.reminders[user.id] || []).filter(x => x.id !== r.id);
       } else {
         r.doneDate = localParts(user.tz).date;
+        r.dueAt = computeNextDueAtUtc(r.time, r.days, user.tz);
+        r.dueAtUtc = new Date(r.dueAt).toISOString();
+        r.sent = false;
       }
       db.snoozes = db.snoozes.filter(s => !(s.uid === user.id && s.rid === r.id));
-      track(user.id, b.source === 'push' ? 'push_done' : 'reminder_done', { reminder: r.id });
+      track(user.id, b.source === 'push' || b.source === 'notification-dismiss' ? 'push_done' : 'reminder_done', { reminder: r.id });
     } else {
       const minutes = Math.min(Math.max(Number(b.minutes) || 10, 1), 240);
       db.snoozes = db.snoozes.filter(s => !(s.uid === user.id && s.rid === r.id));
-      db.snoozes.push({ uid: user.id, rid: r.id, at: Date.now() + minutes * 60000 });
-      track(user.id, b.source === 'push' ? 'push_snooze' : 'reminder_snooze', { reminder: r.id, minutes });
+      const snoozeAt = Date.now() + minutes * 60000;
+      db.snoozes.push({ uid: user.id, rid: r.id, at: snoozeAt });
+      r.dueAt = snoozeAt;
+      r.dueAtUtc = new Date(snoozeAt).toISOString();
+      r.sent = false;
+      track(user.id, b.source === 'push' || b.source === 'notification-snooze' ? 'push_snooze' : 'reminder_snooze', { reminder: r.id, minutes });
     }
     persist();
     return send(res, 200, { reminder: r });
@@ -389,4 +512,4 @@ if (require.main === module) {
   const shutdown = () => { persist(true); process.exit(0); };
   process.on('SIGINT', shutdown); process.on('SIGTERM', shutdown);
 }
-module.exports = { server, tick, db, localParts };
+module.exports = { server, tick, checkDueReminders, db, localParts, computeNextDueAtUtc, cleanReminder };

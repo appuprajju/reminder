@@ -7,6 +7,7 @@
 <meta name="description" content="reminderme — Smart 3D daily reminders with calendar, voice add, and notifications.">
 <meta name="theme-color" content="#070816">
 <link rel="manifest" href="/manifest.webmanifest">
+<link rel="manifest" href="/manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -292,7 +293,7 @@ header.top{grid-column:1/-1;display:flex;align-items:center;justify-content:spac
     flex-shrink: 0 !important;
   }
   #btnTest {
-    display: none !important;
+    display: inline-flex !important;
   }
   .hero {
     min-height: auto !important;
@@ -1071,12 +1072,21 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     <div class="brand"><img class="logo" src="/icons/icon-192.png" alt="reminderme">reminderme</div>
     <div class="actions">
       <button class="btn" id="btnPerm">🔔 Alerts</button>
-      <button class="btn" id="btnTest">Test</button>
+      <button class="btn" id="btnTest" title="Send a test notification to verify lock-screen delivery">🔔 Test</button>
       <button class="btn" id="btnStats">📊 Usage</button>
       <button class="btn" id="btnInstall" hidden>⬇️ Install</button>
       <button class="avatar" id="btnUser" title="Account">?</button>
     </div>
   </header>
+
+  <!-- Mobile PWA & Battery Guidance Banner -->
+  <div id="mobileTipBanner" class="glass" style="grid-column:1/-1;display:none;align-items:center;justify-content:space-between;gap:12px;padding:11px 16px;border-radius:18px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);font-size:12.5px;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.25)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:22px;flex-shrink:0" id="tipBannerIcon">📱</span>
+      <span id="tipBannerText">Add to Home Screen &amp; disable battery optimization so reminders alert reliably on lock screen.</span>
+    </div>
+    <button type="button" id="tipBannerDismiss" style="background:none;border:0;color:var(--muted);font-size:17px;cursor:pointer;padding:4px 6px;line-height:1;border-radius:6px" title="Dismiss tip">✕</button>
+  </div>
 
   <section class="glass hero" data-tilt id="hero">
     <div class="date layer" style="--z:30px;display:flex;align-items:center;justify-content:center;gap:10px" id="dateWrap">
@@ -1456,8 +1466,38 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   const CACHE_KEY = 'glassy-daily-v2-cache';
   const ua = navigator.userAgent;
   const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
   const isStandalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
   const inIframe = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+
+  function computeNextDueAtUtc(timeStr, days, tz = TZ) {
+    const [targetH, targetM] = (timeStr || '09:00').split(':').map(Number);
+    const now = new Date();
+    for (let offsetDays = 0; offsetDays <= 14; offsetDays++) {
+      const probe = new Date(now.getTime() + offsetDays * 86400000);
+      const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+      }).formatToParts(probe).reduce((acc, p) => { acc[p.type] = p.value; return acc; }, {});
+      const y = Number(parts.year), m = Number(parts.month), d = Number(parts.day);
+      const dow = new Date(Date.UTC(y, m - 1, d, 12, 0, 0)).getUTCDay();
+      if (days && days.length && !days.includes(dow)) continue;
+
+      const utcEst = new Date(Date.UTC(y, m - 1, d, targetH, targetM, 0));
+      const pEst = new Intl.DateTimeFormat('en-CA', {
+        timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+      }).formatToParts(utcEst).reduce((acc, p) => { acc[p.type] = p.value; return acc; }, {});
+      const estH = pEst.hour === '24' ? 0 : Number(pEst.hour);
+      const estM = Number(pEst.minute);
+      let diff = (targetH * 60 + targetM) - (estH * 60 + estM);
+      if (diff > 720) diff -= 1440;
+      if (diff < -720) diff += 1440;
+      const exactUtc = utcEst.getTime() + diff * 60000;
+      if (exactUtc >= now.getTime() - 45000) return exactUtc;
+    }
+    return now.getTime() + 86400000;
+  }
 
   let user = null, reminders = [], filter = 'all';
   const localSnoozes = {};
@@ -2538,16 +2578,54 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   }
   $('#btnPerm').onclick = enableAlerts;
   $('#helpRetry').onclick = () => { closeSheets(); enableAlerts(); };
+
+  /* Mobile PWA & Battery Guidance Banner */
+  function checkMobileTipBanner() {
+    const banner = $('#mobileTipBanner');
+    if (!banner || localStorage.getItem('tipDismissed_v2')) return;
+    const isMobile = window.innerWidth <= 860 || ('ontouchstart' in window);
+    if (!isMobile) return;
+
+    if (isIOS && !isStandalone) {
+      $('#tipBannerIcon').textContent = '📲';
+      $('#tipBannerText').innerHTML = '<b>iOS Safari Setup:</b> Tap <b>Share</b> <span style="font-size:13px">⎋</span> → <b>Add to Home Screen</b> to enable background &amp; lock-screen reminder alerts.';
+      banner.style.display = 'flex';
+    } else if (isAndroid) {
+      $('#tipBannerIcon').textContent = '🔋';
+      $('#tipBannerText').innerHTML = '<b>Battery Tip:</b> In Android <b>Settings → Apps → reminderme → Battery</b>, choose <b>Unrestricted</b> so background alarms alert on lock screen without delay.';
+      banner.style.display = 'flex';
+    }
+  }
+  const tipDismiss = $('#tipBannerDismiss');
+  if (tipDismiss) {
+    tipDismiss.onclick = () => {
+      localStorage.setItem('tipDismissed_v2', '1');
+      const banner = $('#mobileTipBanner');
+      if (banner) banner.style.display = 'none';
+    };
+  }
+
   $('#btnTest').onclick = async () => {
     track('test_notification');
     banner({ title: 'Time to hydrate', body: 'This is the in-app banner. Tap to expand, swipe up to dismiss.', emoji: '💧' });
     if ('Notification' in window && Notification.permission === 'granted') {
-      try { const r = await api('POST', '/api/push/test'); toast(`Real push sent to ${r.sent} device${r.sent===1?'':'s'}`); }
-      catch (e) {
+      try {
+        const r = await api('POST', '/api/push/test');
+        toast(`Real push sent to ${r.sent} device${r.sent===1?'':'s'} (lock screen ready)`);
+      } catch (e) {
         if (swReg) {
-          try { await swReg.showNotification('reminderme', { body: 'Test notification: alerts are working on this device!', icon: '/icons/icon-192.png' }); } catch(x){}
+          try {
+            await swReg.showNotification('reminderme', {
+              body: 'Test notification: alerts are working on this device!',
+              icon: '/icons/icon-192.png',
+              badge: '/icons/badge-96.png',
+              vibrate: [300, 100, 300]
+            });
+          } catch(x){}
         }
       }
+    } else {
+      toast('Tap 🔔 Alerts first to enable lock-screen notifications');
     }
   };
 
@@ -2745,14 +2823,25 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   function starterReminders() {
     // carry over reminders from the old offline version, otherwise a friendly starter set
     let old = null; try { old = JSON.parse(localStorage.getItem('glassy-daily-v1')); } catch (e) {}
-    if (Array.isArray(old) && old.length) return old.map(r => Object.assign({}, r, { id: String(r.id), isAlarm: r.isAlarm !== false }));
+    if (Array.isArray(old) && old.length) {
+      return old.map(r => {
+        const nextDue = computeNextDueAtUtc(r.time, r.days, TZ);
+        return Object.assign({}, r, {
+          id: String(r.id),
+          dueAt: r.dueAt || nextDue,
+          dueAtUtc: r.dueAtUtc || new Date(nextDue).toISOString(),
+          sent: Boolean(r.sent),
+          isAlarm: r.isAlarm !== false
+        });
+      });
+    }
     return [
-      {id:'s1',title:'Wake up & hydrate',note:'Start your day energized',time:'07:00',emoji:'⏰',color:COLORS[0],isAlarm:true},
-      {id:'s2',title:'Take vitamins',note:'With breakfast',time:'08:00',emoji:'💊',color:COLORS[2],isAlarm:false},
-      {id:'s3',title:'Focus session',note:'Deep work sprint',time:'10:30',emoji:'💼',color:COLORS[1],isAlarm:false},
-      {id:'s4',title:'Stretch & move',note:'Stand up and stretch for 5 minutes',time:'13:00',emoji:'🧘',color:COLORS[5],isAlarm:false},
-      {id:'s5',title:'Evening workout',note:'Stay active and healthy',time:'18:30',emoji:'🏃',color:COLORS[3],isAlarm:true},
-      {id:'s6',title:'Wind down & read',note:'Relax before sleep',time:'21:30',emoji:'📖',color:COLORS[4],isAlarm:false}
+      { id:'s1', title:'Wake up & hydrate', note:'Start your day energized', time:'07:00', emoji:'⏰', color:COLORS[0], isAlarm:true, dueAt: computeNextDueAtUtc('07:00', null, TZ), dueAtUtc: new Date(computeNextDueAtUtc('07:00', null, TZ)).toISOString(), sent: false },
+      { id:'s2', title:'Take vitamins', note:'With breakfast', time:'08:00', emoji:'💊', color:COLORS[2], isAlarm:false, dueAt: computeNextDueAtUtc('08:00', null, TZ), dueAtUtc: new Date(computeNextDueAtUtc('08:00', null, TZ)).toISOString(), sent: false },
+      { id:'s3', title:'Focus session', note:'Deep work sprint', time:'10:30', emoji:'💼', color:COLORS[1], isAlarm:false, dueAt: computeNextDueAtUtc('10:30', null, TZ), dueAtUtc: new Date(computeNextDueAtUtc('10:30', null, TZ)).toISOString(), sent: false },
+      { id:'s4', title:'Stretch & move', note:'Stand up and stretch for 5 minutes', time:'13:00', emoji:'🧘', color:COLORS[5], isAlarm:false, dueAt: computeNextDueAtUtc('13:00', null, TZ), dueAtUtc: new Date(computeNextDueAtUtc('13:00', null, TZ)).toISOString(), sent: false },
+      { id:'s5', title:'Evening workout', note:'Stay active and healthy', time:'18:30', emoji:'🏃', color:COLORS[3], isAlarm:true, dueAt: computeNextDueAtUtc('18:30', null, TZ), dueAtUtc: new Date(computeNextDueAtUtc('18:30', null, TZ)).toISOString(), sent: false },
+      { id:'s6', title:'Wind down & read', note:'Relax before sleep', time:'21:30', emoji:'📖', color:COLORS[4], isAlarm:false, dueAt: computeNextDueAtUtc('21:30', null, TZ), dueAtUtc: new Date(computeNextDueAtUtc('21:30', null, TZ)).toISOString(), sent: false }
     ];
   }
   function showAuth() {
@@ -2766,7 +2855,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     $('#statsScope').hidden = !u.admin;
     if (u.tz !== TZ) api('PATCH', '/api/me', { tz: TZ }).catch(() => {});
     track('app_open', { standalone: isStandalone, ios: isIOS });
-    lastRenderMin = -1; tick(); updatePermButton();
+    lastRenderMin = -1; tick(); updatePermButton(); checkMobileTipBanner();
     renderFormTags();
     renderTagFilterBar();
     renderCalendar();
@@ -3062,11 +3151,15 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     if (editingReminderId) {
       const idx = reminders.findIndex(x => x.id === editingReminderId);
       if (idx !== -1) {
+        const nextDue = computeNextDueAtUtc(time, selDays.length === 7 ? null : selDays.slice(), TZ);
         reminders[idx] = {
           ...reminders[idx],
           title,
           note,
           time,
+          dueAt: nextDue,
+          dueAtUtc: new Date(nextDue).toISOString(),
+          sent: false,
           emoji: selEmoji,
           days: selDays.length === 7 ? null : selDays.slice(),
           priority: selPriority,
@@ -3084,11 +3177,15 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       }
     }
 
+    const nextDue = computeNextDueAtUtc(time, selDays.length === 7 ? null : selDays.slice(), TZ);
     const r = {
       id: 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2,6),
       title,
       note,
       time,
+      dueAt: nextDue,
+      dueAtUtc: new Date(nextDue).toISOString(),
+      sent: false,
       emoji: selEmoji,
       color: COLORS[Math.floor(Math.random()*COLORS.length)],
       days: selDays.length === 7 ? null : selDays.slice(),
@@ -3326,11 +3423,15 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     clean = clean.replace(/^(tomorrow|today|reminder\s+to|remind\s+me\s+to)\s+/i, '').trim();
     if (!clean) clean = 'Reminder';
 
+    const nextDue = computeNextDueAtUtc(foundTime, null, TZ);
     return {
       id: 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
       title: clean,
       note: 'Quick added',
       time: foundTime,
+      dueAt: nextDue,
+      dueAtUtc: new Date(nextDue).toISOString(),
+      sent: false,
       emoji,
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
       priority,
