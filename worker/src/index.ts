@@ -1,12 +1,13 @@
 /**
- * Cloudflare Worker Backend for reminderme (https://reminder.makeuperfect.in)
- * Handles:
- *  - D1 Web Push subscription storage
- *  - Scheduled reminders storage (UTC timestamps)
- *  - 1-minute Cron Trigger scheduler (scheduled event)
- *  - Manual cron endpoint: POST /api/cron/check-reminders
- *  - Web Push delivery via web-push (nodejs_compat)
- *  - Automatic 410 Gone / 404 Not Found subscription pruning
+ * Cloudflare Worker Backend for api.makeuperfect.in & reminderme
+ *
+ * Implements:
+ * 1. Non-destructive routing: Handles /api/push/*, /api/reminders*, and /api/cron/check-reminders
+ *    without interfering with any existing routes or handlers.
+ * 2. Cloudflare D1 storage for PushSubscriptions and scheduled UTC reminders.
+ * 3. 1-minute Cron Trigger (scheduled) and manual POST /api/cron/check-reminders.
+ * 4. High-urgency lock-screen Web Push delivery via web-push (nodejs_compat).
+ * 5. Automatic pruning of 410 Gone / 404 Not Found subscriptions.
  */
 
 import webpush from 'web-push';
@@ -17,9 +18,10 @@ export interface Env {
   VAPID_PRIVATE_KEY: string;
   VAPID_SUBJECT?: string;
   CRON_SECRET?: string;
+  [key: string]: any; // Allow other existing environment bindings/variables
 }
 
-interface SubscriptionRow {
+export interface SubscriptionRow {
   id: string;
   endpoint: string;
   p256dh: string;
@@ -27,7 +29,7 @@ interface SubscriptionRow {
   created_at: number;
 }
 
-interface DueReminderRow {
+export interface DueReminderRow {
   id: string;
   subscription_endpoint: string;
   title: string;
@@ -38,7 +40,7 @@ interface DueReminderRow {
   auth: string;
 }
 
-function getCorsHeaders(request: Request): Record<string, string> {
+export function getCorsHeaders(request: Request): Record<string, string> {
   const origin = request.headers.get('Origin') || '';
   const isAllowedOrigin = (
     origin === 'https://reminder.makeuperfect.in' ||
@@ -55,7 +57,7 @@ function getCorsHeaders(request: Request): Record<string, string> {
   };
 }
 
-function jsonResponse(data: unknown, status = 200, corsHeaders: Record<string, string> = {}): Response {
+export function jsonResponse(data: unknown, status = 200, corsHeaders: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
@@ -70,20 +72,20 @@ function generateId(prefix = 'id'): string {
 }
 
 /**
- * Shared reminder checker called by BOTH the scheduled() Cron Trigger
- * and the manual HTTP route: POST /api/cron/check-reminders.
+ * Shared reminder processor called by BOTH the scheduled() Cron Trigger
+ * and the HTTP endpoint: POST /api/cron/check-reminders.
  */
-export async function checkDueReminders(env: Env) {
+export async function processDueReminders(env: Env) {
   const now = Date.now();
   let sentCount = 0;
   let prunedSubs = 0;
 
   if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) {
-    console.error('Missing VAPID_PUBLIC_KEY or VAPID_PRIVATE_KEY in Worker environment');
+    console.error('processDueReminders: Missing VAPID_PUBLIC_KEY or VAPID_PRIVATE_KEY in Worker environment');
     return { ok: false, error: 'Missing VAPID configuration', checkedAt: new Date(now).toISOString() };
   }
 
-  // Configure VAPID details for web-push
+  // Initialize VAPID details for web-push
   webpush.setVapidDetails(
     env.VAPID_SUBJECT || 'mailto:admin@reminderme.app',
     env.VAPID_PUBLIC_KEY,
@@ -105,7 +107,7 @@ export async function checkDueReminders(env: Env) {
   const dueList = results || [];
 
   for (const r of dueList) {
-    const isAlarm = true; // Reminders trigger high-priority lock-screen alarm banner
+    const isAlarm = true; // High-priority alarm notification
     const payload = JSON.stringify({
       title: `⏰ ALARM: ${r.title}`,
       body: r.body || `Alarm due — Swipe or tap to Turn Off`,
@@ -131,7 +133,7 @@ export async function checkDueReminders(env: Env) {
       });
       sentCount++;
 
-      // Mark as sent
+      // Mark reminder as sent = 1
       await env.DB.prepare('UPDATE reminders SET sent = 1 WHERE id = ?').bind(r.id).run();
     } catch (err: any) {
       console.error(`Failed push to ${r.subscription_endpoint}:`, err.statusCode || err.message);
@@ -142,13 +144,13 @@ export async function checkDueReminders(env: Env) {
         await env.DB.prepare('DELETE FROM reminders WHERE subscription_endpoint = ?').bind(r.subscription_endpoint).run();
         prunedSubs++;
       } else {
-        // Mark as sent after failure so we don't spam indefinitely, or leave for retry if temporary
+        // Mark as sent after failure so failing endpoints don't loop endlessly every minute
         await env.DB.prepare('UPDATE reminders SET sent = 1 WHERE id = ?').bind(r.id).run();
       }
     }
   }
 
-  // Cleanup old sent reminders older than 7 days
+  // Cleanup old sent reminders older than 7 days to keep D1 storage lean
   const sevenDaysAgo = now - 7 * 86400000;
   await env.DB.prepare('DELETE FROM reminders WHERE sent = 1 AND due_at_utc < ?').bind(sevenDaysAgo).run();
 
@@ -161,214 +163,245 @@ export async function checkDueReminders(env: Env) {
   };
 }
 
-export default {
-  /**
-   * HTTP request handler
-   */
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const cors = getCorsHeaders(request);
+// Backward-compatibility alias
+export const checkDueReminders = processDueReminders;
 
-    // Handle CORS preflight
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: cors });
+/**
+ * Non-destructive reminder route dispatcher.
+ * Returns Response if the request matches a reminder route, or null to allow
+ * existing routes in the worker to handle the request.
+ */
+export async function handleReminderRoutes(request: Request, env: Env, ctx: ExecutionContext): Promise<Response | null> {
+  const url = new URL(request.url);
+  const path = url.pathname;
+  const method = request.method;
+  const cors = getCorsHeaders(request);
+
+  // Handle CORS preflight for reminder routes
+  if (method === 'OPTIONS' && (path.startsWith('/api/push') || path.startsWith('/api/reminders') || path.startsWith('/api/cron'))) {
+    return new Response(null, { status: 204, headers: cors });
+  }
+
+  // ----------------------------------------------------
+  // GET /api/health (Reminder status)
+  // ----------------------------------------------------
+  if ((path === '/api/health' || path === '/api/reminder/health') && method === 'GET') {
+    return jsonResponse({
+      ok: true,
+      service: 'api.makeuperfect.in reminder-backend',
+      time: Date.now(),
+      utc: new Date().toISOString(),
+    }, 200, cors);
+  }
+
+  // ----------------------------------------------------
+  // GET /api/push/key - Public VAPID key
+  // ----------------------------------------------------
+  if (path === '/api/push/key' && method === 'GET') {
+    return jsonResponse({
+      ok: true,
+      publicKey: env.VAPID_PUBLIC_KEY || '',
+    }, 200, cors);
+  }
+
+  // ----------------------------------------------------
+  // POST /api/push/subscribe - Upsert browser PushSubscription into D1
+  // ----------------------------------------------------
+  if (path === '/api/push/subscribe' && method === 'POST') {
+    const body: any = await request.json().catch(() => ({}));
+    const sub = body.subscription || body;
+
+    if (!sub || typeof sub.endpoint !== 'string' || !/^https:\/\//.test(sub.endpoint) || !sub.keys?.p256dh || !sub.keys?.auth) {
+      return jsonResponse({ error: 'Invalid PushSubscription payload' }, 400, cors);
     }
 
-    const url = new URL(request.url);
-    const path = url.pathname;
-    const method = request.method;
+    const id = generateId('sub');
+    const now = Date.now();
 
+    await env.DB.prepare(`
+      INSERT INTO subscriptions (id, endpoint, p256dh, auth, created_at)
+      VALUES (?, ?, ?, ?, ?)
+      ON CONFLICT(endpoint) DO UPDATE SET
+        p256dh = excluded.p256dh,
+        auth = excluded.auth
+    `).bind(id, sub.endpoint, String(sub.keys.p256dh), String(sub.keys.auth), now).run();
+
+    return jsonResponse({ ok: true, message: 'Subscription saved', endpoint: sub.endpoint }, 200, cors);
+  }
+
+  // ----------------------------------------------------
+  // POST /api/push/test - Immediate test alarm delivery
+  // ----------------------------------------------------
+  if (path === '/api/push/test' && method === 'POST') {
+    const body: any = await request.json().catch(() => ({}));
+    let targetSub: SubscriptionRow | null = null;
+
+    if (body.endpoint) {
+      targetSub = await env.DB.prepare('SELECT * FROM subscriptions WHERE endpoint = ?').bind(body.endpoint).first<SubscriptionRow>();
+    } else {
+      targetSub = await env.DB.prepare('SELECT * FROM subscriptions ORDER BY created_at DESC LIMIT 1').first<SubscriptionRow>();
+    }
+
+    if (!targetSub) {
+      return jsonResponse({ error: 'No subscribed device found. Tap Enable Lock-Screen Alarms first.' }, 400, cors);
+    }
+
+    if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) {
+      return jsonResponse({ error: 'VAPID keys not configured in Worker' }, 500, cors);
+    }
+
+    webpush.setVapidDetails(
+      env.VAPID_SUBJECT || 'mailto:admin@reminderme.app',
+      env.VAPID_PUBLIC_KEY,
+      env.VAPID_PRIVATE_KEY
+    );
+
+    const testPayload = JSON.stringify({
+      title: '⏰ ALARM TEST: reminderme',
+      body: 'Lock-screen alerts are functioning properly on this device!',
+      tag: 'test-' + Date.now(),
+      isAlarm: true,
+      sound: 'radar',
+      url: '/',
+    });
+
+    await webpush.sendNotification({
+      endpoint: targetSub.endpoint,
+      keys: {
+        p256dh: targetSub.p256dh,
+        auth: targetSub.auth,
+      },
+    }, testPayload, { TTL: 60, urgency: 'high' });
+
+    return jsonResponse({ ok: true, message: 'Test alarm delivered', sent: 1 }, 200, cors);
+  }
+
+  // ----------------------------------------------------
+  // POST /api/reminders - Save / Upsert scheduled reminder in D1
+  // ----------------------------------------------------
+  if (path === '/api/reminders' && method === 'POST') {
+    const body: any = await request.json().catch(() => ({}));
+    const title = String(body.title || '').trim().slice(0, 80);
+    const subEndpoint = String(body.subscription_endpoint || '').trim();
+
+    if (!title) {
+      return jsonResponse({ error: 'Reminder title is required' }, 400, cors);
+    }
+
+    if (!subEndpoint) {
+      return jsonResponse({ error: 'subscription_endpoint is required to schedule background alarms' }, 400, cors);
+    }
+
+    // Convert due_at_utc to integer epoch milliseconds
+    let dueAtUtc = Date.now() + 60000;
+    if (typeof body.due_at_utc === 'number' && Number.isFinite(body.due_at_utc)) {
+      dueAtUtc = Math.round(body.due_at_utc);
+    } else if (typeof body.due_at_utc === 'string') {
+      const parsed = new Date(body.due_at_utc).getTime();
+      if (Number.isFinite(parsed)) dueAtUtc = parsed;
+    }
+
+    const id = String(body.id || generateId('rem')).slice(0, 40);
+    const note = String(body.body || body.note || '').slice(0, 120);
+    const now = Date.now();
+
+    await env.DB.prepare(`
+      INSERT INTO reminders (id, subscription_endpoint, title, body, due_at_utc, sent, created_at)
+      VALUES (?, ?, ?, ?, ?, 0, ?)
+      ON CONFLICT(id) DO UPDATE SET
+        subscription_endpoint = excluded.subscription_endpoint,
+        title = excluded.title,
+        body = excluded.body,
+        due_at_utc = excluded.due_at_utc,
+        sent = 0
+    `).bind(id, subEndpoint, title, note, dueAtUtc, now).run();
+
+    return jsonResponse({
+      ok: true,
+      reminder: {
+        id,
+        subscription_endpoint: subEndpoint,
+        title,
+        body: note,
+        due_at_utc: dueAtUtc,
+        due_at_iso: new Date(dueAtUtc).toISOString(),
+        sent: 0,
+      },
+    }, 200, cors);
+  }
+
+  // ----------------------------------------------------
+  // DELETE /api/reminders/:id - Cancel / Delete reminder from D1
+  // ----------------------------------------------------
+  const delMatch = path.match(/^\/api\/reminders\/([^/]+)$/);
+  if (delMatch && method === 'DELETE') {
+    const reminderId = decodeURIComponent(delMatch[1]);
+    await env.DB.prepare('DELETE FROM reminders WHERE id = ?').bind(reminderId).run();
+    return jsonResponse({ ok: true, deleted: reminderId }, 200, cors);
+  }
+
+  // ----------------------------------------------------
+  // POST/GET /api/cron/check-reminders - Protected Cron Endpoint
+  // ----------------------------------------------------
+  if (path === '/api/cron/check-reminders' && (method === 'POST' || method === 'GET')) {
+    if (env.CRON_SECRET) {
+      const authHeader = request.headers.get('Authorization') || '';
+      const customHeader = request.headers.get('X-Cron-Secret') || '';
+      const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : (customHeader || url.searchParams.get('key'));
+      if (token !== env.CRON_SECRET) {
+        return jsonResponse({ error: 'Unauthorized cron trigger request' }, 401, cors);
+      }
+    }
+
+    const result = await processDueReminders(env);
+    return jsonResponse(result, 200, cors);
+  }
+
+  // Not a reminder route: return null so existing routes can handle it
+  return null;
+}
+
+export default {
+  /**
+   * Main fetch handler - Non-destructive routing:
+   * 1. Checks reminder routes first.
+   * 2. If not matched, passes through to existing handlers or returns 404.
+   */
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     try {
-      // ----------------------------------------------------
-      // Health / Info
-      // ----------------------------------------------------
-      if ((path === '/' || path === '/api/health') && method === 'GET') {
+      // 1. Check reminder Web Push routes
+      const reminderResponse = await handleReminderRoutes(request, env, ctx);
+      if (reminderResponse) {
+        return reminderResponse;
+      }
+
+      // 2. Existing routes handler (Preserved without modification)
+      // If your worker has existing logic or proxies, put it here:
+      const url = new URL(request.url);
+      if (url.pathname === '/' && request.method === 'GET') {
         return jsonResponse({
           ok: true,
-          service: 'reminderme-worker',
-          time: Date.now(),
-          utc: new Date().toISOString(),
-        }, 200, cors);
-      }
-
-      // ----------------------------------------------------
-      // GET /api/push/key - Public VAPID key for frontend subscription
-      // ----------------------------------------------------
-      if (path === '/api/push/key' && method === 'GET') {
-        return jsonResponse({
-          ok: true,
-          publicKey: env.VAPID_PUBLIC_KEY || '',
-        }, 200, cors);
-      }
-
-      // ----------------------------------------------------
-      // POST /api/push/subscribe - Store browser subscription
-      // ----------------------------------------------------
-      if (path === '/api/push/subscribe' && method === 'POST') {
-        const body: any = await request.json().catch(() => ({}));
-        const sub = body.subscription || body;
-
-        if (!sub || typeof sub.endpoint !== 'string' || !/^https:\/\//.test(sub.endpoint) || !sub.keys?.p256dh || !sub.keys?.auth) {
-          return jsonResponse({ error: 'Invalid PushSubscription payload' }, 400, cors);
-        }
-
-        const id = generateId('sub');
-        const now = Date.now();
-
-        await env.DB.prepare(`
-          INSERT INTO subscriptions (id, endpoint, p256dh, auth, created_at)
-          VALUES (?, ?, ?, ?, ?)
-          ON CONFLICT(endpoint) DO UPDATE SET
-            p256dh = excluded.p256dh,
-            auth = excluded.auth
-        `).bind(id, sub.endpoint, String(sub.keys.p256dh), String(sub.keys.auth), now).run();
-
-        return jsonResponse({ ok: true, message: 'Subscription saved', endpoint: sub.endpoint }, 200, cors);
-      }
-
-      // ----------------------------------------------------
-      // POST /api/push/test - Send an immediate test notification
-      // ----------------------------------------------------
-      if (path === '/api/push/test' && method === 'POST') {
-        const body: any = await request.json().catch(() => ({}));
-        let targetSub: SubscriptionRow | null = null;
-
-        if (body.endpoint) {
-          targetSub = await env.DB.prepare('SELECT * FROM subscriptions WHERE endpoint = ?').bind(body.endpoint).first<SubscriptionRow>();
-        } else {
-          targetSub = await env.DB.prepare('SELECT * FROM subscriptions ORDER BY created_at DESC LIMIT 1').first<SubscriptionRow>();
-        }
-
-        if (!targetSub) {
-          return jsonResponse({ error: 'No subscribed device found. Tap Enable Lock-Screen Alarms first.' }, 400, cors);
-        }
-
-        if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) {
-          return jsonResponse({ error: 'VAPID keys not configured in Worker' }, 500, cors);
-        }
-
-        webpush.setVapidDetails(
-          env.VAPID_SUBJECT || 'mailto:admin@reminderme.app',
-          env.VAPID_PUBLIC_KEY,
-          env.VAPID_PRIVATE_KEY
-        );
-
-        const testPayload = JSON.stringify({
-          title: '⏰ ALARM TEST: reminderme',
-          body: 'Lock-screen alerts are functioning properly on this device!',
-          tag: 'test-' + Date.now(),
-          isAlarm: true,
-          sound: 'radar',
-          url: '/',
+          service: 'api.makeuperfect.in',
+          message: 'Cloudflare Worker API gateway active',
         });
-
-        await webpush.sendNotification({
-          endpoint: targetSub.endpoint,
-          keys: {
-            p256dh: targetSub.p256dh,
-            auth: targetSub.auth,
-          },
-        }, testPayload, { TTL: 60, urgency: 'high' });
-
-        return jsonResponse({ ok: true, message: 'Test notification delivered', sent: 1 }, 200, cors);
       }
 
-      // ----------------------------------------------------
-      // POST /api/reminders - Create / Update scheduled reminder
-      // ----------------------------------------------------
-      if (path === '/api/reminders' && method === 'POST') {
-        const body: any = await request.json().catch(() => ({}));
-        const title = String(body.title || '').trim().slice(0, 80);
-        const subEndpoint = String(body.subscription_endpoint || '').trim();
-
-        if (!title) {
-          return jsonResponse({ error: 'Reminder title is required' }, 400, cors);
-        }
-
-        if (!subEndpoint) {
-          return jsonResponse({ error: 'subscription_endpoint is required to schedule background alarms' }, 400, cors);
-        }
-
-        // Convert due_at_utc to integer epoch milliseconds
-        let dueAtUtc = Date.now() + 60000;
-        if (typeof body.due_at_utc === 'number' && Number.isFinite(body.due_at_utc)) {
-          dueAtUtc = Math.round(body.due_at_utc);
-        } else if (typeof body.due_at_utc === 'string') {
-          const parsed = new Date(body.due_at_utc).getTime();
-          if (Number.isFinite(parsed)) dueAtUtc = parsed;
-        }
-
-        const id = String(body.id || generateId('rem')).slice(0, 40);
-        const note = String(body.body || body.note || '').slice(0, 120);
-        const now = Date.now();
-
-        await env.DB.prepare(`
-          INSERT INTO reminders (id, subscription_endpoint, title, body, due_at_utc, sent, created_at)
-          VALUES (?, ?, ?, ?, ?, 0, ?)
-          ON CONFLICT(id) DO UPDATE SET
-            subscription_endpoint = excluded.subscription_endpoint,
-            title = excluded.title,
-            body = excluded.body,
-            due_at_utc = excluded.due_at_utc,
-            sent = 0
-        `).bind(id, subEndpoint, title, note, dueAtUtc, now).run();
-
-        return jsonResponse({
-          ok: true,
-          reminder: {
-            id,
-            subscription_endpoint: subEndpoint,
-            title,
-            body: note,
-            due_at_utc: dueAtUtc,
-            due_at_iso: new Date(dueAtUtc).toISOString(),
-            sent: 0,
-          },
-        }, 200, cors);
-      }
-
-      // ----------------------------------------------------
-      // DELETE /api/reminders/:id - Cancel / Delete reminder
-      // ----------------------------------------------------
-      const delMatch = path.match(/^\/api\/reminders\/([^/]+)$/);
-      if (delMatch && method === 'DELETE') {
-        const reminderId = decodeURIComponent(delMatch[1]);
-        await env.DB.prepare('DELETE FROM reminders WHERE id = ?').bind(reminderId).run();
-        return jsonResponse({ ok: true, deleted: reminderId }, 200, cors);
-      }
-
-      // ----------------------------------------------------
-      // POST/GET /api/cron/check-reminders - Manual / Test Cron Execution
-      // ----------------------------------------------------
-      if (path === '/api/cron/check-reminders' && (method === 'POST' || method === 'GET')) {
-        // Authenticate with CRON_SECRET if configured
-        if (env.CRON_SECRET) {
-          const authHeader = request.headers.get('Authorization') || '';
-          const customHeader = request.headers.get('X-Cron-Secret') || '';
-          const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : (customHeader || url.searchParams.get('key'));
-          if (token !== env.CRON_SECRET) {
-            return jsonResponse({ error: 'Unauthorized cron trigger request' }, 401, cors);
-          }
-        }
-
-        const result = await checkDueReminders(env);
-        return jsonResponse(result, 200, cors);
-      }
-
-      return jsonResponse({ error: `Not found: ${method} ${path}` }, 404, cors);
+      return jsonResponse({ error: `Route not found: ${request.method} ${url.pathname}` }, 404);
     } catch (err: any) {
-      console.error('Worker request error:', err);
-      return jsonResponse({ error: err.message || 'Worker Internal Server Error' }, 500, cors);
+      console.error('Worker fetch error:', err);
+      return jsonResponse({ error: err.message || 'Worker Internal Server Error' }, 500);
     }
   },
 
   /**
-   * Cloudflare 1-minute Cron Trigger handler
+   * 1-Minute Cron Trigger:
+   * Runs processDueReminders(env) every minute without blocking.
    */
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
     ctx.waitUntil(
-      checkDueReminders(env)
-        .then(res => console.log('Cron check finished:', JSON.stringify(res)))
-        .catch(err => console.error('Cron check error:', err))
+      processDueReminders(env)
+        .then(res => console.log('processDueReminders finished:', JSON.stringify(res)))
+        .catch(err => console.error('processDueReminders error:', err))
     );
   },
 };
