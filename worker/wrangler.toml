@@ -9,7 +9,7 @@ crons = ["* * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "reminder-db"
-database_id = "YOUR_D1_DATABASE_ID" # Run: wrangler d1 create reminder-db and paste the database_id here
+database_id = "5ce8f4ff-d94b-449a-bc45-12ec01f5274b" # Run: wrangler d1 create reminder-db and paste the database_id here
 
 [vars]
 VAPID_SUBJECT = "mailto:admin@reminderme.app"

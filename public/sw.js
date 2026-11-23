@@ -77,18 +77,21 @@ self.addEventListener('push', e => {
     data = { title: 'reminderme', body: e.data ? e.data.text() : '' };
   }
 
+  const id = data.id || data.reminderId;
   const title = data.title || 'reminderme';
-  const isAlarm = !!data.isAlarm || (data.title && data.title.includes('ALARM'));
+  const body = data.body || 'You have a scheduled reminder.';
+  const icon = '/icon-192.png';
+  const badge = '/icon-192.png';
   const options = {
-    body: data.body || 'You have a scheduled reminder.',
-    icon: '/icons/icon-192.png',
-    badge: '/icons/badge-96.png',
-    tag: data.tag || (isAlarm ? 'reminderme-alarm' : 'reminderme'),
+    body,
+    icon,
+    badge,
+    tag: data.tag || (id ? 'r-' + id : 'reminderme'),
     renotify: true,
     requireInteraction: true,
-    vibrate: isAlarm ? [400, 200, 400, 200, 800, 300, 800] : [300, 100, 300, 100, 600],
+    vibrate: [200, 100, 200],
     timestamp: Date.now(),
-    data: { url: data.url || '/', reminderId: data.reminderId || null },
+    data: { id, reminderId: id, url: 'https://reminder.makeuperfect.in' },
     actions: [
       { action: 'snooze', title: '😴 Snooze 5 min' },
       { action: 'dismiss', title: '🛑 Dismiss' }
@@ -111,7 +114,7 @@ const WORKER_BASE = location.hostname === 'reminder.makeuperfect.in' || location
 
 self.addEventListener('notificationclick', e => {
   const n = e.notification;
-  const rid = n.data && n.data.reminderId;
+  const rid = n.data && (n.data.id || n.data.reminderId);
   n.close();
   const act = e.action;
 
@@ -149,7 +152,8 @@ self.addEventListener('notificationclick', e => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 id: rid,
-                due_at_utc: Date.now() + 5 * 60000
+                due_at_utc: Date.now() + 5 * 60000,
+                dueAtUtc: Date.now() + 5 * 60000
               })
             }).catch(() => {});
           }
@@ -171,7 +175,7 @@ self.addEventListener('notificationclick', e => {
       for (const c of list) {
         if ('focus' in c) return c.focus();
       }
-      return self.clients.openWindow((n.data && n.data.url) || '/');
+      return self.clients.openWindow('https://reminder.makeuperfect.in');
     })
   );
 });

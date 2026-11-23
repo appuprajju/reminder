@@ -109,13 +109,14 @@ export async function processDueReminders(env: Env) {
   for (const r of dueList) {
     const isAlarm = true; // High-priority alarm notification
     const payload = JSON.stringify({
+      id: r.id,
       title: `⏰ ALARM: ${r.title}`,
       body: r.body || `Alarm due — Swipe or tap to Turn Off`,
       tag: 'r-' + r.id,
       reminderId: r.id,
       isAlarm: isAlarm,
       sound: 'radar',
-      url: '/',
+      url: 'https://reminder.makeuperfect.in',
     });
 
     const pushSubscription = {
@@ -282,22 +283,23 @@ export async function handleReminderRoutes(request: Request, env: Env, ctx: Exec
   if (path === '/api/reminders' && method === 'POST') {
     const body: any = await request.json().catch(() => ({}));
     const title = String(body.title || '').trim().slice(0, 80);
-    const subEndpoint = String(body.subscription_endpoint || '').trim();
+    const subEndpoint = String(body.subscription_endpoint || body.subscriptionEndpoint || '').trim();
 
     if (!title) {
       return jsonResponse({ error: 'Reminder title is required' }, 400, cors);
     }
 
     if (!subEndpoint) {
-      return jsonResponse({ error: 'subscription_endpoint is required to schedule background alarms' }, 400, cors);
+      return jsonResponse({ error: 'subscription_endpoint or subscriptionEndpoint is required to schedule background alarms' }, 400, cors);
     }
 
     // Convert due_at_utc to integer epoch milliseconds
+    const rawDue = body.due_at_utc ?? body.dueAtUtc;
     let dueAtUtc = Date.now() + 60000;
-    if (typeof body.due_at_utc === 'number' && Number.isFinite(body.due_at_utc)) {
-      dueAtUtc = Math.round(body.due_at_utc);
-    } else if (typeof body.due_at_utc === 'string') {
-      const parsed = new Date(body.due_at_utc).getTime();
+    if (typeof rawDue === 'number' && Number.isFinite(rawDue)) {
+      dueAtUtc = Math.round(rawDue);
+    } else if (typeof rawDue === 'string') {
+      const parsed = new Date(rawDue).getTime();
       if (Number.isFinite(parsed)) dueAtUtc = parsed;
     }
 
