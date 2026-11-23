@@ -1,0 +1,19 @@
+name = "reminder-worker"
+main = "src/index.ts"
+compatibility_date = "2024-04-05"
+compatibility_flags = ["nodejs_compat"]
+
+[triggers]
+crons = ["* * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "reminder-db"
+database_id = "YOUR_D1_DATABASE_ID" # Run: wrangler d1 create reminder-db and paste the database_id here
+
+[vars]
+VAPID_SUBJECT = "mailto:admin@reminderme.app"
+# Note: Sensitive variables should be set via wrangler secret put:
+#   npx wrangler secret put VAPID_PUBLIC_KEY
+#   npx wrangler secret put VAPID_PRIVATE_KEY
+#   npx wrangler secret put CRON_SECRET

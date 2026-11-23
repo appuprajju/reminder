@@ -105,6 +105,10 @@ self.addEventListener('push', e => {
 });
 
 /* Notification action handler (snooze, dismiss, or open app) */
+const WORKER_BASE = location.hostname === 'reminder.makeuperfect.in' || location.hostname.endsWith('makeuperfect.in')
+  ? 'https://api.makeuperfect.in'
+  : '';
+
 self.addEventListener('notificationclick', e => {
   const n = e.notification;
   const rid = n.data && n.data.reminderId;
@@ -117,6 +121,9 @@ self.addEventListener('notificationclick', e => {
         list.forEach(c => c.postMessage({ type: 'alarm-dismissed', reminderId: rid }));
       }).then(() => {
         if (rid) {
+          if (WORKER_BASE) {
+            fetch(`${WORKER_BASE}/api/reminders/${encodeURIComponent(rid)}`, { method: 'DELETE', mode: 'cors' }).catch(() => {});
+          }
           return fetch(`/api/reminders/${encodeURIComponent(rid)}/done`, {
             method: 'POST',
             credentials: 'include',
@@ -135,6 +142,17 @@ self.addEventListener('notificationclick', e => {
         list.forEach(c => c.postMessage({ type: 'alarm-snoozed', reminderId: rid, minutes: 5 }));
       }).then(() => {
         if (rid) {
+          if (WORKER_BASE) {
+            fetch(`${WORKER_BASE}/api/reminders`, {
+              method: 'POST',
+              mode: 'cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                id: rid,
+                due_at_utc: Date.now() + 5 * 60000
+              })
+            }).catch(() => {});
+          }
           return fetch(`/api/reminders/${encodeURIComponent(rid)}/snooze`, {
             method: 'POST',
             credentials: 'include',

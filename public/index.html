@@ -1071,8 +1071,8 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   <header class="top">
     <div class="brand"><img class="logo" src="/icons/icon-192.png" alt="reminderme">reminderme</div>
     <div class="actions">
-      <button class="btn" id="btnPerm">🔔 Alerts</button>
-      <button class="btn" id="btnTest" title="Send a test notification to verify lock-screen delivery">🔔 Test</button>
+      <button class="btn" id="btnPerm" title="Enable Lock-Screen Alarms">🔔 Lock-Screen Alarms</button>
+      <button class="btn" id="btnTest" title="Send Test Alarm to verify lock-screen delivery">🚨 Test Alarm</button>
       <button class="btn" id="btnStats">📊 Usage</button>
       <button class="btn" id="btnInstall" hidden>⬇️ Install</button>
       <button class="avatar" id="btnUser" title="Account">?</button>
@@ -1503,6 +1503,48 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   const localSnoozes = {};
 
   /* ---------------- API ---------------- */
+  const WORKER_API_BASE = window.REMINDER_WORKER_API || (
+    location.hostname === 'reminder.makeuperfect.in' || location.hostname.endsWith('makeuperfect.in')
+      ? 'https://api.makeuperfect.in'
+      : ''
+  );
+  const DEFAULT_VAPID_PUBLIC_KEY = 'BEva2f0OpYSd0B9h6r2D0s1CtpRM0nSeU1DqvWOJ0di0LVsyUnuaHyxB6xZTSeUUKtA6bARhgs6zW6rvSJsPkE0';
+
+  async function syncReminderToWorker(r, action = 'save') {
+    if (!r || !r.id) return;
+    const endpoint = localStorage.getItem('push_endpoint');
+    const targets = [];
+    if (WORKER_API_BASE) targets.push(WORKER_API_BASE);
+
+    for (const base of targets) {
+      try {
+        if (action === 'delete') {
+          await fetch(`${base}/api/reminders/${encodeURIComponent(r.id)}`, {
+            method: 'DELETE',
+            mode: 'cors'
+          });
+        } else {
+          if (!endpoint) continue;
+          const dueAtUtc = r.dueAt || computeNextDueAtUtc(r.time, r.days, TZ);
+          await fetch(`${base}/api/reminders`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: r.id,
+              subscription_endpoint: endpoint,
+              title: r.title,
+              body: r.note || (r.isAlarm !== false ? `Alarm due for ${r.time} — Swipe or tap to Turn Off` : `Reminder due for ${r.time}`),
+              due_at_utc: dueAtUtc
+            })
+          });
+        }
+      } catch (err) {
+        console.warn(`Worker reminder ${action} error:`, err);
+      }
+    }
+  }
+
   async function api(method, url, body) {
     const res = await fetch(url, { method, credentials: 'include', headers: body ? { 'Content-Type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined });
     let data = {}; try { data = await res.json(); } catch (e) {}
@@ -2311,6 +2353,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       if (fromEl) fromEl.classList.add('vanish');
       lastCompletedReminder = Object.assign({}, real);
       reminders = reminders.filter(x => x.id !== r.id);
+      syncReminderToWorker(r, 'delete');
       saveLocal();
       save();
       setTimeout(() => { render(); renderCalendar(); }, 320);
@@ -2321,6 +2364,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
           ub.onclick = () => {
             if (lastCompletedReminder) {
               reminders.push(lastCompletedReminder);
+              syncReminderToWorker(lastCompletedReminder, 'save');
               lastCompletedReminder = null;
               saveLocal(); save(); render(); renderCalendar();
               toast('Restored task ✓');
@@ -2332,6 +2376,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       real.doneDate = todayKey();
       saveLocal();
       save();
+      syncReminderToWorker(real, 'save');
       render();
       renderCalendar();
       toast('✓ Marked done for today — repeats next scheduled day');
@@ -2341,7 +2386,9 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 
   async function snooze(r, minutes = 10) {
     if (!reminders.find(x => x.id === r.id)) return;
-    localSnoozes[r.id] = Date.now() + minutes*60*1000;
+    const snoozeAt = Date.now() + minutes*60*1000;
+    localSnoozes[r.id] = snoozeAt;
+    syncReminderToWorker({ ...r, dueAt: snoozeAt }, 'save');
     toast(`Snoozed for ${minutes} minutes`);
     try { await api('POST', `/api/reminders/${encodeURIComponent(r.id)}/snooze`, { minutes, source: 'banner' }); } catch (e) {}
   }
@@ -2399,7 +2446,15 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       d.querySelector('.s').innerHTML = `${fmt(r.time)} · ${rep} ${alertBadge} ${priorityBadge} ${tagBadge}`;
       
       d.querySelector('.check').onclick = () => markDone(r, d);
-      d.querySelector('.del').onclick = () => { reminders = reminders.filter(x=>x!==r); track('reminder_delete'); save(); render(); renderCalendar(); toast('Reminder deleted'); };
+      d.querySelector('.del').onclick = () => {
+        reminders = reminders.filter(x=>x!==r);
+        syncReminderToWorker(r, 'delete');
+        track('reminder_delete');
+        save();
+        render();
+        renderCalendar();
+        toast('Reminder deleted');
+      };
       d.querySelector('.btn-edit').onclick = () => openEditReminder(r);
       const tagEl = d.querySelector('[data-filter-tag]');
       if (tagEl) {
@@ -2554,15 +2609,46 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       }
       try {
         const reg = swReg || await registerSW() || await navigator.serviceWorker.ready;
-        const { publicKey } = await api('GET', '/api/push/key');
+        let pubKey = window.VITE_VAPID_PUBLIC_KEY || window.NEXT_PUBLIC_VAPID_PUBLIC_KEY || window.VAPID_PUBLIC_KEY || DEFAULT_VAPID_PUBLIC_KEY;
+        if (WORKER_API_BASE) {
+          try {
+            const kRes = await fetch(`${WORKER_API_BASE}/api/push/key`);
+            const kData = await kRes.json();
+            if (kData.publicKey) pubKey = kData.publicKey;
+          } catch (kErr) {}
+        }
+        if (!pubKey) {
+          try {
+            const { publicKey } = await api('GET', '/api/push/key');
+            if (publicKey) pubKey = publicKey;
+          } catch (e) {}
+        }
         let sub = await reg.pushManager.getSubscription();
-        if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8Array(publicKey) });
+        if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8Array(pubKey) });
+        if (sub) {
+          localStorage.setItem('push_endpoint', sub.endpoint);
+          if (WORKER_API_BASE) {
+            try {
+              await fetch(`${WORKER_API_BASE}/api/push/subscribe`, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ subscription: sub.toJSON(), tz: TZ })
+              });
+            } catch (wErr) { console.warn('Worker sub error:', wErr); }
+          }
+        }
         const r = await api('POST', '/api/push/subscribe', { subscription: sub.toJSON(), tz: TZ });
         track('enable_alerts_success', { devices: r.devices });
+
+        // Sync active reminders to Cloudflare Worker D1
+        for (const item of reminders) {
+          syncReminderToWorker(item, 'save');
+        }
       } catch (err) {
         // Static host (GitHub Pages) without server: local browser notifications remain active
       }
-      toast('🔔 Alerts on — reminders will notify you when due');
+      toast('🔔 Lock-screen alarms enabled — reminders will alert your phone!');
     } catch (e) {
       console.error(e);
       track('enable_alerts_error', { message: String(e.message || e).slice(0, 120) });
@@ -2572,9 +2658,9 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
   async function updatePermButton() {
     const btn = $('#btnPerm');
     btn.classList.remove('on','warn');
-    if (!('Notification' in window) || alertBlocker()) { btn.textContent = '🔔 Enable alerts'; btn.classList.add('warn'); return; }
-    if (Notification.permission === 'granted') { btn.textContent = '🔔 Alerts on'; btn.classList.add('on'); }
-    else btn.textContent = '🔔 Enable alerts';
+    if (!('Notification' in window) || alertBlocker()) { btn.textContent = '🔔 Enable Alarms'; btn.classList.add('warn'); return; }
+    if (Notification.permission === 'granted') { btn.textContent = '🔔 Alarms On'; btn.classList.add('on'); }
+    else btn.textContent = '🔔 Enable Alarms';
   }
   $('#btnPerm').onclick = enableAlerts;
   $('#helpRetry').onclick = () => { closeSheets(); enableAlerts(); };
@@ -2607,25 +2693,52 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
 
   $('#btnTest').onclick = async () => {
     track('test_notification');
-    banner({ title: 'Time to hydrate', body: 'This is the in-app banner. Tap to expand, swipe up to dismiss.', emoji: '💧' });
-    if ('Notification' in window && Notification.permission === 'granted') {
+    banner({ title: '🚨 Alarm Test Triggered', body: 'Lock your phone screen now to verify lock-screen alarm delivery!', emoji: '⏰' });
+    let workerSent = false;
+    const endpoint = localStorage.getItem('push_endpoint');
+
+    if (WORKER_API_BASE) {
+      try {
+        const wRes = await fetch(`${WORKER_API_BASE}/api/push/test`, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ endpoint })
+        });
+        if (wRes.ok) {
+          toast('🚨 Real test alarm sent from Cloudflare Worker! Lock your screen now.');
+          workerSent = true;
+        }
+      } catch (err) {}
+    }
+
+    if (!workerSent && 'Notification' in window && Notification.permission === 'granted') {
       try {
         const r = await api('POST', '/api/push/test');
         toast(`Real push sent to ${r.sent} device${r.sent===1?'':'s'} (lock screen ready)`);
-      } catch (e) {
-        if (swReg) {
-          try {
-            await swReg.showNotification('reminderme', {
-              body: 'Test notification: alerts are working on this device!',
-              icon: '/icons/icon-192.png',
-              badge: '/icons/badge-96.png',
-              vibrate: [300, 100, 300]
-            });
-          } catch(x){}
-        }
+        workerSent = true;
+      } catch (e) {}
+    }
+
+    if (!workerSent) {
+      if (swReg) {
+        try {
+          await swReg.showNotification('⏰ ALARM TEST: reminderme', {
+            body: 'Lock-screen alerts are functioning! Swipe or tap to dismiss.',
+            icon: '/icons/icon-192.png',
+            badge: '/icons/badge-96.png',
+            requireInteraction: true,
+            vibrate: [400, 200, 400, 200, 800, 300, 800],
+            actions: [
+              { action: 'snooze', title: '😴 Snooze 5 min' },
+              { action: 'dismiss', title: '🛑 Dismiss' }
+            ]
+          });
+          toast('🔔 Test alarm triggered via Service Worker! Lock your phone screen.');
+        } catch(x){}
+      } else {
+        toast('Tap 🔔 Lock-Screen Alarms first to enable background notifications');
       }
-    } else {
-      toast('Tap 🔔 Alerts first to enable lock-screen notifications');
     }
   };
 
@@ -3167,6 +3280,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
           isAlarm: selIsAlarm,
           sound
         };
+        syncReminderToWorker(reminders[idx], 'save');
         track('reminder_edit', { id: editingReminderId });
         save(); render(); renderCalendar(); closeSheets();
         editingReminderId = null;
@@ -3196,6 +3310,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
       createdAt: Date.now()
     };
     reminders.push(r);
+    syncReminderToWorker(r, 'save');
     track('reminder_add', { emoji: r.emoji, days: selDays.length, priority: selPriority, tag: selTag, isAlarm: r.isAlarm });
     save(); render(); renderCalendar(); closeSheets(); $('#form').reset();
     [...$('#days').children].forEach(x => x.classList.add('on')); selDays = [0,1,2,3,4,5,6];
@@ -3449,6 +3564,7 @@ h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08e
     if (!val) return;
     const r = parseQuickAdd(val);
     reminders.push(r);
+    syncReminderToWorker(r, 'save');
     track('reminder_add', { quick: true, emoji: r.emoji });
     save();
     render();
