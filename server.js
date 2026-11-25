@@ -28,15 +28,42 @@ try {
 const PORT = Number(process.env.PORT) || 3000;
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
-const PUBLIC = path.join(__dirname, 'public');
+const DIST_DIR = path.resolve(__dirname, 'dist');
+const PUBLIC_DIR = path.resolve(__dirname, 'public');
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
 const SESSION_DAYS = 30;
 const TICK_MS = Number(process.env.TICK_MS) || 60000;
 
+const ALLOWED_ORIGINS = new Set([
+  'https://localhost',
+  'capacitor://localhost',
+  'http://localhost',
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://reminder.makeuperfect.in',
+  ...(process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean),
+]);
+
+function applyCors(req, res) {
+  const origin = req.headers.origin;
+  if (!origin) return;
+  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  const proto = req.headers['x-forwarded-proto'] || (req.socket.encrypted ? 'https' : 'http');
+  const sameOrigin = host && origin === `${proto}://${host}`;
+  if (sameOrigin || ALLOWED_ORIGINS.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-Cron-Secret');
+    res.setHeader('Vary', 'Origin');
+  }
+}
+
 /* ---------------- storage ---------------- */
 fs.mkdirSync(DATA_DIR, { recursive: true });
-let db = { users: {}, sessions: {}, reminders: {}, subs: {}, events: [], snoozes: [], fired: {}, vapid: null };
+let db = { users: {}, sessions: {}, reminders: {}, subs: {}, fcmTokens: {}, events: [], snoozes: [], fired: {}, vapid: null };
 try { db = Object.assign(db, JSON.parse(fs.readFileSync(DB_FILE, 'utf8'))); } catch (e) { /* first run */ }
+if (!db.fcmTokens) db.fcmTokens = {};
 let saveTimer = null;
 function persist(now) {
   const write = () => {
@@ -91,8 +118,11 @@ function currentUser(req) {
   return db.users[s.uid] || null;
 }
 function sessionCookie(req, token, maxAge) {
-  const secure = req.headers['x-forwarded-proto'] === 'https' || req.socket.encrypted ? '; Secure' : '';
-  return `gd_session=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${maxAge}${secure}`;
+  const isHttps = req.headers['x-forwarded-proto'] === 'https' || req.socket.encrypted;
+  if (isHttps) {
+    return `gd_session=${token}; HttpOnly; Path=/; SameSite=None; Secure; Partitioned; Max-Age=${maxAge}`;
+  }
+  return `gd_session=${token}; HttpOnly; Path=/; SameSite=Lax; Max-Age=${maxAge}`;
 }
 function send(res, status, body, headers = {}) {
   const data = typeof body === 'string' || Buffer.isBuffer(body) ? body : JSON.stringify(body);
@@ -294,24 +324,107 @@ const tick = checkDueReminders;
 setInterval(() => checkDueReminders().catch(e => console.error('tick', e)), TICK_MS).unref();
 
 /* ---------------- static files ---------------- */
-const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json', '.json': 'application/json', '.ico': 'image/x-icon' };
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.svg': 'image/svg+xml',
+  '.webmanifest': 'application/manifest+json',
+  '.json': 'application/json',
+  '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2',
+  '.wav': 'audio/wav',
+  '.mp3': 'audio/mpeg',
+};
+
+const PRIVACY_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Privacy Policy — reminderme</title>
+<style>
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #060812; color: #e2e8f0; line-height: 1.65; }
+  main { max-width: 740px; margin: 0 auto; padding: 48px 20px 80px; }
+  h1 { color: #f8fafc; font-size: 28px; margin: 0 0 8px; }
+  h2 { color: #f8fafc; font-size: 18px; margin: 28px 0 8px; }
+  p, li { color: #94a3b8; font-size: 15px; }
+  a { color: #60a5fa; text-decoration: none; }
+  .meta { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+  .card { background: #0f1426; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <h1>Privacy Policy for reminderme</h1>
+    <div class="meta">Effective Date: November 25, 2026 · Developer: Prajwal M (&lt;/yourstudio&gt;)</div>
+    <p><strong>reminderme</strong> is designed to work offline-first on your device with optional cloud synchronization. We respect your privacy and collect only the minimal data required to deliver alarms, reminders, and cross-device sync.</p>
+    <h2>1. Data Stored Locally on Your Device</h2>
+    <p>When using reminderme in Guest Mode, all reminders, alarm schedules, custom ringtone selections, and preferences stay exclusively on your device using native local storage. No account is required.</p>
+    <h2>2. Optional Account &amp; Cloud Sync</h2>
+    <p>If you choose to create an account, we store your email address, display name, hashed password (using salted scrypt), timezone, and your synced reminder schedules solely to synchronize across your devices and deliver background push notifications.</p>
+    <h2>3. Device Permissions Used</h2>
+    <ul>
+      <li><strong>Notifications &amp; Exact Alarms (POST_NOTIFICATIONS, SCHEDULE_EXACT_ALARM):</strong> Used solely to fire alarms and reminders on time when the app is closed or the screen is locked.</li>
+      <li><strong>Microphone (Optional):</strong> Used only when you explicitly tap the Voice Quick-Add button to transcribe a reminder. Audio is never uploaded or stored by reminderme.</li>
+      <li><strong>Vibration &amp; Wake Lock:</strong> Used to provide haptic feedback and wake the screen when a scheduled alarm triggers.</li>
+    </ul>
+    <h2>4. Data Sharing &amp; Deletion</h2>
+    <p>We do not sell, rent, or share your personal data with third-party advertisers. You may export your data or delete your reminders at any time inside the Profile tab. For account deletion requests, contact <a href="mailto:admin@reminderme.app">admin@reminderme.app</a>.</p>
+    <p style="margin-top:24px"><a href="/">← Back to reminderme</a></p>
+  </div>
+</main>
+</body>
+</html>`;
+
+function resolveStaticFile(baseDir, pathname) {
+  const safePath = pathname.replace(/^\/+/, '');
+  const resolved = path.resolve(baseDir, safePath);
+  if (resolved !== baseDir && !resolved.startsWith(baseDir + path.sep)) return null;
+  return resolved;
+}
+
 function serveStatic(req, res, pathname) {
-  let p = decodeURIComponent(pathname);
+  let p = '/';
+  try { p = decodeURIComponent(pathname); } catch { return send(res, 400, { error: 'bad path' }); }
+  if (p === '/privacy' || p === '/privacy-policy') {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=3600', 'X-Content-Type-Options': 'nosniff' });
+    return res.end(PRIVACY_HTML);
+  }
   if (p === '/') p = '/index.html';
-  const file = path.normalize(path.join(PUBLIC, p));
-  if (!file.startsWith(PUBLIC)) return send(res, 403, { error: 'forbidden' });
-  fs.readFile(file, (err, data) => {
-    if (err) {
-      if (!path.extname(p)) return serveStatic(req, res, '/');      // SPA fallback
-      return send(res, 404, { error: 'not found' });
-    }
-    const ext = path.extname(file);
-    const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream', 'X-Content-Type-Options': 'nosniff' };
-    if (p === '/manifest.json') headers['Content-Type'] = 'application/manifest+json; charset=utf-8';
-    headers['Cache-Control'] = (ext === '.html' || p === '/sw.js' || ext === '.webmanifest' || p === '/manifest.json') ? 'no-cache' : 'public, max-age=86400';
-    if (p === '/sw.js') headers['Service-Worker-Allowed'] = '/';
-    res.writeHead(200, headers); res.end(data);
-  });
+
+  const hasDist = fs.existsSync(path.join(DIST_DIR, 'index.html'));
+  const primaryDir = hasDist ? DIST_DIR : PUBLIC_DIR;
+  let file = resolveStaticFile(primaryDir, p);
+  if (!file) return send(res, 403, { error: 'forbidden' });
+
+  const tryRead = (targetFile, allowFallback) => {
+    fs.readFile(targetFile, (err, data) => {
+      if (err) {
+        if (allowFallback && primaryDir === DIST_DIR) {
+          const pubFile = resolveStaticFile(PUBLIC_DIR, p);
+          if (pubFile) return tryRead(pubFile, false);
+        }
+        if (!path.extname(p)) return serveStatic(req, res, '/');
+        return send(res, 404, { error: 'not found' });
+      }
+      const ext = path.extname(targetFile);
+      const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream', 'X-Content-Type-Options': 'nosniff' };
+      if (p === '/manifest.json') headers['Content-Type'] = 'application/manifest+json; charset=utf-8';
+      const isImmutableAsset = p.startsWith('/assets/');
+      headers['Cache-Control'] = (ext === '.html' || p === '/sw.js' || ext === '.webmanifest' || p === '/manifest.json')
+        ? 'no-cache'
+        : isImmutableAsset ? 'public, max-age=31536000, immutable' : 'public, max-age=86400';
+      if (p === '/sw.js') headers['Service-Worker-Allowed'] = '/';
+      res.writeHead(200, headers);
+      res.end(data);
+    });
+  };
+  tryRead(file, true);
 }
 
 /* ---------------- API ---------------- */
@@ -320,7 +433,7 @@ async function api(req, res, url) {
   const user = currentUser(req);
   const needUser = () => { if (!user) { send(res, 401, { error: 'Please sign in' }); return false; } return true; };
 
-  if (route === 'GET /api/health') return send(res, 200, { ok: true, time: Date.now() });
+  if (route === 'GET /api/health') return send(res, 200, { ok: true, engine: 'node-server', time: Date.now() });
 
   if (route === 'POST /api/cron/check-reminders' || route === 'GET /api/cron/check-reminders') {
     const cronSecret = process.env.CRON_SECRET;
@@ -357,7 +470,7 @@ async function api(req, res, url) {
     const token = id(24);
     db.sessions[token] = { uid: u.id, exp: Date.now() + SESSION_DAYS * 864e5 };
     persist();
-    return send(res, 200, { user: publicUser(u), reminders: db.reminders[u.id] || [] }, { 'Set-Cookie': sessionCookie(req, token, SESSION_DAYS * 86400) });
+    return send(res, 200, { token, user: publicUser(u), reminders: db.reminders[u.id] || [] }, { 'Set-Cookie': sessionCookie(req, token, SESSION_DAYS * 86400) });
   }
 
   if (route === 'POST /api/logout') {
@@ -481,10 +594,44 @@ async function api(req, res, url) {
     return send(res, 200, { devices: db.subs[user.id].length });
   }
 
+  if (route === 'POST /api/push/fcm') {
+    if (!needUser()) return;
+    const b = await readBody(req);
+    const token = str(b.token, 512).trim();
+    if (!token || token.length < 16) return send(res, 400, { error: 'Invalid FCM device token' });
+    db.fcmTokens[user.id] = (db.fcmTokens[user.id] || []).filter(t => t.token !== token).concat({
+      token,
+      platform: str(b.platform || 'android', 20),
+      updatedAt: Date.now(),
+    }).slice(-10);
+    if (b.tz && validTz(b.tz)) user.tz = b.tz;
+    track(user.id, 'fcm_registered', { platform: b.platform || 'android' });
+    persist();
+    return send(res, 200, { devices: db.fcmTokens[user.id].length });
+  }
+
   if (route === 'POST /api/push/test') {
     if (!needUser()) return;
-    if (!(db.subs[user.id] || []).length) return send(res, 400, { error: 'No phone is subscribed yet — tap Enable alerts on your phone first' });
-    const n = await pushTo(user.id, { title: '🔔 Glassy Daily', body: 'Real push notifications are working on this device.', tag: 'test', url: '/' });
+    const b = await readBody(req).catch(() => ({}));
+    const delaySec = Math.min(Math.max(Number(b.delaySec) || 0, 0), 60);
+    if (!(db.subs[user.id] || []).length) return send(res, 400, { error: 'No device is subscribed to Web Push yet — enable notifications first' });
+    const payload = {
+      title: 'ALARM: reminderme Lock-Screen Test',
+      body: delaySec > 0
+        ? `Delivered ${delaySec}s later via server push while app was backgrounded.`
+        : 'Real push notifications are working on this device.',
+      tag: 'test-' + Date.now(),
+      isAlarm: true,
+      url: '/',
+    };
+    if (delaySec > 0) {
+      setTimeout(() => {
+        pushTo(user.id, payload).catch(() => {});
+        track(user.id, 'push_test_delayed', { delaySec });
+      }, delaySec * 1000).unref();
+      return send(res, 200, { scheduled: true, delaySec, devices: (db.subs[user.id] || []).length });
+    }
+    const n = await pushTo(user.id, payload);
     track(user.id, 'push_test', { devices: n });
     return send(res, 200, { sent: n });
   }
@@ -494,8 +641,12 @@ async function api(req, res, url) {
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  applyCors(req, res);
   res.setHeader('Referrer-Policy', 'same-origin');
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    return res.end();
+  }
   try {
     if (url.pathname.startsWith('/api/')) return await api(req, res, url);
     if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, { error: 'method not allowed' });

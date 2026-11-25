@@ -1,0 +1,282 @@
+import React, { useRef, useState } from 'react';
+import { Bell, AlarmClock, Check, Clock, Timer, Trash2 } from 'lucide-react';
+import type { Reminder } from '../types';
+import { formatDaysSummary, formatTimeDisplay, isReminderDoneToday } from '../lib/time';
+
+interface SwipeableReminderRowProps {
+  reminder: Reminder;
+  timeFormat: '12h' | '24h';
+  onToggleDone: (id: string) => void;
+  onSnooze: (id: string, minutes: number) => void;
+  onDelete: (id: string) => void;
+  onEdit: (reminder: Reminder) => void;
+  onFocus: (reminder: Reminder) => void;
+}
+
+export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
+  reminder,
+  timeFormat,
+  onToggleDone,
+  onSnooze,
+  onDelete,
+  onEdit,
+  onFocus,
+}) => {
+  const done = isReminderDoneToday(reminder);
+  const [offsetX, setOffsetX] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const startXRef = useRef(0);
+  const startYRef = useRef(0);
+  const lockedAxisRef = useRef<'x' | 'y' | null>(null);
+  const movedRef = useRef(false);
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest('button')) return;
+    startXRef.current = e.clientX;
+    startYRef.current = e.clientY;
+    lockedAxisRef.current = null;
+    movedRef.current = false;
+    setDragging(true);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragging) return;
+    const dx = e.clientX - startXRef.current;
+    const dy = e.clientY - startYRef.current;
+
+    if (!lockedAxisRef.current) {
+      if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+        lockedAxisRef.current = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+    }
+    if (lockedAxisRef.current !== 'x') return;
+
+    movedRef.current = true;
+    const base = actionsOpen ? -136 : 0;
+    const clamped = Math.max(-152, Math.min(116, base + dx));
+    setOffsetX(clamped);
+  };
+
+  const handlePointerEnd = () => {
+    if (!dragging) return;
+    setDragging(false);
+    if (lockedAxisRef.current === 'x') {
+      if (offsetX >= 80) {
+        onToggleDone(reminder.id);
+        setOffsetX(0);
+        setActionsOpen(false);
+      } else if (offsetX <= -64) {
+        setOffsetX(-136);
+        setActionsOpen(true);
+      } else {
+        setOffsetX(0);
+        setActionsOpen(false);
+      }
+    }
+    lockedAxisRef.current = null;
+  };
+
+  const priorityLabel =
+    reminder.priority === 'high' ? 'High' : reminder.priority === 'med' ? 'Medium' : 'Normal';
+  const scheduleLabel = formatDaysSummary(reminder.days, reminder.oneTimeDate);
+  const isSnoozed = !!(reminder.snoozedUntil && reminder.snoozedUntil > Date.now());
+
+  return (
+    <div className="relative overflow-hidden rounded-[22px] border border-white/[0.18] bg-white/[0.06] shadow-[0_14px_34px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.3)] backdrop-blur-2xl">
+      {/* Left reveal (Swipe right to complete) */}
+      <div
+        className={`pointer-events-none absolute inset-y-0 left-0 flex w-28 items-center justify-start bg-[#30D158]/25 pl-5 text-emerald-300 transition-opacity duration-150 ${
+          offsetX > 4 ? 'opacity-100' : 'opacity-0'
+        }`}
+        aria-hidden="true"
+      >
+        <Check className="h-5 w-5" />
+        <span className="ml-1.5 text-xs font-semibold">{done ? 'Undo' : 'Done'}</span>
+      </div>
+
+      {/* Right reveal (Swipe left for Snooze & Delete) */}
+      <div
+        aria-hidden={!(offsetX < -4 || actionsOpen)}
+        className={`absolute inset-y-0 right-0 flex items-stretch transition-opacity duration-150 ${
+          offsetX < -4 || actionsOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+        }`}
+      >
+        <button
+          type="button"
+          tabIndex={actionsOpen ? 0 : -1}
+          onClick={() => {
+            setOffsetX(0);
+            setActionsOpen(false);
+            onSnooze(reminder.id, 10);
+          }}
+          className="flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF9F0A]/25 px-3 text-xs font-semibold text-amber-200 transition-colors hover:bg-[#FF9F0A]/35"
+          aria-label={`Snooze ${reminder.title} 10 minutes`}
+        >
+          <Clock className="h-4 w-4" />
+          <span>10m</span>
+        </button>
+        <button
+          type="button"
+          tabIndex={actionsOpen ? 0 : -1}
+          onClick={() => {
+            setOffsetX(0);
+            setActionsOpen(false);
+            onDelete(reminder.id);
+          }}
+          className="flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF453A]/30 px-3 text-xs font-semibold text-red-200 transition-colors hover:bg-[#FF453A]/45"
+          aria-label={`Delete ${reminder.title}`}
+        >
+          <Trash2 className="h-4 w-4" />
+          <span>Delete</span>
+        </button>
+      </div>
+
+      {/* Foreground interactive liquid-glass row */}
+      <div
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
+        onClick={() => {
+          if (movedRef.current) return;
+          if (actionsOpen) {
+            setOffsetX(0);
+            setActionsOpen(false);
+            return;
+          }
+          onEdit(reminder);
+        }}
+        style={{
+          transform: `translateX(${offsetX}px)`,
+          transition: dragging ? 'none' : 'transform 180ms cubic-bezier(0.16, 1, 0.3, 1)',
+        }}
+        className="relative z-10 flex min-h-[76px] cursor-pointer items-center gap-3.5 bg-gradient-to-br from-[#161E3B]/92 to-[#0D1329]/92 px-4 py-3.5 select-none touch-pan-y hover:from-[#1B2547]/95 hover:to-[#111936]/95"
+      >
+        {/* Check completion button (44px touch target) */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleDone(reminder.id);
+          }}
+          aria-label={done ? `Mark ${reminder.title} not done` : `Complete ${reminder.title}`}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#0A84FF]"
+        >
+          <span
+            className={`flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-150 ${
+              done
+                ? 'border-[#30D158] bg-[#30D158] text-[#050712] shadow-[0_0_16px_rgba(48,209,88,0.6)]'
+                : 'border-white/40 bg-white/[0.04] text-transparent hover:border-white/75'
+            }`}
+          >
+            <Check className="h-3.5 w-3.5 stroke-[3]" />
+          </span>
+        </button>
+
+        {/* Glossy 3D iOS Emblem Squircle */}
+        <div
+          aria-hidden="true"
+          style={{
+            background: `linear-gradient(145deg, ${reminder.color || '#0A84FF'}, rgba(255,255,255,0.12))`,
+          }}
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/25 text-lg shadow-[0_8px_18px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.55)] transition-all ${
+            done ? 'grayscale opacity-55' : ''
+          }`}
+        >
+          {reminder.emoji || (reminder.isAlarm ? '⏰' : '🔔')}
+        </div>
+
+        {/* Title & unboxed inline metadata */}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <span
+              className={`truncate text-[15px] font-semibold leading-snug ${
+                done ? 'text-slate-400/70 line-through' : 'text-white'
+              }`}
+            >
+              {reminder.title}
+            </span>
+          </div>
+
+          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-300/80">
+            <span className="inline-flex items-center gap-1 font-mono font-semibold text-white tabular-nums">
+              {reminder.isAlarm ? (
+                <AlarmClock className="h-3.5 w-3.5 text-red-400" />
+              ) : (
+                <Bell className="h-3.5 w-3.5 text-sky-300" />
+              )}
+              {formatTimeDisplay(reminder.time, timeFormat)}
+            </span>
+            <span aria-hidden="true" className="text-slate-500">·</span>
+            <span>{scheduleLabel}</span>
+            {reminder.tag && (
+              <>
+                <span aria-hidden="true" className="text-slate-500">·</span>
+                <span>{reminder.tag}</span>
+              </>
+            )}
+            {reminder.priority === 'high' && (
+              <>
+                <span aria-hidden="true" className="text-slate-500">·</span>
+                <span className="font-semibold text-amber-300">{priorityLabel}</span>
+              </>
+            )}
+            {isSnoozed && (
+              <>
+                <span aria-hidden="true" className="text-slate-500">·</span>
+                <span className="font-semibold text-sky-300">Snoozed</span>
+              </>
+            )}
+          </div>
+
+          {reminder.note && (
+            <p className="mt-0.5 truncate text-xs text-slate-400">{reminder.note}</p>
+          )}
+        </div>
+
+        {/* Quick desktop / accessible actions */}
+        <div className="flex shrink-0 items-center gap-1">
+          {!done && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onFocus(reminder);
+              }}
+              title="Start 25-minute focus session"
+              aria-label={`Focus on ${reminder.title}`}
+              className="flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-slate-100"
+            >
+              <Timer className="h-4 w-4" />
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onSnooze(reminder.id, 10);
+            }}
+            title="Snooze 10 minutes"
+            aria-label={`Snooze ${reminder.title}`}
+            className="hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-amber-300 sm:flex"
+          >
+            <Clock className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(reminder.id);
+            }}
+            title="Delete reminder"
+            aria-label={`Delete ${reminder.title}`}
+            className="hidden h-11 w-11 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-500/15 hover:text-red-400 sm:flex"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

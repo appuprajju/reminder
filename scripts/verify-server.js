@@ -23,7 +23,9 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fail++;
 
   // static + PWA files
   const home = await get('/');
-  ok(home.status === 200 && /text\/html/.test(home.type) && home.text.includes('Glassy Daily'), 'GET / serves the app');
+  ok(home.status === 200 && /text\/html/.test(home.type) && home.text.includes('reminderme'), 'GET / serves the app');
+  const privacy = await get('/privacy');
+  ok(privacy.status === 200 && /text\/html/.test(privacy.type) && privacy.text.includes('Privacy Policy'), 'GET /privacy serves Play Store privacy policy');
   ok((await get('/sw.js')).status === 200, 'GET /sw.js serves the service worker');
   const man = await get('/manifest.webmanifest');
   ok(man.status === 200 && /manifest\+json/.test(man.type), 'manifest served with manifest mime type');

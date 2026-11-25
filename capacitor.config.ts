@@ -1,0 +1,43 @@
+import type { CapacitorConfig } from '@capacitor/cli';
+
+const config: CapacitorConfig = {
+  appId: 'in.makeuperfect.reminderme',
+  appName: 'reminderme',
+  webDir: 'dist',
+  server: {
+    androidScheme: 'https',
+    cleartext: false,
+  },
+  android: {
+    backgroundColor: '#060812',
+    allowMixedContent: false,
+    captureInput: true,
+    webContentsDebuggingEnabled: false,
+  },
+  plugins: {
+    LocalNotifications: {
+      smallIcon: 'ic_stat_reminderme',
+      iconColor: '#2F80FF',
+      sound: 'alarm_radar.wav',
+    },
+    PushNotifications: {
+      presentationOptions: ['badge', 'sound', 'alert'],
+    },
+    SplashScreen: {
+      launchShowDuration: 900,
+      launchAutoHide: true,
+      backgroundColor: '#060812',
+      androidSplashResourceName: 'splash',
+      showSpinner: false,
+      splashFullScreen: true,
+      splashImmersive: true,
+    },
+    StatusBar: {
+      style: 'DARK',
+      backgroundColor: '#060812',
+      overlaysWebView: false,
+    },
+  },
+};
+
+export default config;

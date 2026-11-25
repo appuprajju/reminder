@@ -1,0 +1,5 @@
+{
+  "name": "reminderme",
+  "description": "Native-grade daily reminders, loud exact alarms, voice capture, calendar schedule, and offline-first sync — packaged with Capacitor for Google Play Store.",
+  "requestFramePermissions": ["microphone"]
+}

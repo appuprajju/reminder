@@ -1,0 +1,279 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-canvas: #050712;
+  --color-surface: #0F1426;
+  --color-elevated: #161C34;
+  --color-azure: #0A84FF;
+  --color-emerald: #30D158;
+  --color-amber: #FF9F0A;
+  --color-coral: #FF453A;
+}
+
+:root {
+  color-scheme: dark;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: #050712;
+  color: #F8FAFC;
+  font-family: var(--font-sans);
+  letter-spacing: 0.01em;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============ 3D AMBIENT LIQUID BACKGROUND ============ */
+.liquid-3d-scene {
+  perspective: 1200px;
+  contain: strict;
+  --px: 0;
+  --py: 0;
+  background:
+    radial-gradient(1200px 800px at 14% 8%, rgba(49, 32, 126, 0.85) 0%, transparent 58%),
+    radial-gradient(1000px 760px at 88% 18%, rgba(12, 82, 134, 0.82) 0%, transparent 58%),
+    radial-gradient(1100px 860px at 48% 106%, rgba(118, 28, 94, 0.72) 0%, transparent 60%),
+    #050712;
+}
+
+.liquid-orb {
+  position: absolute;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 28% 24%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.22) 12%, transparent 36%),
+    radial-gradient(circle at 72% 80%, rgba(255, 255, 255, 0.22), transparent 46%),
+    radial-gradient(circle at 50% 50%, var(--c1, #4ea8ff), var(--c2, #18379c) 76%);
+  box-shadow:
+    inset -12px -18px 36px rgba(0, 0, 0, 0.42),
+    inset 8px 10px 24px rgba(255, 255, 255, 0.26),
+    0 20px 60px var(--c2, rgba(10, 132, 255, 0.42));
+  opacity: 0.72;
+  will-change: transform;
+  animation: orbDrift var(--dur, 18s) ease-in-out infinite alternate;
+  transform: translate3d(
+    calc(var(--px, 0) * var(--depth, 20px)),
+    calc(var(--py, 0) * var(--depth, 20px)),
+    0
+  );
+}
+
+@keyframes orbDrift {
+  0% {
+    translate: 0 -14px;
+  }
+  100% {
+    translate: 10px 16px;
+  }
+}
+
+.liquid-depth-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(86vw, 760px);
+  height: min(86vw, 760px);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 80px rgba(90, 200, 250, 0.06);
+  transform: translate3d(-50%, -50%, -180px) rotateX(62deg) rotateZ(-14deg);
+  opacity: 0.6;
+}
+
+/* ============ iOS LIQUID GLASS MATERIALS ============ */
+.glass-surface {
+  background: linear-gradient(
+    145deg,
+    rgba(24, 31, 58, 0.72) 0%,
+    rgba(13, 18, 38, 0.66) 52%,
+    rgba(22, 29, 54, 0.72) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.19);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.glass-elevated {
+  background: linear-gradient(
+    150deg,
+    rgba(24, 30, 56, 0.9) 0%,
+    rgba(12, 16, 34, 0.94) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(20px) saturate(165%);
+  -webkit-backdrop-filter: blur(20px) saturate(165%);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.54),
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.liquid-nav {
+  background: linear-gradient(
+    180deg,
+    rgba(20, 25, 48, 0.78) 0%,
+    rgba(10, 13, 28, 0.88) 100%
+  );
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.liquid-primary-btn {
+  background: linear-gradient(180deg, #4BA3FF 0%, #0A84FF 100%);
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  box-shadow:
+    0 10px 26px rgba(10, 132, 255, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.52);
+}
+
+.liquid-primary-btn:hover {
+  filter: brightness(1.07);
+}
+
+/* Interactive 3D Liquid Glass Specular Tilt (desktop pointer) */
+.liquid-tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liquid-tilt[data-tilting="true"] {
+  transition: transform 70ms linear;
+}
+
+.liquid-tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    420px circle at var(--gx, 50%) var(--gy, 0%),
+    rgba(255, 255, 255, 0.2),
+    transparent 56%
+  );
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.liquid-tilt[data-tilting="true"]::after {
+  opacity: 1;
+}
+
+/* Safe area helpers */
+.pt-safe {
+  padding-top: max(12px, var(--safe-top));
+}
+
+.pb-safe {
+  padding-bottom: max(8px, var(--safe-bottom));
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Developer intro animations */
+@keyframes introIn {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-intro-in {
+  animation: introIn 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.intro-conic-glow {
+  background: conic-gradient(from 180deg at 50% 50%, #0A84FF, #BF5AF2, #30D158, #FFD60A, #0A84FF);
+  animation: introSpin 5s linear infinite;
+}
+
+@keyframes introSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Sheet & alarm transitions */
+@keyframes sheetSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-sheet-up {
+  animation: sheetSlideUp 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes alarmRingPulse {
+  0% {
+    transform: scale(0.86);
+    opacity: 0.78;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+.animate-alarm-ripple {
+  animation: alarmRingPulse 1.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

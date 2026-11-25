@@ -9,11 +9,14 @@ crons = ["* * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "reminder-db"
-database_id = "5ce8f4ff-d94b-449a-bc45-12ec01f5274b" # Run: wrangler d1 create reminder-db and paste the database_id here
+database_id = "5ce8f4ff-d94b-449a-bc45-12ec01f5274b" # Replace with your own D1 database_id from `wrangler d1 create reminder-db`
 
 [vars]
 VAPID_SUBJECT = "mailto:admin@reminderme.app"
-# Note: Sensitive variables should be set via wrangler secret put:
+APP_URL = "https://reminder.makeuperfect.in"
+ADMIN_EMAILS = ""
+ALLOWED_ORIGINS = ""
+# Set sensitive keys securely with wrangler secret put:
 #   npx wrangler secret put VAPID_PUBLIC_KEY
 #   npx wrangler secret put VAPID_PRIVATE_KEY
 #   npx wrangler secret put CRON_SECRET
