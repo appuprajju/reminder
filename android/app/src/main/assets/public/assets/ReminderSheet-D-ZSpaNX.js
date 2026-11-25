@@ -1,7 +1,6 @@
 import { i as __toESM, n as require_react, t as require_jsx_runtime } from "./jsx-runtime-CWAvGazs.js";
-import { A as Bell, D as Plus, T as Trash, a as playAlarmCycle, g as DAY_LETTERS, j as AlarmClock, n as ALARM_SOUNDS, y as getDateKeyFromDate } from "./index-MgpPl3ok.js";
+import { E as Trash, M as AlarmClock, O as Plus, T as X, a as playAlarmCycle, g as getDateKeyFromDate, j as Bell, n as ALARM_SOUNDS, p as DAY_LETTERS } from "./index-awTncDk7.js";
 import { t as Play } from "./play-CxHGFyOa.js";
-import { t as X } from "./x-kMqQQxQ3.js";
 // src/components/ReminderSheet.tsx
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
@@ -15,7 +14,7 @@ var QUICK_EMOJIS = [
 	"📞",
 	"🌙"
 ];
-var ReminderSheet = ({ open, editing, defaultDate, defaultAlarmSound, customAudioName, availableTags, onAddCustomTag, onSave, onDelete, onClose }) => {
+var ReminderSheet = ({ open, editing, initialDraft, defaultDate, defaultAlarmSound, customAudioName, availableTags, onAddCustomTag, onSave, onDelete, onClose }) => {
 	const [title, setTitle] = (0, import_react.useState)("");
 	const [note, setNote] = (0, import_react.useState)("");
 	const [time, setTime] = (0, import_react.useState)("08:30");
@@ -41,6 +40,17 @@ var ReminderSheet = ({ open, editing, defaultDate, defaultAlarmSound, customAudi
 			setPriority(editing.priority);
 			setTag(editing.tag);
 			setEmoji(editing.emoji || (editing.isAlarm ? "⏰" : "🔔"));
+		} else if (initialDraft) {
+			setTitle(initialDraft.title);
+			setNote("");
+			setTime(initialDraft.time);
+			setIsAlarm(initialDraft.isAlarm);
+			setSound(defaultAlarmSound);
+			setDays(initialDraft.days || []);
+			setOneTimeDate(initialDraft.oneTimeDate || null);
+			setPriority(initialDraft.priority);
+			setTag(initialDraft.tag);
+			setEmoji(initialDraft.emoji || (initialDraft.isAlarm ? "⏰" : "🔔"));
 		} else {
 			const next = new Date(Date.now() + 18e5);
 			const hh = String(next.getHours()).padStart(2, "0");
@@ -67,6 +77,7 @@ var ReminderSheet = ({ open, editing, defaultDate, defaultAlarmSound, customAudi
 		defaultAlarmSound,
 		defaultDate,
 		editing,
+		initialDraft,
 		open
 	]);
 	if (!open) return null;

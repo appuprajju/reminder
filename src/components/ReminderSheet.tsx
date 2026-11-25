@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { AlarmClock, Bell, Play, Plus, Trash2, X } from 'lucide-react';
 import { ALARM_SOUNDS, playAlarmCycle } from '../lib/audio';
+import type { ParsedQuickReminder } from '../lib/parser';
 import { DAY_LETTERS, getDateKeyFromDate } from '../lib/time';
 import type { AlarmSoundId, Priority, Reminder } from '../types';
 
 interface ReminderSheetProps {
   open: boolean;
   editing: Reminder | null;
+  initialDraft?: ParsedQuickReminder | null;
   defaultDate?: Date | null;
   defaultAlarmSound: AlarmSoundId;
   customAudioName: string | null;
@@ -35,6 +37,7 @@ const QUICK_EMOJIS = ['⏰', '🔔', '💧', '💊', '🎯', '🏃', '📞', '�
 export const ReminderSheet: React.FC<ReminderSheetProps> = ({
   open,
   editing,
+  initialDraft,
   defaultDate,
   defaultAlarmSound,
   customAudioName,
@@ -70,6 +73,17 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
       setPriority(editing.priority);
       setTag(editing.tag);
       setEmoji(editing.emoji || (editing.isAlarm ? '⏰' : '🔔'));
+    } else if (initialDraft) {
+      setTitle(initialDraft.title);
+      setNote('');
+      setTime(initialDraft.time);
+      setIsAlarm(initialDraft.isAlarm);
+      setSound(defaultAlarmSound);
+      setDays(initialDraft.days || []);
+      setOneTimeDate(initialDraft.oneTimeDate || null);
+      setPriority(initialDraft.priority);
+      setTag(initialDraft.tag);
+      setEmoji(initialDraft.emoji || (initialDraft.isAlarm ? '⏰' : '🔔'));
     } else {
       const next = new Date(Date.now() + 30 * 60000);
       const hh = String(next.getHours()).padStart(2, '0');
@@ -92,7 +106,7 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
     }
     setAddingTag(false);
     setNewTagText('');
-  }, [defaultAlarmSound, defaultDate, editing, open]);
+  }, [defaultAlarmSound, defaultDate, editing, initialDraft, open]);
 
   if (!open) return null;
 

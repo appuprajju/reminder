@@ -2,7 +2,7 @@ import { i as __toESM, n as require_react, t as require_jsx_runtime } from "./js
 import { t as createLucideIcon } from "./createLucideIcon-1IqWJXqJ.js";
 import { n as ExternalLink, t as Smartphone } from "./smartphone-C8EGrxLo.js";
 import { t as Play } from "./play-CxHGFyOa.js";
-import { E as ShieldCheck, T as Trash, a as playAlarmCycle, c as CLOUDFLARE_EDGE_URL, d as openExactAlarmSettings, i as deleteCustomRingtone, l as api, n as ALARM_SOUNDS, o as playNotificationChime, r as NOTIF_SOUNDS, s as saveCustomRingtone, t as usePWAInstall, u as isNativeApp } from "./index-MgpPl3ok.js";
+import { D as ShieldCheck, E as Trash, a as playAlarmCycle, c as CLOUDFLARE_EDGE_URL, d as isNativeApp, f as openExactAlarmSettings, i as deleteCustomRingtone, l as api, n as ALARM_SOUNDS, o as playNotificationChime, r as NOTIF_SOUNDS, s as saveCustomRingtone, t as usePWAInstall } from "./index-awTncDk7.js";
 // node_modules/lucide-react/dist/esm/icons/bell-ring.mjs
 var __iconData$10 = {
 	name: "bell-ring",

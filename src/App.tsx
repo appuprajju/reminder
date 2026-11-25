@@ -1,9 +1,9 @@
-import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import { AppShell } from './components/AppShell';
 import { DeveloperIntro } from './components/DeveloperIntro';
 import { TodayView } from './components/TodayView';
 import { useReminderApp } from './hooks/useReminderApp';
-import { parseQuickInput } from './lib/parser';
+import { parseQuickInput, type ParsedQuickReminder } from './lib/parser';
 import type { Reminder, TabId } from './types';
 
 // Lazy-load secondary tabs and sheets so initial mobile bundle renders instantly
@@ -43,11 +43,17 @@ export function App() {
   const [activeTab, setActiveTab] = useState<TabId>('today');
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
+  const [voiceDraft, setVoiceDraft] = useState<ParsedQuickReminder | null>(null);
   const [defaultDate, setDefaultDate] = useState<Date | null>(null);
   const [focusReminder, setFocusReminder] = useState<Reminder | null>(null);
   const [authOpen, setAuthOpen] = useState(false);
   const [infoModal, setInfoModal] = useState<'privacy' | 'playstore' | null>(null);
   const [showIntro, setShowIntro] = useState<boolean>(shouldShowIntroInitially);
+  const voiceCloseRef = useRef<(() => void) | null>(null);
+
+  const registerVoiceClose = useCallback((fn: (() => void) | null) => {
+    voiceCloseRef.current = fn;
+  }, []);
 
   const finishIntro = useCallback(() => {
     setShowIntro(false);
@@ -61,6 +67,10 @@ export function App() {
   const handleHardwareBack = useCallback(() => {
     if (showIntro) {
       finishIntro();
+      return true;
+    }
+    if (voiceCloseRef.current) {
+      voiceCloseRef.current();
       return true;
     }
     if (infoModal) {
@@ -104,12 +114,21 @@ export function App() {
 
   const openNewReminder = (date: Date | null = null) => {
     setEditingReminder(null);
+    setVoiceDraft(null);
     setDefaultDate(date);
     setSheetOpen(true);
   };
 
   const openEditReminder = (r: Reminder) => {
     setEditingReminder(r);
+    setVoiceDraft(null);
+    setDefaultDate(null);
+    setSheetOpen(true);
+  };
+
+  const openVoiceDraftInSheet = (parsed: ParsedQuickReminder) => {
+    setEditingReminder(null);
+    setVoiceDraft(parsed);
     setDefaultDate(null);
     setSheetOpen(true);
   };
@@ -157,6 +176,7 @@ export function App() {
               app.updatePrefs({ timeFormat: app.prefs.timeFormat === '12h' ? '24h' : '12h' })
             }
             onQuickAdd={handleQuickAdd}
+            onEditVoiceDraft={openVoiceDraftInSheet}
             onOpenNewSheet={() => openNewReminder(null)}
             onToggleDone={app.toggleCompleteReminder}
             onSnooze={app.snoozeReminder}
@@ -164,7 +184,7 @@ export function App() {
             onEdit={openEditReminder}
             onFocus={(r) => setFocusReminder(r)}
             onOpenDeliverySetup={() => setActiveTab('profile')}
-            onVoiceError={(msg) => app.pushToast(msg, { tone: 'warning' })}
+            onRegisterVoiceClose={registerVoiceClose}
           />
         )}
 
@@ -224,6 +244,7 @@ export function App() {
           <ReminderSheet
             open={sheetOpen}
             editing={editingReminder}
+            initialDraft={voiceDraft}
             defaultDate={defaultDate}
             defaultAlarmSound={app.prefs.defaultAlarmSound}
             customAudioName={app.prefs.customAudioName}
@@ -231,7 +252,10 @@ export function App() {
             onAddCustomTag={handleAddCustomTag}
             onSave={(draft) => app.upsertReminder(draft)}
             onDelete={app.deleteReminder}
-            onClose={() => setSheetOpen(false)}
+            onClose={() => {
+              setSheetOpen(false);
+              setVoiceDraft(null);
+            }}
           />
         )}
 

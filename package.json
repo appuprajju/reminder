@@ -17,7 +17,7 @@
     "test": "sh scripts/verify-server.sh"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.2",

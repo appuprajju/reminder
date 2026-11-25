@@ -1,4 +1,4 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/ScheduleView-CgOXRXri.js","assets/jsx-runtime-CWAvGazs.js","assets/createLucideIcon-1IqWJXqJ.js","assets/InsightsView-ClBqL6Ph.js","assets/ProfileView-BoIaOZTZ.js","assets/smartphone-C8EGrxLo.js","assets/play-CxHGFyOa.js","assets/ReminderSheet-LvWc4qlV.js","assets/x-kMqQQxQ3.js","assets/FocusTimerSheet-DLZe9OXu.js","assets/AuthSheet-BkkeE8jN.js","assets/PlayStoreModal-C4wbRfP9.js","assets/RingingAlarmOverlay-CTqDak3m.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/ScheduleView-DOrLnQ2O.js","assets/jsx-runtime-CWAvGazs.js","assets/createLucideIcon-1IqWJXqJ.js","assets/InsightsView-Dt3zySci.js","assets/ProfileView-BECu_rKx.js","assets/smartphone-C8EGrxLo.js","assets/play-CxHGFyOa.js","assets/ReminderSheet-D-ZSpaNX.js","assets/FocusTimerSheet-BTqROmmh.js","assets/AuthSheet-fV95pkgt.js","assets/PlayStoreModal-DrYQ0O0m.js","assets/RingingAlarmOverlay-Bty1ZB1Z.js"])))=>i.map(i=>d[i]);
 import { i as __toESM, n as require_react, r as __commonJSMin, t as require_jsx_runtime } from "./jsx-runtime-CWAvGazs.js";
 import { t as createLucideIcon } from "./createLucideIcon-1IqWJXqJ.js";
 // \0vite/modulepreload-polyfill.js
@@ -11042,7 +11042,7 @@ var require_client = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_react_dom_client_production();
 }));
 // node_modules/lucide-react/dist/esm/icons/alarm-clock.mjs
-var __iconData$14 = {
+var __iconData$15 = {
 	name: "alarm-clock",
 	size: 24,
 	node: [
@@ -11074,10 +11074,10 @@ var __iconData$14 = {
 		}]
 	]
 };
-__iconData$14.node;
-var AlarmClock = createLucideIcon(__iconData$14);
+__iconData$15.node;
+var AlarmClock = createLucideIcon(__iconData$15);
 // node_modules/lucide-react/dist/esm/icons/arrow-right.mjs
-var __iconData$13 = {
+var __iconData$14 = {
 	name: "arrow-right",
 	size: 24,
 	node: [["path", {
@@ -11088,10 +11088,10 @@ var __iconData$13 = {
 		key: "xquz4c"
 	}]]
 };
-__iconData$13.node;
-var ArrowRight = createLucideIcon(__iconData$13);
+__iconData$14.node;
+var ArrowRight = createLucideIcon(__iconData$14);
 // node_modules/lucide-react/dist/esm/icons/bell.mjs
-var __iconData$12 = {
+var __iconData$13 = {
 	name: "bell",
 	size: 24,
 	node: [["path", {
@@ -11102,10 +11102,10 @@ var __iconData$12 = {
 		key: "11g9vi"
 	}]]
 };
-__iconData$12.node;
-var Bell = createLucideIcon(__iconData$12);
+__iconData$13.node;
+var Bell = createLucideIcon(__iconData$13);
 // node_modules/lucide-react/dist/esm/icons/calendar-days.mjs
-var __iconData$11 = {
+var __iconData$12 = {
 	name: "calendar-days",
 	size: 24,
 	node: [
@@ -11155,10 +11155,10 @@ var __iconData$11 = {
 		}]
 	]
 };
-__iconData$11.node;
-var CalendarDays = createLucideIcon(__iconData$11);
+__iconData$12.node;
+var CalendarDays = createLucideIcon(__iconData$12);
 // node_modules/lucide-react/dist/esm/icons/chart-column.mjs
-var __iconData$10 = {
+var __iconData$11 = {
 	name: "chart-column",
 	size: 24,
 	node: [
@@ -11181,10 +11181,10 @@ var __iconData$10 = {
 	],
 	aliases: ["bar-chart-3"]
 };
-__iconData$10.node;
-var ChartColumn = createLucideIcon(__iconData$10);
+__iconData$11.node;
+var ChartColumn = createLucideIcon(__iconData$11);
 // node_modules/lucide-react/dist/esm/icons/check.mjs
-var __iconData$9 = {
+var __iconData$10 = {
 	name: "check",
 	size: 24,
 	node: [["path", {
@@ -11192,10 +11192,10 @@ var __iconData$9 = {
 		key: "1gmf2c"
 	}]]
 };
-__iconData$9.node;
-var Check = createLucideIcon(__iconData$9);
+__iconData$10.node;
+var Check = createLucideIcon(__iconData$10);
 // node_modules/lucide-react/dist/esm/icons/clock.mjs
-var __iconData$8 = {
+var __iconData$9 = {
 	name: "clock",
 	size: 24,
 	node: [["circle", {
@@ -11208,43 +11208,10 @@ var __iconData$8 = {
 		key: "mmk7yg"
 	}]]
 };
-__iconData$8.node;
-var Clock = createLucideIcon(__iconData$8);
-// node_modules/lucide-react/dist/esm/icons/mic-off.mjs
-var __iconData$7 = {
-	name: "mic-off",
-	size: 24,
-	node: [
-		["path", {
-			d: "M12 19v3",
-			key: "npa21l"
-		}],
-		["path", {
-			d: "M15 9.34V5a3 3 0 0 0-5.68-1.33",
-			key: "1gzdoj"
-		}],
-		["path", {
-			d: "M16.95 16.95A7 7 0 0 1 5 12v-2",
-			key: "cqa7eg"
-		}],
-		["path", {
-			d: "M18.89 13.23A7 7 0 0 0 19 12v-2",
-			key: "16hl24"
-		}],
-		["path", {
-			d: "m2 2 20 20",
-			key: "1ooewy"
-		}],
-		["path", {
-			d: "M9 9v3a3 3 0 0 0 5.12 2.12",
-			key: "r2i35w"
-		}]
-	]
-};
-__iconData$7.node;
-var MicOff = createLucideIcon(__iconData$7);
+__iconData$9.node;
+var Clock = createLucideIcon(__iconData$9);
 // node_modules/lucide-react/dist/esm/icons/mic.mjs
-var __iconData$6 = {
+var __iconData$8 = {
 	name: "mic",
 	size: 24,
 	node: [
@@ -11266,10 +11233,10 @@ var __iconData$6 = {
 		}]
 	]
 };
-__iconData$6.node;
-var Mic = createLucideIcon(__iconData$6);
+__iconData$8.node;
+var Mic = createLucideIcon(__iconData$8);
 // node_modules/lucide-react/dist/esm/icons/plus.mjs
-var __iconData$5 = {
+var __iconData$7 = {
 	name: "plus",
 	size: 24,
 	node: [["path", {
@@ -11280,10 +11247,10 @@ var __iconData$5 = {
 		key: "s699le"
 	}]]
 };
-__iconData$5.node;
-var Plus = createLucideIcon(__iconData$5);
+__iconData$7.node;
+var Plus = createLucideIcon(__iconData$7);
 // node_modules/lucide-react/dist/esm/icons/shield-check.mjs
-var __iconData$4 = {
+var __iconData$6 = {
 	name: "shield-check",
 	size: 24,
 	node: [["path", {
@@ -11294,10 +11261,55 @@ var __iconData$4 = {
 		key: "dzmm74"
 	}]]
 };
-__iconData$4.node;
-var ShieldCheck = createLucideIcon(__iconData$4);
+__iconData$6.node;
+var ShieldCheck = createLucideIcon(__iconData$6);
+// node_modules/lucide-react/dist/esm/icons/sliders-horizontal.mjs
+var __iconData$5 = {
+	name: "sliders-horizontal",
+	size: 24,
+	node: [
+		["path", {
+			d: "M10 5H3",
+			key: "1qgfaw"
+		}],
+		["path", {
+			d: "M12 19H3",
+			key: "yhmn1j"
+		}],
+		["path", {
+			d: "M14 3v4",
+			key: "1sua03"
+		}],
+		["path", {
+			d: "M16 17v4",
+			key: "1q0r14"
+		}],
+		["path", {
+			d: "M21 12h-9",
+			key: "1o4lsq"
+		}],
+		["path", {
+			d: "M21 19h-5",
+			key: "1rlt1p"
+		}],
+		["path", {
+			d: "M21 5h-7",
+			key: "1oszz2"
+		}],
+		["path", {
+			d: "M8 10v4",
+			key: "tgpxqk"
+		}],
+		["path", {
+			d: "M8 12H3",
+			key: "a7s4jb"
+		}]
+	]
+};
+__iconData$5.node;
+var SlidersHorizontal = createLucideIcon(__iconData$5);
 // node_modules/lucide-react/dist/esm/icons/timer.mjs
-var __iconData$3 = {
+var __iconData$4 = {
 	name: "timer",
 	size: 24,
 	node: [
@@ -11323,10 +11335,10 @@ var __iconData$3 = {
 		}]
 	]
 };
-__iconData$3.node;
-var Timer = createLucideIcon(__iconData$3);
+__iconData$4.node;
+var Timer = createLucideIcon(__iconData$4);
 // node_modules/lucide-react/dist/esm/icons/trash.mjs
-var __iconData$2 = {
+var __iconData$3 = {
 	name: "trash",
 	size: 24,
 	node: [
@@ -11353,10 +11365,10 @@ var __iconData$2 = {
 	],
 	aliases: ["trash-2"]
 };
-__iconData$2.node;
-var Trash = createLucideIcon(__iconData$2);
+__iconData$3.node;
+var Trash = createLucideIcon(__iconData$3);
 // node_modules/lucide-react/dist/esm/icons/user.mjs
-var __iconData$1 = {
+var __iconData$2 = {
 	name: "user",
 	size: 24,
 	node: [["path", {
@@ -11369,10 +11381,10 @@ var __iconData$1 = {
 		key: "17ys0d"
 	}]]
 };
-__iconData$1.node;
-var User = createLucideIcon(__iconData$1);
+__iconData$2.node;
+var User = createLucideIcon(__iconData$2);
 // node_modules/lucide-react/dist/esm/icons/wifi-off.mjs
-var __iconData = {
+var __iconData$1 = {
 	name: "wifi-off",
 	size: 24,
 	node: [
@@ -11406,8 +11418,22 @@ var __iconData = {
 		}]
 	]
 };
+__iconData$1.node;
+var WifiOff = createLucideIcon(__iconData$1);
+// node_modules/lucide-react/dist/esm/icons/x.mjs
+var __iconData = {
+	name: "x",
+	size: 24,
+	node: [["path", {
+		d: "M18 6 6 18",
+		key: "1bl5f8"
+	}], ["path", {
+		d: "m6 6 12 12",
+		key: "d8bk6v"
+	}]]
+};
 __iconData.node;
-var WifiOff = createLucideIcon(__iconData);
+var X = createLucideIcon(__iconData);
 // src/components/Liquid3DBackground.tsx
 var import_client = /* @__PURE__ */ __toESM(require_client());
 var import_react = /* @__PURE__ */ __toESM(require_react());
@@ -11821,955 +11847,6 @@ var DeveloperIntro = ({ visible, onFinish }) => {
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Tap to enter" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-3.5 w-3.5" })]
 			})
 		]
-	});
-};
-// src/lib/time.ts
-var DAY_LETTERS = [
-	"S",
-	"M",
-	"T",
-	"W",
-	"T",
-	"F",
-	"S"
-];
-var DAY_SHORT = [
-	"Sun",
-	"Mon",
-	"Tue",
-	"Wed",
-	"Thu",
-	"Fri",
-	"Sat"
-];
-function getTodayDateKey(d = /* @__PURE__ */ new Date()) {
-	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
-function getDateKeyFromDate(d) {
-	return getTodayDateKey(d);
-}
-function formatTimeDisplay(time24, format) {
-	const [hRaw, mRaw] = (time24 || "09:00").split(":").map(Number);
-	const h = Number.isFinite(hRaw) ? hRaw : 9;
-	const mm = String(Number.isFinite(mRaw) ? mRaw : 0).padStart(2, "0");
-	if (format === "24h") return `${String(h).padStart(2, "0")}:${mm}`;
-	const period = h >= 12 ? "PM" : "AM";
-	return `${h % 12 || 12}:${mm} ${period}`;
-}
-function formatClockParts(now, format) {
-	const h = now.getHours();
-	const m = String(now.getMinutes()).padStart(2, "0");
-	const s = String(now.getSeconds()).padStart(2, "0");
-	if (format === "24h") return {
-		hm: `${String(h).padStart(2, "0")}:${m}`,
-		sec: s,
-		period: ""
-	};
-	const period = h >= 12 ? "PM" : "AM";
-	return {
-		hm: `${String(h % 12 || 12).padStart(2, "0")}:${m}`,
-		sec: s,
-		period
-	};
-}
-function formatDaysSummary(days, oneTimeDate) {
-	if (oneTimeDate) {
-		if (oneTimeDate === getTodayDateKey()) return "Today";
-		return (/* @__PURE__ */ new Date(`${oneTimeDate}T12:00:00`)).toLocaleDateString(void 0, {
-			month: "short",
-			day: "numeric"
-		});
-	}
-	if (!days || days.length === 0 || days.length === 7) return "Daily";
-	const sorted = [...days].sort((a, b) => a - b);
-	if (sorted.length === 5 && sorted.join(",") === "1,2,3,4,5") return "Weekdays";
-	if (sorted.length === 2 && sorted.join(",") === "0,6") return "Weekends";
-	return sorted.map((d) => DAY_SHORT[d]).join(", ");
-}
-function computeNextDueAt(timeStr, days, from = /* @__PURE__ */ new Date()) {
-	const [h, m] = (timeStr || "09:00").split(":").map(Number);
-	const targetH = Number.isFinite(h) ? h : 9;
-	const targetM = Number.isFinite(m) ? m : 0;
-	for (let offset = 0; offset <= 7; offset++) {
-		const candidate = new Date(from);
-		candidate.setDate(from.getDate() + offset);
-		candidate.setHours(targetH, targetM, 0, 0);
-		if (days && days.length > 0 && !days.includes(candidate.getDay())) continue;
-		if (candidate.getTime() > from.getTime() - 15e3) return candidate.getTime();
-	}
-	const fallback = new Date(from);
-	fallback.setDate(from.getDate() + 1);
-	fallback.setHours(targetH, targetM, 0, 0);
-	return fallback.getTime();
-}
-function isReminderDoneToday(r, todayKey = getTodayDateKey()) {
-	return r.doneDate === todayKey;
-}
-function isReminderScheduledForDate(r, date) {
-	const key = getDateKeyFromDate(date);
-	if (r.oneTimeDate) return r.oneTimeDate === key;
-	if (!r.days || r.days.length === 0) return true;
-	return r.days.includes(date.getDay());
-}
-function formatCountdown(targetMs, nowMs = Date.now()) {
-	const diff = targetMs - nowMs;
-	if (diff <= 0) return "Due now";
-	const totalMin = Math.ceil(diff / 6e4);
-	if (totalMin < 60) return `In ${totalMin}m`;
-	const hrs = Math.floor(totalMin / 60);
-	const mins = totalMin % 60;
-	if (hrs < 24) return mins > 0 ? `In ${hrs}h ${mins}m` : `In ${hrs}h`;
-	return `In ${Math.floor(hrs / 24)}d ${hrs % 24}h`;
-}
-function getGreeting(now = /* @__PURE__ */ new Date()) {
-	const h = now.getHours();
-	if (h < 5) return "Quiet night";
-	if (h < 12) return "Good morning";
-	if (h < 17) return "Good afternoon";
-	if (h < 21) return "Good evening";
-	return "Winding down";
-}
-function hashToInt32(str) {
-	let hash = 2166136261;
-	for (let i = 0; i < str.length; i++) {
-		hash ^= str.charCodeAt(i);
-		hash = Math.imul(hash, 16777619);
-	}
-	return Math.abs(hash) % 214748e4 + 100;
-}
-function getMonthCalendarDays(year, monthIndex) {
-	const startDow = new Date(year, monthIndex, 1).getDay();
-	const days = [];
-	for (let i = startDow - 1; i >= 0; i--) days.push(new Date(year, monthIndex, -i));
-	const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-	for (let d = 1; d <= daysInMonth; d++) days.push(new Date(year, monthIndex, d));
-	while (days.length % 7 !== 0) {
-		const nextIdx = days.length - startDow - daysInMonth + 1;
-		days.push(new Date(year, monthIndex + 1, nextIdx));
-	}
-	return days;
-}
-function getWeekStripDates(anchor = /* @__PURE__ */ new Date()) {
-	const start = new Date(anchor);
-	start.setDate(anchor.getDate() - anchor.getDay());
-	return Array.from({ length: 7 }, (_, i) => {
-		const d = new Date(start);
-		d.setDate(start.getDate() + i);
-		return d;
-	});
-}
-// src/lib/parser.ts
-var DAY_MAP = {
-	sun: 0,
-	sunday: 0,
-	mon: 1,
-	monday: 1,
-	tue: 2,
-	tues: 2,
-	tuesday: 2,
-	wed: 3,
-	wednesday: 3,
-	thu: 4,
-	thur: 4,
-	thurs: 4,
-	thursday: 4,
-	fri: 5,
-	friday: 5,
-	sat: 6,
-	saturday: 6
-};
-function pickEmoji(text, isAlarm) {
-	const lower = text.toLowerCase();
-	if (/water|hydrat|drink/.test(lower)) return "💧";
-	if (/med|pill|vitamin|tablet/.test(lower)) return "💊";
-	if (/gym|workout|run|walk|yoga|exercise/.test(lower)) return "🏃";
-	if (/meet|standup|call|zoom|sync|client/.test(lower)) return "📞";
-	if (/sleep|bed|wind down|night/.test(lower)) return "🌙";
-	if (/wake|morning|alarm/.test(lower)) return "⏰";
-	if (/study|read|book|learn|code|work/.test(lower)) return "🎯";
-	if (/pay|bill|rent|bank/.test(lower)) return "💳";
-	if (/lunch|dinner|breakfast|eat|cook/.test(lower)) return "🍽️";
-	return isAlarm ? "⏰" : "🔔";
-}
-function parseQuickInput(raw, now = /* @__PURE__ */ new Date()) {
-	let working = raw.trim();
-	let hours = now.getHours();
-	let minutes = now.getMinutes();
-	let timeExplicit = false;
-	let days = null;
-	let oneTimeDate = null;
-	let isAlarm = true;
-	let priority = "med";
-	let tag = null;
-	if (/\b(urgent|important|critical|high|!)\b/i.test(working)) {
-		priority = "high";
-		working = working.replace(/\b(urgent|important|critical|high)\b/gi, "").trim();
-	} else if (/\b(low|later|optional)\b/i.test(working)) {
-		priority = "low";
-		working = working.replace(/\b(low|optional)\b/gi, "").trim();
-	}
-	if (/\b(notify|notification|gentle|quiet|silent)\b/i.test(working)) {
-		isAlarm = false;
-		working = working.replace(/\b(notify|notification|gentle|quiet|silent)\b/gi, "").trim();
-	} else if (/\b(alarm|wake)\b/i.test(working)) isAlarm = true;
-	const tagMatch = working.match(/#([a-zA-Z0-9_-]{2,20})/);
-	if (tagMatch) {
-		tag = tagMatch[1];
-		working = working.replace(tagMatch[0], "").trim();
-	}
-	const relMatch = working.match(/\bin\s+(?:(\d+)\s*(?:hr|hrs|hour|hours|h))?\s*(?:(\d+)\s*(?:min|mins|minute|minutes|m))?\b/i);
-	if (relMatch && (relMatch[1] || relMatch[2])) {
-		const addH = Number(relMatch[1] || 0);
-		const addM = Number(relMatch[2] || 0);
-		const target = new Date(now.getTime() + (addH * 60 + addM) * 6e4);
-		hours = target.getHours();
-		minutes = target.getMinutes();
-		oneTimeDate = getTodayDateKey(target);
-		days = [target.getDay()];
-		timeExplicit = true;
-		working = working.replace(relMatch[0], "").trim();
-	}
-	if (!timeExplicit) {
-		const absMatch = working.match(/\b(?:at\s+)?(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)\b/i) || working.match(/\bat\s+(\d{1,2}):(\d{2})\b/i);
-		if (absMatch) {
-			let h = Number(absMatch[1]);
-			const m = Number(absMatch[2] || 0);
-			const mer = (absMatch[3] || "").toLowerCase();
-			if (mer === "pm" && h < 12) h += 12;
-			if (mer === "am" && h === 12) h = 0;
-			if (h >= 0 && h <= 23 && m >= 0 && m <= 59) {
-				hours = h;
-				minutes = m;
-				timeExplicit = true;
-				working = working.replace(absMatch[0], "").trim();
-			}
-		}
-	}
-	if (!timeExplicit) {
-		if (/\bmorning\b/i.test(working)) {
-			hours = 8;
-			minutes = 0;
-			timeExplicit = true;
-		} else if (/\bnoon\b/i.test(working)) {
-			hours = 12;
-			minutes = 0;
-			timeExplicit = true;
-		} else if (/\bafternoon\b/i.test(working)) {
-			hours = 15;
-			minutes = 0;
-			timeExplicit = true;
-		} else if (/\bevening\b/i.test(working)) {
-			hours = 19;
-			minutes = 0;
-			timeExplicit = true;
-		} else if (/\bnight|tonight\b/i.test(working)) {
-			hours = 21;
-			minutes = 30;
-			timeExplicit = true;
-		}
-	}
-	if (/\b(every\s*day|daily)\b/i.test(working)) {
-		days = null;
-		oneTimeDate = null;
-		working = working.replace(/\b(every\s*day|daily)\b/gi, "").trim();
-	} else if (/\bweekdays?\b/i.test(working)) {
-		days = [
-			1,
-			2,
-			3,
-			4,
-			5
-		];
-		working = working.replace(/\b(?:on\s+|every\s+)?weekdays?\b/gi, "").trim();
-	} else if (/\bweekends?\b/i.test(working)) {
-		days = [0, 6];
-		working = working.replace(/\b(?:on\s+|every\s+)?weekends?\b/gi, "").trim();
-	} else if (/\btomorrow\b/i.test(working)) {
-		const tom = new Date(now);
-		tom.setDate(now.getDate() + 1);
-		oneTimeDate = getTodayDateKey(tom);
-		days = [tom.getDay()];
-		working = working.replace(/\btomorrow\b/gi, "").trim();
-	} else if (/\btoday\b/i.test(working)) {
-		oneTimeDate = getTodayDateKey(now);
-		days = [now.getDay()];
-		working = working.replace(/\btoday\b/gi, "").trim();
-	} else {
-		const foundDays = /* @__PURE__ */ new Set();
-		const dayRegex = /\b(sun(?:day)?|mon(?:day)?|tue(?:s|sday)?|wed(?:nesday)?|thu(?:r|rs|rsday)?|fri(?:day)?|sat(?:urday)?)\b/gi;
-		let match;
-		while ((match = dayRegex.exec(working)) !== null) {
-			const idx = DAY_MAP[match[1].toLowerCase()];
-			if (idx !== void 0) foundDays.add(idx);
-		}
-		if (foundDays.size > 0) {
-			days = [...foundDays].sort((a, b) => a - b);
-			working = working.replace(/\bevery\b/gi, "").replace(dayRegex, "").replace(/\b(and|on|,)\b/gi, " ").trim();
-		}
-	}
-	if (!timeExplicit) {
-		const nextSlot = new Date(now.getTime() + 9e5);
-		hours = nextSlot.getHours();
-		minutes = Math.ceil(nextSlot.getMinutes() / 5) * 5;
-		if (minutes >= 60) {
-			minutes = 0;
-			hours = (hours + 1) % 24;
-		}
-	}
-	const time = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
-	const cleanTitle = working.replace(/^(remind\s+me\s+to|set\s+(?:an?\s+)?alarm\s+(?:for|to)?|alarm\s+for)\s+/i, "").replace(/\s{2,}/g, " ").replace(/^[\s,-]+|[\s,-]+$/g, "").slice(0, 60) || "Quick reminder";
-	const capitalized = cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1);
-	const dueAt = computeNextDueAt(time, days, now);
-	const emoji = pickEmoji(capitalized, isAlarm);
-	const repeatText = oneTimeDate ? "One-time" : days ? `${days.length}d/wk` : "Daily";
-	return {
-		title: capitalized,
-		time,
-		days,
-		oneTimeDate,
-		isAlarm,
-		priority,
-		tag,
-		emoji,
-		dueAt,
-		summary: `${time} · ${repeatText} · ${isAlarm ? "Loud Alarm" : "Notification"}`
-	};
-}
-// src/components/LiquidGlassCard.tsx
-/**
-* iOS Liquid Glass interactive surface with specular pointer glare and subtle
-* 3D perspective tilt on fine pointer devices (desktop/trackpad).
-*/
-var LiquidGlassCard = ({ children, className = "", enableTilt = true }) => {
-	const cardRef = (0, import_react.useRef)(null);
-	const handlePointerMove = (e) => {
-		if (!enableTilt || e.pointerType !== "mouse") return;
-		const el = cardRef.current;
-		if (!el) return;
-		const rect = el.getBoundingClientRect();
-		const px = (e.clientX - rect.left) / rect.width;
-		const py = (e.clientY - rect.top) / rect.height;
-		const rx = (.5 - py) * 7;
-		const ry = (px - .5) * 8;
-		el.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
-		el.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
-		el.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
-		el.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
-		el.setAttribute("data-tilting", "true");
-	};
-	const handlePointerLeave = () => {
-		const el = cardRef.current;
-		if (!el) return;
-		el.style.setProperty("--rx", "0deg");
-		el.style.setProperty("--ry", "0deg");
-		el.removeAttribute("data-tilting");
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		ref: cardRef,
-		onPointerMove: handlePointerMove,
-		onPointerLeave: handlePointerLeave,
-		className: `glass-surface liquid-tilt ${className}`,
-		children
-	});
-};
-// src/components/SwipeableReminderRow.tsx
-var SwipeableReminderRow = ({ reminder, timeFormat, onToggleDone, onSnooze, onDelete, onEdit, onFocus }) => {
-	const done = isReminderDoneToday(reminder);
-	const [offsetX, setOffsetX] = (0, import_react.useState)(0);
-	const [dragging, setDragging] = (0, import_react.useState)(false);
-	const [actionsOpen, setActionsOpen] = (0, import_react.useState)(false);
-	const startXRef = (0, import_react.useRef)(0);
-	const startYRef = (0, import_react.useRef)(0);
-	const lockedAxisRef = (0, import_react.useRef)(null);
-	const movedRef = (0, import_react.useRef)(false);
-	const handlePointerDown = (e) => {
-		if (e.target.closest("button")) return;
-		startXRef.current = e.clientX;
-		startYRef.current = e.clientY;
-		lockedAxisRef.current = null;
-		movedRef.current = false;
-		setDragging(true);
-	};
-	const handlePointerMove = (e) => {
-		if (!dragging) return;
-		const dx = e.clientX - startXRef.current;
-		const dy = e.clientY - startYRef.current;
-		if (!lockedAxisRef.current) {
-			if (Math.abs(dx) > 10 || Math.abs(dy) > 10) lockedAxisRef.current = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
-		}
-		if (lockedAxisRef.current !== "x") return;
-		movedRef.current = true;
-		const clamped = Math.max(-152, Math.min(116, (actionsOpen ? -136 : 0) + dx));
-		setOffsetX(clamped);
-	};
-	const handlePointerEnd = () => {
-		if (!dragging) return;
-		setDragging(false);
-		if (lockedAxisRef.current === "x") {
-			if (offsetX >= 80) {
-				onToggleDone(reminder.id);
-				setOffsetX(0);
-				setActionsOpen(false);
-			} else if (offsetX <= -64) {
-				setOffsetX(-136);
-				setActionsOpen(true);
-			} else {
-				setOffsetX(0);
-				setActionsOpen(false);
-			}
-		}
-		lockedAxisRef.current = null;
-	};
-	const priorityLabel = reminder.priority === "high" ? "High" : reminder.priority === "med" ? "Medium" : "Normal";
-	const scheduleLabel = formatDaysSummary(reminder.days, reminder.oneTimeDate);
-	const isSnoozed = !!(reminder.snoozedUntil && reminder.snoozedUntil > Date.now());
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "relative overflow-hidden rounded-[22px] border border-white/[0.18] bg-white/[0.06] shadow-[0_14px_34px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.3)] backdrop-blur-2xl",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: `pointer-events-none absolute inset-y-0 left-0 flex w-28 items-center justify-start bg-[#30D158]/25 pl-5 text-emerald-300 transition-opacity duration-150 ${offsetX > 4 ? "opacity-100" : "opacity-0"}`,
-				"aria-hidden": "true",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-5 w-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "ml-1.5 text-xs font-semibold",
-					children: done ? "Undo" : "Done"
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				"aria-hidden": !(offsetX < -4 || actionsOpen),
-				className: `absolute inset-y-0 right-0 flex items-stretch transition-opacity duration-150 ${offsetX < -4 || actionsOpen ? "opacity-100" : "pointer-events-none opacity-0"}`,
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-					type: "button",
-					tabIndex: actionsOpen ? 0 : -1,
-					onClick: () => {
-						setOffsetX(0);
-						setActionsOpen(false);
-						onSnooze(reminder.id, 10);
-					},
-					className: "flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF9F0A]/25 px-3 text-xs font-semibold text-amber-200 transition-colors hover:bg-[#FF9F0A]/35",
-					"aria-label": `Snooze ${reminder.title} 10 minutes`,
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "10m" })]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-					type: "button",
-					tabIndex: actionsOpen ? 0 : -1,
-					onClick: () => {
-						setOffsetX(0);
-						setActionsOpen(false);
-						onDelete(reminder.id);
-					},
-					className: "flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF453A]/30 px-3 text-xs font-semibold text-red-200 transition-colors hover:bg-[#FF453A]/45",
-					"aria-label": `Delete ${reminder.title}`,
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Delete" })]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				onPointerDown: handlePointerDown,
-				onPointerMove: handlePointerMove,
-				onPointerUp: handlePointerEnd,
-				onPointerCancel: handlePointerEnd,
-				onClick: () => {
-					if (movedRef.current) return;
-					if (actionsOpen) {
-						setOffsetX(0);
-						setActionsOpen(false);
-						return;
-					}
-					onEdit(reminder);
-				},
-				style: {
-					transform: `translateX(${offsetX}px)`,
-					transition: dragging ? "none" : "transform 180ms cubic-bezier(0.16, 1, 0.3, 1)"
-				},
-				className: "relative z-10 flex min-h-[76px] cursor-pointer items-center gap-3.5 bg-gradient-to-br from-[#161E3B]/92 to-[#0D1329]/92 px-4 py-3.5 select-none touch-pan-y hover:from-[#1B2547]/95 hover:to-[#111936]/95",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-						type: "button",
-						onClick: (e) => {
-							e.stopPropagation();
-							onToggleDone(reminder.id);
-						},
-						"aria-label": done ? `Mark ${reminder.title} not done` : `Complete ${reminder.title}`,
-						className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#0A84FF]",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: `flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-150 ${done ? "border-[#30D158] bg-[#30D158] text-[#050712] shadow-[0_0_16px_rgba(48,209,88,0.6)]" : "border-white/40 bg-white/[0.04] text-transparent hover:border-white/75"}`,
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 stroke-[3]" })
-						})
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"aria-hidden": "true",
-						style: { background: `linear-gradient(145deg, ${reminder.color || "#0A84FF"}, rgba(255,255,255,0.12))` },
-						className: `flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/25 text-lg shadow-[0_8px_18px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.55)] transition-all ${done ? "grayscale opacity-55" : ""}`,
-						children: reminder.emoji || (reminder.isAlarm ? "⏰" : "🔔")
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "min-w-0 flex-1",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "flex items-center gap-2",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: `truncate text-[15px] font-semibold leading-snug ${done ? "text-slate-400/70 line-through" : "text-white"}`,
-									children: reminder.title
-								})
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-300/80",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "inline-flex items-center gap-1 font-mono font-semibold text-white tabular-nums",
-										children: [reminder.isAlarm ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-3.5 w-3.5 text-red-400" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-3.5 w-3.5 text-sky-300" }), formatTimeDisplay(reminder.time, timeFormat)]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										"aria-hidden": "true",
-										className: "text-slate-500",
-										children: "·"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: scheduleLabel }),
-									reminder.tag && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										"aria-hidden": "true",
-										className: "text-slate-500",
-										children: "·"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: reminder.tag })] }),
-									reminder.priority === "high" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										"aria-hidden": "true",
-										className: "text-slate-500",
-										children: "·"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-semibold text-amber-300",
-										children: priorityLabel
-									})] }),
-									isSnoozed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										"aria-hidden": "true",
-										className: "text-slate-500",
-										children: "·"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-semibold text-sky-300",
-										children: "Snoozed"
-									})] })
-								]
-							}),
-							reminder.note && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-0.5 truncate text-xs text-slate-400",
-								children: reminder.note
-							})
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex shrink-0 items-center gap-1",
-						children: [
-							!done && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: (e) => {
-									e.stopPropagation();
-									onFocus(reminder);
-								},
-								title: "Start 25-minute focus session",
-								"aria-label": `Focus on ${reminder.title}`,
-								className: "flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-slate-100",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Timer, { className: "h-4 w-4" })
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: (e) => {
-									e.stopPropagation();
-									onSnooze(reminder.id, 10);
-								},
-								title: "Snooze 10 minutes",
-								"aria-label": `Snooze ${reminder.title}`,
-								className: "hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-amber-300 sm:flex",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-4 w-4" })
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: (e) => {
-									e.stopPropagation();
-									onDelete(reminder.id);
-								},
-								title: "Delete reminder",
-								"aria-label": `Delete ${reminder.title}`,
-								className: "hidden h-11 w-11 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-500/15 hover:text-red-400 sm:flex",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4" })
-							})
-						]
-					})
-				]
-			})
-		]
-	});
-};
-// src/components/TodayView.tsx
-var TodayView = ({ reminders, prefs, userName, deliveryHealth, onToggleTimeFormat, onQuickAdd, onOpenNewSheet, onToggleDone, onSnooze, onDelete, onEdit, onFocus, onOpenDeliverySetup, onVoiceError }) => {
-	const [now, setNow] = (0, import_react.useState)(() => /* @__PURE__ */ new Date());
-	const [filter, setFilter] = (0, import_react.useState)("all");
-	const [selectedTag, setSelectedTag] = (0, import_react.useState)("all");
-	const [quickText, setQuickText] = (0, import_react.useState)("");
-	const [listening, setListening] = (0, import_react.useState)(false);
-	(0, import_react.useEffect)(() => {
-		const id = window.setInterval(() => setNow(/* @__PURE__ */ new Date()), 1e3);
-		return () => window.clearInterval(id);
-	}, []);
-	const todayKey = getTodayDateKey(now);
-	const clock = formatClockParts(now, prefs.timeFormat);
-	const dateLabel = now.toLocaleDateString(void 0, {
-		weekday: "long",
-		month: "short",
-		day: "numeric"
-	});
-	const todayItems = (0, import_react.useMemo)(() => reminders.filter((r) => isReminderScheduledForDate(r, now)), [reminders, now]);
-	const completedToday = (0, import_react.useMemo)(() => todayItems.filter((r) => isReminderDoneToday(r, todayKey)).length, [todayItems, todayKey]);
-	const completionPct = todayItems.length === 0 ? 0 : Math.round(completedToday / todayItems.length * 100);
-	const upNext = (0, import_react.useMemo)(() => {
-		return reminders.filter((r) => !isReminderDoneToday(r, todayKey)).sort((a, b) => (a.dueAt || 0) - (b.dueAt || 0))[0] || null;
-	}, [reminders, todayKey]);
-	const availableTags = (0, import_react.useMemo)(() => {
-		const set = new Set(prefs.customTags);
-		reminders.forEach((r) => {
-			if (r.tag) set.add(r.tag);
-		});
-		return Array.from(set);
-	}, [prefs.customTags, reminders]);
-	const filteredReminders = (0, import_react.useMemo)(() => {
-		return reminders.filter((r) => {
-			const done = isReminderDoneToday(r, todayKey);
-			if (filter === "alarms" && !r.isAlarm) return false;
-			if (filter === "todo" && done) return false;
-			if (filter === "done" && !done) return false;
-			if (selectedTag !== "all" && r.tag !== selectedTag) return false;
-			return true;
-		}).sort((a, b) => {
-			const aDone = isReminderDoneToday(a, todayKey) ? 1 : 0;
-			const bDone = isReminderDoneToday(b, todayKey) ? 1 : 0;
-			if (aDone !== bDone) return aDone - bDone;
-			return a.time.localeCompare(b.time);
-		});
-	}, [
-		filter,
-		reminders,
-		selectedTag,
-		todayKey
-	]);
-	const parsedPreview = (0, import_react.useMemo)(() => {
-		if (!quickText.trim()) return null;
-		return parseQuickInput(quickText, now);
-	}, [quickText, now]);
-	const handleQuickSubmit = (e) => {
-		e.preventDefault();
-		if (!quickText.trim()) return;
-		onQuickAdd(quickText.trim());
-		setQuickText("");
-	};
-	const handleVoiceCapture = () => {
-		const W = window;
-		const SR = W.SpeechRecognition || W.webkitSpeechRecognition;
-		if (!SR) {
-			onVoiceError("Voice recognition is not supported in this browser. Type naturally instead.");
-			return;
-		}
-		try {
-			const rec = new SR();
-			rec.lang = navigator.language || "en-US";
-			rec.interimResults = false;
-			rec.maxAlternatives = 1;
-			setListening(true);
-			rec.onresult = (ev) => {
-				const transcript = ev.results?.[0]?.[0]?.transcript || "";
-				if (transcript) setQuickText(transcript);
-			};
-			rec.onerror = () => {
-				setListening(false);
-				onVoiceError("Could not capture microphone audio. Check microphone permissions.");
-			};
-			rec.onend = () => setListening(false);
-			rec.start();
-		} catch {
-			setListening(false);
-			onVoiceError("Voice input could not start on this device.");
-		}
-	};
-	const ringCircumference = 2 * Math.PI * 38;
-	const ringOffset = ringCircumference * (1 - completionPct / 100);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LiquidGlassCard, {
-			className: "rounded-[28px] p-5 sm:p-6 lg:sticky lg:top-6 lg:col-span-5",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center justify-between gap-3",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "text-xs font-semibold tracking-wide text-slate-300/80 uppercase",
-						children: dateLabel
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
-						className: "mt-1 text-lg font-bold tracking-tight text-white",
-						children: [getGreeting(now), userName ? `, ${userName}` : ""]
-					})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-						type: "button",
-						onClick: onToggleTimeFormat,
-						className: "min-h-[44px] rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition-colors hover:bg-white/[0.16] whitespace-nowrap shrink-0",
-						title: "Switch 12-hour or 24-hour clock",
-						children: prefs.timeFormat === "12h" ? "12H" : "24H"
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mt-5 flex items-baseline gap-2",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "bg-gradient-to-b from-white via-white to-sky-200/75 bg-clip-text font-mono text-5xl font-bold tracking-tight text-transparent tabular-nums drop-shadow-[0_6px_24px_rgba(10,132,255,0.28)] sm:text-6xl",
-							children: clock.hm
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							className: "font-mono text-lg font-medium text-slate-400 tabular-nums",
-							children: [":", clock.sec]
-						}),
-						clock.period && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "ml-1 font-mono text-base font-semibold text-sky-300",
-							children: clock.period
-						})
-					]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mt-6 flex items-center gap-5 border-t border-white/[0.14] pt-5",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "relative h-24 w-24 shrink-0",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
-							viewBox: "0 0 96 96",
-							className: "h-full w-full -rotate-90 drop-shadow-[0_8px_18px_rgba(48,209,88,0.4)]",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-									id: "liquidRingGrad",
-									x1: "0",
-									y1: "0",
-									x2: "1",
-									y2: "1",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-											offset: "0%",
-											stopColor: "#6EE7B7"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-											offset: "55%",
-											stopColor: "#30D158"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-											offset: "100%",
-											stopColor: "#38BDF8"
-										})
-									]
-								}) }),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-									cx: "48",
-									cy: "48",
-									r: "38",
-									fill: "none",
-									stroke: "rgba(255,255,255,0.12)",
-									strokeWidth: "8"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-									cx: "48",
-									cy: "48",
-									r: "38",
-									fill: "none",
-									stroke: "url(#liquidRingGrad)",
-									strokeWidth: "8",
-									strokeLinecap: "round",
-									strokeDasharray: ringCircumference,
-									strokeDashoffset: ringOffset,
-									className: "transition-[stroke-dashoffset] duration-500 ease-out"
-								})
-							]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "absolute inset-0 flex flex-col items-center justify-center",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-								className: "font-mono text-xl font-bold text-white tabular-nums",
-								children: [completionPct, "%"]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-								className: "font-mono text-[11px] text-slate-300/80 tabular-nums",
-								children: [
-									completedToday,
-									"/",
-									todayItems.length
-								]
-							})]
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "min-w-0 flex-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs font-semibold tracking-wide text-slate-300/75 uppercase",
-							children: "Up next"
-						}), upNext ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "mt-1 truncate text-base font-bold text-white",
-							children: upNext.title
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "mt-1 flex items-center gap-2 text-xs text-slate-300",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-mono font-semibold text-white tabular-nums",
-									children: formatTimeDisplay(upNext.time, prefs.timeFormat)
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									"aria-hidden": "true",
-									className: "text-slate-500",
-									children: "·"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-mono font-semibold text-sky-300 tabular-nums",
-									children: formatCountdown(upNext.dueAt, now.getTime())
-								})
-							]
-						})] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "mt-1 text-sm font-semibold text-emerald-300",
-							children: "All clear for today"
-						})]
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "mt-5 flex items-center justify-between gap-3 border-t border-white/[0.14] pt-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "min-w-0 text-xs text-slate-300/85",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-semibold text-white",
-							children: deliveryHealth.notificationPermission === "granted" ? "OS Lock-Screen Delivery Active" : "Enable Lock-Screen Alarms"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "mt-0.5 truncate text-slate-400",
-							children: deliveryHealth.notificationPermission === "granted" ? `${deliveryHealth.osScheduledCount} scheduled via OS / push` : "Allow OS AlarmManager & Push for closed-app alerts"
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-						type: "button",
-						onClick: onOpenDeliverySetup,
-						className: "flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] transition-colors hover:bg-white/[0.16] whitespace-nowrap",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: deliveryHealth.notificationPermission === "granted" ? "Inspect" : "Enable" })]
-					})]
-				})
-			]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-			className: "flex flex-col gap-4 lg:col-span-7",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
-					onSubmit: handleQuickSubmit,
-					className: "glass-surface rounded-2xl p-2.5",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-2",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-								type: "text",
-								value: quickText,
-								onChange: (e) => setQuickText(e.target.value),
-								placeholder: "Try \"Take vitamins daily at 8:30am\" or \"Call Sam in 20 min\"",
-								maxLength: 100,
-								className: "min-h-[44px] flex-1 bg-transparent px-3 text-sm text-white placeholder:text-slate-400 focus:outline-none"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: handleVoiceCapture,
-								"aria-label": "Speak reminder",
-								className: `flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors ${listening ? "bg-red-500/25 text-red-300" : "text-slate-300 hover:bg-white/[0.1] hover:text-white"}`,
-								children: listening ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(MicOff, { className: "h-4 w-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mic, { className: "h-4 w-4" })
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-								type: "submit",
-								disabled: !quickText.trim(),
-								className: "liquid-primary-btn flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white transition-transform active:scale-95 disabled:opacity-45 whitespace-nowrap",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Add" })]
-							})
-						]
-					}), parsedPreview && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06] px-3 pt-2 text-xs text-slate-400",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "truncate text-slate-200 font-medium",
-							children: parsedPreview.title
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-mono text-[#60A5FA] tabular-nums",
-							children: parsedPreview.summary
-						})]
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col gap-3",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-wrap items-center justify-between gap-3",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							role: "tablist",
-							"aria-label": "Filter reminders",
-							className: "inline-flex rounded-xl border border-white/[0.08] bg-[#0F1426] p-1",
-							children: [
-								{
-									id: "all",
-									label: "All"
-								},
-								{
-									id: "alarms",
-									label: "Alarms"
-								},
-								{
-									id: "todo",
-									label: "To Do"
-								},
-								{
-									id: "done",
-									label: "Done"
-								}
-							].map((tab) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								role: "tab",
-								"aria-selected": filter === tab.id,
-								onClick: () => setFilter(tab.id),
-								className: `min-h-[38px] rounded-lg px-3.5 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${filter === tab.id ? "bg-[#2F80FF] text-white" : "text-slate-400 hover:text-slate-200"}`,
-								children: tab.label
-							}, tab.id))
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							type: "button",
-							onClick: onOpenNewSheet,
-							className: "hidden min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.09] sm:inline-flex whitespace-nowrap shrink-0",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-4 w-4 text-[#60A5FA]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Detailed Alarm" })]
-						})]
-					}), availableTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "no-scrollbar flex items-center gap-2 overflow-x-auto pb-1",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							type: "button",
-							onClick: () => setSelectedTag("all"),
-							className: `min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${selectedTag === "all" ? "bg-white/[0.14] text-white" : "bg-white/[0.04] text-slate-400 hover:text-slate-200"}`,
-							children: "All Tags"
-						}), availableTags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							type: "button",
-							onClick: () => setSelectedTag(selectedTag === tag ? "all" : tag),
-							className: `min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${selectedTag === tag ? "bg-[#2F80FF]/25 text-[#93C5FD]" : "bg-white/[0.04] text-slate-400 hover:text-slate-200"}`,
-							children: tag
-						}, tag))]
-					})]
-				}),
-				filteredReminders.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "glass-surface flex flex-col items-center justify-center rounded-3xl px-6 py-12 text-center",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-9 w-9 text-slate-600" }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-							className: "mt-3 text-base font-semibold text-slate-200",
-							children: "No reminders here yet"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "mt-1 max-w-xs text-sm text-slate-400",
-							children: "Use the quick bar above or tap New Alarm to schedule an exact OS reminder."
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							type: "button",
-							onClick: onOpenNewSheet,
-							className: "mt-5 min-h-[44px] rounded-xl bg-[#2F80FF] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#256FE6]",
-							children: "Create Alarm"
-						})
-					]
-				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col gap-2.5",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "px-1 text-xs text-slate-500",
-						children: "Swipe right to complete · Swipe left for snooze or delete"
-					}), filteredReminders.map((r) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SwipeableReminderRow, {
-						reminder: r,
-						timeFormat: prefs.timeFormat,
-						onToggleDone,
-						onSnooze,
-						onDelete,
-						onEdit,
-						onFocus
-					}, r.id))]
-				})
-			]
-		})]
 	});
 };
 // node_modules/@capacitor/core/dist/index.js
@@ -13382,7 +12459,7 @@ var __vitePreload = function preload(baseModule, deps, importerUrl) {
 	});
 };
 // node_modules/@capacitor/app/dist/esm/index.js
-var App$1 = registerPlugin("App", { web: () => __vitePreload(() => import("./web-CuW-E_ky.js").then((m) => new m.AppWeb()), []) });
+var App$1 = registerPlugin("App", { web: () => __vitePreload(() => import("./web-v92HlQfL.js").then((m) => new m.AppWeb()), []) });
 // node_modules/@capacitor/haptics/dist/esm/definitions.js
 var ImpactStyle;
 (function(ImpactStyle) {
@@ -13427,7 +12504,7 @@ var NotificationType;
 	NotificationType["Error"] = "ERROR";
 })(NotificationType || (NotificationType = {}));
 // node_modules/@capacitor/haptics/dist/esm/index.js
-var Haptics = registerPlugin("Haptics", { web: () => __vitePreload(() => import("./web-BJW3zGSL.js").then((m) => new m.HapticsWeb()), []) });
+var Haptics = registerPlugin("Haptics", { web: () => __vitePreload(() => import("./web-DVYzU32a.js").then((m) => new m.HapticsWeb()), []) });
 // node_modules/@capacitor/local-notifications/dist/esm/definitions.js
 /**
 * Day of the week. Used for scheduling notifications on a particular weekday.
@@ -13443,13 +12520,13 @@ var Weekday;
 	Weekday[Weekday["Saturday"] = 7] = "Saturday";
 })(Weekday || (Weekday = {}));
 // node_modules/@capacitor/local-notifications/dist/esm/index.js
-var LocalNotifications = registerPlugin("LocalNotifications", { web: () => __vitePreload(() => import("./web-Dg4XnHzO.js").then((m) => new m.LocalNotificationsWeb()), []) });
+var LocalNotifications = registerPlugin("LocalNotifications", { web: () => __vitePreload(() => import("./web-m6qRmspT.js").then((m) => new m.LocalNotificationsWeb()), []) });
 // node_modules/@capacitor/push-notifications/dist/esm/index.js
 var PushNotifications = registerPlugin("PushNotifications", {});
 // node_modules/@capacitor/preferences/dist/esm/index.js
-var Preferences = registerPlugin("Preferences", { web: () => __vitePreload(() => import("./web-BhHOVW3m.js").then((m) => new m.PreferencesWeb()), []) });
+var Preferences = registerPlugin("Preferences", { web: () => __vitePreload(() => import("./web-BONglLJm.js").then((m) => new m.PreferencesWeb()), []) });
 // node_modules/@capacitor/splash-screen/dist/esm/index.js
-var SplashScreen = registerPlugin("SplashScreen", { web: () => __vitePreload(() => import("./web-CA2-6AkG.js").then((m) => new m.SplashScreenWeb()), []) });
+var SplashScreen = registerPlugin("SplashScreen", { web: () => __vitePreload(() => import("./web-CqOKh0K_.js").then((m) => new m.SplashScreenWeb()), []) });
 // node_modules/@capacitor/status-bar/dist/esm/definitions.js
 var Style;
 (function(Style) {
@@ -13500,6 +12577,141 @@ var Animation;
 })(Animation || (Animation = {}));
 // node_modules/@capacitor/status-bar/dist/esm/index.js
 var StatusBar = registerPlugin("StatusBar");
+// src/lib/time.ts
+var DAY_LETTERS = [
+	"S",
+	"M",
+	"T",
+	"W",
+	"T",
+	"F",
+	"S"
+];
+var DAY_SHORT = [
+	"Sun",
+	"Mon",
+	"Tue",
+	"Wed",
+	"Thu",
+	"Fri",
+	"Sat"
+];
+function getTodayDateKey(d = /* @__PURE__ */ new Date()) {
+	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function getDateKeyFromDate(d) {
+	return getTodayDateKey(d);
+}
+function formatTimeDisplay(time24, format) {
+	const [hRaw, mRaw] = (time24 || "09:00").split(":").map(Number);
+	const h = Number.isFinite(hRaw) ? hRaw : 9;
+	const mm = String(Number.isFinite(mRaw) ? mRaw : 0).padStart(2, "0");
+	if (format === "24h") return `${String(h).padStart(2, "0")}:${mm}`;
+	const period = h >= 12 ? "PM" : "AM";
+	return `${h % 12 || 12}:${mm} ${period}`;
+}
+function formatClockParts(now, format) {
+	const h = now.getHours();
+	const m = String(now.getMinutes()).padStart(2, "0");
+	const s = String(now.getSeconds()).padStart(2, "0");
+	if (format === "24h") return {
+		hm: `${String(h).padStart(2, "0")}:${m}`,
+		sec: s,
+		period: ""
+	};
+	const period = h >= 12 ? "PM" : "AM";
+	return {
+		hm: `${String(h % 12 || 12).padStart(2, "0")}:${m}`,
+		sec: s,
+		period
+	};
+}
+function formatDaysSummary(days, oneTimeDate) {
+	if (oneTimeDate) {
+		if (oneTimeDate === getTodayDateKey()) return "Today";
+		return (/* @__PURE__ */ new Date(`${oneTimeDate}T12:00:00`)).toLocaleDateString(void 0, {
+			month: "short",
+			day: "numeric"
+		});
+	}
+	if (!days || days.length === 0 || days.length === 7) return "Daily";
+	const sorted = [...days].sort((a, b) => a - b);
+	if (sorted.length === 5 && sorted.join(",") === "1,2,3,4,5") return "Weekdays";
+	if (sorted.length === 2 && sorted.join(",") === "0,6") return "Weekends";
+	return sorted.map((d) => DAY_SHORT[d]).join(", ");
+}
+function computeNextDueAt(timeStr, days, from = /* @__PURE__ */ new Date()) {
+	const [h, m] = (timeStr || "09:00").split(":").map(Number);
+	const targetH = Number.isFinite(h) ? h : 9;
+	const targetM = Number.isFinite(m) ? m : 0;
+	for (let offset = 0; offset <= 7; offset++) {
+		const candidate = new Date(from);
+		candidate.setDate(from.getDate() + offset);
+		candidate.setHours(targetH, targetM, 0, 0);
+		if (days && days.length > 0 && !days.includes(candidate.getDay())) continue;
+		if (candidate.getTime() > from.getTime() - 15e3) return candidate.getTime();
+	}
+	const fallback = new Date(from);
+	fallback.setDate(from.getDate() + 1);
+	fallback.setHours(targetH, targetM, 0, 0);
+	return fallback.getTime();
+}
+function isReminderDoneToday(r, todayKey = getTodayDateKey()) {
+	return r.doneDate === todayKey;
+}
+function isReminderScheduledForDate(r, date) {
+	const key = getDateKeyFromDate(date);
+	if (r.oneTimeDate) return r.oneTimeDate === key;
+	if (!r.days || r.days.length === 0) return true;
+	return r.days.includes(date.getDay());
+}
+function formatCountdown(targetMs, nowMs = Date.now()) {
+	const diff = targetMs - nowMs;
+	if (diff <= 0) return "Due now";
+	const totalMin = Math.ceil(diff / 6e4);
+	if (totalMin < 60) return `In ${totalMin}m`;
+	const hrs = Math.floor(totalMin / 60);
+	const mins = totalMin % 60;
+	if (hrs < 24) return mins > 0 ? `In ${hrs}h ${mins}m` : `In ${hrs}h`;
+	return `In ${Math.floor(hrs / 24)}d ${hrs % 24}h`;
+}
+function getGreeting(now = /* @__PURE__ */ new Date()) {
+	const h = now.getHours();
+	if (h < 5) return "Quiet night";
+	if (h < 12) return "Good morning";
+	if (h < 17) return "Good afternoon";
+	if (h < 21) return "Good evening";
+	return "Winding down";
+}
+function hashToInt32(str) {
+	let hash = 2166136261;
+	for (let i = 0; i < str.length; i++) {
+		hash ^= str.charCodeAt(i);
+		hash = Math.imul(hash, 16777619);
+	}
+	return Math.abs(hash) % 214748e4 + 100;
+}
+function getMonthCalendarDays(year, monthIndex) {
+	const startDow = new Date(year, monthIndex, 1).getDay();
+	const days = [];
+	for (let i = startDow - 1; i >= 0; i--) days.push(new Date(year, monthIndex, -i));
+	const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+	for (let d = 1; d <= daysInMonth; d++) days.push(new Date(year, monthIndex, d));
+	while (days.length % 7 !== 0) {
+		const nextIdx = days.length - startDow - daysInMonth + 1;
+		days.push(new Date(year, monthIndex + 1, nextIdx));
+	}
+	return days;
+}
+function getWeekStripDates(anchor = /* @__PURE__ */ new Date()) {
+	const start = new Date(anchor);
+	start.setDate(anchor.getDate() - anchor.getDay());
+	return Array.from({ length: 7 }, (_, i) => {
+		const d = new Date(start);
+		d.setDate(start.getDate() + i);
+		return d;
+	});
+}
 // src/lib/nativeBridge.ts
 var ALARM_CHANNEL_ID = "reminderme_alarms";
 var REMINDER_CHANNEL_ID = "reminderme_reminders";
@@ -13909,6 +13121,1335 @@ async function scheduleDelayedLockScreenTest(delaySec, triggerServerPush) {
 		message: `Test notification scheduled in ${delaySec}s. Sign in & enable Push for closed-app cloud delivery.`
 	};
 }
+// src/lib/parser.ts
+var DAY_MAP = {
+	sun: 0,
+	sunday: 0,
+	mon: 1,
+	monday: 1,
+	tue: 2,
+	tues: 2,
+	tuesday: 2,
+	wed: 3,
+	wednesday: 3,
+	thu: 4,
+	thur: 4,
+	thurs: 4,
+	thursday: 4,
+	fri: 5,
+	friday: 5,
+	sat: 6,
+	saturday: 6
+};
+function pickEmoji(text, isAlarm) {
+	const lower = text.toLowerCase();
+	if (/water|hydrat|drink/.test(lower)) return "💧";
+	if (/med|pill|vitamin|tablet/.test(lower)) return "💊";
+	if (/gym|workout|run|walk|yoga|exercise/.test(lower)) return "🏃";
+	if (/meet|standup|call|zoom|sync|client/.test(lower)) return "📞";
+	if (/sleep|bed|wind down|night/.test(lower)) return "🌙";
+	if (/wake|morning|alarm/.test(lower)) return "⏰";
+	if (/study|read|book|learn|code|work/.test(lower)) return "🎯";
+	if (/pay|bill|rent|bank/.test(lower)) return "💳";
+	if (/lunch|dinner|breakfast|eat|cook/.test(lower)) return "🍽️";
+	return isAlarm ? "⏰" : "🔔";
+}
+function parseQuickInput(raw, now = /* @__PURE__ */ new Date()) {
+	let working = raw.trim();
+	let hours = now.getHours();
+	let minutes = now.getMinutes();
+	let timeExplicit = false;
+	let days = null;
+	let oneTimeDate = null;
+	let isAlarm = true;
+	let priority = "med";
+	let tag = null;
+	if (/\b(urgent|important|critical|high|!)\b/i.test(working)) {
+		priority = "high";
+		working = working.replace(/\b(urgent|important|critical|high)\b/gi, "").trim();
+	} else if (/\b(low|later|optional)\b/i.test(working)) {
+		priority = "low";
+		working = working.replace(/\b(low|optional)\b/gi, "").trim();
+	}
+	if (/\b(notify|notification|gentle|quiet|silent)\b/i.test(working)) {
+		isAlarm = false;
+		working = working.replace(/\b(notify|notification|gentle|quiet|silent)\b/gi, "").trim();
+	} else if (/\b(alarm|wake)\b/i.test(working)) isAlarm = true;
+	const tagMatch = working.match(/#([a-zA-Z0-9_-]{2,20})/);
+	if (tagMatch) {
+		tag = tagMatch[1];
+		working = working.replace(tagMatch[0], "").trim();
+	}
+	const relMatch = working.match(/\bin\s+(?:(\d+)\s*(?:hr|hrs|hour|hours|h))?\s*(?:(\d+)\s*(?:min|mins|minute|minutes|m))?\b/i);
+	if (relMatch && (relMatch[1] || relMatch[2])) {
+		const addH = Number(relMatch[1] || 0);
+		const addM = Number(relMatch[2] || 0);
+		const target = new Date(now.getTime() + (addH * 60 + addM) * 6e4);
+		hours = target.getHours();
+		minutes = target.getMinutes();
+		oneTimeDate = getTodayDateKey(target);
+		days = [target.getDay()];
+		timeExplicit = true;
+		working = working.replace(relMatch[0], "").trim();
+	}
+	if (!timeExplicit) {
+		const absMatch = working.match(/\b(?:at\s+)?(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)\b/i) || working.match(/\bat\s+(\d{1,2}):(\d{2})\b/i);
+		if (absMatch) {
+			let h = Number(absMatch[1]);
+			const m = Number(absMatch[2] || 0);
+			const mer = (absMatch[3] || "").toLowerCase();
+			if (mer === "pm" && h < 12) h += 12;
+			if (mer === "am" && h === 12) h = 0;
+			if (h >= 0 && h <= 23 && m >= 0 && m <= 59) {
+				hours = h;
+				minutes = m;
+				timeExplicit = true;
+				working = working.replace(absMatch[0], "").trim();
+			}
+		}
+	}
+	if (!timeExplicit) {
+		if (/\bmorning\b/i.test(working)) {
+			hours = 8;
+			minutes = 0;
+			timeExplicit = true;
+		} else if (/\bnoon\b/i.test(working)) {
+			hours = 12;
+			minutes = 0;
+			timeExplicit = true;
+		} else if (/\bafternoon\b/i.test(working)) {
+			hours = 15;
+			minutes = 0;
+			timeExplicit = true;
+		} else if (/\bevening\b/i.test(working)) {
+			hours = 19;
+			minutes = 0;
+			timeExplicit = true;
+		} else if (/\bnight|tonight\b/i.test(working)) {
+			hours = 21;
+			minutes = 30;
+			timeExplicit = true;
+		}
+	}
+	if (/\b(every\s*day|daily)\b/i.test(working)) {
+		days = null;
+		oneTimeDate = null;
+		working = working.replace(/\b(every\s*day|daily)\b/gi, "").trim();
+	} else if (/\bweekdays?\b/i.test(working)) {
+		days = [
+			1,
+			2,
+			3,
+			4,
+			5
+		];
+		working = working.replace(/\b(?:on\s+|every\s+)?weekdays?\b/gi, "").trim();
+	} else if (/\bweekends?\b/i.test(working)) {
+		days = [0, 6];
+		working = working.replace(/\b(?:on\s+|every\s+)?weekends?\b/gi, "").trim();
+	} else if (/\btomorrow\b/i.test(working)) {
+		const tom = new Date(now);
+		tom.setDate(now.getDate() + 1);
+		oneTimeDate = getTodayDateKey(tom);
+		days = [tom.getDay()];
+		working = working.replace(/\btomorrow\b/gi, "").trim();
+	} else if (/\btoday\b/i.test(working)) {
+		oneTimeDate = getTodayDateKey(now);
+		days = [now.getDay()];
+		working = working.replace(/\btoday\b/gi, "").trim();
+	} else {
+		const foundDays = /* @__PURE__ */ new Set();
+		const dayRegex = /\b(sun(?:day)?|mon(?:day)?|tue(?:s|sday)?|wed(?:nesday)?|thu(?:r|rs|rsday)?|fri(?:day)?|sat(?:urday)?)\b/gi;
+		let match;
+		while ((match = dayRegex.exec(working)) !== null) {
+			const idx = DAY_MAP[match[1].toLowerCase()];
+			if (idx !== void 0) foundDays.add(idx);
+		}
+		if (foundDays.size > 0) {
+			days = [...foundDays].sort((a, b) => a - b);
+			working = working.replace(/\bevery\b/gi, "").replace(dayRegex, "").replace(/\b(and|on|,)\b/gi, " ").trim();
+		}
+	}
+	if (!timeExplicit) {
+		const nextSlot = new Date(now.getTime() + 9e5);
+		hours = nextSlot.getHours();
+		minutes = Math.ceil(nextSlot.getMinutes() / 5) * 5;
+		if (minutes >= 60) {
+			minutes = 0;
+			hours = (hours + 1) % 24;
+		}
+	}
+	const time = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+	const cleanTitle = working.replace(/^(remind\s+me\s+to|set\s+(?:an?\s+)?alarm\s+(?:for|to)?|alarm\s+for)\s+/i, "").replace(/\s{2,}/g, " ").replace(/^[\s,-]+|[\s,-]+$/g, "").slice(0, 60) || "Quick reminder";
+	const capitalized = cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1);
+	const dueAt = computeNextDueAt(time, days, now);
+	const emoji = pickEmoji(capitalized, isAlarm);
+	const repeatText = oneTimeDate ? "One-time" : days ? `${days.length}d/wk` : "Daily";
+	return {
+		title: capitalized,
+		time,
+		days,
+		oneTimeDate,
+		isAlarm,
+		priority,
+		tag,
+		emoji,
+		dueAt,
+		summary: `${time} · ${repeatText} · ${isAlarm ? "Loud Alarm" : "Notification"}`
+	};
+}
+var VOICE_EXAMPLE_PHRASES = [
+	"Take vitamins daily at 8:30am",
+	"Call Sam in 20 min urgent",
+	"Stretch weekdays at 6pm gentle"
+];
+function mapSpeechError(code) {
+	switch (code) {
+		case "not-allowed":
+		case "service-not-allowed": return "Microphone access was blocked. Allow microphone permission in browser or device settings, or type your reminder below.";
+		case "audio-capture": return "No microphone was detected on this device. Connect a mic or type your reminder below.";
+		case "no-speech": return "No speech was detected. Hold the mic button and speak clearly, or type below.";
+		case "network": return "Speech recognition needs a brief network connection on this browser. You can still type naturally below.";
+		case "unsupported": return "Voice recognition is not available in this browser. Type naturally below to use the same smart parser.";
+		case "aborted": return "";
+		default: return "Could not finish voice capture. Hold to try again or type your reminder below.";
+	}
+}
+function combineTranscript(finalText, interimText) {
+	return `${finalText} ${interimText}`.replace(/\s+/g, " ").trim();
+}
+/**
+* Determines the next phase when the user releases the press-and-hold mic trigger.
+* - Any captured transcript transitions straight to 'review' for quick confirm or edit.
+* - A brief tap (< 280ms) with no transcript opens the sheet in 'ready' mode cleanly.
+* - An error state stays in 'error' so the user sees actionable recovery guidance.
+*/
+function resolveReleasePhase(holdDurationMs, transcript, hasError) {
+	if (transcript.trim().length > 0) return "review";
+	if (hasError) return "error";
+	if (holdDurationMs < 280) return "ready";
+	return "ready";
+}
+function buildReminderDraftFromVoice(transcript, now = /* @__PURE__ */ new Date()) {
+	const clean = transcript.trim();
+	if (!clean) return null;
+	return parseQuickInput(clean, now);
+}
+// src/hooks/useVoiceCapture.ts
+function getSpeechRecognitionCtor() {
+	if (typeof window === "undefined") return null;
+	const w = window;
+	return w.SpeechRecognition || w.webkitSpeechRecognition || null;
+}
+function useVoiceCapture(vibrate, now) {
+	const [phase, setPhase] = (0, import_react.useState)("closed");
+	const [finalText, setFinalText] = (0, import_react.useState)("");
+	const [interimText, setInterimText] = (0, import_react.useState)("");
+	const [errorMessage, setErrorMessage] = (0, import_react.useState)(null);
+	const [isHolding, setIsHolding] = (0, import_react.useState)(false);
+	const recRef = (0, import_react.useRef)(null);
+	const holdStartRef = (0, import_react.useRef)(0);
+	const holdingRef = (0, import_react.useRef)(false);
+	const finalRef = (0, import_react.useRef)("");
+	const interimRef = (0, import_react.useRef)("");
+	const hadErrorRef = (0, import_react.useRef)(false);
+	const closedIntentionallyRef = (0, import_react.useRef)(false);
+	const isSupported = (0, import_react.useMemo)(() => getSpeechRecognitionCtor() !== null, []);
+	const combinedTranscript = (0, import_react.useMemo)(() => combineTranscript(finalText, interimText), [finalText, interimText]);
+	const parsedPreview = (0, import_react.useMemo)(() => buildReminderDraftFromVoice(combinedTranscript, now), [combinedTranscript, now]);
+	const teardownRecognition = (0, import_react.useCallback)((abort = true) => {
+		const rec = recRef.current;
+		if (!rec) return;
+		rec.onresult = null;
+		rec.onerror = null;
+		rec.onend = null;
+		recRef.current = null;
+		try {
+			if (abort) rec.abort();
+			else rec.stop();
+		} catch {}
+	}, []);
+	(0, import_react.useEffect)(() => {
+		return () => {
+			closedIntentionallyRef.current = true;
+			teardownRecognition(true);
+		};
+	}, [teardownRecognition]);
+	const openReady = (0, import_react.useCallback)(() => {
+		closedIntentionallyRef.current = false;
+		setErrorMessage(isSupported ? null : mapSpeechError("unsupported"));
+		setPhase(isSupported ? "ready" : "error");
+	}, [isSupported]);
+	const startHoldCapture = (0, import_react.useCallback)(() => {
+		closedIntentionallyRef.current = false;
+		holdingRef.current = true;
+		setIsHolding(true);
+		holdStartRef.current = Date.now();
+		hadErrorRef.current = false;
+		setErrorMessage(null);
+		triggerHaptic("light", vibrate);
+		const Ctor = getSpeechRecognitionCtor();
+		if (!Ctor) {
+			hadErrorRef.current = true;
+			setErrorMessage(mapSpeechError("unsupported"));
+			setPhase("error");
+			return;
+		}
+		teardownRecognition(true);
+		finalRef.current = "";
+		interimRef.current = "";
+		setFinalText("");
+		setInterimText("");
+		setPhase("listening");
+		try {
+			const rec = new Ctor();
+			rec.lang = navigator.language || "en-US";
+			rec.continuous = true;
+			rec.interimResults = true;
+			rec.maxAlternatives = 1;
+			recRef.current = rec;
+			rec.onresult = (event) => {
+				let nextFinal = "";
+				let nextInterim = "";
+				for (let i = 0; i < event.results.length; i++) {
+					const item = event.results[i];
+					const text = item?.[0]?.transcript || "";
+					if (item?.isFinal) nextFinal += `${text} `;
+					else nextInterim += `${text} `;
+				}
+				finalRef.current = nextFinal.trim();
+				interimRef.current = nextInterim.trim();
+				setFinalText(finalRef.current);
+				setInterimText(interimRef.current);
+			};
+			rec.onerror = (event) => {
+				if (closedIntentionallyRef.current) return;
+				const msg = mapSpeechError(event?.error || "unknown");
+				if (!msg) return;
+				hadErrorRef.current = true;
+				setErrorMessage(msg);
+				if (!holdingRef.current) {
+					const combined = combineTranscript(finalRef.current, interimRef.current);
+					setPhase(resolveReleasePhase(Date.now() - holdStartRef.current, combined, true));
+				}
+			};
+			rec.onend = () => {
+				recRef.current = null;
+				if (closedIntentionallyRef.current) return;
+				const combined = combineTranscript(finalRef.current, interimRef.current);
+				if (combined) {
+					finalRef.current = combined;
+					interimRef.current = "";
+					setFinalText(combined);
+					setInterimText("");
+				}
+				holdingRef.current = false;
+				setIsHolding(false);
+				const duration = Date.now() - holdStartRef.current;
+				setPhase(resolveReleasePhase(duration, combined, hadErrorRef.current));
+			};
+			rec.start();
+		} catch {
+			hadErrorRef.current = true;
+			holdingRef.current = false;
+			setIsHolding(false);
+			setErrorMessage(mapSpeechError("audio-capture"));
+			setPhase("error");
+		}
+	}, [teardownRecognition, vibrate]);
+	const endHoldCapture = (0, import_react.useCallback)(() => {
+		if (!holdingRef.current) return;
+		holdingRef.current = false;
+		setIsHolding(false);
+		const duration = Date.now() - holdStartRef.current;
+		triggerHaptic("medium", vibrate);
+		const rec = recRef.current;
+		if (rec) {
+			try {
+				rec.stop();
+			} catch {
+				teardownRecognition(true);
+			}
+			window.setTimeout(() => {
+				if (recRef.current === rec && !closedIntentionallyRef.current) {
+					teardownRecognition(true);
+					const combined = combineTranscript(finalRef.current, interimRef.current);
+					setPhase(resolveReleasePhase(duration, combined, hadErrorRef.current));
+				}
+			}, 450);
+		} else {
+			const combined = combineTranscript(finalRef.current, interimRef.current);
+			setPhase(resolveReleasePhase(duration, combined, hadErrorRef.current));
+		}
+	}, [teardownRecognition, vibrate]);
+	const updateTranscript = (0, import_react.useCallback)((nextText) => {
+		finalRef.current = nextText;
+		interimRef.current = "";
+		setFinalText(nextText);
+		setInterimText("");
+		setErrorMessage(null);
+		setPhase((prev) => {
+			if (prev === "closed") return prev;
+			return nextText.trim() ? "review" : "ready";
+		});
+	}, []);
+	const close = (0, import_react.useCallback)(() => {
+		closedIntentionallyRef.current = true;
+		holdingRef.current = false;
+		setIsHolding(false);
+		teardownRecognition(true);
+		finalRef.current = "";
+		interimRef.current = "";
+		setFinalText("");
+		setInterimText("");
+		setErrorMessage(null);
+		setPhase("closed");
+	}, [teardownRecognition]);
+	return {
+		phase,
+		isOpen: phase !== "closed",
+		isHolding,
+		isSupported,
+		transcript: combinedTranscript,
+		interimText,
+		parsedPreview,
+		errorMessage,
+		openReady,
+		startHoldCapture,
+		endHoldCapture,
+		updateTranscript,
+		close
+	};
+}
+// src/components/LiquidGlassCard.tsx
+/**
+* iOS Liquid Glass interactive surface with specular pointer glare and subtle
+* 3D perspective tilt on fine pointer devices (desktop/trackpad).
+*/
+var LiquidGlassCard = ({ children, className = "", enableTilt = true }) => {
+	const cardRef = (0, import_react.useRef)(null);
+	const handlePointerMove = (e) => {
+		if (!enableTilt || e.pointerType !== "mouse") return;
+		const el = cardRef.current;
+		if (!el) return;
+		const rect = el.getBoundingClientRect();
+		const px = (e.clientX - rect.left) / rect.width;
+		const py = (e.clientY - rect.top) / rect.height;
+		const rx = (.5 - py) * 7;
+		const ry = (px - .5) * 8;
+		el.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
+		el.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
+		el.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
+		el.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
+		el.setAttribute("data-tilting", "true");
+	};
+	const handlePointerLeave = () => {
+		const el = cardRef.current;
+		if (!el) return;
+		el.style.setProperty("--rx", "0deg");
+		el.style.setProperty("--ry", "0deg");
+		el.removeAttribute("data-tilting");
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		ref: cardRef,
+		onPointerMove: handlePointerMove,
+		onPointerLeave: handlePointerLeave,
+		className: `glass-surface liquid-tilt ${className}`,
+		children
+	});
+};
+// src/components/SwipeableReminderRow.tsx
+var SwipeableReminderRow = ({ reminder, timeFormat, onToggleDone, onSnooze, onDelete, onEdit, onFocus }) => {
+	const done = isReminderDoneToday(reminder);
+	const [offsetX, setOffsetX] = (0, import_react.useState)(0);
+	const [dragging, setDragging] = (0, import_react.useState)(false);
+	const [actionsOpen, setActionsOpen] = (0, import_react.useState)(false);
+	const startXRef = (0, import_react.useRef)(0);
+	const startYRef = (0, import_react.useRef)(0);
+	const lockedAxisRef = (0, import_react.useRef)(null);
+	const movedRef = (0, import_react.useRef)(false);
+	const handlePointerDown = (e) => {
+		if (e.target.closest("button")) return;
+		startXRef.current = e.clientX;
+		startYRef.current = e.clientY;
+		lockedAxisRef.current = null;
+		movedRef.current = false;
+		setDragging(true);
+	};
+	const handlePointerMove = (e) => {
+		if (!dragging) return;
+		const dx = e.clientX - startXRef.current;
+		const dy = e.clientY - startYRef.current;
+		if (!lockedAxisRef.current) {
+			if (Math.abs(dx) > 10 || Math.abs(dy) > 10) lockedAxisRef.current = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+		}
+		if (lockedAxisRef.current !== "x") return;
+		movedRef.current = true;
+		const clamped = Math.max(-152, Math.min(116, (actionsOpen ? -136 : 0) + dx));
+		setOffsetX(clamped);
+	};
+	const handlePointerEnd = () => {
+		if (!dragging) return;
+		setDragging(false);
+		if (lockedAxisRef.current === "x") {
+			if (offsetX >= 80) {
+				onToggleDone(reminder.id);
+				setOffsetX(0);
+				setActionsOpen(false);
+			} else if (offsetX <= -64) {
+				setOffsetX(-136);
+				setActionsOpen(true);
+			} else {
+				setOffsetX(0);
+				setActionsOpen(false);
+			}
+		}
+		lockedAxisRef.current = null;
+	};
+	const priorityLabel = reminder.priority === "high" ? "High" : reminder.priority === "med" ? "Medium" : "Normal";
+	const scheduleLabel = formatDaysSummary(reminder.days, reminder.oneTimeDate);
+	const isSnoozed = !!(reminder.snoozedUntil && reminder.snoozedUntil > Date.now());
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "relative overflow-hidden rounded-[22px] border border-white/[0.18] bg-white/[0.06] shadow-[0_14px_34px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.3)] backdrop-blur-2xl",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: `pointer-events-none absolute inset-y-0 left-0 flex w-28 items-center justify-start bg-[#30D158]/25 pl-5 text-emerald-300 transition-opacity duration-150 ${offsetX > 4 ? "opacity-100" : "opacity-0"}`,
+				"aria-hidden": "true",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-5 w-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "ml-1.5 text-xs font-semibold",
+					children: done ? "Undo" : "Done"
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				"aria-hidden": !(offsetX < -4 || actionsOpen),
+				className: `absolute inset-y-0 right-0 flex items-stretch transition-opacity duration-150 ${offsetX < -4 || actionsOpen ? "opacity-100" : "pointer-events-none opacity-0"}`,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+					type: "button",
+					tabIndex: actionsOpen ? 0 : -1,
+					onClick: () => {
+						setOffsetX(0);
+						setActionsOpen(false);
+						onSnooze(reminder.id, 10);
+					},
+					className: "flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF9F0A]/25 px-3 text-xs font-semibold text-amber-200 transition-colors hover:bg-[#FF9F0A]/35",
+					"aria-label": `Snooze ${reminder.title} 10 minutes`,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "10m" })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+					type: "button",
+					tabIndex: actionsOpen ? 0 : -1,
+					onClick: () => {
+						setOffsetX(0);
+						setActionsOpen(false);
+						onDelete(reminder.id);
+					},
+					className: "flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF453A]/30 px-3 text-xs font-semibold text-red-200 transition-colors hover:bg-[#FF453A]/45",
+					"aria-label": `Delete ${reminder.title}`,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Delete" })]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				onPointerDown: handlePointerDown,
+				onPointerMove: handlePointerMove,
+				onPointerUp: handlePointerEnd,
+				onPointerCancel: handlePointerEnd,
+				onClick: () => {
+					if (movedRef.current) return;
+					if (actionsOpen) {
+						setOffsetX(0);
+						setActionsOpen(false);
+						return;
+					}
+					onEdit(reminder);
+				},
+				style: {
+					transform: `translateX(${offsetX}px)`,
+					transition: dragging ? "none" : "transform 180ms cubic-bezier(0.16, 1, 0.3, 1)"
+				},
+				className: "relative z-10 flex min-h-[76px] cursor-pointer items-center gap-3.5 bg-gradient-to-br from-[#161E3B]/92 to-[#0D1329]/92 px-4 py-3.5 select-none touch-pan-y hover:from-[#1B2547]/95 hover:to-[#111936]/95",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						type: "button",
+						onClick: (e) => {
+							e.stopPropagation();
+							onToggleDone(reminder.id);
+						},
+						"aria-label": done ? `Mark ${reminder.title} not done` : `Complete ${reminder.title}`,
+						className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#0A84FF]",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: `flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-150 ${done ? "border-[#30D158] bg-[#30D158] text-[#050712] shadow-[0_0_16px_rgba(48,209,88,0.6)]" : "border-white/40 bg-white/[0.04] text-transparent hover:border-white/75"}`,
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 stroke-[3]" })
+						})
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						"aria-hidden": "true",
+						style: { background: `linear-gradient(145deg, ${reminder.color || "#0A84FF"}, rgba(255,255,255,0.12))` },
+						className: `flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/25 text-lg shadow-[0_8px_18px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.55)] transition-all ${done ? "grayscale opacity-55" : ""}`,
+						children: reminder.emoji || (reminder.isAlarm ? "⏰" : "🔔")
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "min-w-0 flex-1",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "flex items-center gap-2",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: `truncate text-[15px] font-semibold leading-snug ${done ? "text-slate-400/70 line-through" : "text-white"}`,
+									children: reminder.title
+								})
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-300/80",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "inline-flex items-center gap-1 font-mono font-semibold text-white tabular-nums",
+										children: [reminder.isAlarm ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-3.5 w-3.5 text-red-400" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-3.5 w-3.5 text-sky-300" }), formatTimeDisplay(reminder.time, timeFormat)]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										className: "text-slate-500",
+										children: "·"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: scheduleLabel }),
+									reminder.tag && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										className: "text-slate-500",
+										children: "·"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: reminder.tag })] }),
+									reminder.priority === "high" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										className: "text-slate-500",
+										children: "·"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-semibold text-amber-300",
+										children: priorityLabel
+									})] }),
+									isSnoozed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										className: "text-slate-500",
+										children: "·"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-semibold text-sky-300",
+										children: "Snoozed"
+									})] })
+								]
+							}),
+							reminder.note && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-0.5 truncate text-xs text-slate-400",
+								children: reminder.note
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex shrink-0 items-center gap-1",
+						children: [
+							!done && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: (e) => {
+									e.stopPropagation();
+									onFocus(reminder);
+								},
+								title: "Start 25-minute focus session",
+								"aria-label": `Focus on ${reminder.title}`,
+								className: "flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-slate-100",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Timer, { className: "h-4 w-4" })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: (e) => {
+									e.stopPropagation();
+									onSnooze(reminder.id, 10);
+								},
+								title: "Snooze 10 minutes",
+								"aria-label": `Snooze ${reminder.title}`,
+								className: "hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-amber-300 sm:flex",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-4 w-4" })
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: (e) => {
+									e.stopPropagation();
+									onDelete(reminder.id);
+								},
+								title: "Delete reminder",
+								"aria-label": `Delete ${reminder.title}`,
+								className: "hidden h-11 w-11 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-500/15 hover:text-red-400 sm:flex",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4" })
+							})
+						]
+					})
+				]
+			})
+		]
+	});
+};
+// src/components/VoiceCaptureSheet.tsx
+var import_react_dom = require_react_dom();
+var BAR_DELAYS = [
+	"0ms",
+	"110ms",
+	"220ms",
+	"90ms",
+	"180ms"
+];
+var VoiceCaptureSheet = ({ open, phase, isHolding, isSupported, transcript, parsedPreview, errorMessage, timeFormat, onHoldStart, onHoldEnd, onTranscriptChange, onConfirmSave, onEditDetails, onClose }) => {
+	const inputRef = (0, import_react.useRef)(null);
+	(0, import_react.useEffect)(() => {
+		if (!open) return;
+		const onKeyDown = (e) => {
+			if (e.key === "Escape") {
+				e.preventDefault();
+				onClose();
+			}
+		};
+		window.addEventListener("keydown", onKeyDown);
+		return () => window.removeEventListener("keydown", onKeyDown);
+	}, [open, onClose]);
+	if (!open) return null;
+	const isListening = phase === "listening";
+	const canSave = Boolean(transcript.trim() && parsedPreview);
+	const scheduleLabel = parsedPreview ? formatDaysSummary(parsedPreview.days, parsedPreview.oneTimeDate) : "";
+	const priorityLabel = parsedPreview?.priority === "high" ? "High priority" : parsedPreview?.priority === "low" ? "Normal priority" : "Medium priority";
+	const handlePadPointerDown = (e) => {
+		e.preventDefault();
+		try {
+			e.currentTarget.setPointerCapture(e.pointerId);
+		} catch {}
+		onHoldStart();
+	};
+	const handlePadPointerUp = (e) => {
+		if (e.currentTarget.hasPointerCapture?.(e.pointerId)) try {
+			e.currentTarget.releasePointerCapture(e.pointerId);
+		} catch {}
+		onHoldEnd();
+	};
+	const handlePadKeyDown = (e) => {
+		if ((e.key === " " || e.key === "Enter") && !e.repeat) {
+			e.preventDefault();
+			onHoldStart();
+		}
+	};
+	const handlePadKeyUp = (e) => {
+		if (e.key === " " || e.key === "Enter") {
+			e.preventDefault();
+			onHoldEnd();
+		}
+	};
+	const sheetContent = /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		role: "dialog",
+		"aria-modal": "true",
+		"aria-label": "Voice reminder capture",
+		className: "fixed inset-0 z-[80] flex items-end justify-center bg-black/65 backdrop-blur-sm sm:items-center sm:p-4",
+		onClick: (e) => {
+			if (e.target === e.currentTarget) onClose();
+		},
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "glass-elevated animate-sheet-up flex max-h-[90dvh] w-full max-w-lg flex-col rounded-t-3xl sm:rounded-3xl",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex justify-center pt-3 sm:hidden",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-1.5 w-10 rounded-full bg-white/20" })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between border-b border-white/[0.08] px-5 py-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "min-w-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+							className: "font-display text-lg font-bold text-white",
+							children: isListening ? "Listening — release to finish" : phase === "review" && canSave ? "Ready to schedule" : phase === "error" ? "Voice capture unavailable" : "Hold to speak your reminder"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "mt-0.5 text-xs text-slate-400",
+							children: isListening ? "Speak naturally with a time, day, or priority" : "Uses smart natural-language parsing before saving"
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						type: "button",
+						onClick: onClose,
+						"aria-label": "Close voice capture",
+						className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.08] hover:text-white",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "h-5 w-5" })
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex-1 space-y-5 overflow-y-auto px-5 py-5",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col items-center text-center",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onPointerDown: handlePadPointerDown,
+									onPointerUp: handlePadPointerUp,
+									onPointerCancel: handlePadPointerUp,
+									onKeyDown: handlePadKeyDown,
+									onKeyUp: handlePadKeyUp,
+									"aria-pressed": isListening || isHolding,
+									"aria-label": isListening ? "Release to finish speaking" : "Hold to speak reminder",
+									className: `group relative flex h-24 w-24 select-none touch-none items-center justify-center rounded-full border transition-transform duration-150 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0A84FF] ${isListening ? "scale-105 border-[#FF453A]/70 bg-gradient-to-b from-[#FF6961] to-[#FF453A] text-white shadow-[0_14px_38px_rgba(255,69,58,0.5),inset_0_1px_0_rgba(255,255,255,0.45)]" : "border-white/30 bg-gradient-to-b from-[#4BA3FF] to-[#0A84FF] text-white shadow-[0_14px_34px_rgba(10,132,255,0.42),inset_0_1px_0_rgba(255,255,255,0.5)] hover:brightness-105 active:scale-95"}`,
+									children: [isListening && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										className: "animate-alarm-ripple pointer-events-none absolute inset-0 rounded-full border-2 border-[#FF453A]/75"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mic, { className: "h-9 w-9" })]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									"aria-hidden": "true",
+									className: "mt-4 flex h-7 items-center justify-center gap-1.5",
+									children: BAR_DELAYS.map((delay, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										style: { animationDelay: delay },
+										className: `h-6 w-1.5 rounded-full transition-colors duration-150 ${isListening ? "voice-bar-active bg-[#FF6961]" : canSave ? "scale-y-[0.35] bg-[#30D158]/70" : "scale-y-[0.3] bg-white/20"}`
+									}, idx))
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "mt-2 text-xs font-medium text-slate-300",
+									children: isListening ? "Recording live… lift your finger or release mouse when done" : isSupported ? "Press & hold mic button to speak (or edit text below)" : "Type your reminder below — smart parsing is active"
+								})
+							]
+						}),
+						errorMessage && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							role: "status",
+							className: "rounded-2xl border border-amber-400/25 bg-amber-500/10 px-4 py-3 text-xs leading-relaxed text-amber-200",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: errorMessage }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => inputRef.current?.focus(),
+								className: "mt-2 inline-flex min-h-[36px] items-center rounded-lg bg-white/10 px-3 text-xs font-semibold text-white hover:bg-white/15",
+								children: "Type Instead"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+							className: "block",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs font-medium text-slate-400",
+								children: isListening ? "Live transcript" : "Heard transcript (tap to tweak)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+								ref: inputRef,
+								type: "text",
+								maxLength: 120,
+								value: transcript,
+								onChange: (e) => onTranscriptChange(e.target.value),
+								placeholder: "Try \"Take vitamins daily at 8:30am\"",
+								className: "mt-1.5 min-h-[46px] w-full rounded-xl border border-white/[0.12] bg-[#060812]/80 px-3.5 text-base text-white placeholder:text-slate-500 focus:border-[#0A84FF] focus:outline-none sm:text-sm"
+							})]
+						}),
+						parsedPreview ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "rounded-2xl border border-white/[0.14] bg-white/[0.04] p-4",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs font-medium text-emerald-300",
+								children: "Parsed preview"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-2.5 flex items-center gap-3.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									"aria-hidden": "true",
+									style: { background: `linear-gradient(145deg, ${parsedPreview.isAlarm ? "#0A84FF" : "#30D158"}, rgba(255,255,255,0.14))` },
+									className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/25 text-lg shadow-[0_8px_18px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.5)]",
+									children: parsedPreview.emoji
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "min-w-0 flex-1",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "truncate text-base font-bold text-white",
+										children: parsedPreview.title
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-300",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+												className: "inline-flex items-center gap-1 font-mono font-semibold text-white tabular-nums",
+												children: [parsedPreview.isAlarm ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-3.5 w-3.5 text-red-400" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-3.5 w-3.5 text-sky-300" }), formatTimeDisplay(parsedPreview.time, timeFormat)]
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												"aria-hidden": "true",
+												className: "text-slate-500",
+												children: "·"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: scheduleLabel }),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												"aria-hidden": "true",
+												className: "text-slate-500",
+												children: "·"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: parsedPreview.isAlarm ? "Loud Alarm" : "Notification" }),
+											parsedPreview.tag && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												"aria-hidden": "true",
+												className: "text-slate-500",
+												children: "·"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["#", parsedPreview.tag] })] }),
+											parsedPreview.priority === "high" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												"aria-hidden": "true",
+												className: "text-slate-500",
+												children: "·"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "font-semibold text-amber-300",
+												children: priorityLabel
+											})] })
+										]
+									})]
+								})]
+							})]
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs font-medium text-slate-400",
+							children: "Example phrases you can say"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "mt-2 flex flex-col gap-1.5",
+							children: VOICE_EXAMPLE_PHRASES.map((phrase) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "button",
+								onClick: () => onTranscriptChange(phrase),
+								className: "flex min-h-[44px] items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-left text-xs text-slate-300 transition-colors hover:bg-white/[0.08] hover:text-white",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "truncate",
+									children: [
+										"“",
+										phrase,
+										"”"
+									]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "ml-2 shrink-0 text-[11px] font-semibold text-sky-300",
+									children: "Try"
+								})]
+							}, phrase))
+						})] })
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex flex-col gap-2.5 border-t border-white/[0.08] px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:py-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: `grid gap-2.5 sm:flex sm:items-center ${canSave && parsedPreview ? "grid-cols-2" : "grid-cols-1"}`,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: onClose,
+							className: "min-h-[48px] rounded-xl border border-white/[0.1] bg-white/[0.04] px-4 text-sm font-semibold text-slate-300 transition-colors hover:bg-white/[0.09] whitespace-nowrap",
+							children: "Cancel"
+						}), canSave && parsedPreview && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							onClick: () => onEditDetails(parsedPreview),
+							className: "inline-flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.14] bg-white/[0.06] px-4 text-sm font-semibold text-slate-100 transition-colors hover:bg-white/[0.12] whitespace-nowrap",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlidersHorizontal, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Edit Details" })]
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+						type: "button",
+						disabled: !canSave,
+						onClick: () => {
+							if (!canSave) return;
+							onConfirmSave(transcript.trim());
+							onClose();
+						},
+						className: "liquid-primary-btn inline-flex min-h-[48px] w-full items-center justify-center gap-1.5 rounded-xl px-5 text-sm font-semibold text-white transition-transform active:scale-[0.98] disabled:opacity-45 sm:w-auto sm:flex-1 whitespace-nowrap",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Save Reminder" })]
+					})]
+				})
+			]
+		})
+	});
+	return typeof document !== "undefined" ? (0, import_react_dom.createPortal)(sheetContent, document.body) : sheetContent;
+};
+// src/components/TodayView.tsx
+var TodayView = ({ reminders, prefs, userName, deliveryHealth, onToggleTimeFormat, onQuickAdd, onEditVoiceDraft, onOpenNewSheet, onToggleDone, onSnooze, onDelete, onEdit, onFocus, onOpenDeliverySetup, onRegisterVoiceClose }) => {
+	const [now, setNow] = (0, import_react.useState)(() => /* @__PURE__ */ new Date());
+	const [filter, setFilter] = (0, import_react.useState)("all");
+	const [selectedTag, setSelectedTag] = (0, import_react.useState)("all");
+	const [quickText, setQuickText] = (0, import_react.useState)("");
+	const voice = useVoiceCapture(prefs.vibrate, now);
+	(0, import_react.useEffect)(() => {
+		if (!onRegisterVoiceClose) return;
+		onRegisterVoiceClose(voice.isOpen ? voice.close : null);
+		return () => onRegisterVoiceClose(null);
+	}, [
+		onRegisterVoiceClose,
+		voice.close,
+		voice.isOpen
+	]);
+	(0, import_react.useEffect)(() => {
+		const id = window.setInterval(() => setNow(/* @__PURE__ */ new Date()), 1e3);
+		return () => window.clearInterval(id);
+	}, []);
+	const todayKey = getTodayDateKey(now);
+	const clock = formatClockParts(now, prefs.timeFormat);
+	const dateLabel = now.toLocaleDateString(void 0, {
+		weekday: "long",
+		month: "short",
+		day: "numeric"
+	});
+	const todayItems = (0, import_react.useMemo)(() => reminders.filter((r) => isReminderScheduledForDate(r, now)), [reminders, now]);
+	const completedToday = (0, import_react.useMemo)(() => todayItems.filter((r) => isReminderDoneToday(r, todayKey)).length, [todayItems, todayKey]);
+	const completionPct = todayItems.length === 0 ? 0 : Math.round(completedToday / todayItems.length * 100);
+	const upNext = (0, import_react.useMemo)(() => {
+		return reminders.filter((r) => !isReminderDoneToday(r, todayKey)).sort((a, b) => (a.dueAt || 0) - (b.dueAt || 0))[0] || null;
+	}, [reminders, todayKey]);
+	const availableTags = (0, import_react.useMemo)(() => {
+		const set = new Set(prefs.customTags);
+		reminders.forEach((r) => {
+			if (r.tag) set.add(r.tag);
+		});
+		return Array.from(set);
+	}, [prefs.customTags, reminders]);
+	const filteredReminders = (0, import_react.useMemo)(() => {
+		return reminders.filter((r) => {
+			const done = isReminderDoneToday(r, todayKey);
+			if (filter === "alarms" && !r.isAlarm) return false;
+			if (filter === "todo" && done) return false;
+			if (filter === "done" && !done) return false;
+			if (selectedTag !== "all" && r.tag !== selectedTag) return false;
+			return true;
+		}).sort((a, b) => {
+			const aDone = isReminderDoneToday(a, todayKey) ? 1 : 0;
+			const bDone = isReminderDoneToday(b, todayKey) ? 1 : 0;
+			if (aDone !== bDone) return aDone - bDone;
+			return a.time.localeCompare(b.time);
+		});
+	}, [
+		filter,
+		reminders,
+		selectedTag,
+		todayKey
+	]);
+	const parsedPreview = (0, import_react.useMemo)(() => {
+		if (!quickText.trim()) return null;
+		return parseQuickInput(quickText, now);
+	}, [quickText, now]);
+	const handleQuickSubmit = (e) => {
+		e.preventDefault();
+		if (!quickText.trim()) return;
+		onQuickAdd(quickText.trim());
+		setQuickText("");
+	};
+	const handleVoiceTriggerDown = (e) => {
+		e.preventDefault();
+		try {
+			e.currentTarget.setPointerCapture(e.pointerId);
+		} catch {}
+		voice.startHoldCapture();
+	};
+	const handleVoiceTriggerUp = (e) => {
+		if (e.currentTarget.hasPointerCapture?.(e.pointerId)) try {
+			e.currentTarget.releasePointerCapture(e.pointerId);
+		} catch {}
+		voice.endHoldCapture();
+	};
+	const handleVoiceTriggerKeyDown = (e) => {
+		if ((e.key === " " || e.key === "Enter") && !e.repeat) {
+			e.preventDefault();
+			voice.startHoldCapture();
+		}
+	};
+	const handleVoiceTriggerKeyUp = (e) => {
+		if (e.key === " " || e.key === "Enter") {
+			e.preventDefault();
+			voice.endHoldCapture();
+		}
+	};
+	const ringCircumference = 2 * Math.PI * 38;
+	const ringOffset = ringCircumference * (1 - completionPct / 100);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LiquidGlassCard, {
+				className: "rounded-[28px] p-5 sm:p-6 lg:sticky lg:top-6 lg:col-span-5",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between gap-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs font-semibold tracking-wide text-slate-300/80 uppercase",
+							children: dateLabel
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
+							className: "mt-1 text-lg font-bold tracking-tight text-white",
+							children: [getGreeting(now), userName ? `, ${userName}` : ""]
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: onToggleTimeFormat,
+							className: "min-h-[44px] rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition-colors hover:bg-white/[0.16] whitespace-nowrap shrink-0",
+							title: "Switch 12-hour or 24-hour clock",
+							children: prefs.timeFormat === "12h" ? "12H" : "24H"
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-5 flex items-baseline gap-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "bg-gradient-to-b from-white via-white to-sky-200/75 bg-clip-text font-mono text-5xl font-bold tracking-tight text-transparent tabular-nums drop-shadow-[0_6px_24px_rgba(10,132,255,0.28)] sm:text-6xl",
+								children: clock.hm
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "font-mono text-lg font-medium text-slate-400 tabular-nums",
+								children: [":", clock.sec]
+							}),
+							clock.period && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "ml-1 font-mono text-base font-semibold text-sky-300",
+								children: clock.period
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-6 flex items-center gap-5 border-t border-white/[0.14] pt-5",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "relative h-24 w-24 shrink-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+								viewBox: "0 0 96 96",
+								className: "h-full w-full -rotate-90 drop-shadow-[0_8px_18px_rgba(48,209,88,0.4)]",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+										id: "liquidRingGrad",
+										x1: "0",
+										y1: "0",
+										x2: "1",
+										y2: "1",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "0%",
+												stopColor: "#6EE7B7"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "55%",
+												stopColor: "#30D158"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "100%",
+												stopColor: "#38BDF8"
+											})
+										]
+									}) }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: "48",
+										cy: "48",
+										r: "38",
+										fill: "none",
+										stroke: "rgba(255,255,255,0.12)",
+										strokeWidth: "8"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: "48",
+										cy: "48",
+										r: "38",
+										fill: "none",
+										stroke: "url(#liquidRingGrad)",
+										strokeWidth: "8",
+										strokeLinecap: "round",
+										strokeDasharray: ringCircumference,
+										strokeDashoffset: ringOffset,
+										className: "transition-[stroke-dashoffset] duration-500 ease-out"
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "absolute inset-0 flex flex-col items-center justify-center",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-mono text-xl font-bold text-white tabular-nums",
+									children: [completionPct, "%"]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-mono text-[11px] text-slate-300/80 tabular-nums",
+									children: [
+										completedToday,
+										"/",
+										todayItems.length
+									]
+								})]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "min-w-0 flex-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs font-semibold tracking-wide text-slate-300/75 uppercase",
+								children: "Up next"
+							}), upNext ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-1 truncate text-base font-bold text-white",
+								children: upNext.title
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-1 flex items-center gap-2 text-xs text-slate-300",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-mono font-semibold text-white tabular-nums",
+										children: formatTimeDisplay(upNext.time, prefs.timeFormat)
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										className: "text-slate-500",
+										children: "·"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-mono font-semibold text-sky-300 tabular-nums",
+										children: formatCountdown(upNext.dueAt, now.getTime())
+									})
+								]
+							})] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-1 text-sm font-semibold text-emerald-300",
+								children: "All clear for today"
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-5 flex items-center justify-between gap-3 border-t border-white/[0.14] pt-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "min-w-0 text-xs text-slate-300/85",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-semibold text-white",
+								children: deliveryHealth.notificationPermission === "granted" ? "OS Lock-Screen Delivery Active" : "Enable Lock-Screen Alarms"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-0.5 truncate text-slate-400",
+								children: deliveryHealth.notificationPermission === "granted" ? `${deliveryHealth.osScheduledCount} scheduled via OS / push` : "Allow OS AlarmManager & Push for closed-app alerts"
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							onClick: onOpenDeliverySetup,
+							className: "flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] transition-colors hover:bg-white/[0.16] whitespace-nowrap",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: deliveryHealth.notificationPermission === "granted" ? "Inspect" : "Enable" })]
+						})]
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+				className: "flex flex-col gap-4 lg:col-span-7",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+						onSubmit: handleQuickSubmit,
+						className: "glass-surface rounded-2xl p-2.5",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+									type: "text",
+									value: quickText,
+									onChange: (e) => setQuickText(e.target.value),
+									placeholder: "Try \"Take vitamins daily at 8:30am\" or hold mic to speak",
+									maxLength: 100,
+									className: "min-h-[48px] min-w-0 flex-1 bg-transparent px-3 text-sm text-white placeholder:text-slate-400 focus:outline-none"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onPointerDown: handleVoiceTriggerDown,
+									onPointerUp: handleVoiceTriggerUp,
+									onPointerCancel: handleVoiceTriggerUp,
+									onKeyDown: handleVoiceTriggerKeyDown,
+									onKeyUp: handleVoiceTriggerKeyUp,
+									"aria-pressed": voice.phase === "listening" || voice.isHolding,
+									"aria-label": "Hold to speak reminder",
+									title: "Press and hold to speak a reminder",
+									className: `inline-flex min-h-[48px] min-w-[48px] shrink-0 select-none touch-none items-center justify-center gap-2 rounded-xl border px-3.5 text-xs font-semibold transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#0A84FF] ${voice.phase === "listening" ? "scale-[0.98] border-[#FF453A]/70 bg-[#FF453A] text-white shadow-[0_8px_24px_rgba(255,69,58,0.45)]" : "border-sky-400/35 bg-sky-500/20 text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] hover:bg-sky-500/30 active:scale-95"}`,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mic, { className: "h-4 w-4 shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "hidden sm:inline",
+										children: voice.phase === "listening" ? "Release" : "Hold to Speak"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "submit",
+									disabled: !quickText.trim(),
+									className: "liquid-primary-btn flex min-h-[48px] shrink-0 items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white transition-transform active:scale-95 disabled:opacity-45 whitespace-nowrap",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Add" })]
+								})
+							]
+						}), parsedPreview && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06] px-3 pt-2 text-xs text-slate-400",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "truncate font-medium text-slate-200",
+								children: parsedPreview.title
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-mono text-[#60A5FA] tabular-nums",
+								children: parsedPreview.summary
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-wrap items-center justify-between gap-3",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								role: "tablist",
+								"aria-label": "Filter reminders",
+								className: "inline-flex rounded-xl border border-white/[0.08] bg-[#0F1426] p-1",
+								children: [
+									{
+										id: "all",
+										label: "All"
+									},
+									{
+										id: "alarms",
+										label: "Alarms"
+									},
+									{
+										id: "todo",
+										label: "To Do"
+									},
+									{
+										id: "done",
+										label: "Done"
+									}
+								].map((tab) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									role: "tab",
+									"aria-selected": filter === tab.id,
+									onClick: () => setFilter(tab.id),
+									className: `min-h-[38px] rounded-lg px-3.5 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${filter === tab.id ? "bg-[#2F80FF] text-white" : "text-slate-400 hover:text-slate-200"}`,
+									children: tab.label
+								}, tab.id))
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "button",
+								onClick: onOpenNewSheet,
+								className: "hidden min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.09] sm:inline-flex whitespace-nowrap shrink-0",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-4 w-4 text-[#60A5FA]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Detailed Alarm" })]
+							})]
+						}), availableTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "no-scrollbar flex items-center gap-2 overflow-x-auto pb-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setSelectedTag("all"),
+								className: `min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${selectedTag === "all" ? "bg-white/[0.14] text-white" : "bg-white/[0.04] text-slate-400 hover:text-slate-200"}`,
+								children: "All Tags"
+							}), availableTags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setSelectedTag(selectedTag === tag ? "all" : tag),
+								className: `min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${selectedTag === tag ? "bg-[#2F80FF]/25 text-[#93C5FD]" : "bg-white/[0.04] text-slate-400 hover:text-slate-200"}`,
+								children: tag
+							}, tag))]
+						})]
+					}),
+					filteredReminders.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "glass-surface flex flex-col items-center justify-center rounded-3xl px-6 py-12 text-center",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-9 w-9 text-slate-600" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+								className: "mt-3 text-base font-semibold text-slate-200",
+								children: "No reminders here yet"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-1 max-w-xs text-sm text-slate-400",
+								children: "Use the quick bar above or tap New Alarm to schedule an exact OS reminder."
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: onOpenNewSheet,
+								className: "mt-5 min-h-[44px] rounded-xl bg-[#2F80FF] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#256FE6]",
+								children: "Create Alarm"
+							})
+						]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-2.5",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "px-1 text-xs text-slate-500",
+							children: "Swipe right to complete · Swipe left for snooze or delete"
+						}), filteredReminders.map((r) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SwipeableReminderRow, {
+							reminder: r,
+							timeFormat: prefs.timeFormat,
+							onToggleDone,
+							onSnooze,
+							onDelete,
+							onEdit,
+							onFocus
+						}, r.id))]
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(VoiceCaptureSheet, {
+				open: voice.isOpen,
+				phase: voice.phase,
+				isHolding: voice.isHolding,
+				isSupported: voice.isSupported,
+				transcript: voice.transcript,
+				parsedPreview: voice.parsedPreview,
+				errorMessage: voice.errorMessage,
+				timeFormat: prefs.timeFormat,
+				onHoldStart: voice.startHoldCapture,
+				onHoldEnd: voice.endHoldCapture,
+				onTranscriptChange: voice.updateTranscript,
+				onConfirmSave: (spokenText) => onQuickAdd(spokenText),
+				onEditDetails: (parsed) => {
+					voice.close();
+					onEditVoiceDraft(parsed);
+				},
+				onClose: voice.close
+			})
+		]
+	});
+};
 // src/lib/api.ts
 var CLOUDFLARE_EDGE_URL = "https://api.makeuperfect.in";
 var memoryToken = null;
@@ -15084,14 +15625,14 @@ function useReminderApp(onHardwareBack) {
 	};
 }
 // src/App.tsx
-var ScheduleView = (0, import_react.lazy)(() => __vitePreload(() => import("./ScheduleView-CgOXRXri.js").then((m) => ({ default: m.ScheduleView })), __vite__mapDeps([0,1,2])));
-var InsightsView = (0, import_react.lazy)(() => __vitePreload(() => import("./InsightsView-ClBqL6Ph.js").then((m) => ({ default: m.InsightsView })), __vite__mapDeps([3,1])));
-var ProfileView = (0, import_react.lazy)(() => __vitePreload(() => import("./ProfileView-BoIaOZTZ.js").then((m) => ({ default: m.ProfileView })), __vite__mapDeps([4,1,2,5,6])));
-var ReminderSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./ReminderSheet-LvWc4qlV.js").then((m) => ({ default: m.ReminderSheet })), __vite__mapDeps([7,1,6,2,8])));
-var FocusTimerSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./FocusTimerSheet-DLZe9OXu.js").then((m) => ({ default: m.FocusTimerSheet })), __vite__mapDeps([9,1,2,6,8])));
-var AuthSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./AuthSheet-BkkeE8jN.js").then((m) => ({ default: m.AuthSheet })), __vite__mapDeps([10,1,8,2])));
-var PlayStoreModal = (0, import_react.lazy)(() => __vitePreload(() => import("./PlayStoreModal-C4wbRfP9.js").then((m) => ({ default: m.PlayStoreModal })), __vite__mapDeps([11,1,2,5,8])));
-var RingingAlarmOverlay = (0, import_react.lazy)(() => __vitePreload(() => import("./RingingAlarmOverlay-CTqDak3m.js").then((m) => ({ default: m.RingingAlarmOverlay })), __vite__mapDeps([12,1])));
+var ScheduleView = (0, import_react.lazy)(() => __vitePreload(() => import("./ScheduleView-DOrLnQ2O.js").then((m) => ({ default: m.ScheduleView })), __vite__mapDeps([0,1,2])));
+var InsightsView = (0, import_react.lazy)(() => __vitePreload(() => import("./InsightsView-Dt3zySci.js").then((m) => ({ default: m.InsightsView })), __vite__mapDeps([3,1])));
+var ProfileView = (0, import_react.lazy)(() => __vitePreload(() => import("./ProfileView-BECu_rKx.js").then((m) => ({ default: m.ProfileView })), __vite__mapDeps([4,1,2,5,6])));
+var ReminderSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./ReminderSheet-D-ZSpaNX.js").then((m) => ({ default: m.ReminderSheet })), __vite__mapDeps([7,1,6,2])));
+var FocusTimerSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./FocusTimerSheet-BTqROmmh.js").then((m) => ({ default: m.FocusTimerSheet })), __vite__mapDeps([8,1,2,6])));
+var AuthSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./AuthSheet-fV95pkgt.js").then((m) => ({ default: m.AuthSheet })), __vite__mapDeps([9,1])));
+var PlayStoreModal = (0, import_react.lazy)(() => __vitePreload(() => import("./PlayStoreModal-DrYQ0O0m.js").then((m) => ({ default: m.PlayStoreModal })), __vite__mapDeps([10,1,2,5])));
+var RingingAlarmOverlay = (0, import_react.lazy)(() => __vitePreload(() => import("./RingingAlarmOverlay-Bty1ZB1Z.js").then((m) => ({ default: m.RingingAlarmOverlay })), __vite__mapDeps([11,1])));
 var INTRO_SEEN_KEY = "rm_intro_seen_session";
 function shouldShowIntroInitially() {
 	try {
@@ -15110,11 +15651,16 @@ function App() {
 	const [activeTab, setActiveTab] = (0, import_react.useState)("today");
 	const [sheetOpen, setSheetOpen] = (0, import_react.useState)(false);
 	const [editingReminder, setEditingReminder] = (0, import_react.useState)(null);
+	const [voiceDraft, setVoiceDraft] = (0, import_react.useState)(null);
 	const [defaultDate, setDefaultDate] = (0, import_react.useState)(null);
 	const [focusReminder, setFocusReminder] = (0, import_react.useState)(null);
 	const [authOpen, setAuthOpen] = (0, import_react.useState)(false);
 	const [infoModal, setInfoModal] = (0, import_react.useState)(null);
 	const [showIntro, setShowIntro] = (0, import_react.useState)(shouldShowIntroInitially);
+	const voiceCloseRef = (0, import_react.useRef)(null);
+	const registerVoiceClose = (0, import_react.useCallback)((fn) => {
+		voiceCloseRef.current = fn;
+	}, []);
 	const finishIntro = (0, import_react.useCallback)(() => {
 		setShowIntro(false);
 		try {
@@ -15124,6 +15670,10 @@ function App() {
 	const app = useReminderApp((0, import_react.useCallback)(() => {
 		if (showIntro) {
 			finishIntro();
+			return true;
+		}
+		if (voiceCloseRef.current) {
+			voiceCloseRef.current();
 			return true;
 		}
 		if (infoModal) {
@@ -15168,11 +15718,19 @@ function App() {
 	}, []);
 	const openNewReminder = (date = null) => {
 		setEditingReminder(null);
+		setVoiceDraft(null);
 		setDefaultDate(date);
 		setSheetOpen(true);
 	};
 	const openEditReminder = (r) => {
 		setEditingReminder(r);
+		setVoiceDraft(null);
+		setDefaultDate(null);
+		setSheetOpen(true);
+	};
+	const openVoiceDraftInSheet = (parsed) => {
+		setEditingReminder(null);
+		setVoiceDraft(parsed);
 		setDefaultDate(null);
 		setSheetOpen(true);
 	};
@@ -15212,6 +15770,7 @@ function App() {
 				deliveryHealth: app.deliveryHealth,
 				onToggleTimeFormat: () => app.updatePrefs({ timeFormat: app.prefs.timeFormat === "12h" ? "24h" : "12h" }),
 				onQuickAdd: handleQuickAdd,
+				onEditVoiceDraft: openVoiceDraftInSheet,
 				onOpenNewSheet: () => openNewReminder(null),
 				onToggleDone: app.toggleCompleteReminder,
 				onSnooze: app.snoozeReminder,
@@ -15219,7 +15778,7 @@ function App() {
 				onEdit: openEditReminder,
 				onFocus: (r) => setFocusReminder(r),
 				onOpenDeliverySetup: () => setActiveTab("profile"),
-				onVoiceError: (msg) => app.pushToast(msg, { tone: "warning" })
+				onRegisterVoiceClose: registerVoiceClose
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_react.Suspense, {
 				fallback: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabSkeleton, {}),
 				children: [
@@ -15272,6 +15831,7 @@ function App() {
 				sheetOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReminderSheet, {
 					open: sheetOpen,
 					editing: editingReminder,
+					initialDraft: voiceDraft,
 					defaultDate,
 					defaultAlarmSound: app.prefs.defaultAlarmSound,
 					customAudioName: app.prefs.customAudioName,
@@ -15279,7 +15839,10 @@ function App() {
 					onAddCustomTag: handleAddCustomTag,
 					onSave: (draft) => app.upsertReminder(draft),
 					onDelete: app.deleteReminder,
-					onClose: () => setSheetOpen(false)
+					onClose: () => {
+						setSheetOpen(false);
+						setVoiceDraft(null);
+					}
 				}),
 				focusReminder && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusTimerSheet, {
 					reminder: focusReminder,
@@ -15308,4 +15871,4 @@ function App() {
 }
 // src/main.tsx
 import_client.createRoot(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(App, {}) }));
-export { Bell as A, isReminderDoneToday as C, Plus as D, ShieldCheck as E, Clock as O, getWeekStripDates as S, Trash as T, DAY_SHORT as _, playAlarmCycle as a, getMonthCalendarDays as b, CLOUDFLARE_EDGE_URL as c, openExactAlarmSettings as d, ImpactStyle as f, DAY_LETTERS as g, SwipeableReminderRow as h, deleteCustomRingtone as i, AlarmClock as j, Check as k, api as l, WebPlugin as m, ALARM_SOUNDS as n, playNotificationChime as o, NotificationType as p, NOTIF_SOUNDS as r, saveCustomRingtone as s, usePWAInstall as t, isNativeApp as u, formatTimeDisplay as v, isReminderScheduledForDate as w, getTodayDateKey as x, getDateKeyFromDate as y };
+export { Check as A, NotificationType as C, ShieldCheck as D, Trash as E, AlarmClock as M, Plus as O, ImpactStyle as S, X as T, getMonthCalendarDays as _, playAlarmCycle as a, isReminderDoneToday as b, CLOUDFLARE_EDGE_URL as c, isNativeApp as d, openExactAlarmSettings as f, getDateKeyFromDate as g, formatTimeDisplay as h, deleteCustomRingtone as i, Bell as j, Clock as k, api as l, DAY_SHORT as m, ALARM_SOUNDS as n, playNotificationChime as o, DAY_LETTERS as p, NOTIF_SOUNDS as r, saveCustomRingtone as s, usePWAInstall as t, SwipeableReminderRow as u, getTodayDateKey as v, WebPlugin as w, isReminderScheduledForDate as x, getWeekStripDates as y };

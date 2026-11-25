@@ -28,21 +28,27 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'npm'
+          node-version: 22
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Verify JavaScript Syntax
         run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
+
+      - name: Type-check & Verify Assets
+        run: |
+          npm run lint
           node --check server.js
           node --check public/sw.js
-
-      - name: Run Client & Icon Checks
-        run: |
-          node scripts/verify-client.js
           node scripts/verify-icons.js
+
+      - name: Build Web App
+        env:
+          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -50,7 +56,7 @@ jobs:
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'public'
+          path: 'dist'
 
   deploy:
     name: Deploy to GitHub Pages

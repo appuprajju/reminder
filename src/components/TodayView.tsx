@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { AlarmClock, Mic, MicOff, Plus, ShieldCheck } from 'lucide-react';
-import { parseQuickInput } from '../lib/parser';
+import { AlarmClock, Mic, Plus, ShieldCheck } from 'lucide-react';
+import { useVoiceCapture } from '../hooks/useVoiceCapture';
+import { parseQuickInput, type ParsedQuickReminder } from '../lib/parser';
 import {
   formatClockParts,
   formatCountdown,
@@ -13,6 +14,7 @@ import {
 import type { DeliveryHealth, FilterMode, Reminder, UserPreferences } from '../types';
 import { LiquidGlassCard } from './LiquidGlassCard';
 import { SwipeableReminderRow } from './SwipeableReminderRow';
+import { VoiceCaptureSheet } from './VoiceCaptureSheet';
 
 interface TodayViewProps {
   reminders: Reminder[];
@@ -21,6 +23,7 @@ interface TodayViewProps {
   deliveryHealth: DeliveryHealth;
   onToggleTimeFormat: () => void;
   onQuickAdd: (rawText: string) => void;
+  onEditVoiceDraft: (parsed: ParsedQuickReminder) => void;
   onOpenNewSheet: () => void;
   onToggleDone: (id: string) => void;
   onSnooze: (id: string, minutes: number) => void;
@@ -28,18 +31,7 @@ interface TodayViewProps {
   onEdit: (reminder: Reminder) => void;
   onFocus: (reminder: Reminder) => void;
   onOpenDeliverySetup: () => void;
-  onVoiceError: (msg: string) => void;
-}
-
-interface SpeechRecognitionInstance {
-  lang: string;
-  interimResults: boolean;
-  maxAlternatives: number;
-  start: () => void;
-  stop: () => void;
-  onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
-  onerror: (() => void) | null;
-  onend: (() => void) | null;
+  onRegisterVoiceClose?: (closeFn: (() => void) | null) => void;
 }
 
 export const TodayView: React.FC<TodayViewProps> = ({
@@ -49,6 +41,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
   deliveryHealth,
   onToggleTimeFormat,
   onQuickAdd,
+  onEditVoiceDraft,
   onOpenNewSheet,
   onToggleDone,
   onSnooze,
@@ -56,13 +49,19 @@ export const TodayView: React.FC<TodayViewProps> = ({
   onEdit,
   onFocus,
   onOpenDeliverySetup,
-  onVoiceError,
+  onRegisterVoiceClose,
 }) => {
   const [now, setNow] = useState(() => new Date());
   const [filter, setFilter] = useState<FilterMode>('all');
   const [selectedTag, setSelectedTag] = useState<string>('all');
   const [quickText, setQuickText] = useState('');
-  const [listening, setListening] = useState(false);
+  const voice = useVoiceCapture(prefs.vibrate, now);
+
+  useEffect(() => {
+    if (!onRegisterVoiceClose) return;
+    onRegisterVoiceClose(voice.isOpen ? voice.close : null);
+    return () => onRegisterVoiceClose(null);
+  }, [onRegisterVoiceClose, voice.close, voice.isOpen]);
 
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 1000);
@@ -135,35 +134,38 @@ export const TodayView: React.FC<TodayViewProps> = ({
     setQuickText('');
   };
 
-  const handleVoiceCapture = () => {
-    const W = window as unknown as {
-      SpeechRecognition?: new () => SpeechRecognitionInstance;
-      webkitSpeechRecognition?: new () => SpeechRecognitionInstance;
-    };
-    const SR = W.SpeechRecognition || W.webkitSpeechRecognition;
-    if (!SR) {
-      onVoiceError('Voice recognition is not supported in this browser. Type naturally instead.');
-      return;
-    }
+  const handleVoiceTriggerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     try {
-      const rec = new SR();
-      rec.lang = navigator.language || 'en-US';
-      rec.interimResults = false;
-      rec.maxAlternatives = 1;
-      setListening(true);
-      rec.onresult = (ev) => {
-        const transcript = ev.results?.[0]?.[0]?.transcript || '';
-        if (transcript) setQuickText(transcript);
-      };
-      rec.onerror = () => {
-        setListening(false);
-        onVoiceError('Could not capture microphone audio. Check microphone permissions.');
-      };
-      rec.onend = () => setListening(false);
-      rec.start();
+      e.currentTarget.setPointerCapture(e.pointerId);
     } catch {
-      setListening(false);
-      onVoiceError('Voice input could not start on this device.');
+      // ignore if pointer capture unavailable
+    }
+    voice.startHoldCapture();
+  };
+
+  const handleVoiceTriggerUp = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (e.currentTarget.hasPointerCapture?.(e.pointerId)) {
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch {
+        // ignore
+      }
+    }
+    voice.endHoldCapture();
+  };
+
+  const handleVoiceTriggerKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) {
+      e.preventDefault();
+      voice.startHoldCapture();
+    }
+  };
+
+  const handleVoiceTriggerKeyUp = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      voice.endHoldCapture();
     }
   };
 
@@ -308,33 +310,42 @@ export const TodayView: React.FC<TodayViewProps> = ({
 
       {/* Right Workspace Column: Quick Capture + Filters + Swipeable Schedule */}
       <section className="flex flex-col gap-4 lg:col-span-7">
-        {/* Natural-Language Quick Add & Voice Bar */}
+        {/* Natural-Language Quick Add & Prominent Push-to-Talk Voice Bar */}
         <form onSubmit={handleQuickSubmit} className="glass-surface rounded-2xl p-2.5">
           <div className="flex items-center gap-2">
             <input
               type="text"
               value={quickText}
               onChange={(e) => setQuickText(e.target.value)}
-              placeholder='Try "Take vitamins daily at 8:30am" or "Call Sam in 20 min"'
+              placeholder='Try "Take vitamins daily at 8:30am" or hold mic to speak'
               maxLength={100}
-              className="min-h-[44px] flex-1 bg-transparent px-3 text-sm text-white placeholder:text-slate-400 focus:outline-none"
+              className="min-h-[48px] min-w-0 flex-1 bg-transparent px-3 text-sm text-white placeholder:text-slate-400 focus:outline-none"
             />
             <button
               type="button"
-              onClick={handleVoiceCapture}
-              aria-label="Speak reminder"
-              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors ${
-                listening
-                  ? 'bg-red-500/25 text-red-300'
-                  : 'text-slate-300 hover:bg-white/[0.1] hover:text-white'
+              onPointerDown={handleVoiceTriggerDown}
+              onPointerUp={handleVoiceTriggerUp}
+              onPointerCancel={handleVoiceTriggerUp}
+              onKeyDown={handleVoiceTriggerKeyDown}
+              onKeyUp={handleVoiceTriggerKeyUp}
+              aria-pressed={voice.phase === 'listening' || voice.isHolding}
+              aria-label="Hold to speak reminder"
+              title="Press and hold to speak a reminder"
+              className={`inline-flex min-h-[48px] min-w-[48px] shrink-0 select-none touch-none items-center justify-center gap-2 rounded-xl border px-3.5 text-xs font-semibold transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#0A84FF] ${
+                voice.phase === 'listening'
+                  ? 'scale-[0.98] border-[#FF453A]/70 bg-[#FF453A] text-white shadow-[0_8px_24px_rgba(255,69,58,0.45)]'
+                  : 'border-sky-400/35 bg-sky-500/20 text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] hover:bg-sky-500/30 active:scale-95'
               }`}
             >
-              {listening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+              <Mic className="h-4 w-4 shrink-0" />
+              <span className="hidden sm:inline">
+                {voice.phase === 'listening' ? 'Release' : 'Hold to Speak'}
+              </span>
             </button>
             <button
               type="submit"
               disabled={!quickText.trim()}
-              className="liquid-primary-btn flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white transition-transform active:scale-95 disabled:opacity-45 whitespace-nowrap"
+              className="liquid-primary-btn flex min-h-[48px] shrink-0 items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white transition-transform active:scale-95 disabled:opacity-45 whitespace-nowrap"
             >
               <Plus className="h-4 w-4" />
               <span>Add</span>
@@ -343,7 +354,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
 
           {parsedPreview && (
             <div className="mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06] px-3 pt-2 text-xs text-slate-400">
-              <span className="truncate text-slate-200 font-medium">{parsedPreview.title}</span>
+              <span className="truncate font-medium text-slate-200">{parsedPreview.title}</span>
               <span className="font-mono text-[#60A5FA] tabular-nums">{parsedPreview.summary}</span>
             </div>
           )}
@@ -459,6 +470,26 @@ export const TodayView: React.FC<TodayViewProps> = ({
           </div>
         )}
       </section>
+
+      <VoiceCaptureSheet
+        open={voice.isOpen}
+        phase={voice.phase}
+        isHolding={voice.isHolding}
+        isSupported={voice.isSupported}
+        transcript={voice.transcript}
+        parsedPreview={voice.parsedPreview}
+        errorMessage={voice.errorMessage}
+        timeFormat={prefs.timeFormat}
+        onHoldStart={voice.startHoldCapture}
+        onHoldEnd={voice.endHoldCapture}
+        onTranscriptChange={voice.updateTranscript}
+        onConfirmSave={(spokenText) => onQuickAdd(spokenText)}
+        onEditDetails={(parsed) => {
+          voice.close();
+          onEditVoiceDraft(parsed);
+        }}
+        onClose={voice.close}
+      />
     </div>
   );
 };

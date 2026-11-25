@@ -1,5 +1,5 @@
 import { i as __toESM, n as require_react, t as require_jsx_runtime } from "./jsx-runtime-CWAvGazs.js";
-import { t as X } from "./x-kMqQQxQ3.js";
+import { T as X } from "./index-awTncDk7.js";
 // src/components/AuthSheet.tsx
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();

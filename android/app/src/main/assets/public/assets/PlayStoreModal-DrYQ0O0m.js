@@ -1,8 +1,7 @@
 import { i as __toESM, n as require_react, t as require_jsx_runtime } from "./jsx-runtime-CWAvGazs.js";
-import { k as Check } from "./index-MgpPl3ok.js";
+import { A as Check, T as X } from "./index-awTncDk7.js";
 import { t as createLucideIcon } from "./createLucideIcon-1IqWJXqJ.js";
 import { n as ExternalLink, t as Smartphone } from "./smartphone-C8EGrxLo.js";
-import { t as X } from "./x-kMqQQxQ3.js";
 // node_modules/lucide-react/dist/esm/icons/copy.mjs
 var __iconData$1 = {
 	name: "copy",
