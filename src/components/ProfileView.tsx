@@ -1,13 +1,15 @@
 import React, { useRef, useState } from 'react';
 import {
   BellRing,
+  Calendar,
+  CalendarArrowDown,
   Cloud,
   Download,
-  ExternalLink,
   FileJson,
   Lock,
   LogIn,
   LogOut,
+  Mail,
   Play,
   RefreshCw,
   ShieldCheck,
@@ -28,7 +30,17 @@ import {
   saveCustomRingtone,
 } from '../lib/audio';
 import { isNativeApp, openExactAlarmSettings } from '../lib/nativeBridge';
-import type { AlarmSoundId, DeliveryHealth, NotifSoundId, UserPreferences, UserProfile } from '../types';
+import type {
+  AlarmSoundId,
+  DeliveryHealth,
+  NotifSoundId,
+  UserPreferences,
+  UserProfile,
+} from '../types';
+import { useDynamicIsland } from './DynamicIsland';
+import { GoogleSignInButton } from './GoogleSignInButton';
+import { IosSwitch } from './IosSwitch';
+import { SpringSegmentedControl } from './SpringSegmentedControl';
 
 interface ProfileViewProps {
   user: UserProfile | null;
@@ -36,18 +48,22 @@ interface ProfileViewProps {
   syncStatus: string;
   prefs: UserPreferences;
   deliveryHealth: DeliveryHealth;
+  hasWorkspaceAccess: boolean;
+  calendarCount: number;
+  gmailCount: number;
   onUpdatePrefs: (patch: Partial<UserPreferences>) => void;
+  onGoogleSignIn: () => Promise<unknown>;
   onOpenAuth: () => void;
   onSignOut: () => void;
   onSyncNow: () => void;
+  onRefreshWorkspace: () => void;
+  onRequestDailyDigest: () => void;
+  onExportAllIcs: () => void;
   onEnableNotifications: () => void;
   onSchedule10sTest: () => void;
   onInstantAlarmTest: () => void;
   onExportBackup: () => void;
   onImportBackup: (file: File) => void;
-  onOpenPrivacy: () => void;
-  onOpenPlayStoreKit: () => void;
-  onReplayIntro: () => void;
   onToast: (msg: string) => void;
 }
 
@@ -57,27 +73,47 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   syncStatus,
   prefs,
   deliveryHealth,
+  hasWorkspaceAccess,
+  calendarCount,
+  gmailCount,
   onUpdatePrefs,
+  onGoogleSignIn,
   onOpenAuth,
   onSignOut,
   onSyncNow,
+  onRefreshWorkspace,
+  onRequestDailyDigest,
+  onExportAllIcs,
   onEnableNotifications,
   onSchedule10sTest,
   onInstantAlarmTest,
   onExportBackup,
   onImportBackup,
-  onOpenPrivacy,
-  onOpenPlayStoreKit,
-  onReplayIntro,
   onToast,
 }) => {
   const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
+  const { onTriggerIsland } = useDynamicIsland();
   const [showIOSGuide, setShowIOSGuide] = useState(false);
+  const [googleBusy, setGoogleBusy] = useState(false);
   const [pinging, setPinging] = useState(false);
   const [pingResult, setPingResult] = useState<BackendHealthResult | null>(null);
   const [pingError, setPingError] = useState<string | null>(null);
   const audioInputRef = useRef<HTMLInputElement>(null);
   const backupInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDirectGoogleSignIn = async () => {
+    setGoogleBusy(true);
+    try {
+      await onGoogleSignIn();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Google Sign-In failed';
+      if (!msg.includes('popup-closed-by-user')) {
+        onToast(msg);
+      }
+    } finally {
+      setGoogleBusy(false);
+    }
+  };
 
   const handleTestBackendSpeed = async (overrideUrl?: string) => {
     setPinging(true);
@@ -124,24 +160,48 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           ? 'Installed App (Standalone)'
           : 'Web Preview';
 
+  const backendMode: 'auto' | 'edge' =
+    prefs.serverBaseUrl === CLOUDFLARE_EDGE_URL ? 'edge' : 'auto';
+
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
-      {/* Left Column: Account + OS Background & Lock-Screen Delivery Health */}
+      {/* Left Column: Account + Google Workspace & Calendar Hub + OS Delivery */}
       <div className="flex flex-col gap-6 lg:col-span-6">
-        {/* Account & Sync Card */}
+        {/* Account & Firebase Cloud Sync Card */}
         <section className="glass-surface rounded-3xl p-5">
           <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0">
-              <p className="text-xs font-medium text-slate-400">Account &amp; Sync</p>
-              <h2 className="mt-1 truncate text-lg font-bold text-slate-50">
-                {user ? user.name : 'Offline Guest Mode'}
-              </h2>
-              <p className="mt-0.5 truncate text-xs text-slate-400">
-                {user
-                  ? `${user.email} · ${isOnline ? syncStatus : 'Offline (queued)'}`
-                  : 'All schedules saved on device · Sign in for cloud push & sync'}
-              </p>
+            <div className="flex min-w-0 items-center gap-3">
+              {user?.photoURL && (
+                <img
+                  src={user.photoURL}
+                  alt={user.name}
+                  referrerPolicy="no-referrer"
+                  className="h-11 w-11 shrink-0 rounded-full border border-white/25 object-cover"
+                />
+              )}
+              <div className="min-w-0">
+                <p className="text-xs font-medium text-slate-400">Account &amp; Cloud Sync</p>
+                <h2 className="font-display mt-0.5 truncate text-lg font-bold text-slate-50">
+                  {user ? user.name : 'Offline Guest Mode'}
+                </h2>
+                <p className="mt-0.5 truncate text-xs text-slate-400">
+                  {user
+                    ? `${user.email} · ${
+                        !isOnline
+                          ? 'Offline (queued)'
+                          : user.authProvider === 'firebase'
+                            ? syncStatus === 'synced'
+                              ? 'Firebase Cloud Synced'
+                              : syncStatus === 'syncing'
+                                ? 'Firebase Syncing…'
+                                : 'Google Account · Saved on device'
+                            : syncStatus
+                      }`
+                    : 'Saved locally · Sign in with Google for Calendar, Gmail & sync'}
+                </p>
+              </div>
             </div>
+
             <div className="flex shrink-0 items-center gap-2">
               {user ? (
                 <>
@@ -149,14 +209,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                     type="button"
                     onClick={onSyncNow}
                     aria-label="Sync now"
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-slate-200 hover:bg-white/[0.1]"
+                    className="ios-spring-press flex h-11 w-11 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-slate-200 hover:bg-white/[0.1]"
                   >
                     <RefreshCw className="h-4 w-4" />
                   </button>
                   <button
                     type="button"
                     onClick={onSignOut}
-                    className="flex min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3.5 text-xs font-semibold text-slate-200 hover:bg-white/[0.1] whitespace-nowrap"
+                    className="ios-spring-press flex min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3.5 text-xs font-semibold text-slate-200 hover:bg-white/[0.1] whitespace-nowrap"
                   >
                     <LogOut className="h-4 w-4" />
                     <span>Sign Out</span>
@@ -166,7 +226,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 <button
                   type="button"
                   onClick={onOpenAuth}
-                  className="flex min-h-[44px] items-center gap-1.5 rounded-xl bg-[#2F80FF] px-4 text-xs font-semibold text-white hover:bg-[#256FE6] whitespace-nowrap"
+                  className="liquid-primary-btn ios-spring-press flex min-h-[44px] items-center gap-1.5 rounded-xl px-4 text-xs font-semibold text-white whitespace-nowrap"
                 >
                   <LogIn className="h-4 w-4" />
                   <span>Sign In</span>
@@ -175,57 +235,129 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             </div>
           </div>
 
-          {/* Serverless Cloudflare Edge / Custom Backend Selector */}
+          {!user && (
+            <div className="mt-4">
+              <GoogleSignInButton
+                onClick={handleDirectGoogleSignIn}
+                disabled={googleBusy}
+                label={googleBusy ? 'Connecting to Google…' : 'Sign in with Google'}
+              />
+            </div>
+          )}
+
+          {/* Google Workspace & Apple Calendar Integration Hub */}
+          <div className="mt-4 border-t border-white/[0.08] pt-4">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-sky-300" />
+                <span className="text-xs font-semibold text-slate-100">
+                  Google Calendar, Gmail &amp; Apple Calendar
+                </span>
+              </div>
+              {hasWorkspaceAccess && (
+                <button
+                  type="button"
+                  onClick={onRefreshWorkspace}
+                  className="ios-spring-press inline-flex min-h-[34px] items-center gap-1 rounded-lg border border-white/[0.08] bg-white/[0.04] px-2.5 text-xs font-semibold text-sky-300 hover:bg-white/[0.1]"
+                >
+                  <RefreshCw className="h-3 w-3" />
+                  <span>Sync</span>
+                </button>
+              )}
+            </div>
+
+            {hasWorkspaceAccess ? (
+              <p className="mt-1.5 text-xs text-slate-400">
+                Connected · <span className="font-mono text-slate-200">{calendarCount}</span> calendar
+                events · <span className="font-mono text-slate-200">{gmailCount}</span> inbox emails
+              </p>
+            ) : (
+              <p className="mt-1.5 text-xs leading-relaxed text-slate-400">
+                {user?.authProvider === 'firebase'
+                  ? 'Reconnect Google to refresh live Google Calendar & Gmail permissions for this session.'
+                  : 'Connect Google to view Calendar events, convert Gmail into alarms, and send daily agenda digests.'}
+              </p>
+            )}
+
+            <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {!hasWorkspaceAccess ? (
+                <button
+                  type="button"
+                  disabled={googleBusy}
+                  onClick={handleDirectGoogleSignIn}
+                  className="ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-sky-400/30 bg-sky-500/15 px-3.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 disabled:opacity-50"
+                >
+                  <Calendar className="h-4 w-4 text-sky-300" />
+                  <span>
+                    {googleBusy
+                      ? 'Connecting…'
+                      : user
+                        ? 'Reconnect Google Workspace'
+                        : 'Connect Google Workspace'}
+                  </span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onRequestDailyDigest}
+                  className="ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.05] px-3.5 text-xs font-semibold text-slate-100 hover:bg-white/[0.1]"
+                >
+                  <Mail className="h-4 w-4 text-amber-300" />
+                  <span>Email Daily Digest</span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={onExportAllIcs}
+                className="ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.05] px-3.5 text-xs font-semibold text-slate-100 hover:bg-white/[0.1]"
+              >
+                <CalendarArrowDown className="h-4 w-4 text-emerald-300" />
+                <span>Export Apple Calendar (.ics)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Optional Self-Hosted / Cloudflare Worker Backend Selector */}
           <div className="mt-4 border-t border-white/[0.08] pt-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="flex items-center gap-1.5 text-xs font-medium text-slate-300">
                 <Cloud className="h-3.5 w-3.5 text-sky-400" />
-                Cloud Sync Backend (Cloudflare Edge or Custom)
+                Optional Custom Push Backend
               </span>
               <button
                 type="button"
                 disabled={pinging}
                 onClick={() => handleTestBackendSpeed()}
-                className="inline-flex min-h-[34px] items-center gap-1.5 rounded-lg border border-sky-400/25 bg-sky-400/10 px-2.5 text-xs font-semibold text-sky-300 transition-colors hover:bg-sky-400/20 disabled:opacity-60"
+                className="ios-spring-press inline-flex min-h-[34px] items-center gap-1.5 rounded-lg border border-sky-400/25 bg-sky-400/10 px-2.5 text-xs font-semibold text-sky-300 transition-colors hover:bg-sky-400/20 disabled:opacity-60"
               >
                 <Zap className="h-3.5 w-3.5" />
                 <span>{pinging ? 'Testing…' : 'Test Speed'}</span>
               </button>
             </div>
 
-            <div className="mt-2.5 grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  onUpdatePrefs({ serverBaseUrl: '' });
+            <div className="mt-2.5">
+              <SpringSegmentedControl<'auto' | 'edge'>
+                ariaLabel="Custom backend mode"
+                fullWidth
+                size="sm"
+                value={backendMode}
+                onChange={(mode) => {
+                  const nextUrl = mode === 'edge' ? CLOUDFLARE_EDGE_URL : '';
+                  onUpdatePrefs({ serverBaseUrl: nextUrl });
                   setPingResult(null);
                   setPingError(null);
-                  onToast('Switched to Auto (Same Origin) backend');
+                  onToast(
+                    mode === 'edge'
+                      ? 'Switched to Cloudflare Edge Worker (api.makeuperfect.in)'
+                      : 'Switched to Auto (Same Origin) backend'
+                  );
                 }}
-                className={`min-h-[40px] rounded-xl border px-3 text-xs font-semibold transition-colors ${
-                  !prefs.serverBaseUrl
-                    ? 'border-sky-400/50 bg-sky-500/20 text-white'
-                    : 'border-white/[0.08] bg-white/[0.03] text-slate-300 hover:bg-white/[0.08]'
-                }`}
-              >
-                Auto (Same Origin)
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  onUpdatePrefs({ serverBaseUrl: CLOUDFLARE_EDGE_URL });
-                  setPingResult(null);
-                  setPingError(null);
-                  onToast('Switched to Cloudflare Edge Worker (api.makeuperfect.in)');
-                }}
-                className={`min-h-[40px] rounded-xl border px-3 text-xs font-semibold transition-colors ${
-                  prefs.serverBaseUrl === CLOUDFLARE_EDGE_URL
-                    ? 'border-sky-400/50 bg-sky-500/20 text-white'
-                    : 'border-white/[0.08] bg-white/[0.03] text-slate-300 hover:bg-white/[0.08]'
-                }`}
-              >
-                Cloudflare Edge
-              </button>
+                options={[
+                  { id: 'auto', label: 'Auto (Same Origin)' },
+                  { id: 'edge', label: 'Cloudflare Edge' },
+                ]}
+              />
             </div>
 
             <label className="mt-2.5 block">
@@ -239,7 +371,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   setPingError(null);
                 }}
                 placeholder="https://api.makeuperfect.in (blank = same origin)"
-                className="min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/70 px-3.5 text-xs text-slate-100 placeholder:text-slate-500 focus:border-[#2F80FF] focus:outline-none"
+                className="min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/70 px-3.5 text-xs text-slate-100 placeholder:text-slate-500 focus:border-[#0A84FF] focus:outline-none"
               />
             </label>
 
@@ -261,7 +393,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <section className="glass-surface rounded-3xl p-5">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <h2 className="text-base font-bold text-slate-50">
+              <h2 className="font-display text-base font-bold text-slate-50">
                 Background &amp; Lock-Screen Delivery
               </h2>
               <p className="mt-1 text-xs leading-relaxed text-slate-400">
@@ -315,7 +447,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <button
               type="button"
               onClick={onEnableNotifications}
-              className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-[#2F80FF] px-4 text-xs font-semibold text-white transition-colors hover:bg-[#256FE6]"
+              className="liquid-primary-btn ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-4 text-xs font-semibold text-white"
             >
               <BellRing className="h-4 w-4" />
               <span>Enable OS &amp; Push Alerts</span>
@@ -323,7 +455,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <button
               type="button"
               onClick={onSchedule10sTest}
-              className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.05] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.1]"
+              className="ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.05] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.1]"
             >
               <Lock className="h-4 w-4 text-amber-300" />
               <span>10s Lock-Screen Test</span>
@@ -334,7 +466,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <button
               type="button"
               onClick={onInstantAlarmTest}
-              className="flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-xs font-semibold text-slate-200 transition-colors hover:bg-white/[0.08]"
+              className="ios-spring-press flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-xs font-semibold text-slate-200 transition-colors hover:bg-white/[0.08]"
             >
               <Play className="h-3.5 w-3.5 text-red-400" />
               <span>Preview Ringing Screen</span>
@@ -343,7 +475,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               <button
                 type="button"
                 onClick={() => openExactAlarmSettings()}
-                className="flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-xs font-semibold text-slate-200 transition-colors hover:bg-white/[0.08]"
+                className="ios-spring-press flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-xs font-semibold text-slate-200 transition-colors hover:bg-white/[0.08]"
               >
                 <Smartphone className="h-3.5 w-3.5 text-[#60A5FA]" />
                 <span>Exact Alarm Settings</span>
@@ -351,84 +483,15 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             )}
           </div>
         </section>
-
-        {/* Play Store Release Kit & Privacy Policy */}
-        <section className="glass-surface rounded-3xl p-5">
-          <h2 className="text-base font-bold text-slate-50">Play Store Release &amp; Compliance</h2>
-          <p className="mt-1 text-xs text-slate-400">
-            Package ID <span className="font-mono text-slate-200">in.makeuperfect.reminderme</span> ·
-            Built by Prajwal M &lt;/yourstudio&gt;
-          </p>
-
-          <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-            <button
-              type="button"
-              onClick={onOpenPlayStoreKit}
-              className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.07] px-4 text-xs font-semibold text-slate-100 hover:bg-white/[0.14]"
-            >
-              <Smartphone className="h-4 w-4 text-emerald-400" />
-              <span>Play Store Launch Kit</span>
-            </button>
-            <button
-              type="button"
-              onClick={onOpenPrivacy}
-              className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.07] px-4 text-xs font-semibold text-slate-100 hover:bg-white/[0.14]"
-            >
-              <ExternalLink className="h-4 w-4 text-sky-300" />
-              <span>Privacy Policy</span>
-            </button>
-          </div>
-
-          <button
-            type="button"
-            onClick={onReplayIntro}
-            className="mt-2.5 flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-sky-400/25 bg-gradient-to-r from-[#0A84FF]/25 via-[#BF5AF2]/20 to-[#0A84FF]/25 px-4 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] transition-colors hover:brightness-110"
-          >
-            <Play className="h-3.5 w-3.5 text-sky-300" />
-            <span>Watch Developer Intro</span>
-          </button>
-
-          {/* In-App PWA Install Prompt (auto-hidden when already standalone/native) */}
-          {!isInstalled && (isInstallable || isIOS) && (
-            <div className="mt-3 border-t border-white/[0.08] pt-3">
-              {isInstallable ? (
-                <button
-                  type="button"
-                  onClick={() => install()}
-                  className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-emerald-500/20 px-4 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/30"
-                >
-                  <Download className="h-4 w-4" />
-                  <span>Install App on Home Screen</span>
-                </button>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setShowIOSGuide((s) => !s)}
-                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-200 hover:bg-white/[0.08]"
-                  >
-                    <Download className="h-4 w-4" />
-                    <span>Install on iPhone / iPad</span>
-                  </button>
-                  {showIOSGuide && (
-                    <p className="mt-2 text-xs leading-relaxed text-slate-400">
-                      In Safari, tap <strong className="text-slate-200">Share</strong> then{' '}
-                      <strong className="text-slate-200">Add to Home Screen</strong> to run
-                      reminderme full-screen with push notifications.
-                    </p>
-                  )}
-                </>
-              )}
-            </div>
-          )}
-        </section>
       </div>
 
-      {/* Right Column: Audio & Ringtone Engine + Preferences + Backup */}
+      {/* Right Column: Audio & Ringtone Engine + Apple Spring Preferences + Backup */}
       <div className="flex flex-col gap-6 lg:col-span-6">
         <section className="glass-surface rounded-3xl p-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-slate-50">Sounds &amp; Alarm Ringtones</h2>
+            <h2 className="font-display text-base font-bold text-slate-50">
+              Sounds &amp; Alarm Ringtones
+            </h2>
             <Volume2 className="h-4 w-4 text-slate-400" />
           </div>
 
@@ -440,7 +503,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               </label>
               <button
                 type="button"
-                onClick={() => playAlarmCycle(prefs.defaultAlarmSound)}
+                onClick={() => {
+                  playAlarmCycle(prefs.defaultAlarmSound);
+                  onTriggerIsland('alert', {
+                    title: 'Alarm Preview',
+                    message: `Playing ${ALARM_SOUNDS.find((s) => s.id === prefs.defaultAlarmSound)?.label ?? 'custom'} ringtone`,
+                  });
+                }}
                 className="min-h-[36px] rounded-lg px-2.5 text-xs font-semibold text-[#60A5FA] hover:bg-white/[0.06]"
               >
                 Preview
@@ -452,7 +521,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               onChange={(e) =>
                 onUpdatePrefs({ defaultAlarmSound: e.target.value as AlarmSoundId })
               }
-              className="mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/80 px-3.5 text-sm text-slate-100 focus:border-[#2F80FF] focus:outline-none"
+              className="mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/80 px-3.5 text-sm text-slate-100 focus:border-[#0A84FF] focus:outline-none"
             >
               {ALARM_SOUNDS.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -477,7 +546,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               <button
                 type="button"
                 onClick={() => audioInputRef.current?.click()}
-                className="flex min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.05] px-3.5 text-xs font-semibold text-slate-100 hover:bg-white/[0.1]"
+                className="ios-spring-press flex min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.05] px-3.5 text-xs font-semibold text-slate-100 hover:bg-white/[0.1]"
               >
                 <Upload className="h-3.5 w-3.5" />
                 <span>Choose</span>
@@ -510,7 +579,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               </label>
               <button
                 type="button"
-                onClick={() => playNotificationChime(prefs.defaultNotifSound)}
+                onClick={() => {
+                  playNotificationChime(prefs.defaultNotifSound);
+                  onTriggerIsland('success', {
+                    title: 'Chime Preview',
+                    message: `Playing ${NOTIF_SOUNDS.find((s) => s.id === prefs.defaultNotifSound)?.label ?? 'notification'} chime`,
+                  });
+                }}
                 className="min-h-[36px] rounded-lg px-2.5 text-xs font-semibold text-[#60A5FA] hover:bg-white/[0.06]"
               >
                 Preview
@@ -522,7 +597,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               onChange={(e) =>
                 onUpdatePrefs({ defaultNotifSound: e.target.value as NotifSoundId })
               }
-              className="mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/80 px-3.5 text-sm text-slate-100 focus:border-[#2F80FF] focus:outline-none"
+              className="mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/80 px-3.5 text-sm text-slate-100 focus:border-[#0A84FF] focus:outline-none"
             >
               {NOTIF_SOUNDS.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -541,7 +616,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               id="pref-duration"
               value={prefs.alarmDurationSec}
               onChange={(e) => onUpdatePrefs({ alarmDurationSec: Number(e.target.value) })}
-              className="mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/80 px-3.5 text-sm text-slate-100 focus:border-[#2F80FF] focus:outline-none"
+              className="mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/80 px-3.5 text-sm text-slate-100 focus:border-[#0A84FF] focus:outline-none"
             >
               <option value={15}>15 seconds</option>
               <option value={30}>30 seconds (Default)</option>
@@ -552,47 +627,53 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           </div>
         </section>
 
-        {/* General Preferences & JSON Backup */}
+        {/* General Preferences (Tactile Apple iOS Switches) & JSON Backup */}
         <section className="glass-surface rounded-3xl p-5">
-          <h2 className="text-base font-bold text-slate-50">App Preferences &amp; Data</h2>
+          <h2 className="font-display text-base font-bold text-slate-50">
+            App Preferences &amp; Data
+          </h2>
 
           <div className="mt-4 divide-y divide-white/[0.06]">
-            <label className="flex min-h-[52px] cursor-pointer items-center justify-between gap-3 py-2">
-              <span className="text-sm text-slate-200">Haptic feedback &amp; vibration</span>
-              <input
-                type="checkbox"
-                checked={prefs.vibrate}
-                onChange={(e) => onUpdatePrefs({ vibrate: e.target.checked })}
-                className="h-5 w-5 accent-[#2F80FF]"
-              />
-            </label>
-            <label className="flex min-h-[52px] cursor-pointer items-center justify-between gap-3 py-2">
-              <span className="text-sm text-slate-200">Auto-delete completed one-day tasks</span>
-              <input
-                type="checkbox"
-                checked={prefs.autoDeleteCompleted}
-                onChange={(e) => onUpdatePrefs({ autoDeleteCompleted: e.target.checked })}
-                className="h-5 w-5 accent-[#2F80FF]"
-              />
-            </label>
-            <div className="flex min-h-[52px] items-center justify-between gap-3 py-2">
-              <span className="text-sm text-slate-200">Clock format</span>
-              <div className="inline-flex rounded-xl border border-white/[0.08] bg-[#060812] p-1">
-                {(['12h', '24h'] as const).map((fmt) => (
-                  <button
-                    key={fmt}
-                    type="button"
-                    onClick={() => onUpdatePrefs({ timeFormat: fmt })}
-                    className={`min-h-[34px] rounded-lg px-3 text-xs font-semibold ${
-                      prefs.timeFormat === fmt
-                        ? 'bg-[#2F80FF] text-white'
-                        : 'text-slate-400 hover:text-slate-200'
-                    }`}
-                  >
-                    {fmt.toUpperCase()}
-                  </button>
-                ))}
+            <div className="flex min-h-[56px] items-center justify-between gap-3 py-2">
+              <div>
+                <p className="text-sm font-medium text-slate-200">Haptic feedback &amp; vibration</p>
+                <p className="text-xs text-slate-400">Tactile feedback on alarms and completions</p>
               </div>
+              <IosSwitch
+                checked={prefs.vibrate}
+                onChange={(next) => onUpdatePrefs({ vibrate: next })}
+                ariaLabel="Haptic feedback and vibration"
+                accent="emerald"
+              />
+            </div>
+
+            <div className="flex min-h-[56px] items-center justify-between gap-3 py-2">
+              <div>
+                <p className="text-sm font-medium text-slate-200">
+                  Auto-delete completed one-day tasks
+                </p>
+                <p className="text-xs text-slate-400">Automatically clear one-off reminders</p>
+              </div>
+              <IosSwitch
+                checked={prefs.autoDeleteCompleted}
+                onChange={(next) => onUpdatePrefs({ autoDeleteCompleted: next })}
+                ariaLabel="Auto-delete completed one-day tasks"
+                accent="azure"
+              />
+            </div>
+
+            <div className="flex min-h-[56px] items-center justify-between gap-3 py-2">
+              <span className="text-sm font-medium text-slate-200">Clock format</span>
+              <SpringSegmentedControl<'12h' | '24h'>
+                ariaLabel="Clock format"
+                size="sm"
+                value={prefs.timeFormat}
+                onChange={(fmt) => onUpdatePrefs({ timeFormat: fmt })}
+                options={[
+                  { id: '12h', label: '12H' },
+                  { id: '24h', label: '24H' },
+                ]}
+              />
             </div>
           </div>
 
@@ -600,18 +681,18 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <button
               type="button"
               onClick={onExportBackup}
-              className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 text-xs font-semibold text-slate-200 hover:bg-white/[0.09]"
+              className="ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 text-xs font-semibold text-slate-200 hover:bg-white/[0.09]"
             >
               <FileJson className="h-4 w-4 text-[#60A5FA]" />
-              <span>Export Backup</span>
+              <span>Export JSON</span>
             </button>
             <button
               type="button"
               onClick={() => backupInputRef.current?.click()}
-              className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 text-xs font-semibold text-slate-200 hover:bg-white/[0.09]"
+              className="ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 text-xs font-semibold text-slate-200 hover:bg-white/[0.09]"
             >
               <Upload className="h-4 w-4 text-emerald-400" />
-              <span>Import Backup</span>
+              <span>Import JSON</span>
             </button>
             <input
               ref={backupInputRef}
@@ -625,6 +706,40 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               className="hidden"
             />
           </div>
+
+          {/* In-App PWA Install Prompt (auto-hidden when already standalone/native) */}
+          {!isInstalled && (isInstallable || isIOS) && (
+            <div className="mt-3 border-t border-white/[0.08] pt-3">
+              {isInstallable ? (
+                <button
+                  type="button"
+                  onClick={() => install()}
+                  className="ios-spring-press flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-emerald-500/20 px-4 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/30"
+                >
+                  <Download className="h-4 w-4" />
+                  <span>Install App on Home Screen</span>
+                </button>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setShowIOSGuide((s) => !s)}
+                    className="ios-spring-press flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-200 hover:bg-white/[0.08]"
+                  >
+                    <Download className="h-4 w-4" />
+                    <span>Install on iPhone / iPad</span>
+                  </button>
+                  {showIOSGuide && (
+                    <p className="mt-2 text-xs leading-relaxed text-slate-400">
+                      In Safari, tap <strong className="text-slate-200">Share</strong> then{' '}
+                      <strong className="text-slate-200">Add to Home Screen</strong> to run
+                      reminderme full-screen with push notifications.
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </section>
       </div>
     </div>

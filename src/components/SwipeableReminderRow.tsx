@@ -1,5 +1,16 @@
 import React, { useRef, useState } from 'react';
-import { Bell, AlarmClock, Check, Clock, Timer, Trash2 } from 'lucide-react';
+import {
+  AlarmClock,
+  Bell,
+  CalendarArrowDown,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  ListChecks,
+  Timer,
+  Trash2,
+} from 'lucide-react';
 import type { Reminder } from '../types';
 import { formatDaysSummary, formatTimeDisplay, isReminderDoneToday } from '../lib/time';
 
@@ -11,6 +22,8 @@ interface SwipeableReminderRowProps {
   onDelete: (id: string) => void;
   onEdit: (reminder: Reminder) => void;
   onFocus: (reminder: Reminder) => void;
+  onToggleSubtask?: (reminderId: string, subtaskId: string) => void;
+  onExportIcs?: (reminder: Reminder) => void;
 }
 
 export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
@@ -21,18 +34,24 @@ export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
   onDelete,
   onEdit,
   onFocus,
+  onToggleSubtask,
+  onExportIcs,
 }) => {
   const done = isReminderDoneToday(reminder);
   const [offsetX, setOffsetX] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
+  const [checklistOpen, setChecklistOpen] = useState(false);
   const startXRef = useRef(0);
   const startYRef = useRef(0);
   const lockedAxisRef = useRef<'x' | 'y' | null>(null);
   const movedRef = useRef(false);
 
+  const subtasks = reminder.subtasks || [];
+  const subtasksDone = subtasks.filter((s) => s.done).length;
+
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if ((e.target as HTMLElement).closest('button')) return;
+    if ((e.target as HTMLElement).closest('button, [data-subtask-drawer]')) return;
     startXRef.current = e.clientX;
     startYRef.current = e.clientY;
     lockedAxisRef.current = null;
@@ -148,134 +167,213 @@ export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
           onEdit(reminder);
         }}
         style={{
-          transform: `translateX(${offsetX}px)`,
-          transition: dragging ? 'none' : 'transform 180ms cubic-bezier(0.16, 1, 0.3, 1)',
+          transform: `translate3d(${offsetX}px, 0, 0)`,
+          transition: dragging ? 'none' : 'transform 280ms cubic-bezier(0.22, 1, 0.36, 1)',
         }}
-        className="relative z-10 flex min-h-[76px] cursor-pointer items-center gap-3.5 bg-gradient-to-br from-[#161E3B]/92 to-[#0D1329]/92 px-4 py-3.5 select-none touch-pan-y hover:from-[#1B2547]/95 hover:to-[#111936]/95"
+        className="relative z-10 cursor-pointer bg-gradient-to-br from-[#161E3B]/92 to-[#0D1329]/92 select-none touch-pan-y hover:from-[#1B2547]/95 hover:to-[#111936]/95"
       >
-        {/* Check completion button (44px touch target) */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleDone(reminder.id);
-          }}
-          aria-label={done ? `Mark ${reminder.title} not done` : `Complete ${reminder.title}`}
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#0A84FF]"
-        >
-          <span
-            className={`flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-150 ${
-              done
-                ? 'border-[#30D158] bg-[#30D158] text-[#050712] shadow-[0_0_16px_rgba(48,209,88,0.6)]'
-                : 'border-white/40 bg-white/[0.04] text-transparent hover:border-white/75'
-            }`}
+        <div className="flex min-h-[76px] items-center gap-3.5 px-4 py-3.5">
+          {/* Check completion button (44px touch target) */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleDone(reminder.id);
+            }}
+            aria-label={done ? `Mark ${reminder.title} not done` : `Complete ${reminder.title}`}
+            className="ios-spring-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#0A84FF]"
           >
-            <Check className="h-3.5 w-3.5 stroke-[3]" />
-          </span>
-        </button>
-
-        {/* Glossy 3D iOS Emblem Squircle */}
-        <div
-          aria-hidden="true"
-          style={{
-            background: `linear-gradient(145deg, ${reminder.color || '#0A84FF'}, rgba(255,255,255,0.12))`,
-          }}
-          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/25 text-lg shadow-[0_8px_18px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.55)] transition-all ${
-            done ? 'grayscale opacity-55' : ''
-          }`}
-        >
-          {reminder.emoji || (reminder.isAlarm ? '⏰' : '🔔')}
-        </div>
-
-        {/* Title & unboxed inline metadata */}
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
             <span
-              className={`truncate text-[15px] font-semibold leading-snug ${
-                done ? 'text-slate-400/70 line-through' : 'text-white'
+              className={`flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-150 ${
+                done
+                  ? 'animate-check-pop border-[#30D158] bg-[#30D158] text-[#050712] shadow-[0_0_16px_rgba(48,209,88,0.6)]'
+                  : 'border-white/40 bg-white/[0.04] text-transparent hover:border-white/75'
               }`}
             >
-              {reminder.title}
+              <Check className="h-3.5 w-3.5 stroke-[3]" />
             </span>
+          </button>
+
+          {/* Glossy 3D iOS Emblem Squircle */}
+          <div
+            aria-hidden="true"
+            style={{
+              background: `linear-gradient(145deg, ${reminder.color || '#0A84FF'}, rgba(255,255,255,0.12))`,
+            }}
+            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/25 text-lg shadow-[0_8px_18px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.55)] transition-all ${
+              done ? 'grayscale opacity-55' : ''
+            }`}
+          >
+            {reminder.emoji || (reminder.isAlarm ? '⏰' : '🔔')}
           </div>
 
-          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-300/80">
-            <span className="inline-flex items-center gap-1 font-mono font-semibold text-white tabular-nums">
-              {reminder.isAlarm ? (
-                <AlarmClock className="h-3.5 w-3.5 text-red-400" />
-              ) : (
-                <Bell className="h-3.5 w-3.5 text-sky-300" />
+          {/* Title & unboxed inline metadata */}
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <span
+                className={`truncate text-[15px] font-semibold leading-snug ${
+                  done ? 'text-slate-400/70 line-through' : 'text-white'
+                }`}
+              >
+                {reminder.title}
+              </span>
+            </div>
+
+            <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-300/80">
+              <span className="inline-flex items-center gap-1 font-mono font-semibold text-white tabular-nums">
+                {reminder.isAlarm ? (
+                  <AlarmClock className="h-3.5 w-3.5 text-red-400" />
+                ) : (
+                  <Bell className="h-3.5 w-3.5 text-sky-300" />
+                )}
+                {formatTimeDisplay(reminder.time, timeFormat)}
+              </span>
+              <span aria-hidden="true" className="text-slate-500">·</span>
+              <span>{scheduleLabel}</span>
+              {reminder.tag && (
+                <>
+                  <span aria-hidden="true" className="text-slate-500">·</span>
+                  <span>{reminder.tag}</span>
+                </>
               )}
-              {formatTimeDisplay(reminder.time, timeFormat)}
-            </span>
-            <span aria-hidden="true" className="text-slate-500">·</span>
-            <span>{scheduleLabel}</span>
-            {reminder.tag && (
-              <>
-                <span aria-hidden="true" className="text-slate-500">·</span>
-                <span>{reminder.tag}</span>
-              </>
-            )}
-            {reminder.priority === 'high' && (
-              <>
-                <span aria-hidden="true" className="text-slate-500">·</span>
-                <span className="font-semibold text-amber-300">{priorityLabel}</span>
-              </>
-            )}
-            {isSnoozed && (
-              <>
-                <span aria-hidden="true" className="text-slate-500">·</span>
-                <span className="font-semibold text-sky-300">Snoozed</span>
-              </>
+              {reminder.priority === 'high' && (
+                <>
+                  <span aria-hidden="true" className="text-slate-500">·</span>
+                  <span className="font-semibold text-amber-300">{priorityLabel}</span>
+                </>
+              )}
+              {isSnoozed && (
+                <>
+                  <span aria-hidden="true" className="text-slate-500">·</span>
+                  <span className="font-semibold text-sky-300">Snoozed</span>
+                </>
+              )}
+              {subtasks.length > 0 && (
+                <>
+                  <span aria-hidden="true" className="text-slate-500">·</span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setChecklistOpen((v) => !v);
+                    }}
+                    aria-expanded={checklistOpen}
+                    aria-label={`${checklistOpen ? 'Hide' : 'Show'} ${subtasks.length} checklist steps`}
+                    className="inline-flex items-center gap-1 rounded-md px-1 py-0.5 font-mono text-xs font-semibold text-sky-300 transition-colors hover:bg-white/[0.08] tabular-nums"
+                  >
+                    <ListChecks className="h-3.5 w-3.5" />
+                    <span>
+                      {subtasksDone}/{subtasks.length}
+                    </span>
+                    {checklistOpen ? (
+                      <ChevronUp className="h-3 w-3" />
+                    ) : (
+                      <ChevronDown className="h-3 w-3" />
+                    )}
+                  </button>
+                </>
+              )}
+            </div>
+
+            {reminder.note && (
+              <p className="mt-0.5 truncate text-xs text-slate-400">{reminder.note}</p>
             )}
           </div>
 
-          {reminder.note && (
-            <p className="mt-0.5 truncate text-xs text-slate-400">{reminder.note}</p>
-          )}
-        </div>
-
-        {/* Quick desktop / accessible actions */}
-        <div className="flex shrink-0 items-center gap-1">
-          {!done && (
+          {/* Quick desktop / accessible actions */}
+          <div className="flex shrink-0 items-center gap-1">
+            {!done && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onFocus(reminder);
+                }}
+                title="Start focus session with ambient soundscapes"
+                aria-label={`Focus on ${reminder.title}`}
+                className="ios-spring-press flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-slate-100"
+              >
+                <Timer className="h-4 w-4" />
+              </button>
+            )}
+            {onExportIcs && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onExportIcs(reminder);
+                }}
+                title="Export .ics for Apple Calendar"
+                aria-label={`Export ${reminder.title} to Apple Calendar`}
+                className="ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-sky-300 sm:flex"
+              >
+                <CalendarArrowDown className="h-4 w-4" />
+              </button>
+            )}
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                onFocus(reminder);
+                onSnooze(reminder.id, 10);
               }}
-              title="Start 25-minute focus session"
-              aria-label={`Focus on ${reminder.title}`}
-              className="flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-slate-100"
+              title="Snooze 10 minutes"
+              aria-label={`Snooze ${reminder.title}`}
+              className="ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-amber-300 sm:flex"
             >
-              <Timer className="h-4 w-4" />
+              <Clock className="h-4 w-4" />
             </button>
-          )}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onSnooze(reminder.id, 10);
-            }}
-            title="Snooze 10 minutes"
-            aria-label={`Snooze ${reminder.title}`}
-            className="hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-amber-300 sm:flex"
-          >
-            <Clock className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(reminder.id);
-            }}
-            title="Delete reminder"
-            aria-label={`Delete ${reminder.title}`}
-            className="hidden h-11 w-11 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-500/15 hover:text-red-400 sm:flex"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(reminder.id);
+              }}
+              title="Delete reminder"
+              aria-label={`Delete ${reminder.title}`}
+              className="ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-500/15 hover:text-red-400 sm:flex"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
         </div>
+
+        {/* Inline Expandable Subtasks Checklist Drawer */}
+        {checklistOpen && subtasks.length > 0 && (
+          <div
+            data-subtask-drawer
+            onClick={(e) => e.stopPropagation()}
+            className="border-t border-white/[0.08] bg-[#090E20]/65 px-4 py-2.5 pl-[64px]"
+          >
+            <ul className="space-y-1">
+              {subtasks.map((st) => (
+                <li key={st.id}>
+                  <button
+                    type="button"
+                    onClick={() => onToggleSubtask?.(reminder.id, st.id)}
+                    className="ios-spring-press flex min-h-[38px] w-full items-center gap-2.5 rounded-xl px-2 py-1 text-left transition-colors hover:bg-white/[0.05]"
+                  >
+                    <span
+                      className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-all ${
+                        st.done
+                          ? 'animate-check-pop border-[#30D158] bg-[#30D158] text-[#050712]'
+                          : 'border-white/35 bg-white/[0.04] text-transparent'
+                      }`}
+                    >
+                      <Check className="h-3 w-3 stroke-[3]" />
+                    </span>
+                    <span
+                      className={`text-xs font-medium ${
+                        st.done ? 'text-slate-400/75 line-through' : 'text-slate-200'
+                      }`}
+                    >
+                      {st.title}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

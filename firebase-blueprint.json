@@ -1,0 +1,174 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Private user profile and synced preferences document.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Firebase Auth UID of the account owner."
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 80,
+          "description": "Display name of the user."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 160,
+          "description": "Verified email address of the user."
+        },
+        "tz": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "IANA timezone identifier."
+        },
+        "timeFormat": {
+          "type": "string",
+          "enum": ["12h", "24h"],
+          "description": "Clock display preference."
+        },
+        "autoDeleteCompleted": {
+          "type": "boolean",
+          "description": "Whether completed one-day reminders auto-delete."
+        },
+        "vibrate": {
+          "type": "boolean",
+          "description": "Whether haptic feedback and vibration are enabled."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was first created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was last updated."
+        }
+      },
+      "required": ["uid", "name", "email", "tz", "createdAt", "updatedAt"]
+    },
+    "Reminder": {
+      "title": "Reminder",
+      "description": "User-owned alarm or daily reminder with optional checklist subtasks and Google Calendar link.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Reminder document identifier."
+        },
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Owner Firebase Auth UID."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Short reminder title."
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 400,
+          "description": "Optional reminder details."
+        },
+        "time": {
+          "type": "string",
+          "maxLength": 5,
+          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+          "description": "24-hour HH:mm time string."
+        },
+        "dueAt": {
+          "type": "number",
+          "description": "Next due timestamp in epoch milliseconds."
+        },
+        "days": {
+          "type": "array",
+          "description": "Optional repeating weekdays (0=Sun..6=Sat), max 7 entries."
+        },
+        "oneTimeDate": {
+          "type": "string",
+          "maxLength": 10,
+          "description": "Optional YYYY-MM-DD one-time date."
+        },
+        "emoji": {
+          "type": "string",
+          "maxLength": 16,
+          "description": "Icon emoji."
+        },
+        "color": {
+          "type": "string",
+          "maxLength": 24,
+          "description": "Hex accent color."
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["high", "med", "low"],
+          "description": "Priority level."
+        },
+        "tag": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Optional category tag."
+        },
+        "isAlarm": {
+          "type": "boolean",
+          "description": "Loud alarm vs gentle notification."
+        },
+        "sound": {
+          "type": "string",
+          "maxLength": 32,
+          "description": "Selected alarm sound identifier."
+        },
+        "doneDate": {
+          "type": "string",
+          "maxLength": 10,
+          "description": "YYYY-MM-DD completion marker."
+        },
+        "snoozedUntil": {
+          "type": "number",
+          "description": "Optional snooze expiry in epoch ms."
+        },
+        "subtasks": {
+          "type": "array",
+          "description": "Bounded checklist subtasks (max 25 items)."
+        },
+        "googleCalendarEventId": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Linked Google Calendar event ID if exported."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of creation."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last modification."
+        }
+      },
+      "required": ["id", "ownerId", "title", "note", "time", "dueAt", "emoji", "color", "priority", "isAlarm", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user profile and preferences accessible only by the authenticated owner."
+    },
+    "/users/{userId}/reminders/{reminderId}": {
+      "schema": { "$ref": "#/entities/Reminder" },
+      "description": "Private reminders subcollection owned strictly by userId."
+    }
+  }
+}

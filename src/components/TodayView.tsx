@@ -1,7 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { AlarmClock, Mic, Plus, ShieldCheck } from 'lucide-react';
+import {
+  AlarmClock,
+  Calendar,
+  ChevronDown,
+  ChevronUp,
+  Layers,
+  Mail,
+  Mic,
+  Plus,
+  ShieldCheck,
+  Sparkles,
+} from 'lucide-react';
 import { useVoiceCapture } from '../hooks/useVoiceCapture';
 import { parseQuickInput, type ParsedQuickReminder } from '../lib/parser';
+import { SMART_ROUTINES } from '../lib/routines';
 import {
   formatClockParts,
   formatCountdown,
@@ -11,8 +23,16 @@ import {
   isReminderDoneToday,
   isReminderScheduledForDate,
 } from '../lib/time';
-import type { DeliveryHealth, FilterMode, Reminder, UserPreferences } from '../types';
+import type {
+  DeliveryHealth,
+  FilterMode,
+  GoogleCalendarEvent,
+  Reminder,
+  RoutinePack,
+  UserPreferences,
+} from '../types';
 import { LiquidGlassCard } from './LiquidGlassCard';
+import { SpringSegmentedControl } from './SpringSegmentedControl';
 import { SwipeableReminderRow } from './SwipeableReminderRow';
 import { VoiceCaptureSheet } from './VoiceCaptureSheet';
 
@@ -21,15 +41,22 @@ interface TodayViewProps {
   prefs: UserPreferences;
   userName?: string | null;
   deliveryHealth: DeliveryHealth;
+  calendarEvents: GoogleCalendarEvent[];
+  hasWorkspaceAccess: boolean;
   onToggleTimeFormat: () => void;
   onQuickAdd: (rawText: string) => void;
   onEditVoiceDraft: (parsed: ParsedQuickReminder) => void;
   onOpenNewSheet: () => void;
   onToggleDone: (id: string) => void;
+  onToggleSubtask: (reminderId: string, subtaskId: string) => void;
   onSnooze: (id: string, minutes: number) => void;
   onDelete: (id: string) => void;
   onEdit: (reminder: Reminder) => void;
   onFocus: (reminder: Reminder) => void;
+  onExportIcs: (reminder: Reminder) => void;
+  onApplyRoutine: (pack: RoutinePack) => void;
+  onRequestDailyDigest: () => void;
+  onConnectGoogle: () => void;
   onOpenDeliverySetup: () => void;
   onRegisterVoiceClose?: (closeFn: (() => void) | null) => void;
 }
@@ -39,15 +66,22 @@ export const TodayView: React.FC<TodayViewProps> = ({
   prefs,
   userName,
   deliveryHealth,
+  calendarEvents,
+  hasWorkspaceAccess,
   onToggleTimeFormat,
   onQuickAdd,
   onEditVoiceDraft,
   onOpenNewSheet,
   onToggleDone,
+  onToggleSubtask,
   onSnooze,
   onDelete,
   onEdit,
   onFocus,
+  onExportIcs,
+  onApplyRoutine,
+  onRequestDailyDigest,
+  onConnectGoogle,
   onOpenDeliverySetup,
   onRegisterVoiceClose,
 }) => {
@@ -55,6 +89,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
   const [filter, setFilter] = useState<FilterMode>('all');
   const [selectedTag, setSelectedTag] = useState<string>('all');
   const [quickText, setQuickText] = useState('');
+  const [routinesOpen, setRoutinesOpen] = useState(false);
   const voice = useVoiceCapture(prefs.vibrate, now);
 
   useEffect(() => {
@@ -85,6 +120,18 @@ export const TodayView: React.FC<TodayViewProps> = ({
     () => todayItems.filter((r) => isReminderDoneToday(r, todayKey)).length,
     [todayItems, todayKey]
   );
+
+  const pendingAlarmsToday = useMemo(
+    () => todayItems.filter((r) => r.isAlarm && !isReminderDoneToday(r, todayKey)).length,
+    [todayItems, todayKey]
+  );
+
+  const todayCalendarEvents = useMemo(
+    () => calendarEvents.filter((ev) => ev.dateKey === todayKey),
+    [calendarEvents, todayKey]
+  );
+
+  const nextCalendarEvent = todayCalendarEvents[0] || calendarEvents[0] || null;
 
   const completionPct =
     todayItems.length === 0 ? 0 : Math.round((completedToday / todayItems.length) * 100);
@@ -181,7 +228,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
             <p className="text-xs font-semibold tracking-wide text-slate-300/80 uppercase">
               {dateLabel}
             </p>
-            <h1 className="mt-1 text-lg font-bold tracking-tight text-white">
+            <h1 className="font-display mt-1 text-lg font-bold tracking-tight text-white">
               {getGreeting(now)}
               {userName ? `, ${userName}` : ''}
             </h1>
@@ -189,7 +236,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
           <button
             type="button"
             onClick={onToggleTimeFormat}
-            className="min-h-[44px] rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition-colors hover:bg-white/[0.16] whitespace-nowrap shrink-0"
+            className="ios-spring-press min-h-[44px] rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition-colors hover:bg-white/[0.16] whitespace-nowrap shrink-0"
             title="Switch 12-hour or 24-hour clock"
           >
             {prefs.timeFormat === '12h' ? '12H' : '24H'}
@@ -300,7 +347,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
           <button
             type="button"
             onClick={onOpenDeliverySetup}
-            className="flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] transition-colors hover:bg-white/[0.16] whitespace-nowrap"
+            className="ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] transition-colors hover:bg-white/[0.16] whitespace-nowrap"
           >
             <ShieldCheck className="h-4 w-4 text-sky-300" />
             <span>{deliveryHealth.notificationPermission === 'granted' ? 'Inspect' : 'Enable'}</span>
@@ -308,7 +355,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
         </div>
       </LiquidGlassCard>
 
-      {/* Right Workspace Column: Quick Capture + Filters + Swipeable Schedule */}
+      {/* Right Workspace Column: Quick Capture + Daily Briefing & Routines + Filters + Feed */}
       <section className="flex flex-col gap-4 lg:col-span-7">
         {/* Natural-Language Quick Add & Prominent Push-to-Talk Voice Bar */}
         <form onSubmit={handleQuickSubmit} className="glass-surface rounded-2xl p-2.5">
@@ -331,10 +378,10 @@ export const TodayView: React.FC<TodayViewProps> = ({
               aria-pressed={voice.phase === 'listening' || voice.isHolding}
               aria-label="Hold to speak reminder"
               title="Press and hold to speak a reminder"
-              className={`inline-flex min-h-[48px] min-w-[48px] shrink-0 select-none touch-none items-center justify-center gap-2 rounded-xl border px-3.5 text-xs font-semibold transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#0A84FF] ${
+              className={`ios-spring-press inline-flex min-h-[48px] min-w-[48px] shrink-0 select-none touch-none items-center justify-center gap-2 rounded-xl border px-3.5 text-xs font-semibold transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#0A84FF] ${
                 voice.phase === 'listening'
                   ? 'scale-[0.98] border-[#FF453A]/70 bg-[#FF453A] text-white shadow-[0_8px_24px_rgba(255,69,58,0.45)]'
-                  : 'border-sky-400/35 bg-sky-500/20 text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] hover:bg-sky-500/30 active:scale-95'
+                  : 'border-sky-400/35 bg-sky-500/20 text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] hover:bg-sky-500/30'
               }`}
             >
               <Mic className="h-4 w-4 shrink-0" />
@@ -345,7 +392,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
             <button
               type="submit"
               disabled={!quickText.trim()}
-              className="liquid-primary-btn flex min-h-[48px] shrink-0 items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white transition-transform active:scale-95 disabled:opacity-45 whitespace-nowrap"
+              className="liquid-primary-btn ios-spring-press flex min-h-[48px] shrink-0 items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-45 whitespace-nowrap"
             >
               <Plus className="h-4 w-4" />
               <span>Add</span>
@@ -360,43 +407,130 @@ export const TodayView: React.FC<TodayViewProps> = ({
           )}
         </form>
 
-        {/* Interactive Segmented Filter Bar + Tag Filters */}
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div
-              role="tablist"
-              aria-label="Filter reminders"
-              className="inline-flex rounded-xl border border-white/[0.08] bg-[#0F1426] p-1"
-            >
-              {(
-                [
-                  { id: 'all', label: 'All' },
-                  { id: 'alarms', label: 'Alarms' },
-                  { id: 'todo', label: 'To Do' },
-                  { id: 'done', label: 'Done' },
-                ] as { id: FilterMode; label: string }[]
-              ).map((tab) => (
+        {/* Smart Daily Briefing & One-Tap Routines Card */}
+        <div className="glass-surface rounded-2xl p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                <Sparkles className="h-4 w-4 shrink-0 text-sky-300" />
+                <h2 className="font-display text-sm font-bold text-white">Daily Briefing</h2>
+                <span aria-hidden="true" className="text-slate-500">·</span>
+                <span className="font-mono text-xs text-slate-300 tabular-nums">
+                  {pendingAlarmsToday} alarm{pendingAlarmsToday === 1 ? '' : 's'} left
+                </span>
+              </div>
+
+              {nextCalendarEvent ? (
+                <p className="mt-1 flex items-center gap-1.5 truncate text-xs text-slate-300">
+                  <Calendar className="h-3.5 w-3.5 shrink-0 text-emerald-300" />
+                  <span className="font-mono font-semibold text-white tabular-nums">
+                    {nextCalendarEvent.allDay
+                      ? 'All day'
+                      : formatTimeDisplay(nextCalendarEvent.timeHm, prefs.timeFormat)}
+                  </span>
+                  <span aria-hidden="true" className="text-slate-500">·</span>
+                  <span className="truncate">{nextCalendarEvent.summary}</span>
+                </p>
+              ) : (
+                <p className="mt-1 text-xs leading-relaxed text-slate-400">
+                  {hasWorkspaceAccess
+                    ? 'No upcoming Google Calendar events found for today.'
+                    : 'Connect Google Calendar & Gmail to see events and send daily agenda digests.'}
+                </p>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:items-center">
+              {hasWorkspaceAccess ? (
                 <button
-                  key={tab.id}
                   type="button"
-                  role="tab"
-                  aria-selected={filter === tab.id}
-                  onClick={() => setFilter(tab.id)}
-                  className={`min-h-[38px] rounded-lg px-3.5 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
-                    filter === tab.id
-                      ? 'bg-[#2F80FF] text-white'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
+                  onClick={onRequestDailyDigest}
+                  className="ios-spring-press inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.12] bg-white/[0.06] px-3 text-xs font-semibold text-slate-100 hover:bg-white/[0.12] whitespace-nowrap"
                 >
-                  {tab.label}
+                  <Mail className="h-3.5 w-3.5 text-amber-300" />
+                  <span>Email Digest</span>
                 </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onConnectGoogle}
+                  className="ios-spring-press inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-xl border border-sky-400/30 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap"
+                >
+                  <Calendar className="h-3.5 w-3.5 text-sky-300" />
+                  <span>Connect Google</span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setRoutinesOpen((v) => !v)}
+                aria-expanded={routinesOpen}
+                className="ios-spring-press inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.12] bg-white/[0.06] px-3 text-xs font-semibold text-slate-100 hover:bg-white/[0.12] whitespace-nowrap"
+              >
+                <Layers className="h-3.5 w-3.5 text-sky-300" />
+                <span>Routines</span>
+                {routinesOpen ? (
+                  <ChevronUp className="h-3.5 w-3.5 text-slate-400" />
+                ) : (
+                  <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {routinesOpen && (
+            <div className="mt-3.5 grid grid-cols-1 gap-2.5 border-t border-white/[0.08] pt-3.5 sm:grid-cols-3">
+              {SMART_ROUTINES.map((pack) => (
+                <div
+                  key={pack.id}
+                  className="flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#0B1022]/70 p-3"
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-base" aria-hidden="true">
+                        {pack.emoji}
+                      </span>
+                      <p className="text-xs font-bold text-white">{pack.name}</p>
+                    </div>
+                    <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
+                      {pack.subtitle}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onApplyRoutine(pack)}
+                    className="ios-spring-press mt-3 inline-flex min-h-[38px] w-full items-center justify-center gap-1 rounded-xl border border-sky-400/25 bg-sky-500/15 px-3 text-xs font-semibold text-sky-200 hover:bg-sky-500/25"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    <span>
+                      Add {pack.items.length} {pack.items.length === 1 ? 'step' : 'steps'}
+                    </span>
+                  </button>
+                </div>
               ))}
             </div>
+          )}
+        </div>
+
+        {/* Interactive Sliding Liquid Glass Segmented Filter Bar + Tag Filters */}
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <SpringSegmentedControl<FilterMode>
+              ariaLabel="Filter reminders"
+              value={filter}
+              onChange={setFilter}
+              options={[
+                { id: 'all', label: 'All' },
+                { id: 'alarms', label: 'Alarms' },
+                { id: 'todo', label: 'To Do' },
+                { id: 'done', label: 'Done' },
+              ]}
+            />
 
             <button
               type="button"
               onClick={onOpenNewSheet}
-              className="hidden min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.09] sm:inline-flex whitespace-nowrap shrink-0"
+              className="ios-spring-press hidden min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.09] sm:inline-flex whitespace-nowrap shrink-0"
             >
               <AlarmClock className="h-4 w-4 text-[#60A5FA]" />
               <span>Detailed Alarm</span>
@@ -408,7 +542,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
               <button
                 type="button"
                 onClick={() => setSelectedTag('all')}
-                className={`min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${
+                className={`ios-spring-press min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${
                   selectedTag === 'all'
                     ? 'bg-white/[0.14] text-white'
                     : 'bg-white/[0.04] text-slate-400 hover:text-slate-200'
@@ -421,9 +555,9 @@ export const TodayView: React.FC<TodayViewProps> = ({
                   key={tag}
                   type="button"
                   onClick={() => setSelectedTag(selectedTag === tag ? 'all' : tag)}
-                  className={`min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${
+                  className={`ios-spring-press min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${
                     selectedTag === tag
-                      ? 'bg-[#2F80FF]/25 text-[#93C5FD]'
+                      ? 'bg-[#0A84FF]/25 text-[#93C5FD]'
                       : 'bg-white/[0.04] text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -445,7 +579,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
             <button
               type="button"
               onClick={onOpenNewSheet}
-              className="mt-5 min-h-[44px] rounded-xl bg-[#2F80FF] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#256FE6]"
+              className="liquid-primary-btn ios-spring-press mt-5 min-h-[44px] rounded-xl px-5 text-sm font-semibold text-white"
             >
               Create Alarm
             </button>
@@ -461,10 +595,12 @@ export const TodayView: React.FC<TodayViewProps> = ({
                 reminder={r}
                 timeFormat={prefs.timeFormat}
                 onToggleDone={onToggleDone}
+                onToggleSubtask={onToggleSubtask}
                 onSnooze={onSnooze}
                 onDelete={onDelete}
                 onEdit={onEdit}
                 onFocus={onFocus}
+                onExportIcs={onExportIcs}
               />
             ))}
           </div>

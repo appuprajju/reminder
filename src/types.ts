@@ -12,9 +12,17 @@ export type AlarmSoundId =
 
 export type NotifSoundId = 'glass' | 'digital' | 'bell' | 'zen' | 'droplet';
 
+export type AmbientSoundId = 'off' | 'rain' | 'brown-noise' | 'ocean' | 'warm-pad';
+
 export type TabId = 'today' | 'schedule' | 'insights' | 'profile';
 
 export type FilterMode = 'all' | 'alarms' | 'todo' | 'done';
+
+export interface SubtaskItem {
+  id: string;
+  title: string;
+  done: boolean;
+}
 
 export interface Reminder {
   id: string;
@@ -34,6 +42,8 @@ export interface Reminder {
   sound: AlarmSoundId | string | null;
   doneDate: string | null; // YYYY-MM-DD
   snoozedUntil?: number | null;
+  subtasks?: SubtaskItem[];
+  googleCalendarEventId?: string | null;
   createdAt: number;
 }
 
@@ -44,6 +54,8 @@ export interface UserProfile {
   tz: string;
   createdAt: number;
   admin?: boolean;
+  photoURL?: string | null;
+  authProvider?: 'firebase' | 'server';
 }
 
 export interface UserPreferences {
@@ -56,6 +68,48 @@ export interface UserPreferences {
   customTags: string[];
   customAudioName: string | null;
   serverBaseUrl: string;
+}
+
+export interface GoogleCalendarEvent {
+  id: string;
+  summary: string;
+  description?: string;
+  location?: string;
+  startIso: string;
+  endIso?: string;
+  dateKey: string; // YYYY-MM-DD
+  timeHm: string; // HH:mm (or '09:00' for all-day)
+  allDay: boolean;
+  htmlLink?: string;
+}
+
+export interface GmailMessageSummary {
+  id: string;
+  threadId: string;
+  subject: string;
+  from: string;
+  snippet: string;
+  dateIso: string;
+  isStarred: boolean;
+}
+
+export interface RoutinePack {
+  id: string;
+  name: string;
+  subtitle: string;
+  emoji: string;
+  items: {
+    title: string;
+    note: string;
+    time: string;
+    days: number[] | null;
+    emoji: string;
+    color: string;
+    priority: Priority;
+    tag: string;
+    isAlarm: boolean;
+    subtasks?: { title: string }[];
+  }[];
 }
 
 export interface LocalActivityEvent {
@@ -93,9 +147,28 @@ export interface DeliveryHealth {
   lastServerSync: number | null;
 }
 
+export type EmoExpression = 'excited' | 'happy' | 'sleepy' | 'curious' | 'warning' | 'sad';
+
+export type DynamicIslandTriggerType = 'created' | 'success' | 'alert';
+
+export interface DynamicIslandTriggerOptions {
+  title?: string;
+  message?: string;
+  durationMs?: number;
+  undoLabel?: string;
+  onUndo?: () => void;
+}
+
+export type TriggerIslandFn = (
+  type: DynamicIslandTriggerType,
+  options?: DynamicIslandTriggerOptions
+) => void;
+
 export interface ToastMessage {
   id: string;
   text: string;
+  title?: string;
+  expression?: EmoExpression;
   tone?: 'info' | 'success' | 'warning' | 'danger';
   undoLabel?: string;
   onUndo?: () => void;
