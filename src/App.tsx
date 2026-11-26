@@ -217,8 +217,7 @@ export function App() {
     setSheetOpen(true);
   };
 
-  const handleQuickAdd = (rawText: string) => {
-    const parsed = parseQuickInput(rawText);
+  const handleSaveParsedReminder = (parsed: ParsedQuickReminder) => {
     app.upsertReminder({
       title: parsed.title,
       note: '',
@@ -233,6 +232,10 @@ export function App() {
       sound: parsed.isAlarm ? app.prefs.defaultAlarmSound : null,
       subtasks: [],
     });
+  };
+
+  const handleQuickAdd = (rawText: string) => {
+    handleSaveParsedReminder(parseQuickInput(rawText));
   };
 
   const handleAddCustomTag = (tag: string) => {
@@ -348,6 +351,8 @@ export function App() {
         tabDirection={tabDirection}
         onSelectTab={selectTab}
         onOpenNewSheet={() => openNewReminder(null)}
+        user={app.user}
+        onOpenAuth={() => setAuthOpen(true)}
         isOnline={app.isOnline}
         syncStatus={app.syncStatus}
         toasts={app.toasts}
@@ -357,6 +362,7 @@ export function App() {
           <TodayView
             reminders={app.reminders}
             prefs={app.prefs}
+            user={app.user}
             userName={app.user?.name}
             deliveryHealth={app.deliveryHealth}
             calendarEvents={app.calendarEvents}
@@ -365,8 +371,11 @@ export function App() {
               app.updatePrefs({ timeFormat: app.prefs.timeFormat === '12h' ? '24h' : '12h' })
             }
             onQuickAdd={handleQuickAdd}
+            onSaveParsedReminder={handleSaveParsedReminder}
             onEditVoiceDraft={openVoiceDraftInSheet}
             onOpenNewSheet={() => openNewReminder(null)}
+            onOpenAuth={() => setAuthOpen(true)}
+            onGoogleSignIn={app.signInWithGoogle}
             onToggleDone={app.toggleCompleteReminder}
             onToggleSubtask={app.toggleSubtask}
             onSnooze={app.snoozeReminder}
@@ -382,7 +391,13 @@ export function App() {
             onExportIcs={app.exportSingleIcs}
             onApplyRoutine={app.applyRoutinePack}
             onRequestDailyDigest={requestDailyDigestEmail}
-            onConnectGoogle={() => setAuthOpen(true)}
+            onConnectGoogle={() => {
+              if (app.user) {
+                void app.connectGoogleWorkspace().catch(() => setAuthOpen(true));
+              } else {
+                setAuthOpen(true);
+              }
+            }}
             onOpenDeliverySetup={() => selectTab('profile')}
             onRegisterVoiceClose={registerVoiceClose}
           />
@@ -438,6 +453,7 @@ export function App() {
               gmailCount={app.gmailMessages.length}
               onUpdatePrefs={app.updatePrefs}
               onGoogleSignIn={app.signInWithGoogle}
+              onConnectGoogleWorkspace={app.connectGoogleWorkspace}
               onOpenAuth={() => setAuthOpen(true)}
               onSignOut={app.signOut}
               onSyncNow={app.syncNow}

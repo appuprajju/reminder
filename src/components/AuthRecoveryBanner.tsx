@@ -27,7 +27,9 @@ export const AuthRecoveryBanner: React.FC<AuthRecoveryBannerProps> = ({
   };
 
   const isSetupAction =
-    error.actionKind === 'authorized-domain' || error.actionKind === 'enable-email-provider';
+    error.actionKind === 'authorized-domain' ||
+    error.actionKind === 'enable-email-provider' ||
+    error.actionKind === 'oauth-testing-mode';
 
   return (
     <div
@@ -123,6 +125,34 @@ export const AuthRecoveryBanner: React.FC<AuthRecoveryBannerProps> = ({
               className="ios-spring-press flex min-h-[44px] w-full items-center justify-center gap-1.5 rounded-xl border border-amber-300/30 bg-amber-400/15 px-3 text-xs font-semibold text-amber-100 hover:bg-amber-400/25 whitespace-nowrap"
             >
               <span>Open Firebase Sign-in Providers</span>
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          )}
+        </div>
+      )}
+
+      {error.actionKind === 'oauth-testing-mode' && (
+        <div className="mt-3 space-y-2.5 border-t border-white/[0.1] pt-3">
+          <ol className="list-decimal space-y-1 pl-4 text-[11px] text-slate-300">
+            <li>
+              Open Google Cloud Console → <strong className="text-white">OAuth consent screen</strong>{' '}
+              → <strong className="text-white">Audience</strong>.
+            </li>
+            <li>
+              Either add your friend’s Gmail under <strong className="text-white">Test users</strong>,
+              or click <strong className="text-white">Publish App</strong> so any Google account can
+              sign in.
+            </li>
+          </ol>
+
+          {error.consoleUrl && (
+            <a
+              href={error.consoleUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ios-spring-press flex min-h-[44px] w-full items-center justify-center gap-1.5 rounded-xl border border-amber-300/30 bg-amber-400/15 px-3 text-xs font-semibold text-amber-100 hover:bg-amber-400/25 whitespace-nowrap"
+            >
+              <span>Open Google OAuth Audience</span>
               <ExternalLink className="h-3.5 w-3.5" />
             </a>
           )}

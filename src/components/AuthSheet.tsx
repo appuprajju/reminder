@@ -167,7 +167,7 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({
             label={busy ? 'Connecting to Google…' : 'Sign in with Google'}
           />
           <p className="mt-2.5 text-center text-[11px] text-slate-400">
-            Includes Google Calendar &amp; Gmail reminder sync
+            Instant Google account login · Connect Calendar &amp; Gmail anytime
           </p>
         </div>
 

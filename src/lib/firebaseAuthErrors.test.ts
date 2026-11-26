@@ -52,6 +52,21 @@ test('mapFirebaseAuthError maps common credential, duplicate, weak password, and
   );
 });
 
+test('mapFirebaseAuthError detects Google OAuth Testing Mode 403 access_denied blocks', () => {
+  const parsed = mapFirebaseAuthError(
+    new Error(
+      'Access blocked: gen-lang-client-0663798259.firebaseapp.com has not completed the Google verification process. Error 403: access_denied'
+    ),
+    { projectId: 'gen-lang-client-0663798259' }
+  );
+  assert.equal(parsed.actionKind, 'oauth-testing-mode');
+  assert.equal(parsed.title, 'Google App Is in Testing Mode');
+  assert.equal(
+    parsed.consoleUrl,
+    'https://console.cloud.google.com/apis/credentials/consent?project=gen-lang-client-0663798259'
+  );
+});
+
 test('mapFirebaseAuthError strips raw Firebase prefix for unknown errors', () => {
   const parsed = mapFirebaseAuthError(new Error('Firebase: Unexpected auth failure'));
   assert.equal(parsed.code, 'auth/unknown');

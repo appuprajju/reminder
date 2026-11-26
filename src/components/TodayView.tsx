@@ -1,22 +1,29 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   AlarmClock,
+  Bell,
   Calendar,
   ChevronDown,
   ChevronUp,
   Layers,
+  LogIn,
   Mail,
   Mic,
   Plus,
   ShieldCheck,
+  SlidersHorizontal,
   Sparkles,
+  X,
 } from 'lucide-react';
 import { useVoiceCapture } from '../hooks/useVoiceCapture';
+import { FIREBASE_PROJECT_ID } from '../lib/firebase';
+import { mapFirebaseAuthError, type ParsedFirebaseAuthError } from '../lib/firebaseAuthErrors';
 import { parseQuickInput, type ParsedQuickReminder } from '../lib/parser';
 import { SMART_ROUTINES } from '../lib/routines';
 import {
   formatClockParts,
   formatCountdown,
+  formatDaysSummary,
   formatTimeDisplay,
   getGreeting,
   getTodayDateKey,
@@ -30,7 +37,11 @@ import type {
   Reminder,
   RoutinePack,
   UserPreferences,
+  UserProfile,
 } from '../types';
+import { AuthRecoveryBanner } from './AuthRecoveryBanner';
+import { useDynamicIsland } from './DynamicIsland';
+import { GoogleSignInButton } from './GoogleSignInButton';
 import { LiquidGlassCard } from './LiquidGlassCard';
 import { SpringSegmentedControl } from './SpringSegmentedControl';
 import { SwipeableReminderRow } from './SwipeableReminderRow';
@@ -39,14 +50,18 @@ import { VoiceCaptureSheet } from './VoiceCaptureSheet';
 interface TodayViewProps {
   reminders: Reminder[];
   prefs: UserPreferences;
+  user?: UserProfile | null;
   userName?: string | null;
   deliveryHealth: DeliveryHealth;
   calendarEvents: GoogleCalendarEvent[];
   hasWorkspaceAccess: boolean;
   onToggleTimeFormat: () => void;
   onQuickAdd: (rawText: string) => void;
+  onSaveParsedReminder: (parsed: ParsedQuickReminder) => void;
   onEditVoiceDraft: (parsed: ParsedQuickReminder) => void;
   onOpenNewSheet: () => void;
+  onOpenAuth: () => void;
+  onGoogleSignIn: () => Promise<unknown>;
   onToggleDone: (id: string) => void;
   onToggleSubtask: (reminderId: string, subtaskId: string) => void;
   onSnooze: (id: string, minutes: number) => void;
@@ -64,14 +79,18 @@ interface TodayViewProps {
 export const TodayView: React.FC<TodayViewProps> = ({
   reminders,
   prefs,
+  user = null,
   userName,
   deliveryHealth,
   calendarEvents,
   hasWorkspaceAccess,
   onToggleTimeFormat,
   onQuickAdd,
+  onSaveParsedReminder,
   onEditVoiceDraft,
   onOpenNewSheet,
+  onOpenAuth,
+  onGoogleSignIn,
   onToggleDone,
   onToggleSubtask,
   onSnooze,
@@ -85,12 +104,38 @@ export const TodayView: React.FC<TodayViewProps> = ({
   onOpenDeliverySetup,
   onRegisterVoiceClose,
 }) => {
+  const { onTriggerIsland } = useDynamicIsland();
   const [now, setNow] = useState(() => new Date());
   const [filter, setFilter] = useState<FilterMode>('all');
   const [selectedTag, setSelectedTag] = useState<string>('all');
   const [quickText, setQuickText] = useState('');
   const [routinesOpen, setRoutinesOpen] = useState(false);
+  const [authPromptDismissed, setAuthPromptDismissed] = useState(false);
+  const [homeGoogleBusy, setHomeGoogleBusy] = useState(false);
+  const [homeAuthError, setHomeAuthError] = useState<ParsedFirebaseAuthError | null>(null);
   const voice = useVoiceCapture(prefs.vibrate, now);
+
+  const handleHomeGoogleSignIn = async () => {
+    setHomeGoogleBusy(true);
+    setHomeAuthError(null);
+    try {
+      await onGoogleSignIn();
+    } catch (err) {
+      const parsed = mapFirebaseAuthError(err, {
+        hostname: typeof window !== 'undefined' ? window.location.hostname : '',
+        projectId: FIREBASE_PROJECT_ID,
+      });
+      if (parsed.code !== 'auth/popup-closed-by-user') {
+        setHomeAuthError(parsed);
+        onTriggerIsland('alert', {
+          title: parsed.title,
+          message: parsed.message,
+        });
+      }
+    } finally {
+      setHomeGoogleBusy(false);
+    }
+  };
 
   useEffect(() => {
     if (!onRegisterVoiceClose) return;
@@ -355,16 +400,71 @@ export const TodayView: React.FC<TodayViewProps> = ({
         </div>
       </LiquidGlassCard>
 
-      {/* Right Workspace Column: Quick Capture + Daily Briefing & Routines + Filters + Feed */}
+      {/* Right Workspace Column: Quick Sign-In + Voice/Quick Capture + Daily Briefing & Routines + Feed */}
       <section className="flex flex-col gap-4 lg:col-span-7">
-        {/* Natural-Language Quick Add & Prominent Push-to-Talk Voice Bar */}
+        {/* Direct Home-Screen Sign In & Connect Google Card (visible when signed out) */}
+        {!user && !authPromptDismissed && (
+          <div className="glass-surface rounded-2xl p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <h2 className="font-display text-sm font-bold text-white">
+                  Sign in &amp; Connect Google
+                </h2>
+                <p className="mt-0.5 text-xs leading-relaxed text-slate-400">
+                  Sign in right from Home with Google or Email &amp; Password to keep your alarms
+                  synced.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setAuthPromptDismissed(true)}
+                aria-label="Dismiss sign in card"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-400 hover:bg-white/[0.08] hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-12">
+              <div className="sm:col-span-7">
+                <GoogleSignInButton
+                  onClick={handleHomeGoogleSignIn}
+                  disabled={homeGoogleBusy}
+                  label={homeGoogleBusy ? 'Connecting…' : 'Sign in with Google'}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={onOpenAuth}
+                className="ios-spring-press flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.14] bg-white/[0.06] px-4 text-xs font-semibold text-white hover:bg-white/[0.12] sm:col-span-5 whitespace-nowrap"
+              >
+                <LogIn className="h-4 w-4 text-sky-300" />
+                <span>Email / Sign In</span>
+              </button>
+            </div>
+
+            {homeAuthError && (
+              <AuthRecoveryBanner
+                error={homeAuthError}
+                onCopiedDomain={(host) =>
+                  onTriggerIsland('success', {
+                    title: 'Domain Copied',
+                    message: `${host} copied to clipboard`,
+                  })
+                }
+              />
+            )}
+          </div>
+        )}
+
+        {/* Enhanced Natural-Language Quick Add & Tap/Hold Voice Alarm Bar */}
         <form onSubmit={handleQuickSubmit} className="glass-surface rounded-2xl p-2.5">
           <div className="flex items-center gap-2">
             <input
               type="text"
               value={quickText}
               onChange={(e) => setQuickText(e.target.value)}
-              placeholder='Try "Take vitamins daily at 8:30am" or hold mic to speak'
+              placeholder='Try "Wake me at 6:30am" or tap Voice'
               maxLength={100}
               className="min-h-[48px] min-w-0 flex-1 bg-transparent px-3 text-sm text-white placeholder:text-slate-400 focus:outline-none"
             />
@@ -375,19 +475,18 @@ export const TodayView: React.FC<TodayViewProps> = ({
               onPointerCancel={handleVoiceTriggerUp}
               onKeyDown={handleVoiceTriggerKeyDown}
               onKeyUp={handleVoiceTriggerKeyUp}
+              onContextMenu={(e) => e.preventDefault()}
               aria-pressed={voice.phase === 'listening' || voice.isHolding}
-              aria-label="Hold to speak reminder"
-              title="Press and hold to speak a reminder"
-              className={`ios-spring-press inline-flex min-h-[48px] min-w-[48px] shrink-0 select-none touch-none items-center justify-center gap-2 rounded-xl border px-3.5 text-xs font-semibold transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#0A84FF] ${
+              aria-label="Voice alarm and reminder capture"
+              title="Tap to speak hands-free or hold to dictate"
+              className={`ios-spring-press inline-flex min-h-[48px] min-w-[48px] shrink-0 select-none touch-none items-center justify-center gap-1.5 rounded-xl border px-3.5 text-xs font-semibold transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#0A84FF] ${
                 voice.phase === 'listening'
                   ? 'scale-[0.98] border-[#FF453A]/70 bg-[#FF453A] text-white shadow-[0_8px_24px_rgba(255,69,58,0.45)]'
                   : 'border-sky-400/35 bg-sky-500/20 text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] hover:bg-sky-500/30'
               }`}
             >
               <Mic className="h-4 w-4 shrink-0" />
-              <span className="hidden sm:inline">
-                {voice.phase === 'listening' ? 'Release' : 'Hold to Speak'}
-              </span>
+              <span>{voice.phase === 'listening' ? 'Listening' : 'Voice'}</span>
             </button>
             <button
               type="submit"
@@ -400,9 +499,35 @@ export const TodayView: React.FC<TodayViewProps> = ({
           </div>
 
           {parsedPreview && (
-            <div className="mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06] px-3 pt-2 text-xs text-slate-400">
-              <span className="truncate font-medium text-slate-200">{parsedPreview.title}</span>
-              <span className="font-mono text-[#60A5FA] tabular-nums">{parsedPreview.summary}</span>
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.08] px-2.5 pt-2.5 text-xs">
+              <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-slate-300">
+                <span aria-hidden="true">{parsedPreview.emoji}</span>
+                <span className="truncate font-semibold text-white">{parsedPreview.title}</span>
+                <span aria-hidden="true" className="text-slate-500">·</span>
+                <span className="inline-flex items-center gap-1 font-mono font-semibold text-sky-300 tabular-nums">
+                  {parsedPreview.isAlarm ? (
+                    <AlarmClock className="h-3.5 w-3.5 text-red-400" />
+                  ) : (
+                    <Bell className="h-3.5 w-3.5 text-emerald-300" />
+                  )}
+                  {formatTimeDisplay(parsedPreview.time, prefs.timeFormat)}
+                </span>
+                <span aria-hidden="true" className="text-slate-500">·</span>
+                <span className="text-slate-400">
+                  {formatDaysSummary(parsedPreview.days, parsedPreview.oneTimeDate)}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onEditVoiceDraft(parsedPreview);
+                  setQuickText('');
+                }}
+                className="ios-spring-press inline-flex min-h-[34px] shrink-0 items-center gap-1 rounded-lg border border-white/[0.12] bg-white/[0.06] px-2.5 text-xs font-semibold text-slate-200 hover:bg-white/[0.12] whitespace-nowrap"
+              >
+                <SlidersHorizontal className="h-3 w-3 text-sky-300" />
+                <span>Customize</span>
+              </button>
             </div>
           )}
         </form>
@@ -612,14 +737,16 @@ export const TodayView: React.FC<TodayViewProps> = ({
         phase={voice.phase}
         isHolding={voice.isHolding}
         isSupported={voice.isSupported}
+        lang={voice.lang}
         transcript={voice.transcript}
         parsedPreview={voice.parsedPreview}
         errorMessage={voice.errorMessage}
         timeFormat={prefs.timeFormat}
-        onHoldStart={voice.startHoldCapture}
-        onHoldEnd={voice.endHoldCapture}
+        onLangChange={voice.setLang}
+        onToggleListen={voice.toggleTapListening}
         onTranscriptChange={voice.updateTranscript}
-        onConfirmSave={(spokenText) => onQuickAdd(spokenText)}
+        onUpdateOverrides={voice.updateOverrides}
+        onConfirmSave={(parsed) => onSaveParsedReminder(parsed)}
         onEditDetails={(parsed) => {
           voice.close();
           onEditVoiceDraft(parsed);

@@ -44,9 +44,12 @@ export const isFirestoreEnabled = Boolean(configuredDbId);
 export const db = configuredDbId ? getFirestore(app, configuredDbId) : null;
 export const auth = getAuth(app);
 
-const googleProvider = new GoogleAuthProvider();
-WORKSPACE_SCOPES.forEach((scope) => googleProvider.addScope(scope));
-googleProvider.setCustomParameters({ prompt: 'select_account' });
+const basicGoogleProvider = new GoogleAuthProvider();
+basicGoogleProvider.setCustomParameters({ prompt: 'select_account' });
+
+const workspaceGoogleProvider = new GoogleAuthProvider();
+WORKSPACE_SCOPES.forEach((scope) => workspaceGoogleProvider.addScope(scope));
+workspaceGoogleProvider.setCustomParameters({ prompt: 'select_account' });
 
 // Strictly in-memory OAuth access token cache (never stored in localStorage/sessionStorage)
 let isSigningIn = false;
@@ -161,13 +164,26 @@ export function initFirebaseAuth(
   });
 }
 
+export async function signInWithGoogleBasic(): Promise<{
+  user: User;
+  accessToken: string | null;
+}> {
+  isSigningIn = true;
+  try {
+    const result = await signInWithPopup(auth, basicGoogleProvider);
+    return { user: result.user, accessToken: cachedAccessToken };
+  } finally {
+    isSigningIn = false;
+  }
+}
+
 export async function signInWithGoogleWorkspace(): Promise<{
   user: User;
   accessToken: string | null;
 }> {
   isSigningIn = true;
   try {
-    const result = await signInWithPopup(auth, googleProvider);
+    const result = await signInWithPopup(auth, workspaceGoogleProvider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential?.accessToken ?? null;
     notifyTokenChange(token);

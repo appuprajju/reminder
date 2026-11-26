@@ -9,6 +9,7 @@ import {
   isFirestoreEnabled,
   sendFirebasePasswordReset,
   signInWithEmailPassword,
+  signInWithGoogleBasic,
   signInWithGoogleWorkspace,
   signOutFirebase,
   signUpWithEmailPassword,
@@ -821,6 +822,29 @@ export function useReminderApp(onHardwareBack: () => boolean) {
   );
 
   const signInWithGoogle = useCallback(async () => {
+    const { user: fbUser } = await signInWithGoogleBasic();
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+    const profile: UserProfile = {
+      id: fbUser.uid,
+      email: fbUser.email || '',
+      name: fbUser.displayName || fbUser.email?.split('@')[0] || 'User',
+      tz,
+      createdAt: Date.now(),
+      photoURL: fbUser.photoURL,
+      authProvider: 'firebase',
+    };
+    setUser(profile);
+    setSyncStatus(isFirestoreEnabled ? 'syncing' : 'idle');
+    void attachFirestoreSync(fbUser);
+    pushToast(`Welcome, ${profile.name}`, {
+      title: 'Signed In with Google',
+      tone: 'success',
+      expression: 'happy',
+    });
+    return profile;
+  }, [attachFirestoreSync, pushToast]);
+
+  const connectGoogleWorkspace = useCallback(async () => {
     const { user: fbUser, accessToken } = await signInWithGoogleWorkspace();
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
     const profile: UserProfile = {
@@ -1275,6 +1299,7 @@ export function useReminderApp(onHardwareBack: () => boolean) {
     dismissRinging,
     snoozeRinging,
     signInWithGoogle,
+    connectGoogleWorkspace,
     signIn,
     signUp,
     resetPassword,

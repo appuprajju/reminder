@@ -3,7 +3,6 @@ import {
   BellRing,
   Calendar,
   CalendarArrowDown,
-  Cloud,
   Download,
   FileJson,
   Lock,
@@ -17,10 +16,8 @@ import {
   Trash2,
   Upload,
   Volume2,
-  Zap,
 } from 'lucide-react';
 import { usePWAInstall } from '../hooks/usePWAInstall';
-import { CLOUDFLARE_EDGE_URL, api, type BackendHealthResult } from '../lib/api';
 import {
   ALARM_SOUNDS,
   NOTIF_SOUNDS,
@@ -56,6 +53,7 @@ interface ProfileViewProps {
   gmailCount: number;
   onUpdatePrefs: (patch: Partial<UserPreferences>) => void;
   onGoogleSignIn: () => Promise<unknown>;
+  onConnectGoogleWorkspace?: () => Promise<unknown>;
   onOpenAuth: () => void;
   onSignOut: () => void;
   onSyncNow: () => void;
@@ -81,6 +79,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   gmailCount,
   onUpdatePrefs,
   onGoogleSignIn,
+  onConnectGoogleWorkspace,
   onOpenAuth,
   onSignOut,
   onSyncNow,
@@ -99,17 +98,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const [showIOSGuide, setShowIOSGuide] = useState(false);
   const [googleBusy, setGoogleBusy] = useState(false);
   const [googleAuthError, setGoogleAuthError] = useState<ParsedFirebaseAuthError | null>(null);
-  const [pinging, setPinging] = useState(false);
-  const [pingResult, setPingResult] = useState<BackendHealthResult | null>(null);
-  const [pingError, setPingError] = useState<string | null>(null);
   const audioInputRef = useRef<HTMLInputElement>(null);
   const backupInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDirectGoogleSignIn = async () => {
+  const runGoogleAuth = async (fn: () => Promise<unknown>) => {
     setGoogleBusy(true);
     setGoogleAuthError(null);
     try {
-      await onGoogleSignIn();
+      await fn();
     } catch (err) {
       const parsed = mapFirebaseAuthError(err, {
         hostname: typeof window !== 'undefined' ? window.location.hostname : '',
@@ -127,19 +123,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
     }
   };
 
-  const handleTestBackendSpeed = async (overrideUrl?: string) => {
-    setPinging(true);
-    setPingError(null);
-    try {
-      const result = await api.ping(overrideUrl !== undefined ? overrideUrl : prefs.serverBaseUrl);
-      setPingResult(result);
-    } catch (err: unknown) {
-      setPingResult(null);
-      setPingError(err instanceof Error ? err.message : 'Backend unreachable');
-    } finally {
-      setPinging(false);
-    }
-  };
+  const handleDirectGoogleSignIn = () => runGoogleAuth(onGoogleSignIn);
+  const handleWorkspaceConnect = () =>
+    runGoogleAuth(onConnectGoogleWorkspace ?? onGoogleSignIn);
 
   const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -171,9 +157,6 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         : deliveryHealth.platform === 'pwa-standalone'
           ? 'Installed App (Standalone)'
           : 'Web Preview';
-
-  const backendMode: 'auto' | 'edge' =
-    prefs.serverBaseUrl === CLOUDFLARE_EDGE_URL ? 'edge' : 'auto';
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
@@ -308,7 +291,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 <button
                   type="button"
                   disabled={googleBusy}
-                  onClick={handleDirectGoogleSignIn}
+                  onClick={handleWorkspaceConnect}
                   className="ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-sky-400/30 bg-sky-500/15 px-3.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 disabled:opacity-50"
                 >
                   <Calendar className="h-4 w-4 text-sky-300" />
@@ -340,76 +323,6 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 <span>Export Apple Calendar (.ics)</span>
               </button>
             </div>
-          </div>
-
-          {/* Optional Self-Hosted / Cloudflare Worker Backend Selector */}
-          <div className="mt-4 border-t border-white/[0.08] pt-4">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="flex items-center gap-1.5 text-xs font-medium text-slate-300">
-                <Cloud className="h-3.5 w-3.5 text-sky-400" />
-                Optional Custom Push Backend
-              </span>
-              <button
-                type="button"
-                disabled={pinging}
-                onClick={() => handleTestBackendSpeed()}
-                className="ios-spring-press inline-flex min-h-[34px] items-center gap-1.5 rounded-lg border border-sky-400/25 bg-sky-400/10 px-2.5 text-xs font-semibold text-sky-300 transition-colors hover:bg-sky-400/20 disabled:opacity-60"
-              >
-                <Zap className="h-3.5 w-3.5" />
-                <span>{pinging ? 'Testing…' : 'Test Speed'}</span>
-              </button>
-            </div>
-
-            <div className="mt-2.5">
-              <SpringSegmentedControl<'auto' | 'edge'>
-                ariaLabel="Custom backend mode"
-                fullWidth
-                size="sm"
-                value={backendMode}
-                onChange={(mode) => {
-                  const nextUrl = mode === 'edge' ? CLOUDFLARE_EDGE_URL : '';
-                  onUpdatePrefs({ serverBaseUrl: nextUrl });
-                  setPingResult(null);
-                  setPingError(null);
-                  onToast(
-                    mode === 'edge'
-                      ? 'Switched to Cloudflare Edge Worker (api.makeuperfect.in)'
-                      : 'Switched to Auto (Same Origin) backend'
-                  );
-                }}
-                options={[
-                  { id: 'auto', label: 'Auto (Same Origin)' },
-                  { id: 'edge', label: 'Cloudflare Edge' },
-                ]}
-              />
-            </div>
-
-            <label className="mt-2.5 block">
-              <span className="sr-only">Cloud Sync Server URL</span>
-              <input
-                type="url"
-                value={prefs.serverBaseUrl}
-                onChange={(e) => {
-                  onUpdatePrefs({ serverBaseUrl: e.target.value });
-                  setPingResult(null);
-                  setPingError(null);
-                }}
-                placeholder="https://api.makeuperfect.in (blank = same origin)"
-                className="min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/70 px-3.5 text-xs text-slate-100 placeholder:text-slate-500 focus:border-[#0A84FF] focus:outline-none"
-              />
-            </label>
-
-            {pingResult && (
-              <p className="mt-2 flex items-center justify-between rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300">
-                <span className="font-semibold">Connected · {pingResult.engine}</span>
-                <span className="font-mono font-bold tabular-nums">{pingResult.latencyMs}ms</span>
-              </p>
-            )}
-            {pingError && (
-              <p className="mt-2 rounded-xl border border-amber-400/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
-                {pingError}
-              </p>
-            )}
           </div>
         </section>
 

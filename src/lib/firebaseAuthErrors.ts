@@ -1,6 +1,7 @@
 export type FirebaseAuthActionKind =
   | 'authorized-domain'
   | 'enable-email-provider'
+  | 'oauth-testing-mode'
   | 'popup-blocked'
   | 'none';
 
@@ -15,7 +16,12 @@ export interface ParsedFirebaseAuthError {
 }
 
 function extractFirebaseErrorCode(err: unknown): string {
-  if (err && typeof err === 'object' && 'code' in err && typeof (err as { code?: unknown }).code === 'string') {
+  if (
+    err &&
+    typeof err === 'object' &&
+    'code' in err &&
+    typeof (err as { code?: unknown }).code === 'string'
+  ) {
     return (err as { code: string }).code;
   }
   const msg = err instanceof Error ? err.message : String(err ?? '');
@@ -34,6 +40,25 @@ export function mapFirebaseAuthError(
   const consoleBase = projectId
     ? `https://console.firebase.google.com/project/${projectId}/authentication`
     : 'https://console.firebase.google.com/';
+  const oauthConsentUrl = projectId
+    ? `https://console.cloud.google.com/apis/credentials/consent?project=${projectId}`
+    : 'https://console.cloud.google.com/apis/credentials/consent';
+
+  if (
+    code === 'auth/oauth-access-denied' ||
+    /access_denied|verification process|developer-approved testers|error 403/i.test(rawMessage)
+  ) {
+    return {
+      code: code || 'auth/oauth-access-denied',
+      title: 'Google App Is in Testing Mode',
+      message:
+        'Google blocked this account because the OAuth consent screen is still in Testing mode. Add the email under Test Users or click Publish App in Google Cloud Console—or use Email & Password below right now.',
+      actionKind: 'oauth-testing-mode',
+      hostname,
+      projectId,
+      consoleUrl: oauthConsentUrl,
+    };
+  }
 
   switch (code) {
     case 'auth/unauthorized-domain':
@@ -73,7 +98,8 @@ export function mapFirebaseAuthError(
       return {
         code,
         title: 'Sign-In Cancelled',
-        message: 'The Google sign-in window was closed before finishing. Try again whenever you are ready.',
+        message:
+          'The Google sign-in window was closed before finishing. Try again whenever you are ready.',
         actionKind: 'none',
       };
 
@@ -81,7 +107,8 @@ export function mapFirebaseAuthError(
       return {
         code,
         title: 'Account Already Exists',
-        message: 'An account with this email already exists. Switch to Sign In or use Forgot password.',
+        message:
+          'An account with this email already exists. Switch to Sign In or use Forgot password.',
         actionKind: 'none',
       };
 
@@ -115,7 +142,8 @@ export function mapFirebaseAuthError(
       return {
         code,
         title: 'Too Many Attempts',
-        message: 'Temporarily paused due to repeated attempts. Wait a minute or reset your password.',
+        message:
+          'Temporarily paused due to repeated attempts. Wait a minute or reset your password.',
         actionKind: 'none',
       };
 
@@ -131,7 +159,9 @@ export function mapFirebaseAuthError(
       return {
         code: code || 'auth/unknown',
         title: 'Sign-In Error',
-        message: rawMessage.replace(/^Firebase:\s*/i, '').trim() || 'Authentication failed. Please try again.',
+        message:
+          rawMessage.replace(/^Firebase:\s*/i, '').trim() ||
+          'Authentication failed. Please try again.',
         actionKind: 'none',
       };
   }

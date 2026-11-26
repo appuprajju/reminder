@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { BarChart3, CalendarDays, Clock, Plus, User, WifiOff } from 'lucide-react';
+import { BarChart3, CalendarDays, Clock, LogIn, Plus, User, WifiOff } from 'lucide-react';
 import { buildIslandEventFromTrigger } from '../lib/emoExpression';
 import type {
   DynamicIslandTriggerOptions,
@@ -7,6 +7,7 @@ import type {
   TabId,
   ToastMessage,
   TriggerIslandFn,
+  UserProfile,
 } from '../types';
 import {
   DynamicIsland,
@@ -27,6 +28,8 @@ interface AppShellProps {
   tabDirection?: 'left' | 'right';
   onSelectTab: (tab: TabId) => void;
   onOpenNewSheet: () => void;
+  user?: UserProfile | null;
+  onOpenAuth?: () => void;
   isOnline: boolean;
   syncStatus: string;
   toasts: ToastMessage[];
@@ -52,6 +55,8 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
       tabDirection = 'right',
       onSelectTab,
       onOpenNewSheet,
+      user = null,
+      onOpenAuth,
       isOnline,
       syncStatus,
       toasts,
@@ -165,12 +170,51 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
             </div>
 
             <div className="border-t border-white/[0.12] px-2 pt-4 text-xs text-slate-400">
+              {user ? (
+                <button
+                  type="button"
+                  onClick={() => onSelectTab('profile')}
+                  className="ios-spring-press mb-3 flex w-full items-center gap-2.5 rounded-2xl border border-white/[0.1] bg-white/[0.05] p-2 text-left transition-colors hover:bg-white/[0.1]"
+                >
+                  {user.photoURL ? (
+                    <img
+                      src={user.photoURL}
+                      alt={user.name}
+                      referrerPolicy="no-referrer"
+                      className="h-8 w-8 shrink-0 rounded-full border border-white/25 object-cover"
+                    />
+                  ) : (
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-500/25 font-bold text-sky-200">
+                      {user.name.charAt(0).toUpperCase()}
+                    </span>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-semibold text-white">{user.name}</p>
+                    <p className="truncate text-[11px] text-slate-400">
+                      {!isOnline ? 'Offline' : syncStatus === 'synced' ? 'Cloud Synced' : 'Signed In'}
+                    </p>
+                  </div>
+                </button>
+              ) : (
+                onOpenAuth && (
+                  <button
+                    type="button"
+                    onClick={onOpenAuth}
+                    className="ios-spring-press mb-3 flex min-h-[42px] w-full items-center justify-center gap-2 rounded-2xl border border-sky-400/35 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 transition-colors hover:bg-sky-500/25 whitespace-nowrap"
+                  >
+                    <LogIn className="h-4 w-4 text-sky-300" />
+                    <span>Sign In / Google</span>
+                  </button>
+                )
+              )}
               <p className="font-medium text-slate-200">
                 {!isOnline
                   ? 'Offline Mode'
                   : syncStatus === 'synced'
                     ? 'Cloud Synced'
-                    : 'On-Device Mode'}
+                    : user
+                      ? 'Signed In'
+                      : 'On-Device Mode'}
               </p>
               <p className="mt-1 text-slate-400">
                 Prajwal M <span className="font-mono text-sky-300">&lt;/yourstudio&gt;</span>
@@ -181,27 +225,60 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
           {/* Main Content Wrapper */}
           <div className="relative z-10 flex min-w-0 flex-1 flex-col">
             {/* Compact Mobile iOS Liquid Glass Top Bar (52px height) */}
-            <header className="liquid-nav sticky top-0 z-30 flex h-[52px] items-center justify-between border-b border-white/[0.14] px-4 lg:hidden">
-              <div className="flex items-center gap-2.5">
+            <header className="liquid-nav sticky top-0 z-30 flex h-[52px] items-center justify-between gap-2 border-b border-white/[0.14] px-4 lg:hidden">
+              <div className="flex min-w-0 items-center gap-2.5">
                 <img
                   src="/icons/icon-192.png"
                   alt="reminderme icon"
-                  className="h-7 w-7 rounded-lg shadow-[0_4px_14px_rgba(10,132,255,0.45)]"
+                  className="h-7 w-7 shrink-0 rounded-lg shadow-[0_4px_14px_rgba(10,132,255,0.45)]"
                 />
-                <span className="font-display text-base font-bold tracking-tight text-white whitespace-nowrap">
+                <span className="font-display truncate text-base font-bold tracking-tight text-white whitespace-nowrap">
                   reminderme
                 </span>
               </div>
 
-              <button
-                type="button"
-                onClick={onOpenNewSheet}
-                aria-label="Create new alarm or reminder"
-                className="liquid-primary-btn ios-spring-press flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-white whitespace-nowrap shrink-0"
-              >
-                <Plus className="h-4 w-4" />
-                <span>New</span>
-              </button>
+              <div className="flex shrink-0 items-center gap-2">
+                {user ? (
+                  <button
+                    type="button"
+                    onClick={() => onSelectTab('profile')}
+                    aria-label={`Account: ${user.name}`}
+                    className="ios-spring-press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-white/25 bg-white/[0.09] text-xs font-bold text-white"
+                  >
+                    {user.photoURL ? (
+                      <img
+                        src={user.photoURL}
+                        alt={user.name}
+                        referrerPolicy="no-referrer"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <span>{user.name.charAt(0).toUpperCase()}</span>
+                    )}
+                  </button>
+                ) : (
+                  onOpenAuth && (
+                    <button
+                      type="button"
+                      onClick={onOpenAuth}
+                      className="ios-spring-press flex min-h-[38px] items-center gap-1.5 rounded-full border border-sky-400/35 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap shrink-0"
+                    >
+                      <LogIn className="h-3.5 w-3.5 text-sky-300" />
+                      <span>Sign In</span>
+                    </button>
+                  )
+                )}
+
+                <button
+                  type="button"
+                  onClick={onOpenNewSheet}
+                  aria-label="Create new alarm or reminder"
+                  className="liquid-primary-btn ios-spring-press flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-white whitespace-nowrap shrink-0"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>New</span>
+                </button>
+              </div>
             </header>
 
             {/* Non-Intrusive Offline Connectivity Notice */}
