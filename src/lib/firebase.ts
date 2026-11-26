@@ -1,10 +1,14 @@
 import { initializeApp } from 'firebase/app';
 import {
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
   type User,
 } from 'firebase/auth';
 import {
@@ -33,6 +37,7 @@ export const WORKSPACE_SCOPES = [
 ] as const;
 
 const app = initializeApp(firebaseConfig);
+export const FIREBASE_PROJECT_ID = firebaseConfig.projectId || '';
 const configuredDbId =
   (firebaseConfig as { firestoreDatabaseId?: string }).firestoreDatabaseId?.trim() || '';
 export const isFirestoreEnabled = Boolean(configuredDbId);
@@ -170,6 +175,40 @@ export async function signInWithGoogleWorkspace(): Promise<{
   } finally {
     isSigningIn = false;
   }
+}
+
+export async function signInWithEmailPassword(email: string, password: string): Promise<User> {
+  isSigningIn = true;
+  try {
+    const result = await signInWithEmailAndPassword(auth, email.trim(), password);
+    notifyTokenChange(null);
+    return result.user;
+  } finally {
+    isSigningIn = false;
+  }
+}
+
+export async function signUpWithEmailPassword(
+  name: string,
+  email: string,
+  password: string
+): Promise<User> {
+  isSigningIn = true;
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email.trim(), password);
+    const trimmedName = name.trim().slice(0, 60);
+    if (trimmedName) {
+      await updateProfile(result.user, { displayName: trimmedName }).catch(() => {});
+    }
+    notifyTokenChange(null);
+    return result.user;
+  } finally {
+    isSigningIn = false;
+  }
+}
+
+export async function sendFirebasePasswordReset(email: string): Promise<void> {
+  await sendPasswordResetEmail(auth, email.trim());
 }
 
 export async function signOutFirebase(): Promise<void> {

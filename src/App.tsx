@@ -503,6 +503,8 @@ export function App() {
             onGoogleSignIn={app.signInWithGoogle}
             onSignIn={app.signIn}
             onSignUp={app.signUp}
+            onResetPassword={app.resetPassword}
+            onTriggerIsland={(type, opts) => appShellRef.current?.onTriggerIsland(type, opts)}
             onClose={() => setAuthOpen(false)}
           />
         )}

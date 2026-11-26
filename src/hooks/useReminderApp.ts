@@ -7,8 +7,11 @@ import {
   getWorkspaceAccessToken,
   initFirebaseAuth,
   isFirestoreEnabled,
+  sendFirebasePasswordReset,
+  signInWithEmailPassword,
   signInWithGoogleWorkspace,
   signOutFirebase,
+  signUpWithEmailPassword,
   subscribeFirestoreReminders,
   subscribeWorkspaceToken,
   syncAllRemindersToFirestore,
@@ -131,14 +134,6 @@ function createStarterReminders(): Reminder[] {
 
 function makeId(prefix = 'r') {
   return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
-}
-
-function formatServerAuthError(err: unknown): string {
-  const msg = err instanceof Error ? err.message : String(err);
-  if (/failed to fetch|networkerror|load failed|timed out/i.test(msg)) {
-    return 'No custom backend server is reachable on this host. Use "Sign in with Google" above for instant serverless cloud sync.';
-  }
-  return msg || 'Authentication failed';
 }
 
 export function useReminderApp(onHardwareBack: () => boolean) {
@@ -853,53 +848,70 @@ export function useReminderApp(onHardwareBack: () => boolean) {
     return profile;
   }, [attachFirestoreSync, pushToast, refreshCalendarEvents, refreshGmailMessages]);
 
-  /* Legacy Custom Backend Auth (graceful error instead of raw Failed to fetch) */
+  /* Serverless Firebase Email & Password Auth */
   const signIn = useCallback(
     async (email: string, password: string) => {
-      try {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
-        const res = await api.login({ email, password, tz });
-        if (res.token) await setAuthToken(res.token);
-        const serverUser: UserProfile = { ...res.user, authProvider: 'server' };
-        setUser(serverUser);
-        if (Array.isArray(res.reminders) && res.reminders.length > 0) {
-          commitReminders(() => res.reminders, false);
-        } else if (remindersRef.current.length > 0) {
-          await api.saveReminders(remindersRef.current).catch(() => {});
-        }
-        setSyncStatus('synced');
-        deviceStorageSet(KEY_SIGNED_IN_HINT, '1');
-        setDeliveryHealth((prev) => ({ ...prev, lastServerSync: Date.now() }));
-        pushToast(`Signed in as ${res.user.name}`, { tone: 'success' });
-        return serverUser;
-      } catch (err) {
-        throw new Error(formatServerAuthError(err));
-      }
+      const fbUser = await signInWithEmailPassword(email, password);
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+      const profile: UserProfile = {
+        id: fbUser.uid,
+        email: fbUser.email || email.trim(),
+        name: fbUser.displayName || email.trim().split('@')[0] || 'User',
+        tz,
+        createdAt: Date.now(),
+        photoURL: fbUser.photoURL,
+        authProvider: 'firebase',
+      };
+      setUser(profile);
+      setSyncStatus(isFirestoreEnabled ? 'syncing' : 'idle');
+      void attachFirestoreSync(fbUser);
+      pushToast(`Welcome back, ${profile.name}`, {
+        title: 'Signed In',
+        tone: 'success',
+        expression: 'happy',
+      });
+      return profile;
     },
-    [commitReminders, pushToast]
+    [attachFirestoreSync, pushToast]
   );
 
   const signUp = useCallback(
     async (name: string, email: string, password: string) => {
-      try {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
-        const res = await api.signup({ name, email, password, tz, reminders: remindersRef.current });
-        if (res.token) await setAuthToken(res.token);
-        const serverUser: UserProfile = { ...res.user, authProvider: 'server' };
-        setUser(serverUser);
-        if (Array.isArray(res.reminders)) {
-          commitReminders(() => res.reminders, false);
-        }
-        setSyncStatus('synced');
-        deviceStorageSet(KEY_SIGNED_IN_HINT, '1');
-        setDeliveryHealth((prev) => ({ ...prev, lastServerSync: Date.now() }));
-        pushToast('Account created & synced', { tone: 'success' });
-        return serverUser;
-      } catch (err) {
-        throw new Error(formatServerAuthError(err));
-      }
+      const fbUser = await signUpWithEmailPassword(name, email, password);
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+      const resolvedName = name.trim() || fbUser.displayName || email.trim().split('@')[0] || 'User';
+      const profile: UserProfile = {
+        id: fbUser.uid,
+        email: fbUser.email || email.trim(),
+        name: resolvedName,
+        tz,
+        createdAt: Date.now(),
+        photoURL: fbUser.photoURL,
+        authProvider: 'firebase',
+      };
+      setUser(profile);
+      setSyncStatus(isFirestoreEnabled ? 'syncing' : 'idle');
+      void attachFirestoreSync(fbUser);
+      pushToast(`Welcome to reminderme, ${profile.name}`, {
+        title: 'Account Created',
+        tone: 'success',
+        expression: 'excited',
+      });
+      return profile;
     },
-    [commitReminders, pushToast]
+    [attachFirestoreSync, pushToast]
+  );
+
+  const resetPassword = useCallback(
+    async (email: string) => {
+      await sendFirebasePasswordReset(email);
+      pushToast(`Password reset link sent to ${email.trim()}`, {
+        title: 'Reset Email Sent',
+        tone: 'success',
+        expression: 'happy',
+      });
+    },
+    [pushToast]
   );
 
   const signOut = useCallback(async () => {
@@ -1265,6 +1277,7 @@ export function useReminderApp(onHardwareBack: () => boolean) {
     signInWithGoogle,
     signIn,
     signUp,
+    resetPassword,
     signOut,
     syncNow: () => syncWithCloud(remindersRef.current),
     refreshCalendarEvents,

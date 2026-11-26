@@ -29,6 +29,8 @@ import {
   playNotificationChime,
   saveCustomRingtone,
 } from '../lib/audio';
+import { FIREBASE_PROJECT_ID } from '../lib/firebase';
+import { mapFirebaseAuthError, type ParsedFirebaseAuthError } from '../lib/firebaseAuthErrors';
 import { isNativeApp, openExactAlarmSettings } from '../lib/nativeBridge';
 import type {
   AlarmSoundId,
@@ -37,6 +39,7 @@ import type {
   UserPreferences,
   UserProfile,
 } from '../types';
+import { AuthRecoveryBanner } from './AuthRecoveryBanner';
 import { useDynamicIsland } from './DynamicIsland';
 import { GoogleSignInButton } from './GoogleSignInButton';
 import { IosSwitch } from './IosSwitch';
@@ -95,6 +98,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const { onTriggerIsland } = useDynamicIsland();
   const [showIOSGuide, setShowIOSGuide] = useState(false);
   const [googleBusy, setGoogleBusy] = useState(false);
+  const [googleAuthError, setGoogleAuthError] = useState<ParsedFirebaseAuthError | null>(null);
   const [pinging, setPinging] = useState(false);
   const [pingResult, setPingResult] = useState<BackendHealthResult | null>(null);
   const [pingError, setPingError] = useState<string | null>(null);
@@ -103,12 +107,20 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
   const handleDirectGoogleSignIn = async () => {
     setGoogleBusy(true);
+    setGoogleAuthError(null);
     try {
       await onGoogleSignIn();
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Google Sign-In failed';
-      if (!msg.includes('popup-closed-by-user')) {
-        onToast(msg);
+      const parsed = mapFirebaseAuthError(err, {
+        hostname: typeof window !== 'undefined' ? window.location.hostname : '',
+        projectId: FIREBASE_PROJECT_ID,
+      });
+      if (parsed.code !== 'auth/popup-closed-by-user') {
+        setGoogleAuthError(parsed);
+        onTriggerIsland('alert', {
+          title: parsed.title,
+          message: parsed.message,
+        });
       }
     } finally {
       setGoogleBusy(false);
@@ -243,6 +255,18 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 label={googleBusy ? 'Connecting to Google…' : 'Sign in with Google'}
               />
             </div>
+          )}
+
+          {googleAuthError && (
+            <AuthRecoveryBanner
+              error={googleAuthError}
+              onCopiedDomain={(host) =>
+                onTriggerIsland('success', {
+                  title: 'Domain Copied',
+                  message: `${host} copied to clipboard`,
+                })
+              }
+            />
           )}
 
           {/* Google Workspace & Apple Calendar Integration Hub */}
