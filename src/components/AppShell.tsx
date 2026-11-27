@@ -114,8 +114,8 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
           {/* Persistent 3D Volumetric Liquid Glass Backdrop */}
           <Liquid3DBackground />
 
-          {/* Desktop Left Liquid Glass Navigation Rail with Sliding Glass Indicator */}
-          <aside className="liquid-nav relative z-20 hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-64 lg:shrink-0 lg:flex-col lg:justify-between lg:border-r lg:border-white/[0.14] lg:px-5 lg:py-6">
+          {/* Desktop Left Liquid Glass Navigation Rail (Viewport-Fixed Across All Tabs) */}
+          <aside className="liquid-nav hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 lg:flex lg:w-64 lg:flex-col lg:justify-between lg:overflow-y-auto lg:border-r lg:border-white/[0.14] lg:px-5 lg:py-6">
             <div>
               <div className="flex items-center gap-3 px-2">
                 <img
@@ -229,7 +229,7 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
           </aside>
 
           {/* Main Content Wrapper */}
-          <div className="relative z-10 flex min-w-0 flex-1 flex-col">
+          <div className="relative z-10 flex min-h-[100dvh] min-w-0 flex-1 flex-col lg:pl-64">
             {/* Compact Mobile iOS Liquid Glass Top Bar (52px height) */}
             <header className="liquid-nav sticky top-0 z-30 flex h-[52px] items-center justify-between gap-2 border-b border-white/[0.14] px-4 lg:hidden">
               <div className="flex min-w-0 items-center gap-2.5">
