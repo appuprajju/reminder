@@ -219,6 +219,12 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
               <p className="mt-1 text-slate-400">
                 Prajwal M <span className="font-mono text-sky-300">&lt;/yourstudio&gt;</span>
               </p>
+              <a
+                href="/privacy-policy"
+                className="mt-2 inline-block text-xs font-medium text-sky-300/90 underline underline-offset-4 transition-colors hover:text-sky-200"
+              >
+                Privacy Policy
+              </a>
             </div>
           </aside>
 
@@ -299,6 +305,19 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
               >
                 {resolvedChildren}
               </div>
+
+              <footer className="mt-10 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.08] pt-4 text-xs text-slate-400">
+                <span>
+                  reminderme &middot; Prajwal M{' '}
+                  <span className="font-mono text-sky-300">&lt;/yourstudio&gt;</span>
+                </span>
+                <a
+                  href="/privacy-policy"
+                  className="inline-flex min-h-[36px] items-center font-medium text-sky-300/90 underline underline-offset-4 transition-colors hover:text-sky-200"
+                >
+                  Privacy Policy
+                </a>
+              </footer>
             </main>
           </div>
 

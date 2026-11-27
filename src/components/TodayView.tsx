@@ -1,23 +1,32 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlarmClock,
   Bell,
   Calendar,
+  Check,
   ChevronDown,
   ChevronUp,
+  HelpCircle,
   Layers,
   LogIn,
   Mail,
   Mic,
+  PlayCircle,
   Plus,
+  Radio,
   ShieldCheck,
   SlidersHorizontal,
   Sparkles,
+  Square,
   X,
 } from 'lucide-react';
 import { useVoiceCapture } from '../hooks/useVoiceCapture';
 import { FIREBASE_PROJECT_ID } from '../lib/firebase';
-import { mapFirebaseAuthError, type ParsedFirebaseAuthError } from '../lib/firebaseAuthErrors';
+import {
+  buildGoogleOAuthTestingError,
+  mapFirebaseAuthError,
+  type ParsedFirebaseAuthError,
+} from '../lib/firebaseAuthErrors';
 import { parseQuickInput, type ParsedQuickReminder } from '../lib/parser';
 import { SMART_ROUTINES } from '../lib/routines';
 import {
@@ -46,6 +55,7 @@ import { LiquidGlassCard } from './LiquidGlassCard';
 import { SpringSegmentedControl } from './SpringSegmentedControl';
 import { SwipeableReminderRow } from './SwipeableReminderRow';
 import { VoiceCaptureSheet } from './VoiceCaptureSheet';
+import type { LiveVoiceController } from './VoiceShortcutsModal';
 
 interface TodayViewProps {
   reminders: Reminder[];
@@ -73,6 +83,10 @@ interface TodayViewProps {
   onRequestDailyDigest: () => void;
   onConnectGoogle: () => void;
   onOpenDeliverySetup: () => void;
+  onOpenIntroVideo?: () => void;
+  onOpenVoiceShortcuts?: () => void;
+  liveAssistant?: LiveVoiceController;
+  voiceAutoTriggerSeq?: number;
   onRegisterVoiceClose?: (closeFn: (() => void) | null) => void;
 }
 
@@ -102,6 +116,10 @@ export const TodayView: React.FC<TodayViewProps> = ({
   onRequestDailyDigest,
   onConnectGoogle,
   onOpenDeliverySetup,
+  onOpenIntroVideo,
+  onOpenVoiceShortcuts,
+  liveAssistant,
+  voiceAutoTriggerSeq = 0,
   onRegisterVoiceClose,
 }) => {
   const { onTriggerIsland } = useDynamicIsland();
@@ -114,18 +132,38 @@ export const TodayView: React.FC<TodayViewProps> = ({
   const [homeGoogleBusy, setHomeGoogleBusy] = useState(false);
   const [homeAuthError, setHomeAuthError] = useState<ParsedFirebaseAuthError | null>(null);
   const voice = useVoiceCapture(prefs.vibrate, now);
+  const lastVoiceTriggerSeqRef = useRef(0);
+
+  const toggleHomeOAuthHelp = () => {
+    setHomeAuthError((prev) =>
+      prev?.actionKind === 'oauth-testing-mode'
+        ? null
+        : buildGoogleOAuthTestingError({
+            hostname: typeof window !== 'undefined' ? window.location.hostname : '',
+            projectId: FIREBASE_PROJECT_ID,
+          })
+    );
+  };
 
   const handleHomeGoogleSignIn = async () => {
     setHomeGoogleBusy(true);
     setHomeAuthError(null);
+    const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
     try {
       await onGoogleSignIn();
     } catch (err) {
       const parsed = mapFirebaseAuthError(err, {
-        hostname: typeof window !== 'undefined' ? window.location.hostname : '',
+        hostname,
         projectId: FIREBASE_PROJECT_ID,
       });
-      if (parsed.code !== 'auth/popup-closed-by-user') {
+      if (parsed.code === 'auth/popup-closed-by-user') {
+        setHomeAuthError(
+          buildGoogleOAuthTestingError({
+            hostname,
+            projectId: FIREBASE_PROJECT_ID,
+          })
+        );
+      } else {
         setHomeAuthError(parsed);
         onTriggerIsland('alert', {
           title: parsed.title,
@@ -136,6 +174,12 @@ export const TodayView: React.FC<TodayViewProps> = ({
       setHomeGoogleBusy(false);
     }
   };
+
+  useEffect(() => {
+    if (!voiceAutoTriggerSeq || voiceAutoTriggerSeq === lastVoiceTriggerSeqRef.current) return;
+    lastVoiceTriggerSeqRef.current = voiceAutoTriggerSeq;
+    voice.openAndListen();
+  }, [voice, voiceAutoTriggerSeq]);
 
   useEffect(() => {
     if (!onRegisterVoiceClose) return;
@@ -398,10 +442,158 @@ export const TodayView: React.FC<TodayViewProps> = ({
             <span>{deliveryHealth.notificationPermission === 'granted' ? 'Inspect' : 'Enable'}</span>
           </button>
         </div>
+
+        {/* Animated App Intro & Usage Walkthrough Video Row */}
+        {onOpenIntroVideo && (
+          <div className="mt-3.5 flex items-center justify-between gap-3 border-t border-white/[0.12] pt-3.5">
+            <div className="min-w-0 text-xs text-slate-300/85">
+              <span className="font-semibold text-white">App Intro &amp; Feature Guide</span>
+              <p className="mt-0.5 truncate text-slate-400">
+                36s animated video · Voice, EMO Island &amp; Sync
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onOpenIntroVideo}
+              className="ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-2xl border border-sky-400/35 bg-sky-500/15 px-3.5 text-xs font-semibold text-sky-100 transition-colors hover:bg-sky-500/25 whitespace-nowrap"
+            >
+              <PlayCircle className="h-4 w-4 text-sky-300" />
+              <span>Watch Video</span>
+            </button>
+          </div>
+        )}
+
+        {/* 1-Tap Live Siri & Google Assistant Buttons (Zero Configuration) */}
+        {liveAssistant && (
+          <div className="mt-3.5 border-t border-white/[0.12] pt-3.5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0 text-xs">
+                <span className="font-semibold text-white">Live Voice Assistants</span>
+                <p className="mt-0.5 truncate text-slate-400">
+                  Tap once &amp; speak — auto-saves with EMO eyes
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={liveAssistant.toggleHandsFree}
+                aria-pressed={liveAssistant.handsFreeEnabled}
+                className={`ios-spring-press flex min-h-[38px] shrink-0 items-center gap-1.5 rounded-xl border px-3 text-xs font-semibold transition-colors whitespace-nowrap ${
+                  liveAssistant.handsFreeEnabled
+                    ? 'border-emerald-400/50 bg-emerald-500/20 text-emerald-200'
+                    : 'border-white/15 bg-white/[0.06] text-slate-200 hover:bg-white/[0.12]'
+                }`}
+              >
+                <Radio className="h-3.5 w-3.5" />
+                <span>{liveAssistant.handsFreeEnabled ? 'Hands-Free ON' : 'Hands-Free'}</span>
+              </button>
+            </div>
+
+            <div className="mt-2.5 grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={liveAssistant.activateSiriLive}
+                className="ios-spring-press flex min-h-[44px] items-center justify-center gap-1.5 rounded-2xl border border-indigo-400/35 bg-gradient-to-r from-indigo-500/25 via-sky-500/20 to-fuchsia-500/25 px-3 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] transition-all hover:brightness-110 whitespace-nowrap"
+              >
+                <Mic className="h-3.5 w-3.5 text-indigo-300" />
+                <span>Hey Siri</span>
+              </button>
+              <button
+                type="button"
+                onClick={liveAssistant.activateGoogleAssistantLive}
+                className="ios-spring-press flex min-h-[44px] items-center justify-center gap-1.5 rounded-2xl border border-emerald-400/35 bg-gradient-to-r from-sky-500/20 via-emerald-500/20 to-amber-500/20 px-3 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] transition-all hover:brightness-110 whitespace-nowrap"
+              >
+                <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
+                <span>Hey Google</span>
+              </button>
+            </div>
+
+            {onOpenVoiceShortcuts && (
+              <button
+                type="button"
+                onClick={onOpenVoiceShortcuts}
+                className="mt-2 inline-flex min-h-[34px] w-full items-center justify-center rounded-xl text-[11px] font-medium text-sky-300/90 transition-colors hover:bg-white/[0.05] hover:text-sky-200"
+              >
+                Quick voice examples &amp; hands-free options
+              </button>
+            )}
+          </div>
+        )}
       </LiquidGlassCard>
 
-      {/* Right Workspace Column: Quick Sign-In + Voice/Quick Capture + Daily Briefing & Routines + Feed */}
+      {/* Right Workspace Column: Live Assistant Banner + Quick Sign-In + Voice/Quick Capture + Daily Briefing & Routines + Feed */}
       <section className="flex flex-col gap-4 lg:col-span-7">
+        {/* Live Voice Assistant Active Banner (1-Tap Speaking or Hands-Free Wake Word) */}
+        {liveAssistant && (liveAssistant.oneTapActive || liveAssistant.handsFreeEnabled) && (
+          <div
+            className={`glass-surface rounded-2xl border p-3.5 ${
+              liveAssistant.oneTapActive
+                ? 'border-sky-400/45 bg-sky-500/10'
+                : 'border-emerald-400/35 bg-emerald-500/10'
+            }`}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-3">
+                <span
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white ${
+                    liveAssistant.oneTapActive
+                      ? 'animate-pulse bg-[#FF453A] shadow-[0_0_20px_rgba(255,69,58,0.5)]'
+                      : 'bg-emerald-500/80 shadow-[0_0_18px_rgba(48,209,88,0.35)]'
+                  }`}
+                >
+                  {liveAssistant.oneTapActive ? (
+                    <Mic className="h-4 w-4" />
+                  ) : (
+                    <Radio className="h-4 w-4" />
+                  )}
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold text-white">
+                    {liveAssistant.oneTapActive
+                      ? liveAssistant.activeSource === 'siri'
+                        ? 'Hey Siri · Listening…'
+                        : liveAssistant.activeSource === 'google-assistant'
+                          ? 'Hey Google · Listening…'
+                          : 'Listening…'
+                      : liveAssistant.awaitingFollowUp
+                        ? 'Listening for your reminder…'
+                        : 'Hands-Free Live · Say “Hey Siri” or “Hey Google”'}
+                  </p>
+                  <p className="mt-0.5 truncate text-xs text-slate-300">
+                    {liveAssistant.liveTranscript ||
+                      (liveAssistant.oneTapActive
+                        ? 'Speak your reminder & time — auto-saves automatically'
+                        : 'Try “Hey Siri, add a reminder in reminderme to take medicine at 9pm”')}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex shrink-0 items-center gap-1.5">
+                {liveAssistant.oneTapActive && liveAssistant.liveTranscript && (
+                  <button
+                    type="button"
+                    onClick={liveAssistant.finishOneTapSpeakNow}
+                    className="liquid-primary-btn ios-spring-press flex min-h-[40px] items-center gap-1 rounded-xl px-3 text-xs font-semibold text-white whitespace-nowrap"
+                  >
+                    <Check className="h-3.5 w-3.5" />
+                    <span>Save</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() =>
+                    liveAssistant.oneTapActive
+                      ? liveAssistant.cancelOneTapSpeak()
+                      : liveAssistant.setHandsFree(false)
+                  }
+                  aria-label="Stop live voice assistant"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/[0.08] text-white hover:bg-white/[0.16]"
+                >
+                  <Square className="h-3.5 w-3.5 fill-current" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Direct Home-Screen Sign In & Connect Google Card (visible when signed out) */}
         {!user && !authPromptDismissed && (
           <div className="glass-surface rounded-2xl p-4">
@@ -443,9 +635,21 @@ export const TodayView: React.FC<TodayViewProps> = ({
               </button>
             </div>
 
+            <div className="mt-2 flex items-center justify-end">
+              <button
+                type="button"
+                onClick={toggleHomeOAuthHelp}
+                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg px-2 text-[11px] font-medium text-amber-200/90 transition-colors hover:bg-amber-500/10 hover:text-amber-100"
+              >
+                <HelpCircle className="h-3.5 w-3.5 shrink-0" />
+                <span>Friend seeing &ldquo;Access blocked&rdquo; (Error 403)? Fix here</span>
+              </button>
+            </div>
+
             {homeAuthError && (
               <AuthRecoveryBanner
                 error={homeAuthError}
+                onUseEmailFallback={onOpenAuth}
                 onCopiedDomain={(host) =>
                   onTriggerIsland('success', {
                     title: 'Domain Copied',

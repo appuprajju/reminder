@@ -317,3 +317,72 @@ export function formatDailyDigestEmail(
     ].join('\n'),
   };
 }
+
+function formatGoogleCalDateUtc(date: Date): string {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return (
+    `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}` +
+    `T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}00Z`
+  );
+}
+
+/**
+ * Builds an official Google Calendar template link that pre-fills the event
+ * directly in the user's Google Calendar with ZERO OAuth verification warning.
+ */
+export function buildDirectGoogleCalendarUrl(reminder: Reminder): string {
+  const [hh, mm] = (reminder.time || '09:00').split(':').map((n) => parseInt(n, 10) || 0);
+  const startDate = reminder.oneTimeDate
+    ? new Date(`${reminder.oneTimeDate}T${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:00`)
+    : new Date(reminder.dueAt || Date.now());
+  startDate.setHours(hh, mm, 0, 0);
+  const endDate = new Date(startDate.getTime() + 30 * 60000);
+
+  const checklistText =
+    reminder.subtasks && reminder.subtasks.length > 0
+      ? `\n\nChecklist:\n${reminder.subtasks.map((s) => `${s.done ? '[x]' : '[ ]'} ${s.title}`).join('\n')}`
+      : '';
+
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: `${reminder.emoji || '⏰'} ${reminder.title}`,
+    dates: `${formatGoogleCalDateUtc(startDate)}/${formatGoogleCalDateUtc(endDate)}`,
+    details: `${reminder.note || 'Scheduled via reminderme'}${checklistText}`.trim(),
+  });
+
+  if (!reminder.oneTimeDate) {
+    if (Array.isArray(reminder.days) && reminder.days.length > 0 && reminder.days.length < 7) {
+      const byDay = reminder.days
+        .filter((d) => d >= 0 && d <= 6)
+        .map((d) => DAY_TO_RRULE[d])
+        .join(',');
+      if (byDay) params.set('recur', `RRULE:FREQ=WEEKLY;BYDAY=${byDay}`);
+    } else {
+      params.set('recur', 'RRULE:FREQ=DAILY');
+    }
+  }
+
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+/**
+ * Builds an official Gmail web compose link pre-filled with recipient, subject,
+ * and body — works for any Gmail account with ZERO OAuth verification warning.
+ */
+export function buildDirectGmailComposeUrl(payload: {
+  to?: string;
+  subject: string;
+  bodyText: string;
+}): string {
+  const params = new URLSearchParams({
+    view: 'cm',
+    fs: '1',
+    su: payload.subject,
+    body: payload.bodyText,
+  });
+  if (payload.to?.trim()) {
+    params.set('to', payload.to.trim());
+  }
+  return `https://mail.google.com/mail/?${params.toString()}`;
+}
+

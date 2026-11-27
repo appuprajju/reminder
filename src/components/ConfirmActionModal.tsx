@@ -1,6 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { CalendarPlus, Mail, X } from 'lucide-react';
+import { CalendarPlus, ExternalLink, Mail, X } from 'lucide-react';
 
 export interface ConfirmActionSpec {
   kind: 'calendar-add' | 'gmail-send';
@@ -9,6 +9,7 @@ export interface ConfirmActionSpec {
   confirmLabel: string;
   previewLines: { label: string; value: string }[];
   bodyPreview?: string;
+  externalHref?: string;
   onConfirm: () => Promise<void>;
 }
 
@@ -96,14 +97,27 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
           >
             Cancel
           </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={onConfirm}
-            className="liquid-primary-btn ios-spring-press min-h-[48px] rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-50"
-          >
-            {busy ? 'Working…' : action.confirmLabel}
-          </button>
+          {action.externalHref ? (
+            <a
+              href={action.externalHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onCancel}
+              className="liquid-primary-btn ios-spring-press flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white"
+            >
+              <span>{action.confirmLabel}</span>
+              <ExternalLink className="h-4 w-4 shrink-0" />
+            </a>
+          ) : (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={onConfirm}
+              className="liquid-primary-btn ios-spring-press min-h-[48px] rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-50"
+            >
+              {busy ? 'Working…' : action.confirmLabel}
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -111,3 +125,4 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
 
   return typeof document !== 'undefined' ? createPortal(content, document.body) : content;
 };
+

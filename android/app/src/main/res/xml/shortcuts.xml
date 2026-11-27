@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Google Assistant App Action: "Hey Google, create a reminder in reminderme" -->
+    <capability android:name="actions.intent.CREATE_TASK">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="in.makeuperfect.reminderme"
+            android:targetClass="in.makeuperfect.reminderme.MainActivity">
+            <url-template android:value="reminderme://add?source=google-assistant&amp;mode=auto&amp;text={name}" />
+            <parameter
+                android:name="task.name"
+                android:key="name"
+                android:required="false" />
+        </intent>
+    </capability>
+
+    <!-- Google Assistant App Action: "Hey Google, open voice reminder in reminderme" -->
+    <capability android:name="actions.intent.OPEN_APP_FEATURE">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="in.makeuperfect.reminderme"
+            android:targetClass="in.makeuperfect.reminderme.MainActivity">
+            <url-template android:value="reminderme://voice?source=google-assistant&amp;mode=auto" />
+            <parameter
+                android:name="feature"
+                android:key="feature"
+                android:required="false" />
+        </intent>
+    </capability>
+
+    <shortcut
+        android:shortcutId="voice_reminder"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/app_name">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="reminderme://voice?source=google-assistant&amp;mode=auto" />
+    </shortcut>
+</shortcuts>

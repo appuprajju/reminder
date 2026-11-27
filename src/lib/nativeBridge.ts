@@ -141,6 +141,7 @@ export interface NativeActionCallbacks {
   onSnooze: (reminderId: string, minutes: number) => void;
   onOpenReminder: (reminderId: string) => void;
   onHardwareBack: () => boolean; // return true if handled
+  onAppUrlOpen?: (url: string) => void;
 }
 
 export async function initNativePlatform(callbacks: NativeActionCallbacks): Promise<() => void> {
@@ -226,6 +227,19 @@ export async function initNativePlatform(callbacks: NativeActionCallbacks): Prom
       });
       cleanups.push(() => {
         backListener.remove().catch(() => {});
+      });
+    } catch {
+      // ignore
+    }
+
+    try {
+      const urlListener = await CapApp.addListener('appUrlOpen', (event) => {
+        if (event?.url) {
+          callbacks.onAppUrlOpen?.(event.url);
+        }
+      });
+      cleanups.push(() => {
+        urlListener.remove().catch(() => {});
       });
     } catch {
       // ignore

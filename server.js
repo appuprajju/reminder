@@ -391,7 +391,23 @@ function resolveStaticFile(baseDir, pathname) {
 function serveStatic(req, res, pathname) {
   let p = '/';
   try { p = decodeURIComponent(pathname); } catch { return send(res, 400, { error: 'bad path' }); }
-  if (p === '/privacy' || p === '/privacy-policy') {
+  if (
+    p === '/privacy' ||
+    p === '/privacy/' ||
+    p === '/privacy-policy' ||
+    p === '/privacy-policy/' ||
+    p === '/privacy-policy.html'
+  ) {
+    const candidates = [
+      path.join(DIST_DIR, 'privacy-policy', 'index.html'),
+      path.join(PUBLIC_DIR, 'privacy-policy', 'index.html'),
+    ];
+    for (const candidate of candidates) {
+      if (fs.existsSync(candidate)) {
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=3600', 'X-Content-Type-Options': 'nosniff' });
+        return res.end(fs.readFileSync(candidate));
+      }
+    }
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=3600', 'X-Content-Type-Options': 'nosniff' });
     return res.end(PRIVACY_HTML);
   }

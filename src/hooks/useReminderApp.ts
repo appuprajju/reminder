@@ -137,7 +137,10 @@ function makeId(prefix = 'r') {
   return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
 }
 
-export function useReminderApp(onHardwareBack: () => boolean) {
+export function useReminderApp(
+  onHardwareBack: () => boolean,
+  onAppUrlOpen?: (url: string) => void
+) {
   const isOnline = useOnlineStatus();
   const [hydrated, setHydrated] = useState(false);
   const [reminders, setReminders] = useState<Reminder[]>([]);
@@ -1219,13 +1222,14 @@ export function useReminderApp(onHardwareBack: () => boolean) {
         if (found) triggerRingingNow(found);
       },
       onHardwareBack,
+      onAppUrlOpen,
     }).then((fn) => {
       cleanup = fn;
     });
     return () => {
       cleanup?.();
     };
-  }, [onHardwareBack, snoozeReminder, toggleCompleteReminder, triggerRingingNow]);
+  }, [onAppUrlOpen, onHardwareBack, snoozeReminder, toggleCompleteReminder, triggerRingingNow]);
 
   /* Flush pending sync automatically when coming back online */
   useEffect(() => {

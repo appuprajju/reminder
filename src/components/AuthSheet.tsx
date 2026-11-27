@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { FIREBASE_PROJECT_ID } from '../lib/firebase';
-import { mapFirebaseAuthError, type ParsedFirebaseAuthError } from '../lib/firebaseAuthErrors';
+import {
+  buildGoogleOAuthTestingError,
+  mapFirebaseAuthError,
+  type ParsedFirebaseAuthError,
+} from '../lib/firebaseAuthErrors';
 import type { TriggerIslandFn } from '../types';
 import { AuthRecoveryBanner } from './AuthRecoveryBanner';
 import { GoogleSignInButton } from './GoogleSignInButton';
@@ -32,18 +36,39 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState<ParsedFirebaseAuthError | null>(null);
+  const [showBlockedHelp, setShowBlockedHelp] = useState(false);
   const [resetNotice, setResetNotice] = useState('');
   const [busy, setBusy] = useState(false);
+  const emailInputRef = useRef<HTMLInputElement>(null);
 
   if (!open) return null;
 
   const currentHostname = typeof window !== 'undefined' ? window.location.hostname : '';
+  const oauthTestingGuidance = buildGoogleOAuthTestingError({
+    hostname: currentHostname,
+    projectId: FIREBASE_PROJECT_ID,
+  });
 
-  const reportError = (err: unknown) => {
+  const focusEmailFallback = () => {
+    setShowBlockedHelp(false);
+    setAuthError(null);
+    setMode('signup');
+    window.setTimeout(() => {
+      emailInputRef.current?.focus();
+    }, 60);
+  };
+
+  const reportError = (err: unknown, fromGoogle = false) => {
     const parsed = mapFirebaseAuthError(err, {
       hostname: currentHostname,
       projectId: FIREBASE_PROJECT_ID,
     });
+    if (fromGoogle && parsed.code === 'auth/popup-closed-by-user') {
+      // Google displays Error 403 inside its own popup; when closed, Firebase only reports popup-closed-by-user
+      setShowBlockedHelp(true);
+      setAuthError(null);
+      return;
+    }
     setAuthError(parsed);
     if (parsed.code !== 'auth/popup-closed-by-user') {
       onTriggerIsland?.('alert', {
@@ -55,13 +80,14 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({
 
   const handleGoogleClick = async () => {
     setAuthError(null);
+    setShowBlockedHelp(false);
     setResetNotice('');
     setBusy(true);
     try {
       await onGoogleSignIn();
       onClose();
     } catch (err) {
-      reportError(err);
+      reportError(err, true);
     } finally {
       setBusy(false);
     }
@@ -169,6 +195,23 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({
           <p className="mt-2.5 text-center text-[11px] text-slate-400">
             Instant Google account login · Connect Calendar &amp; Gmail anytime
           </p>
+          <div className="mt-1.5 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setShowBlockedHelp((v) => !v)}
+              className="min-h-[36px] px-2 text-[11px] font-medium text-amber-300/90 hover:text-amber-200 hover:underline"
+            >
+              {showBlockedHelp
+                ? 'Hide Google Access Blocked fix'
+                : 'Friend seeing “Access blocked” (Error 403)? Fix here'}
+            </button>
+          </div>
+          {showBlockedHelp && (
+            <AuthRecoveryBanner
+              error={oauthTestingGuidance}
+              onUseEmailFallback={focusEmailFallback}
+            />
+          )}
         </div>
 
         {/* Hairline Divider */}
@@ -215,6 +258,7 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({
           <label className="block">
             <span className="text-xs font-medium text-slate-400">Email</span>
             <input
+              ref={emailInputRef}
               type="email"
               required
               autoComplete="email"
@@ -269,6 +313,9 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({
           {authError && (
             <AuthRecoveryBanner
               error={authError}
+              onUseEmailFallback={
+                authError.actionKind === 'oauth-testing-mode' ? focusEmailFallback : undefined
+              }
               onCopiedDomain={(host) =>
                 onTriggerIsland?.('success', {
                   title: 'Domain Copied',

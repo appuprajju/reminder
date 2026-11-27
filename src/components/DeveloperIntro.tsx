@@ -161,18 +161,27 @@ export const DeveloperIntro: React.FC<DeveloperIntroProps> = ({ visible, onFinis
         </div>
       </div>
 
-      {/* Instant Skip / Enter Button */}
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          triggerExit();
-        }}
-        className="absolute bottom-8 z-10 inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-5 text-xs font-semibold text-slate-300 backdrop-blur-md transition-colors hover:bg-white/[0.14] hover:text-white pb-safe"
-      >
-        <span>Tap to enter</span>
-        <ArrowRight className="h-3.5 w-3.5" />
-      </button>
+      {/* Instant Skip / Enter Button + Privacy Link */}
+      <div className="absolute bottom-6 z-10 flex flex-col items-center gap-2 pb-safe">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            triggerExit();
+          }}
+          className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-5 text-xs font-semibold text-slate-300 backdrop-blur-md transition-colors hover:bg-white/[0.14] hover:text-white"
+        >
+          <span>Tap to enter</span>
+          <ArrowRight className="h-3.5 w-3.5" />
+        </button>
+        <a
+          href="/privacy-policy"
+          onClick={(e) => e.stopPropagation()}
+          className="text-[11px] font-medium text-sky-300/85 underline underline-offset-4 hover:text-sky-200"
+        >
+          Privacy Policy
+        </a>
+      </div>
     </div>
   );
 };

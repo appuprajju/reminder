@@ -29,6 +29,27 @@ function extractFirebaseErrorCode(err: unknown): string {
   return match ? match[1].toLowerCase() : '';
 }
 
+export function buildGoogleOAuthTestingError(
+  context: { hostname?: string; projectId?: string } = {}
+): ParsedFirebaseAuthError {
+  const hostname = context.hostname?.trim() || 'your-domain.github.io';
+  const projectId = context.projectId?.trim() || '';
+  const oauthConsentUrl = projectId
+    ? `https://console.cloud.google.com/apis/credentials/consent?project=${projectId}`
+    : 'https://console.cloud.google.com/apis/credentials/consent';
+
+  return {
+    code: 'auth/oauth-access-denied',
+    title: 'Google App Is in Testing Mode (Error 403)',
+    message:
+      'Google blocks any non-tester account until the OAuth Consent Screen is published (or the friend’s Gmail is added under Test users) in Google Cloud Console. Friends can also sign in right now using Email & Password.',
+    actionKind: 'oauth-testing-mode',
+    hostname,
+    projectId,
+    consoleUrl: oauthConsentUrl,
+  };
+}
+
 export function mapFirebaseAuthError(
   err: unknown,
   context: { hostname?: string; projectId?: string } = {}
@@ -40,24 +61,12 @@ export function mapFirebaseAuthError(
   const consoleBase = projectId
     ? `https://console.firebase.google.com/project/${projectId}/authentication`
     : 'https://console.firebase.google.com/';
-  const oauthConsentUrl = projectId
-    ? `https://console.cloud.google.com/apis/credentials/consent?project=${projectId}`
-    : 'https://console.cloud.google.com/apis/credentials/consent';
 
   if (
     code === 'auth/oauth-access-denied' ||
     /access_denied|verification process|developer-approved testers|error 403/i.test(rawMessage)
   ) {
-    return {
-      code: code || 'auth/oauth-access-denied',
-      title: 'Google App Is in Testing Mode',
-      message:
-        'Google blocked this account because the OAuth consent screen is still in Testing mode. Add the email under Test Users or click Publish App in Google Cloud Console—or use Email & Password below right now.',
-      actionKind: 'oauth-testing-mode',
-      hostname,
-      projectId,
-      consoleUrl: oauthConsentUrl,
-    };
+    return buildGoogleOAuthTestingError({ hostname, projectId });
   }
 
   switch (code) {

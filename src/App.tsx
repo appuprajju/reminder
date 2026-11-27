@@ -4,10 +4,21 @@ import { ConfirmActionModal, type ConfirmActionSpec } from './components/Confirm
 import { DeveloperIntro } from './components/DeveloperIntro';
 import type { SheetDraft } from './components/ReminderSheet';
 import { TodayView } from './components/TodayView';
+import { useLiveVoiceAssistant } from './hooks/useLiveVoiceAssistant';
 import { useReminderApp } from './hooks/useReminderApp';
+import {
+  buildReminderFromAssistantIntent,
+  formatAssistantLabel,
+  parseAssistantIntentUrl,
+} from './lib/assistantIntents';
 import { parseQuickInput, type ParsedQuickReminder } from './lib/parser';
 import { formatDaysSummary, formatTimeDisplay } from './lib/time';
-import { formatDailyDigestEmail, formatReminderEmail } from './lib/workspaceApi';
+import {
+  buildDirectGmailComposeUrl,
+  buildDirectGoogleCalendarUrl,
+  formatDailyDigestEmail,
+  formatReminderEmail,
+} from './lib/workspaceApi';
 import type { GmailMessageSummary, GoogleCalendarEvent, Reminder, TabId } from './types';
 
 // Lazy-load secondary tabs and sheets so initial mobile bundle renders instantly
@@ -32,13 +43,31 @@ const AuthSheet = lazy(() =>
 const RingingAlarmOverlay = lazy(() =>
   import('./components/RingingAlarmOverlay').then((m) => ({ default: m.RingingAlarmOverlay }))
 );
+const IntroVideoModal = lazy(() =>
+  import('./components/IntroVideoModal').then((m) => ({ default: m.IntroVideoModal }))
+);
+const IntroVideoHarness = lazy(() =>
+  import('./components/IntroVideoHarness').then((m) => ({ default: m.IntroVideoHarness }))
+);
+const VoiceShortcutsModal = lazy(() =>
+  import('./components/VoiceShortcutsModal').then((m) => ({ default: m.VoiceShortcutsModal }))
+);
 
 const INTRO_SEEN_KEY = 'rm_intro_seen_session';
 
 function shouldShowIntroInitially(): boolean {
   try {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('autostart') === '1' || params.get('action') === 'new' || params.get('tab')) {
+    const action = (params.get('action') || '').toLowerCase();
+    if (
+      params.get('autostart') === '1' ||
+      params.get('tab') ||
+      action === 'new' ||
+      action === 'add' ||
+      action === 'voice' ||
+      action === 'share' ||
+      action === 'create'
+    ) {
       return false;
     }
     return sessionStorage.getItem(INTRO_SEEN_KEY) !== '1';
@@ -63,11 +92,19 @@ export function App() {
   const [defaultDate, setDefaultDate] = useState<Date | null>(null);
   const [focusReminder, setFocusReminder] = useState<Reminder | null>(null);
   const [authOpen, setAuthOpen] = useState(false);
+  const [introVideoOpen, setIntroVideoOpen] = useState(false);
+  const [voiceShortcutsOpen, setVoiceShortcutsOpen] = useState(false);
+  const [voiceAutoTriggerSeq, setVoiceAutoTriggerSeq] = useState(0);
   const [confirmAction, setConfirmAction] = useState<ConfirmActionSpec | null>(null);
   const [confirmBusy, setConfirmBusy] = useState(false);
   const [showIntro, setShowIntro] = useState<boolean>(shouldShowIntroInitially);
   const voiceCloseRef = useRef<(() => void) | null>(null);
   const appShellRef = useRef<AppShellHandle | null>(null);
+  const startupIntentHandledRef = useRef<string | null>(null);
+
+  const isRenderIntroHarness =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('renderIntro') === '1';
 
   const registerVoiceClose = useCallback((fn: (() => void) | null) => {
     voiceCloseRef.current = fn;
@@ -106,6 +143,14 @@ export function App() {
       voiceCloseRef.current();
       return true;
     }
+    if (voiceShortcutsOpen) {
+      setVoiceShortcutsOpen(false);
+      return true;
+    }
+    if (introVideoOpen) {
+      setIntroVideoOpen(false);
+      return true;
+    }
     if (authOpen) {
       setAuthOpen(false);
       return true;
@@ -130,12 +175,136 @@ export function App() {
     confirmBusy,
     finishIntro,
     focusReminder,
+    introVideoOpen,
     selectTab,
     sheetOpen,
     showIntro,
+    voiceShortcutsOpen,
   ]);
 
-  const app = useReminderApp(handleHardwareBack);
+  const appRef = useRef<ReturnType<typeof useReminderApp> | null>(null);
+
+  const handleAssistantUrl = useCallback(
+    (rawUrl: string, options?: { fromStartup?: boolean }) => {
+      const intent = parseAssistantIntentUrl(rawUrl);
+      if (!intent) return;
+      if (options?.fromStartup) {
+        if (startupIntentHandledRef.current === rawUrl) return;
+        startupIntentHandledRef.current = rawUrl;
+      }
+
+      const sourceLabel = formatAssistantLabel(intent.source);
+      setShowIntro(false);
+      setActiveTab('today');
+
+      if (intent.action === 'voice') {
+        setVoiceShortcutsOpen(false);
+        setVoiceAutoTriggerSeq((seq) => seq + 1);
+        appShellRef.current?.onTriggerIsland('created', {
+          title: `${sourceLabel} Listening`,
+          message: 'Speak your reminder or alarm now…',
+          durationMs: 3200,
+        });
+      } else {
+        const parsed = buildReminderFromAssistantIntent(intent);
+        if (intent.mode === 'review') {
+          setVoiceShortcutsOpen(false);
+          setEditingReminder(null);
+          setSheetDraft(parsed);
+          setDefaultDate(null);
+          setSheetOpen(true);
+          appShellRef.current?.onTriggerIsland('created', {
+            title: `${sourceLabel} Draft Ready`,
+            message: parsed.title,
+            durationMs: 3000,
+          });
+        } else {
+          const currentApp = appRef.current;
+          if (currentApp) {
+            currentApp.upsertReminder({
+              title: parsed.title,
+              note: '',
+              time: parsed.time,
+              days: parsed.days,
+              oneTimeDate: parsed.oneTimeDate,
+              emoji: parsed.emoji,
+              color: parsed.isAlarm ? '#0A84FF' : '#30D158',
+              priority: parsed.priority,
+              tag: parsed.tag,
+              isAlarm: parsed.isAlarm,
+              sound: parsed.isAlarm ? currentApp.prefs.defaultAlarmSound : null,
+              subtasks: [],
+            });
+            appShellRef.current?.onTriggerIsland('created', {
+              title: `Added via ${sourceLabel}`,
+              message: `${parsed.title} · ${formatTimeDisplay(parsed.time, currentApp.prefs.timeFormat)}`,
+              durationMs: 3800,
+            });
+          }
+        }
+      }
+
+      if (options?.fromStartup && typeof window !== 'undefined' && window.location.search) {
+        try {
+          window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+        } catch {
+          // ignore history API errors
+        }
+      }
+    },
+    []
+  );
+
+  const app = useReminderApp(handleHardwareBack, handleAssistantUrl);
+  appRef.current = app;
+
+  const liveAssistant = useLiveVoiceAssistant({
+    vibrate: app.prefs.vibrate,
+    onAutoSaveCommand: ({ source, commandText, isAlarmHint }) => {
+      const parsed = buildReminderFromAssistantIntent({
+        action: 'add',
+        text: commandText,
+        source: source === 'voice' ? 'shortcut' : source,
+        mode: 'auto',
+        alertOverride: isAlarmHint ? 'alarm' : 'auto',
+        signature: `live:${source}:${commandText}`,
+      });
+      const currentApp = appRef.current;
+      if (!currentApp) return;
+      currentApp.upsertReminder({
+        title: parsed.title,
+        note: '',
+        time: parsed.time,
+        days: parsed.days,
+        oneTimeDate: parsed.oneTimeDate,
+        emoji: parsed.emoji,
+        color: parsed.isAlarm ? '#0A84FF' : '#30D158',
+        priority: parsed.priority,
+        tag: parsed.tag,
+        isAlarm: parsed.isAlarm,
+        sound: parsed.isAlarm ? currentApp.prefs.defaultAlarmSound : null,
+        subtasks: [],
+      });
+      const label =
+        source === 'siri'
+          ? 'Siri'
+          : source === 'google-assistant'
+            ? 'Google Assistant'
+            : 'Voice';
+      appShellRef.current?.onTriggerIsland('created', {
+        title: `Added via ${label}`,
+        message: `${parsed.title} · ${formatTimeDisplay(parsed.time, currentApp.prefs.timeFormat)}`,
+        durationMs: 3800,
+      });
+    },
+    onStatusNotice: (kind, title, message) => {
+      appShellRef.current?.onTriggerIsland(kind, {
+        title,
+        message,
+        durationMs: 3200,
+      });
+    },
+  });
 
   /* Trigger Dynamic Island alert animation when an alarm starts ringing */
   useEffect(() => {
@@ -148,7 +317,7 @@ export function App() {
     }
   }, [app.ringingReminder]);
 
-  /* Support Android / PWA manifest launch shortcuts (?action=new, ?tab=schedule, ?autostart=1) */
+  /* Support Android / PWA manifest launch shortcuts & Siri / Google Assistant URL intents */
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get('tab');
@@ -160,7 +329,8 @@ export function App() {
       setDefaultDate(null);
       setSheetOpen(true);
     }
-  }, []);
+    handleAssistantUrl(window.location.href, { fromStartup: true });
+  }, [handleAssistantUrl]);
 
   const openNewReminder = (date: Date | null = null) => {
     setEditingReminder(null);
@@ -243,11 +413,26 @@ export function App() {
     app.updatePrefs({ customTags: [...app.prefs.customTags, tag] });
   };
 
-  /* Explicit Confirmation Flows for ALL Google Workspace Write Operations */
+  /* Explicit Confirmation Flows for ALL Google Calendar & Gmail Operations
+     (Uses live API when Workspace is connected; falls back seamlessly to official zero-warning Calendar/Gmail links otherwise) */
   const requestAddToGoogleCalendar = (reminder: Reminder) => {
+    const directUrl = buildDirectGoogleCalendarUrl(reminder);
     if (!app.hasWorkspaceAccess) {
-      app.pushToast('Connect Google first to add events to Google Calendar', { tone: 'info' });
-      setAuthOpen(true);
+      setConfirmAction({
+        kind: 'calendar-add',
+        title: 'Add to Google Calendar?',
+        description:
+          'Opens your Google Calendar with this reminder pre-filled — no Google app verification needed.',
+        confirmLabel: 'Open Calendar',
+        externalHref: directUrl,
+        previewLines: [
+          { label: 'Event', value: `${reminder.emoji || '⏰'} ${reminder.title}` },
+          { label: 'Time', value: formatTimeDisplay(reminder.time, app.prefs.timeFormat) },
+          { label: 'Schedule', value: formatDaysSummary(reminder.days, reminder.oneTimeDate) },
+        ],
+        bodyPreview: reminder.note || undefined,
+        onConfirm: async () => {},
+      });
       return;
     }
     setConfirmAction({
@@ -269,13 +454,25 @@ export function App() {
   };
 
   const requestEmailReminder = (reminder: Reminder) => {
-    if (!app.hasWorkspaceAccess || !app.user?.email) {
-      app.pushToast('Sign in with Google to send reminder alerts via Gmail', { tone: 'info' });
-      setAuthOpen(true);
+    const { subject, bodyText } = formatReminderEmail(reminder, app.prefs.timeFormat);
+    const recipient = app.user?.email || '';
+    if (!app.hasWorkspaceAccess || !recipient) {
+      setConfirmAction({
+        kind: 'gmail-send',
+        title: 'Open Reminder in Gmail?',
+        description:
+          'Opens Gmail with this reminder pre-filled so you can send it right away — no Google app verification needed.',
+        confirmLabel: 'Open Gmail',
+        externalHref: buildDirectGmailComposeUrl({ to: recipient, subject, bodyText }),
+        previewLines: [
+          { label: 'To', value: recipient || 'Choose recipient in Gmail' },
+          { label: 'Subject', value: subject },
+        ],
+        bodyPreview: bodyText,
+        onConfirm: async () => {},
+      });
       return;
     }
-    const { subject, bodyText } = formatReminderEmail(reminder, app.prefs.timeFormat);
-    const recipient = app.user.email;
     setConfirmAction({
       kind: 'gmail-send',
       title: 'Send Reminder via Gmail?',
@@ -293,17 +490,33 @@ export function App() {
   };
 
   const requestDailyDigestEmail = () => {
-    if (!app.hasWorkspaceAccess || !app.user?.email) {
-      app.pushToast('Sign in with Google to email your daily digest via Gmail', { tone: 'info' });
-      setAuthOpen(true);
-      return;
-    }
     const { subject, bodyText } = formatDailyDigestEmail(
       app.reminders,
       app.calendarEvents,
       app.prefs.timeFormat
     );
-    const recipient = app.user.email;
+    const recipient = app.user?.email || '';
+    if (!app.hasWorkspaceAccess || !recipient) {
+      setConfirmAction({
+        kind: 'gmail-send',
+        title: 'Open Daily Digest in Gmail?',
+        description:
+          'Opens a pre-filled Gmail draft with your schedule — works on any account with zero verification warning.',
+        confirmLabel: 'Open Gmail',
+        externalHref: buildDirectGmailComposeUrl({ to: recipient, subject, bodyText }),
+        previewLines: [
+          { label: 'To', value: recipient || 'Choose recipient in Gmail' },
+          { label: 'Subject', value: subject },
+          {
+            label: 'Included',
+            value: `${app.reminders.length} reminders · ${app.calendarEvents.length} events`,
+          },
+        ],
+        bodyPreview: bodyText,
+        onConfirm: async () => {},
+      });
+      return;
+    }
     setConfirmAction({
       kind: 'gmail-send',
       title: 'Send Daily Agenda Digest?',
@@ -342,6 +555,14 @@ export function App() {
     void app.refreshGmailMessages();
     app.pushToast('Refreshing Google Calendar & Gmail…', { tone: 'info' });
   };
+
+  if (isRenderIntroHarness) {
+    return (
+      <Suspense fallback={null}>
+        <IntroVideoHarness />
+      </Suspense>
+    );
+  }
 
   return (
     <>
@@ -399,6 +620,10 @@ export function App() {
               }
             }}
             onOpenDeliverySetup={() => selectTab('profile')}
+            onOpenIntroVideo={() => setIntroVideoOpen(true)}
+            onOpenVoiceShortcuts={() => setVoiceShortcutsOpen(true)}
+            liveAssistant={liveAssistant}
+            voiceAutoTriggerSeq={voiceAutoTriggerSeq}
             onRegisterVoiceClose={registerVoiceClose}
           />
         )}
@@ -415,7 +640,13 @@ export function App() {
               gmailLoading={app.gmailLoading}
               gmailError={app.gmailError}
               hasWorkspaceAccess={app.hasWorkspaceAccess}
-              onConnectGoogle={() => setAuthOpen(true)}
+              onConnectGoogle={() => {
+                if (app.user) {
+                  void app.connectGoogleWorkspace().catch(() => setAuthOpen(true));
+                } else {
+                  setAuthOpen(true);
+                }
+              }}
               onRefreshCalendar={() => void app.refreshCalendarEvents()}
               onRefreshGmail={() => void app.refreshGmailMessages()}
               onImportCalendarEvent={openCalendarEventInSheet}
@@ -465,6 +696,8 @@ export function App() {
               onInstantAlarmTest={app.triggerInstantTestAlarm}
               onExportBackup={app.exportBackupJson}
               onImportBackup={app.importBackupJson}
+              onOpenIntroVideo={() => setIntroVideoOpen(true)}
+              onOpenVoiceShortcuts={() => setVoiceShortcutsOpen(true)}
               onToast={(msg) => app.pushToast(msg, { tone: 'info' })}
             />
           )}
@@ -531,6 +764,23 @@ export function App() {
             timeFormat={app.prefs.timeFormat}
             onSnooze={app.snoozeRinging}
             onDismiss={app.dismissRinging}
+          />
+        )}
+
+        {introVideoOpen && (
+          <IntroVideoModal
+            open={introVideoOpen}
+            onClose={() => setIntroVideoOpen(false)}
+          />
+        )}
+
+        {voiceShortcutsOpen && (
+          <VoiceShortcutsModal
+            open={voiceShortcutsOpen}
+            liveAssistant={liveAssistant}
+            onExecuteAssistantUrl={(url) => handleAssistantUrl(url)}
+            onTriggerIsland={(type, opts) => appShellRef.current?.onTriggerIsland(type, opts)}
+            onClose={() => setVoiceShortcutsOpen(false)}
           />
         )}
       </Suspense>

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mapFirebaseAuthError } from './firebaseAuthErrors';
+import { buildGoogleOAuthTestingError, mapFirebaseAuthError } from './firebaseAuthErrors';
 
 test('mapFirebaseAuthError detects auth/unauthorized-domain and includes hostname and Console URL', () => {
   const err = Object.assign(new Error('Firebase: Error (auth/unauthorized-domain).'), {
@@ -60,11 +60,15 @@ test('mapFirebaseAuthError detects Google OAuth Testing Mode 403 access_denied b
     { projectId: 'gen-lang-client-0663798259' }
   );
   assert.equal(parsed.actionKind, 'oauth-testing-mode');
-  assert.equal(parsed.title, 'Google App Is in Testing Mode');
+  assert.equal(parsed.title, 'Google App Is in Testing Mode (Error 403)');
   assert.equal(
     parsed.consoleUrl,
     'https://console.cloud.google.com/apis/credentials/consent?project=gen-lang-client-0663798259'
   );
+
+  const direct = buildGoogleOAuthTestingError({ projectId: 'gen-lang-client-0663798259' });
+  assert.equal(direct.actionKind, 'oauth-testing-mode');
+  assert.equal(direct.consoleUrl, parsed.consoleUrl);
 });
 
 test('mapFirebaseAuthError strips raw Firebase prefix for unknown errors', () => {

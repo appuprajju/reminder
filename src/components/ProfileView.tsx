@@ -3,8 +3,10 @@ import {
   BellRing,
   Calendar,
   CalendarArrowDown,
+  Command,
   Download,
   FileJson,
+  HelpCircle,
   Lock,
   LogIn,
   LogOut,
@@ -27,7 +29,11 @@ import {
   saveCustomRingtone,
 } from '../lib/audio';
 import { FIREBASE_PROJECT_ID } from '../lib/firebase';
-import { mapFirebaseAuthError, type ParsedFirebaseAuthError } from '../lib/firebaseAuthErrors';
+import {
+  buildGoogleOAuthTestingError,
+  mapFirebaseAuthError,
+  type ParsedFirebaseAuthError,
+} from '../lib/firebaseAuthErrors';
 import { isNativeApp, openExactAlarmSettings } from '../lib/nativeBridge';
 import type {
   AlarmSoundId,
@@ -65,6 +71,8 @@ interface ProfileViewProps {
   onInstantAlarmTest: () => void;
   onExportBackup: () => void;
   onImportBackup: (file: File) => void;
+  onOpenIntroVideo?: () => void;
+  onOpenVoiceShortcuts?: () => void;
   onToast: (msg: string) => void;
 }
 
@@ -91,6 +99,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onInstantAlarmTest,
   onExportBackup,
   onImportBackup,
+  onOpenIntroVideo,
+  onOpenVoiceShortcuts,
   onToast,
 }) => {
   const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
@@ -101,17 +111,36 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const audioInputRef = useRef<HTMLInputElement>(null);
   const backupInputRef = useRef<HTMLInputElement>(null);
 
+  const toggleOAuthTestingHelp = () => {
+    setGoogleAuthError((prev) =>
+      prev?.actionKind === 'oauth-testing-mode'
+        ? null
+        : buildGoogleOAuthTestingError({
+            hostname: typeof window !== 'undefined' ? window.location.hostname : '',
+            projectId: FIREBASE_PROJECT_ID,
+          })
+    );
+  };
+
   const runGoogleAuth = async (fn: () => Promise<unknown>) => {
     setGoogleBusy(true);
     setGoogleAuthError(null);
+    const hostname = typeof window !== 'undefined' ? window.location.hostname : '';
     try {
       await fn();
     } catch (err) {
       const parsed = mapFirebaseAuthError(err, {
-        hostname: typeof window !== 'undefined' ? window.location.hostname : '',
+        hostname,
         projectId: FIREBASE_PROJECT_ID,
       });
-      if (parsed.code !== 'auth/popup-closed-by-user') {
+      if (parsed.code === 'auth/popup-closed-by-user') {
+        setGoogleAuthError(
+          buildGoogleOAuthTestingError({
+            hostname,
+            projectId: FIREBASE_PROJECT_ID,
+          })
+        );
+      } else {
         setGoogleAuthError(parsed);
         onTriggerIsland('alert', {
           title: parsed.title,
@@ -237,12 +266,21 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 disabled={googleBusy}
                 label={googleBusy ? 'Connecting to Google…' : 'Sign in with Google'}
               />
+              <button
+                type="button"
+                onClick={toggleOAuthTestingHelp}
+                className="mt-2 inline-flex min-h-[36px] w-full items-center justify-center gap-1.5 rounded-lg px-2 text-xs font-medium text-amber-200/90 transition-colors hover:bg-amber-500/10 hover:text-amber-100"
+              >
+                <HelpCircle className="h-3.5 w-3.5 shrink-0" />
+                <span>Friend seeing &ldquo;Access blocked&rdquo; (Error 403)? Fix here</span>
+              </button>
             </div>
           )}
 
           {googleAuthError && (
             <AuthRecoveryBanner
               error={googleAuthError}
+              onUseEmailFallback={onOpenAuth}
               onCopiedDomain={(host) =>
                 onTriggerIsland('success', {
                   title: 'Domain Copied',
@@ -280,9 +318,10 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               </p>
             ) : (
               <p className="mt-1.5 text-xs leading-relaxed text-slate-400">
-                {user?.authProvider === 'firebase'
-                  ? 'Reconnect Google to refresh live Google Calendar & Gmail permissions for this session.'
-                  : 'Connect Google to view Calendar events, convert Gmail into alarms, and send daily agenda digests.'}
+                If Google shows an amber “app hasn’t been verified” notice for Gmail &amp; Calendar,
+                scroll down and tap <strong className="text-slate-200">Continue</strong> — or use{' '}
+                <strong className="text-slate-200">Email Digest</strong> and{' '}
+                <strong className="text-slate-200">Export .ics</strong> directly with zero warning.
               </p>
             )}
 
@@ -299,7 +338,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                     {googleBusy
                       ? 'Connecting…'
                       : user
-                        ? 'Reconnect Google Workspace'
+                        ? 'Connect Live Calendar & Gmail'
                         : 'Connect Google Workspace'}
                   </span>
                 </button>
@@ -320,9 +359,20 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 className="ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.05] px-3.5 text-xs font-semibold text-slate-100 hover:bg-white/[0.1]"
               >
                 <CalendarArrowDown className="h-4 w-4 text-emerald-300" />
-                <span>Export Apple Calendar (.ics)</span>
+                <span>Export Calendar (.ics)</span>
               </button>
             </div>
+
+            {!hasWorkspaceAccess && (
+              <button
+                type="button"
+                onClick={onRequestDailyDigest}
+                className="ios-spring-press mt-2 flex min-h-[42px] w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3.5 text-xs font-semibold text-slate-200 hover:bg-white/[0.09]"
+              >
+                <Mail className="h-3.5 w-3.5 text-amber-300" />
+                <span>Open Daily Digest in Gmail (No Verification Needed)</span>
+              </button>
+            )}
           </div>
         </section>
 
@@ -613,6 +663,46 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               />
             </div>
           </div>
+
+          {onOpenVoiceShortcuts && (
+            <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/[0.08] pt-4">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-slate-200">
+                  Live Siri &amp; Google Assistant
+                </p>
+                <p className="text-xs text-slate-400">
+                  1-tap live voice &amp; hands-free “Hey Siri / Hey Google”
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onOpenVoiceShortcuts}
+                className="ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border border-emerald-400/35 bg-emerald-500/15 px-3.5 text-xs font-semibold text-emerald-100 hover:bg-emerald-500/25 whitespace-nowrap"
+              >
+                <Command className="h-3.5 w-3.5 text-emerald-300" />
+                <span>Open Live</span>
+              </button>
+            </div>
+          )}
+
+          {onOpenIntroVideo && (
+            <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/[0.08] pt-4">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-slate-200">Animated App Intro Video</p>
+                <p className="text-xs text-slate-400">
+                  Watch feature walkthrough or download MP4
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onOpenIntroVideo}
+                className="ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border border-sky-400/35 bg-sky-500/15 px-3.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap"
+              >
+                <Play className="h-3.5 w-3.5 fill-current" />
+                <span>Watch / MP4</span>
+              </button>
+            </div>
+          )}
 
           <div className="mt-4 grid grid-cols-2 gap-2.5 border-t border-white/[0.08] pt-4">
             <button

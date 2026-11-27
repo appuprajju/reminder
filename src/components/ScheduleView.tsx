@@ -264,8 +264,8 @@ export const ScheduleView: React.FC<ScheduleViewProps> = ({
           {!hasWorkspaceAccess ? (
             <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-xs leading-relaxed text-slate-400">
-                Connect Google to scan recent inbox emails and turn any message into an exact alarm
-                in one tap.
+                Connect Gmail to scan recent inbox emails into alarms. If Google shows an amber
+                verification notice, scroll down and tap <strong className="text-slate-200">Continue</strong>.
               </p>
               <button
                 type="button"
@@ -376,8 +376,9 @@ export const ScheduleView: React.FC<ScheduleViewProps> = ({
 
           {!hasWorkspaceAccess ? (
             <p className="mt-2 text-xs leading-relaxed text-slate-400">
-              Sign in with Google to view your Google Calendar events alongside your alarms and add
-              reminders directly to your calendar.
+              Connect for live two-way calendar sync (tap <strong className="text-slate-200">Continue</strong>{' '}
+              if Google shows its unverified app notice), or add any reminder to Google Calendar
+              directly without verification.
             </p>
           ) : calendarError ? (
             <p className="mt-2 rounded-xl border border-amber-400/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
