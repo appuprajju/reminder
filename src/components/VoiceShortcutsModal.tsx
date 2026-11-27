@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { Check, Download, Mic, Radio, Sparkles, Square, X } from 'lucide-react';
 import { usePWAInstall } from '../hooks/usePWAInstall';
 import type { LiveAssistantSource } from '../lib/liveAssistant';
 import { buildAssistantDeepLink } from '../lib/assistantIntents';
 import { isNativeApp } from '../lib/nativeBridge';
+import { detectDeviceOs, getPlatformAssistantProfile } from '../lib/platform';
 import type { TriggerIslandFn } from '../types';
 import { IosSwitch } from './IosSwitch';
 
@@ -20,10 +21,11 @@ export interface LiveVoiceController {
   errorMessage: string | null;
   activateSiriLive: () => void;
   activateGoogleAssistantLive: () => void;
+  activateNeutralVoiceLive: () => void;
   finishOneTapSpeakNow: () => void;
   cancelOneTapSpeak: () => void;
   setHandsFree: (enabled: boolean, preferredSource?: LiveAssistantSource) => void;
-  toggleHandsFree: () => void;
+  toggleHandsFree: (preferredSource?: LiveAssistantSource) => void;
 }
 
 interface VoiceShortcutsModalProps {
@@ -34,11 +36,11 @@ interface VoiceShortcutsModalProps {
   onClose: () => void;
 }
 
-const INSTANT_EXAMPLES: Array<{ label: string; phrase: string; source: 'siri' | 'google-assistant' }> = [
-  { label: 'Medicine 9 PM', phrase: 'Take medicine at 9pm', source: 'siri' },
-  { label: 'Alarm 6:30 AM', phrase: 'Wake me up tomorrow at 6:30am', source: 'google-assistant' },
-  { label: 'Call Mom (30m)', phrase: 'Call Mom in 30 minutes', source: 'siri' },
-  { label: 'Report 5 PM', phrase: 'Submit report at 5pm', source: 'google-assistant' },
+const INSTANT_EXAMPLES: Array<{ label: string; phrase: string }> = [
+  { label: 'Medicine 9 PM', phrase: 'Take medicine at 9pm' },
+  { label: 'Alarm 6:30 AM', phrase: 'Wake me up tomorrow at 6:30am' },
+  { label: 'Call Mom (30m)', phrase: 'Call Mom in 30 minutes' },
+  { label: 'Report 5 PM', phrase: 'Submit report at 5pm' },
 ];
 
 export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
@@ -50,6 +52,8 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
 }) => {
   const { isInstallable, isInstalled, install } = usePWAInstall();
   const native = isNativeApp();
+  const deviceOs = useMemo(() => detectDeviceOs(), []);
+  const profile = useMemo(() => getPlatformAssistantProfile(deviceOs), [deviceOs]);
 
   useEffect(() => {
     if (!open) return;
@@ -65,14 +69,27 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
   const currentOrigin =
     typeof window !== 'undefined' && window.location.origin
       ? window.location.origin
-      : 'https://makeuperfect.in';
+      : 'https://reminder.makeuperfect.in';
 
-  const handleOneTapExample = (phrase: string, source: 'siri' | 'google-assistant') => {
+  const handlePrimaryActivate = () => {
+    if (deviceOs === 'ios') {
+      liveAssistant.activateSiriLive();
+    } else if (deviceOs === 'android') {
+      liveAssistant.activateGoogleAssistantLive();
+    } else {
+      liveAssistant.activateNeutralVoiceLive();
+    }
+    onClose();
+  };
+
+  const handleOneTapExample = (phrase: string) => {
+    const assistant: 'siri' | 'google-assistant' =
+      deviceOs === 'ios' ? 'siri' : 'google-assistant';
     const url = buildAssistantDeepLink(
       currentOrigin,
       {
-        id: source === 'siri' ? 'sc_siri_add' : 'sc_gassist_add',
-        assistant: source,
+        id: deviceOs === 'ios' ? 'sc_siri_add' : 'sc_gassist_add',
+        assistant,
         action: 'add',
         defaultAlertMode: 'auto',
         autoSave: true,
@@ -88,16 +105,23 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
     if (accepted) {
       onTriggerIsland?.('success', {
         title: 'App Installed',
-        message: 'Home-screen voice shortcut is now ready',
+        message: 'Home-screen shortcut is now ready',
       });
     }
   };
+
+  const isConnected =
+    deviceOs === 'ios'
+      ? liveAssistant.siriConnected
+      : deviceOs === 'android'
+        ? liveAssistant.googleAssistantConnected
+        : liveAssistant.handsFreeEnabled;
 
   const content = (
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Live Siri and Google Assistant Voice"
+      aria-label={profile.sectionTitle}
       onClick={onClose}
       className="fixed inset-0 z-[95] flex items-end justify-center bg-black/70 backdrop-blur-sm sm:items-center sm:p-4"
     >
@@ -112,9 +136,7 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
         {/* Header */}
         <div className="flex items-start justify-between gap-3 border-b border-white/[0.1] px-5 py-4 sm:px-6">
           <div className="min-w-0">
-            <h2 className="font-display text-lg font-bold text-white">
-              Live Siri &amp; Google Assistant
-            </h2>
+            <h2 className="font-display text-lg font-bold text-white">{profile.sectionTitle}</h2>
             <p className="mt-0.5 text-xs text-slate-400">
               No setup needed — tap once and speak to auto-save with EMO confirmation.
             </p>
@@ -140,13 +162,7 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
                     <Mic className="h-4 w-4" />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-sm font-bold text-white">
-                      {liveAssistant.activeSource === 'siri'
-                        ? 'Listening for Siri command…'
-                        : liveAssistant.activeSource === 'google-assistant'
-                          ? 'Listening for Google Assistant…'
-                          : 'Listening…'}
-                    </p>
+                    <p className="text-sm font-bold text-white">{profile.listeningTitle}</p>
                     <p className="truncate text-xs text-sky-200/90">
                       {liveAssistant.liveTranscript ||
                         'Say e.g. “Take medicine at 9pm” or “Wake me at 6:30am”'}
@@ -187,52 +203,45 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
             </div>
           )}
 
-          {/* 1-Tap Live Assistant Buttons */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <button
-              type="button"
-              onClick={() => {
-                liveAssistant.activateSiriLive();
-                onClose();
-              }}
-              className="ios-spring-press group flex min-h-[76px] items-center gap-3.5 rounded-2xl border border-indigo-400/35 bg-gradient-to-br from-indigo-500/25 via-sky-500/20 to-fuchsia-500/20 p-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] transition-all hover:border-indigo-300/55 hover:brightness-110"
+          {/* Single OS-Specific 1-Tap Assistant Button */}
+          <button
+            type="button"
+            onClick={handlePrimaryActivate}
+            className={`ios-spring-press group flex min-h-[76px] w-full items-center gap-3.5 rounded-2xl border p-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] transition-all hover:brightness-110 ${
+              deviceOs === 'ios'
+                ? 'border-indigo-400/35 bg-gradient-to-br from-indigo-500/25 via-sky-500/20 to-fuchsia-500/20 hover:border-indigo-300/55'
+                : deviceOs === 'android'
+                  ? 'border-emerald-400/35 bg-gradient-to-br from-sky-500/20 via-emerald-500/20 to-amber-500/15 hover:border-emerald-300/55'
+                  : 'border-sky-400/35 bg-gradient-to-br from-sky-500/22 via-blue-500/15 to-cyan-500/20 hover:border-sky-300/55'
+            }`}
+          >
+            <span
+              className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-white ${
+                deviceOs === 'ios'
+                  ? 'bg-gradient-to-br from-indigo-500 to-fuchsia-500 shadow-[0_8px_20px_rgba(99,102,241,0.45)]'
+                  : deviceOs === 'android'
+                    ? 'bg-gradient-to-br from-sky-500 via-emerald-500 to-amber-400 shadow-[0_8px_20px_rgba(16,185,129,0.4)]'
+                    : 'bg-gradient-to-br from-[#0A84FF] to-cyan-500 shadow-[0_8px_20px_rgba(10,132,255,0.4)]'
+              }`}
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white shadow-[0_8px_20px_rgba(99,102,241,0.45)]">
-                <Mic className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-display text-sm font-bold text-white">Hey Siri</span>
-                  {liveAssistant.siriConnected && (
-                    <Check className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
-                  )}
-                </div>
-                <p className="mt-0.5 text-xs text-slate-300">Tap &amp; speak — auto-saves live</p>
-              </div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                liveAssistant.activateGoogleAssistantLive();
-                onClose();
-              }}
-              className="ios-spring-press group flex min-h-[76px] items-center gap-3.5 rounded-2xl border border-emerald-400/35 bg-gradient-to-br from-sky-500/20 via-emerald-500/20 to-amber-500/15 p-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] transition-all hover:border-emerald-300/55 hover:brightness-110"
-            >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 via-emerald-500 to-amber-400 text-white shadow-[0_8px_20px_rgba(16,185,129,0.4)]">
+              {deviceOs === 'android' ? (
                 <Sparkles className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-display text-sm font-bold text-white">Hey Google</span>
-                  {liveAssistant.googleAssistantConnected && (
-                    <Check className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
-                  )}
-                </div>
-                <p className="mt-0.5 text-xs text-slate-300">Tap &amp; speak — auto-saves live</p>
+              ) : (
+                <Mic className="h-5 w-5" />
+              )}
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <span className="font-display text-base font-bold text-white">
+                  {profile.buttonLabel}
+                </span>
+                {isConnected && <Check className="h-4 w-4 shrink-0 text-emerald-400" />}
               </div>
-            </button>
-          </div>
+              <p className="mt-0.5 text-xs text-slate-300">
+                Tap once &amp; speak — auto-saves live with EMO confirmation
+              </p>
+            </div>
+          </button>
 
           {/* 1-Tap Hands-Free Wake-Word Toggle */}
           <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.12] bg-white/[0.04] p-4">
@@ -247,22 +256,17 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
                 <Radio className="h-4 w-4" />
               </span>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-white">
-                  Hands-Free “Hey Siri” &amp; “Hey Google”
-                </p>
+                <p className="text-sm font-bold text-white">{profile.handsFreeTitle}</p>
                 <p className="mt-0.5 text-xs leading-relaxed text-slate-400">
                   Keep listening while reminderme is open — just say{' '}
-                  <strong className="text-slate-200">
-                    “Hey Siri, add a reminder to take medicine at 9pm”
-                  </strong>
-                  .
+                  <strong className="text-slate-200">{profile.wakeExample}</strong>.
                 </p>
               </div>
             </div>
             <IosSwitch
               checked={liveAssistant.handsFreeEnabled}
-              onChange={(next) => liveAssistant.setHandsFree(next)}
-              ariaLabel="Enable hands-free Hey Siri and Hey Google wake word"
+              onChange={(next) => liveAssistant.setHandsFree(next, profile.source)}
+              ariaLabel={`Enable ${profile.handsFreeTitle}`}
               accent="emerald"
             />
           </div>
@@ -270,14 +274,14 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
           {/* 1-Tap Instant Demo Commands */}
           <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-4">
             <p className="text-xs font-semibold text-slate-300">
-              Try a 1-tap instant reminder (saves right now with EMO eyes)
+              Try a 1-tap instant command (saves right now with EMO eyes)
             </p>
             <div className="mt-2.5 grid grid-cols-2 gap-2">
               {INSTANT_EXAMPLES.map((item) => (
                 <button
                   key={item.phrase}
                   type="button"
-                  onClick={() => handleOneTapExample(item.phrase, item.source)}
+                  onClick={() => handleOneTapExample(item.phrase)}
                   className="ios-spring-press min-h-[44px] rounded-xl border border-white/[0.1] bg-white/[0.05] px-3 py-2 text-left transition-colors hover:border-sky-400/40 hover:bg-sky-500/15"
                 >
                   <p className="truncate text-xs font-semibold text-white">{item.label}</p>
@@ -287,7 +291,7 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
             </div>
           </div>
 
-          {/* Optional 1-Tap App Install for Native Android Shortcut Support */}
+          {/* Optional 1-Tap App Install */}
           {!native && !isInstalled && isInstallable && (
             <button
               type="button"
@@ -295,13 +299,12 @@ export const VoiceShortcutsModal: React.FC<VoiceShortcutsModalProps> = ({
               className="ios-spring-press flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border border-emerald-400/35 bg-emerald-500/15 px-4 text-xs font-semibold text-emerald-200 hover:bg-emerald-500/25"
             >
               <Download className="h-4 w-4" />
-              <span>Install App on Phone for Home-Screen Voice Shortcut</span>
+              <span>Install App on Home Screen</span>
             </button>
           )}
 
           <p className="text-center text-[11px] leading-relaxed text-slate-500">
-            Works live with 1 tap right here. Lock-screen “Hey Siri” &amp; “Hey Google” outside the
-            browser activates automatically in the Play Store &amp; App Store builds.
+            {profile.footerHint}
           </p>
         </div>
       </div>

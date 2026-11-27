@@ -52,7 +52,7 @@ test('mapFirebaseAuthError maps common credential, duplicate, weak password, and
   );
 });
 
-test('mapFirebaseAuthError detects Google OAuth Testing Mode 403 access_denied blocks', () => {
+test('mapFirebaseAuthError maps Google OAuth access_denied blocks to a user-friendly email fallback tip', () => {
   const parsed = mapFirebaseAuthError(
     new Error(
       'Access blocked: gen-lang-client-0663798259.firebaseapp.com has not completed the Google verification process. Error 403: access_denied'
@@ -60,15 +60,13 @@ test('mapFirebaseAuthError detects Google OAuth Testing Mode 403 access_denied b
     { projectId: 'gen-lang-client-0663798259' }
   );
   assert.equal(parsed.actionKind, 'oauth-testing-mode');
-  assert.equal(parsed.title, 'Google App Is in Testing Mode (Error 403)');
-  assert.equal(
-    parsed.consoleUrl,
-    'https://console.cloud.google.com/apis/credentials/consent?project=gen-lang-client-0663798259'
-  );
+  assert.equal(parsed.title, 'Can’t Proceed with Google Sign-In?');
+  assert.equal(parsed.consoleUrl, undefined);
 
   const direct = buildGoogleOAuthTestingError({ projectId: 'gen-lang-client-0663798259' });
   assert.equal(direct.actionKind, 'oauth-testing-mode');
-  assert.equal(direct.consoleUrl, parsed.consoleUrl);
+  assert.equal(direct.title, 'Can’t Proceed with Google Sign-In?');
+  assert.equal(direct.consoleUrl, undefined);
 });
 
 test('mapFirebaseAuthError strips raw Firebase prefix for unknown errors', () => {

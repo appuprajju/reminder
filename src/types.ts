@@ -18,6 +18,18 @@ export type TabId = 'today' | 'schedule' | 'insights' | 'profile';
 
 export type FilterMode = 'all' | 'alarms' | 'todo' | 'done';
 
+export type DeviceOs = 'ios' | 'android' | 'desktop';
+
+export interface VoiceNote {
+  id: string;
+  title: string;
+  content: string;
+  pinned: boolean;
+  createdAt: number;
+  updatedAt: number;
+  durationSec?: number;
+}
+
 export interface SubtaskItem {
   id: string;
   title: string;

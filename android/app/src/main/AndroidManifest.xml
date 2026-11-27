@@ -38,6 +38,43 @@
 
         </activity>
 
+        <!-- Dedicated Full-Screen Lock-Screen Alarm Activity with Swipe-Up Dismiss & Snooze Pills -->
+        <activity
+            android:name=".LockScreenAlarmActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:showWhenLocked="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:turnScreenOn="true" />
+
+        <!-- Exact Alarm & Reboot Rescheduler Receiver -->
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="in.makeuperfect.reminderme.ACTION_FIRE_ALARM" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Android Home-Screen Widget showing next active alarm when app is closed -->
+        <receiver
+            android:name=".AlarmHomeWidgetProvider"
+            android:exported="true"
+            android:label="reminderme Next Alarm">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/alarm_home_widget_info" />
+        </receiver>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#060914"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="28dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:letterSpacing="0.18"
+        android:text="LOCK-SCREEN ALARM"
+        android:textColor="#FF6961"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lock_alarm_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:text="06:30 AM"
+        android:textColor="#FFFFFF"
+        android:textSize="54sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lock_alarm_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Morning Alarm"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lock_alarm_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textColor="#CBD5E1"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/lock_alarm_sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:textColor="#7DD3FC"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:letterSpacing="0.14"
+        android:text="QUICK SNOOZE"
+        android:textColor="#94A3B8"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_snooze_5"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:backgroundTint="#1E3A5F"
+            android:text="5m"
+            android:textAllCaps="false"
+            android:textColor="#E0F2FE"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_snooze_10"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="6dp"
+            android:layout_weight="1"
+            android:backgroundTint="#1E3A5F"
+            android:text="10m"
+            android:textAllCaps="false"
+            android:textColor="#E0F2FE"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_snooze_15"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:backgroundTint="#1E3A5F"
+            android:text="15m"
+            android:textAllCaps="false"
+            android:textColor="#E0F2FE"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="156dp"
+        android:background="@drawable/widget_glass_bg"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <TextView
+            android:id="@+id/lock_swipe_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:text="▲  Swipe Up to Dismiss"
+            android:textColor="#86EFAC"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lock_swipe_handle"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="#30D158"
+            android:gravity="center"
+            android:text="SLIDE UP"
+            android:textColor="#050814"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_dismiss_fallback"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/transparent"
+        android:text="Tap here to turn off alarm"
+        android:textAllCaps="false"
+        android:textColor="#94A3B8"
+        android:textSize="12sp" />
+</LinearLayout>

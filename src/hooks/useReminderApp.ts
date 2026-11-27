@@ -20,6 +20,7 @@ import {
 import { buildReminderIcs, buildScheduleIcs, downloadIcsFile } from '../lib/icsExport';
 import {
   checkExactAlarmReadiness,
+  consumePendingNativeAlarmAction,
   deviceStorageGet,
   deviceStorageSet,
   getNotificationPermissionState,
@@ -30,6 +31,7 @@ import {
   syncOsSchedules,
   triggerHaptic,
 } from '../lib/nativeBridge';
+import { createVoiceNote, sortVoiceNotes } from '../lib/notes';
 import { computeNextDueAt, getTodayDateKey } from '../lib/time';
 import {
   WorkspaceAuthError,
@@ -51,10 +53,12 @@ import type {
   ToastMessage,
   UserPreferences,
   UserProfile,
+  VoiceNote,
 } from '../types';
 import { useOnlineStatus } from './usePWAInstall';
 
 const KEY_REMINDERS = 'rm_reminders_v3';
+const KEY_NOTES = 'rm_notes_v1';
 const KEY_PREFS = 'rm_prefs_v3';
 const KEY_EVENTS = 'rm_events_v3';
 const KEY_PENDING_SYNC = 'rm_pending_sync_v3';
@@ -144,6 +148,7 @@ export function useReminderApp(
   const isOnline = useOnlineStatus();
   const [hydrated, setHydrated] = useState(false);
   const [reminders, setReminders] = useState<Reminder[]>([]);
+  const [notes, setNotes] = useState<VoiceNote[]>([]);
   const [prefs, setPrefs] = useState<UserPreferences>(DEFAULT_PREFS);
   const [events, setEvents] = useState<LocalActivityEvent[]>([]);
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -173,6 +178,7 @@ export function useReminderApp(
 
   const firedInSessionRef = useRef<Set<string>>(new Set());
   const remindersRef = useRef<Reminder[]>([]);
+  const notesRef = useRef<VoiceNote[]>([]);
   const prefsRef = useRef<UserPreferences>(DEFAULT_PREFS);
   const userRef = useRef<UserProfile | null>(null);
   const cloudIdsRef = useRef<Set<string>>(new Set());
@@ -180,6 +186,7 @@ export function useReminderApp(
   const firestoreReadyRef = useRef<boolean>(false);
 
   remindersRef.current = reminders;
+  notesRef.current = notes;
   prefsRef.current = prefs;
   userRef.current = user;
 
@@ -238,7 +245,10 @@ export function useReminderApp(
         // ignore
       }
     }
-    const osScheduledCount = await syncOsSchedules(remindersRef.current);
+    const osScheduledCount = await syncOsSchedules(
+      remindersRef.current,
+      prefsRef.current.timeFormat
+    );
     setDeliveryHealth((prev) => ({
       ...prev,
       platform: getRuntimePlatform(),
@@ -325,7 +335,7 @@ export function useReminderApp(
       setReminders((prev) => {
         const next = updater(prev);
         deviceStorageSet(KEY_REMINDERS, JSON.stringify(next));
-        syncOsSchedules(next).then((count) => {
+        syncOsSchedules(next, prefsRef.current.timeFormat).then((count) => {
           setDeliveryHealth((h) => ({ ...h, osScheduledCount: count }));
         });
         if (shouldSync && userRef.current) {
@@ -337,12 +347,102 @@ export function useReminderApp(
     [scheduleCloudSync]
   );
 
+  const commitNotes = useCallback((updater: (prev: VoiceNote[]) => VoiceNote[]) => {
+    setNotes((prev) => {
+      const next = sortVoiceNotes(updater(prev));
+      deviceStorageSet(KEY_NOTES, JSON.stringify(next));
+      return next;
+    });
+  }, []);
+
+  const upsertNote = useCallback(
+    (draft: {
+      id?: string;
+      title: string;
+      content: string;
+      pinned: boolean;
+      durationSec?: number;
+    }) => {
+      const now = Date.now();
+      if (draft.id) {
+        commitNotes((prev) =>
+          prev.map((n) =>
+            n.id === draft.id
+              ? {
+                  ...n,
+                  title: draft.title.trim() || 'Voice Note',
+                  content: draft.content.trim(),
+                  pinned: draft.pinned,
+                  durationSec: draft.durationSec ?? n.durationSec,
+                  updatedAt: now,
+                }
+              : n
+          )
+        );
+        triggerHaptic('light', prefsRef.current.vibrate);
+        pushToast(`Updated note "${draft.title}"`, {
+          title: 'Note Saved',
+          tone: 'success',
+          expression: 'happy',
+        });
+      } else {
+        const created = createVoiceNote({
+          title: draft.title,
+          content: draft.content,
+          pinned: draft.pinned,
+          durationSec: draft.durationSec,
+          nowMs: now,
+        });
+        commitNotes((prev) => [created, ...prev]);
+        recordEvent('voice_note_created', { id: created.id });
+        triggerHaptic('success', prefsRef.current.vibrate);
+        pushToast(`Saved "${created.title}"`, {
+          title: 'Voice Note Saved',
+          tone: 'success',
+          expression: 'excited',
+        });
+      }
+    },
+    [commitNotes, pushToast, recordEvent]
+  );
+
+  const togglePinNote = useCallback(
+    (id: string) => {
+      commitNotes((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, pinned: !n.pinned, updatedAt: Date.now() } : n))
+      );
+      triggerHaptic('light', prefsRef.current.vibrate);
+    },
+    [commitNotes]
+  );
+
+  const deleteNote = useCallback(
+    (id: string) => {
+      const target = notesRef.current.find((n) => n.id === id);
+      if (!target) return;
+      const snapshot = [...notesRef.current];
+      commitNotes((prev) => prev.filter((n) => n.id !== id));
+      triggerHaptic('warning', prefsRef.current.vibrate);
+      pushToast(`Deleted note "${target.title}"`, {
+        title: 'Note Removed',
+        tone: 'danger',
+        expression: 'sad',
+        undoLabel: 'Undo',
+        onUndo: () => commitNotes(() => snapshot),
+      });
+    },
+    [commitNotes, pushToast]
+  );
+
   const updatePrefs = useCallback((patch: Partial<UserPreferences>) => {
     setPrefs((prev) => {
       const next = { ...prev, ...patch };
       deviceStorageSet(KEY_PREFS, JSON.stringify(next));
       if (patch.serverBaseUrl !== undefined) {
         setApiBaseUrl(patch.serverBaseUrl);
+      }
+      if (patch.timeFormat !== undefined) {
+        void syncOsSchedules(remindersRef.current, next.timeFormat);
       }
       return next;
     });
@@ -1002,7 +1102,8 @@ export function useReminderApp(
               const out = await api.pushTest(sec);
               return !!(out.scheduled || out.sent);
             }
-          : undefined
+          : undefined,
+        prefsRef.current.timeFormat
       );
       pushToast(res.message, { tone: res.ok ? 'success' : 'warning' });
       return res;
@@ -1014,7 +1115,7 @@ export function useReminderApp(
     const testRem: Reminder = {
       id: 'test-alarm',
       title: 'Lock-Screen Alarm Test',
-      note: 'Slide right to dismiss or slide left to snooze',
+      note: 'Swipe up to dismiss or tap a snooze pill',
       time: new Date().toTimeString().slice(0, 5),
       dueAt: Date.now(),
       days: null,
@@ -1034,9 +1135,10 @@ export function useReminderApp(
   const exportBackupJson = useCallback(() => {
     const payload = {
       app: 'reminderme',
-      version: 3,
+      version: 4,
       exportedAt: new Date().toISOString(),
       reminders: remindersRef.current,
+      notes: notesRef.current,
       prefs: prefsRef.current,
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -1058,6 +1160,9 @@ export function useReminderApp(
           throw new Error('Invalid backup file format');
         }
         commitReminders(() => parsed.reminders);
+        if (Array.isArray(parsed.notes)) {
+          commitNotes(() => parsed.notes);
+        }
         if (parsed.prefs && typeof parsed.prefs === 'object') {
           updatePrefs(parsed.prefs);
         }
@@ -1066,7 +1171,7 @@ export function useReminderApp(
         pushToast('Could not import backup file', { tone: 'danger' });
       }
     },
-    [commitReminders, pushToast, updatePrefs]
+    [commitNotes, commitReminders, pushToast, updatePrefs]
   );
 
   /* Local Analytics Summary */
@@ -1135,8 +1240,9 @@ export function useReminderApp(
   useEffect(() => {
     let active = true;
     (async () => {
-      const [rawRem, rawPrefs, rawEvents, rawPending, signedInHint] = await Promise.all([
+      const [rawRem, rawNotes, rawPrefs, rawEvents, rawPending, signedInHint] = await Promise.all([
         deviceStorageGet(KEY_REMINDERS),
+        deviceStorageGet(KEY_NOTES),
         deviceStorageGet(KEY_PREFS),
         deviceStorageGet(KEY_EVENTS),
         deviceStorageGet(KEY_PENDING_SYNC),
@@ -1169,6 +1275,15 @@ export function useReminderApp(
         deviceStorageSet(KEY_REMINDERS, JSON.stringify(loadedReminders));
       }
       setReminders(loadedReminders);
+
+      if (rawNotes) {
+        try {
+          const parsedNotes = JSON.parse(rawNotes);
+          if (Array.isArray(parsedNotes)) setNotes(sortVoiceNotes(parsedNotes));
+        } catch {
+          // ignore
+        }
+      }
 
       if (rawEvents) {
         try {
@@ -1204,12 +1319,22 @@ export function useReminderApp(
       }
 
       await refreshDeliveryHealth();
+
+      // Reconcile any dismiss/snooze action taken on the native Android lock screen while closed
+      const pendingNative = await consumePendingNativeAlarmAction();
+      if (pendingNative?.reminderId && pendingNative.reminderId !== 'lockscreen-test') {
+        if (pendingNative.action === 'dismiss') {
+          toggleCompleteReminder(pendingNative.reminderId);
+        } else if (pendingNative.action === 'snooze') {
+          snoozeReminder(pendingNative.reminderId, pendingNative.minutes || 5);
+        }
+      }
     })();
 
     return () => {
       active = false;
     };
-  }, [refreshDeliveryHealth]);
+  }, [refreshDeliveryHealth, snoozeReminder, toggleCompleteReminder]);
 
   /* Native Plugin & Hardware Back Init */
   useEffect(() => {
@@ -1274,6 +1399,7 @@ export function useReminderApp(
     hydrated,
     isOnline,
     reminders,
+    notes,
     prefs,
     user,
     workspaceToken,
@@ -1294,6 +1420,9 @@ export function useReminderApp(
     pushToast,
     updatePrefs,
     upsertReminder,
+    upsertNote,
+    togglePinNote,
+    deleteNote,
     toggleSubtask,
     applyRoutinePack,
     toggleCompleteReminder,

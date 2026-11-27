@@ -428,7 +428,7 @@ export function useLiveVoiceAssistant({
               ? 'Say “Hey Siri, add a reminder in reminderme…”'
               : preferredSource === 'google-assistant'
                 ? 'Say “Hey Google, add a reminder in reminderme…”'
-                : 'Say “Hey Siri / Hey Google / Hey reminderme…”';
+                : 'Say “Hey reminderme, add a reminder…”';
           callbacksRef.current.onStatusNotice?.('success', 'Hands-Free Live', phraseHint);
         }
       } else {
@@ -445,9 +445,12 @@ export function useLiveVoiceAssistant({
     [startEngine, stopEngine, vibrate]
   );
 
-  const toggleHandsFree = useCallback(() => {
-    setHandsFree(!handsFreeRef.current);
-  }, [setHandsFree]);
+  const toggleHandsFree = useCallback(
+    (preferredSource?: LiveAssistantSource) => {
+      setHandsFree(!handsFreeRef.current, preferredSource);
+    },
+    [setHandsFree]
+  );
 
   const activateSiriLive = useCallback(() => {
     const next: LiveAssistantPrefs = { ...prefs, siriConnected: true };
@@ -462,6 +465,10 @@ export function useLiveVoiceAssistant({
     saveLiveAssistantPrefs(next);
     startOneTapSpeak('google-assistant');
   }, [prefs, startOneTapSpeak]);
+
+  const activateNeutralVoiceLive = useCallback(() => {
+    startOneTapSpeak('voice');
+  }, [startOneTapSpeak]);
 
   useEffect(() => {
     return () => {
@@ -488,5 +495,6 @@ export function useLiveVoiceAssistant({
     toggleHandsFree,
     activateSiriLive,
     activateGoogleAssistantLive,
+    activateNeutralVoiceLive,
   };
 }

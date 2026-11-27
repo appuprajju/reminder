@@ -11,6 +11,7 @@ import {
   formatAssistantLabel,
   parseAssistantIntentUrl,
 } from './lib/assistantIntents';
+import { getAlarmSoundLabel } from './lib/audio';
 import { parseQuickInput, type ParsedQuickReminder } from './lib/parser';
 import { formatDaysSummary, formatTimeDisplay } from './lib/time';
 import {
@@ -43,12 +44,6 @@ const AuthSheet = lazy(() =>
 const RingingAlarmOverlay = lazy(() =>
   import('./components/RingingAlarmOverlay').then((m) => ({ default: m.RingingAlarmOverlay }))
 );
-const IntroVideoModal = lazy(() =>
-  import('./components/IntroVideoModal').then((m) => ({ default: m.IntroVideoModal }))
-);
-const IntroVideoHarness = lazy(() =>
-  import('./components/IntroVideoHarness').then((m) => ({ default: m.IntroVideoHarness }))
-);
 const VoiceShortcutsModal = lazy(() =>
   import('./components/VoiceShortcutsModal').then((m) => ({ default: m.VoiceShortcutsModal }))
 );
@@ -62,6 +57,7 @@ function shouldShowIntroInitially(): boolean {
     if (
       params.get('autostart') === '1' ||
       params.get('tab') ||
+      params.get('ring') ||
       action === 'new' ||
       action === 'add' ||
       action === 'voice' ||
@@ -92,7 +88,6 @@ export function App() {
   const [defaultDate, setDefaultDate] = useState<Date | null>(null);
   const [focusReminder, setFocusReminder] = useState<Reminder | null>(null);
   const [authOpen, setAuthOpen] = useState(false);
-  const [introVideoOpen, setIntroVideoOpen] = useState(false);
   const [voiceShortcutsOpen, setVoiceShortcutsOpen] = useState(false);
   const [voiceAutoTriggerSeq, setVoiceAutoTriggerSeq] = useState(0);
   const [confirmAction, setConfirmAction] = useState<ConfirmActionSpec | null>(null);
@@ -101,10 +96,6 @@ export function App() {
   const voiceCloseRef = useRef<(() => void) | null>(null);
   const appShellRef = useRef<AppShellHandle | null>(null);
   const startupIntentHandledRef = useRef<string | null>(null);
-
-  const isRenderIntroHarness =
-    typeof window !== 'undefined' &&
-    new URLSearchParams(window.location.search).get('renderIntro') === '1';
 
   const registerVoiceClose = useCallback((fn: (() => void) | null) => {
     voiceCloseRef.current = fn;
@@ -147,10 +138,6 @@ export function App() {
       setVoiceShortcutsOpen(false);
       return true;
     }
-    if (introVideoOpen) {
-      setIntroVideoOpen(false);
-      return true;
-    }
     if (authOpen) {
       setAuthOpen(false);
       return true;
@@ -175,7 +162,6 @@ export function App() {
     confirmBusy,
     finishIntro,
     focusReminder,
-    introVideoOpen,
     selectTab,
     sheetOpen,
     showIntro,
@@ -309,15 +295,21 @@ export function App() {
   /* Trigger Dynamic Island alert animation when an alarm starts ringing */
   useEffect(() => {
     if (app.ringingReminder) {
+      const soundLabel = app.ringingReminder.isAlarm
+        ? getAlarmSoundLabel(app.ringingReminder.sound, app.prefs.customAudioName)
+        : '';
       appShellRef.current?.onTriggerIsland('alert', {
         title: app.ringingReminder.isAlarm ? 'Alarm Ringing' : 'Reminder Alert',
-        message: app.ringingReminder.title,
+        message: soundLabel
+          ? `${app.ringingReminder.title} · ${soundLabel}`
+          : app.ringingReminder.title,
         durationMs: 4200,
       });
     }
-  }, [app.ringingReminder]);
+  }, [app.prefs.customAudioName, app.ringingReminder]);
 
-  /* Support Android / PWA manifest launch shortcuts & Siri / Google Assistant URL intents */
+  /* Support Android / PWA manifest launch shortcuts, /?ring=<id> notification clicks & Voice intents */
+  const ringParamHandledRef = useRef<string | null>(null);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get('tab');
@@ -331,6 +323,24 @@ export function App() {
     }
     handleAssistantUrl(window.location.href, { fromStartup: true });
   }, [handleAssistantUrl]);
+
+  useEffect(() => {
+    if (!app.hydrated) return;
+    const params = new URLSearchParams(window.location.search);
+    const ringId = params.get('ring');
+    if (!ringId || ringParamHandledRef.current === ringId) return;
+    ringParamHandledRef.current = ringId;
+    const found = app.reminders.find((r) => r.id === ringId);
+    if (found) {
+      setShowIntro(false);
+      app.triggerRingingNow(found);
+    }
+    try {
+      window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+    } catch {
+      // ignore
+    }
+  }, [app.hydrated, app.reminders, app.triggerRingingNow]);
 
   const openNewReminder = (date: Date | null = null) => {
     setEditingReminder(null);
@@ -346,7 +356,7 @@ export function App() {
     setSheetOpen(true);
   };
 
-  const openVoiceDraftInSheet = (parsed: ParsedQuickReminder) => {
+  const openVoiceDraftInSheet = (parsed: SheetDraft) => {
     setEditingReminder(null);
     setSheetDraft(parsed);
     setDefaultDate(null);
@@ -556,14 +566,6 @@ export function App() {
     app.pushToast('Refreshing Google Calendar & Gmail…', { tone: 'info' });
   };
 
-  if (isRenderIntroHarness) {
-    return (
-      <Suspense fallback={null}>
-        <IntroVideoHarness />
-      </Suspense>
-    );
-  }
-
   return (
     <>
       <AppShell
@@ -582,6 +584,7 @@ export function App() {
         {activeTab === 'today' && (
           <TodayView
             reminders={app.reminders}
+            notes={app.notes}
             prefs={app.prefs}
             user={app.user}
             userName={app.user?.name}
@@ -592,8 +595,10 @@ export function App() {
               app.updatePrefs({ timeFormat: app.prefs.timeFormat === '12h' ? '24h' : '12h' })
             }
             onQuickAdd={handleQuickAdd}
-            onSaveParsedReminder={handleSaveParsedReminder}
-            onEditVoiceDraft={openVoiceDraftInSheet}
+            onEditDraftInSheet={openVoiceDraftInSheet}
+            onSaveNote={app.upsertNote}
+            onTogglePinNote={app.togglePinNote}
+            onDeleteNote={app.deleteNote}
             onOpenNewSheet={() => openNewReminder(null)}
             onOpenAuth={() => setAuthOpen(true)}
             onGoogleSignIn={app.signInWithGoogle}
@@ -620,10 +625,9 @@ export function App() {
               }
             }}
             onOpenDeliverySetup={() => selectTab('profile')}
-            onOpenIntroVideo={() => setIntroVideoOpen(true)}
             onOpenVoiceShortcuts={() => setVoiceShortcutsOpen(true)}
             liveAssistant={liveAssistant}
-            voiceAutoTriggerSeq={voiceAutoTriggerSeq}
+            voiceNoteAutoTriggerSeq={voiceAutoTriggerSeq}
             onRegisterVoiceClose={registerVoiceClose}
           />
         )}
@@ -696,7 +700,6 @@ export function App() {
               onInstantAlarmTest={app.triggerInstantTestAlarm}
               onExportBackup={app.exportBackupJson}
               onImportBackup={app.importBackupJson}
-              onOpenIntroVideo={() => setIntroVideoOpen(true)}
               onOpenVoiceShortcuts={() => setVoiceShortcutsOpen(true)}
               onToast={(msg) => app.pushToast(msg, { tone: 'info' })}
             />
@@ -762,15 +765,10 @@ export function App() {
           <RingingAlarmOverlay
             reminder={app.ringingReminder}
             timeFormat={app.prefs.timeFormat}
+            customAudioName={app.prefs.customAudioName}
+            vibrate={app.prefs.vibrate}
             onSnooze={app.snoozeRinging}
             onDismiss={app.dismissRinging}
-          />
-        )}
-
-        {introVideoOpen && (
-          <IntroVideoModal
-            open={introVideoOpen}
-            onClose={() => setIntroVideoOpen(false)}
           />
         )}
 

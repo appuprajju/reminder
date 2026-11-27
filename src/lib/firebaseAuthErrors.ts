@@ -32,21 +32,17 @@ function extractFirebaseErrorCode(err: unknown): string {
 export function buildGoogleOAuthTestingError(
   context: { hostname?: string; projectId?: string } = {}
 ): ParsedFirebaseAuthError {
-  const hostname = context.hostname?.trim() || 'your-domain.github.io';
+  const hostname = context.hostname?.trim() || '';
   const projectId = context.projectId?.trim() || '';
-  const oauthConsentUrl = projectId
-    ? `https://console.cloud.google.com/apis/credentials/consent?project=${projectId}`
-    : 'https://console.cloud.google.com/apis/credentials/consent';
 
   return {
     code: 'auth/oauth-access-denied',
-    title: 'Google App Is in Testing Mode (Error 403)',
+    title: 'Can’t Proceed with Google Sign-In?',
     message:
-      'Google blocks any non-tester account until the OAuth Consent Screen is published (or the friend’s Gmail is added under Test users) in Google Cloud Console. Friends can also sign in right now using Email & Password.',
+      'If Google Sign-In is blocked or unavailable on your account or browser, you can sign in or create an account with Email & Password instead — your reminders, alarms, and Voice Notes sync the exact same way.',
     actionKind: 'oauth-testing-mode',
     hostname,
     projectId,
-    consoleUrl: oauthConsentUrl,
   };
 }
 

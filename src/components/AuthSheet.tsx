@@ -202,8 +202,8 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({
               className="min-h-[36px] px-2 text-[11px] font-medium text-amber-300/90 hover:text-amber-200 hover:underline"
             >
               {showBlockedHelp
-                ? 'Hide Google Access Blocked fix'
-                : 'Friend seeing “Access blocked” (Error 403)? Fix here'}
+                ? 'Hide sign-in tip'
+                : 'Can’t proceed with Google Sign-In? Tip'}
             </button>
           </div>
           {showBlockedHelp && (

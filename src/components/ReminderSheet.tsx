@@ -8,13 +8,15 @@ import {
   Mail,
   Play,
   Plus,
+  Square,
   Trash2,
   X,
 } from 'lucide-react';
-import { ALARM_SOUNDS, playAlarmCycle } from '../lib/audio';
+import { ALARM_SOUNDS, previewAlarmSound, stopPreviewSound } from '../lib/audio';
 import type { ParsedQuickReminder } from '../lib/parser';
 import { DAY_LETTERS, getDateKeyFromDate } from '../lib/time';
 import type { AlarmSoundId, Priority, Reminder, SubtaskItem } from '../types';
+import { useDynamicIsland } from './DynamicIsland';
 import { SpringSegmentedControl } from './SpringSegmentedControl';
 
 export type SheetDraft = ParsedQuickReminder & { note?: string };
@@ -68,6 +70,7 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
   onExportIcs,
   onClose,
 }) => {
+  const { onTriggerIsland } = useDynamicIsland();
   const [title, setTitle] = useState('');
   const [note, setNote] = useState('');
   const [time, setTime] = useState('08:30');
@@ -82,9 +85,14 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
   const [newSubtaskText, setNewSubtaskText] = useState('');
   const [addingTag, setAddingTag] = useState(false);
   const [newTagText, setNewTagText] = useState('');
+  const [previewingSound, setPreviewingSound] = useState(false);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      stopPreviewSound();
+      setPreviewingSound(false);
+      return;
+    }
     if (editing) {
       setTitle(editing.title);
       setNote(editing.note || '');
@@ -401,17 +409,57 @@ export const ReminderSheet: React.FC<ReminderSheetProps> = ({
                 </label>
                 <button
                   type="button"
-                  onClick={() => playAlarmCycle(sound)}
-                  className="inline-flex min-h-[36px] items-center gap-1 rounded-lg px-2.5 text-xs font-semibold text-[#60A5FA] hover:bg-white/[0.06]"
+                  onClick={async () => {
+                    if (previewingSound) {
+                      stopPreviewSound();
+                      setPreviewingSound(false);
+                      return;
+                    }
+                    setPreviewingSound(true);
+                    const result = await previewAlarmSound(sound, {
+                      customAudioName,
+                      onEnded: () => setPreviewingSound(false),
+                    });
+                    if (result.error) {
+                      setPreviewingSound(false);
+                      onTriggerIsland('alert', {
+                        title: 'Ringtone Preview',
+                        message: result.error,
+                      });
+                      return;
+                    }
+                    onTriggerIsland('alert', {
+                      title: result.usedCustom ? 'Custom Ringtone Preview' : 'Alarm Preview',
+                      message: `Playing ${result.label}`,
+                    });
+                  }}
+                  className={`inline-flex min-h-[36px] items-center gap-1 rounded-lg px-2.5 text-xs font-semibold transition-colors ${
+                    previewingSound
+                      ? 'bg-red-500/20 text-red-300 hover:bg-red-500/30'
+                      : 'text-[#60A5FA] hover:bg-white/[0.06]'
+                  }`}
                 >
-                  <Play className="h-3 w-3" />
-                  <span>Preview</span>
+                  {previewingSound ? (
+                    <>
+                      <Square className="h-3 w-3 fill-current" />
+                      <span>Stop</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="h-3 w-3 fill-current" />
+                      <span>Preview</span>
+                    </>
+                  )}
                 </button>
               </div>
               <select
                 id="sheet-alarm-sound"
                 value={sound}
-                onChange={(e) => setSound(e.target.value as AlarmSoundId)}
+                onChange={(e) => {
+                  stopPreviewSound();
+                  setPreviewingSound(false);
+                  setSound(e.target.value as AlarmSoundId);
+                }}
                 className="mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.1] bg-[#060812]/80 px-3.5 text-sm text-white focus:border-[#0A84FF] focus:outline-none"
               >
                 {ALARM_SOUNDS.map((s) => (

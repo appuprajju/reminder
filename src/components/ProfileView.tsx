@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   BellRing,
   Calendar,
@@ -15,6 +15,7 @@ import {
   RefreshCw,
   ShieldCheck,
   Smartphone,
+  Square,
   Trash2,
   Upload,
   Volume2,
@@ -24,9 +25,11 @@ import {
   ALARM_SOUNDS,
   NOTIF_SOUNDS,
   deleteCustomRingtone,
-  playAlarmCycle,
+  fileToBase64,
   playNotificationChime,
+  previewAlarmSound,
   saveCustomRingtone,
+  stopPreviewSound,
 } from '../lib/audio';
 import { FIREBASE_PROJECT_ID } from '../lib/firebase';
 import {
@@ -34,7 +37,13 @@ import {
   mapFirebaseAuthError,
   type ParsedFirebaseAuthError,
 } from '../lib/firebaseAuthErrors';
-import { isNativeApp, openExactAlarmSettings } from '../lib/nativeBridge';
+import {
+  clearNativeCustomRingtone,
+  isNativeApp,
+  openExactAlarmSettings,
+  syncNativeCustomRingtone,
+} from '../lib/nativeBridge';
+import { detectDeviceOs, getPlatformAssistantProfile } from '../lib/platform';
 import type {
   AlarmSoundId,
   DeliveryHealth,
@@ -71,7 +80,6 @@ interface ProfileViewProps {
   onInstantAlarmTest: () => void;
   onExportBackup: () => void;
   onImportBackup: (file: File) => void;
-  onOpenIntroVideo?: () => void;
   onOpenVoiceShortcuts?: () => void;
   onToast: (msg: string) => void;
 }
@@ -99,17 +107,25 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onInstantAlarmTest,
   onExportBackup,
   onImportBackup,
-  onOpenIntroVideo,
   onOpenVoiceShortcuts,
   onToast,
 }) => {
   const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
   const { onTriggerIsland } = useDynamicIsland();
+  const deviceOs = useMemo(() => detectDeviceOs(), []);
+  const assistantProfile = useMemo(() => getPlatformAssistantProfile(deviceOs), [deviceOs]);
   const [showIOSGuide, setShowIOSGuide] = useState(false);
   const [googleBusy, setGoogleBusy] = useState(false);
   const [googleAuthError, setGoogleAuthError] = useState<ParsedFirebaseAuthError | null>(null);
+  const [previewingAlarm, setPreviewingAlarm] = useState(false);
   const audioInputRef = useRef<HTMLInputElement>(null);
   const backupInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    return () => {
+      stopPreviewSound();
+    };
+  }, []);
 
   const toggleOAuthTestingHelp = () => {
     setGoogleAuthError((prev) =>
@@ -156,12 +172,56 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const handleWorkspaceConnect = () =>
     runGoogleAuth(onConnectGoogleWorkspace ?? onGoogleSignIn);
 
+  const handlePreviewAlarmRingtone = async () => {
+    if (previewingAlarm) {
+      stopPreviewSound();
+      setPreviewingAlarm(false);
+      return;
+    }
+
+    setPreviewingAlarm(true);
+    const result = await previewAlarmSound(prefs.defaultAlarmSound, {
+      customAudioName: prefs.customAudioName,
+      onEnded: () => setPreviewingAlarm(false),
+    });
+
+    if (result.error) {
+      setPreviewingAlarm(false);
+      onTriggerIsland('alert', {
+        title: 'Ringtone Preview',
+        message: result.error,
+      });
+      return;
+    }
+
+    onTriggerIsland('alert', {
+      title: result.usedCustom ? 'Custom Ringtone Preview' : 'Alarm Preview',
+      message: `Playing ${result.label}`,
+      durationMs: result.usedCustom ? 4200 : 2800,
+    });
+  };
+
   const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    stopPreviewSound();
+    setPreviewingAlarm(false);
     try {
       const name = await saveCustomRingtone(file);
+      // Also mirror custom ringtone into native Android storage (up to 8MB) for closed-app lock-screen playback
+      if (file.size <= 8 * 1024 * 1024) {
+        try {
+          const b64 = await fileToBase64(file);
+          await syncNativeCustomRingtone(name, b64);
+        } catch {
+          // ignore native mirror failure
+        }
+      }
       onUpdatePrefs({ customAudioName: name, defaultAlarmSound: 'custom' });
+      onTriggerIsland('success', {
+        title: 'Custom Ringtone Ready',
+        message: name,
+      });
       onToast(`Saved custom ringtone: ${name}`);
     } catch {
       onToast('Could not store selected audio file.');
@@ -170,7 +230,10 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   };
 
   const handleDeleteCustomAudio = async () => {
+    stopPreviewSound();
+    setPreviewingAlarm(false);
     await deleteCustomRingtone();
+    await clearNativeCustomRingtone();
     onUpdatePrefs({
       customAudioName: null,
       defaultAlarmSound: prefs.defaultAlarmSound === 'custom' ? 'radar' : prefs.defaultAlarmSound,
@@ -272,7 +335,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 className="mt-2 inline-flex min-h-[36px] w-full items-center justify-center gap-1.5 rounded-lg px-2 text-xs font-medium text-amber-200/90 transition-colors hover:bg-amber-500/10 hover:text-amber-100"
               >
                 <HelpCircle className="h-3.5 w-3.5 shrink-0" />
-                <span>Friend seeing &ldquo;Access blocked&rdquo; (Error 403)? Fix here</span>
+                <span>Can&rsquo;t proceed with Google Sign-In? Use Email instead</span>
               </button>
             </div>
           )}
@@ -490,24 +553,34 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               </label>
               <button
                 type="button"
-                onClick={() => {
-                  playAlarmCycle(prefs.defaultAlarmSound);
-                  onTriggerIsland('alert', {
-                    title: 'Alarm Preview',
-                    message: `Playing ${ALARM_SOUNDS.find((s) => s.id === prefs.defaultAlarmSound)?.label ?? 'custom'} ringtone`,
-                  });
-                }}
-                className="min-h-[36px] rounded-lg px-2.5 text-xs font-semibold text-[#60A5FA] hover:bg-white/[0.06]"
+                onClick={() => void handlePreviewAlarmRingtone()}
+                className={`inline-flex min-h-[36px] items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold transition-colors ${
+                  previewingAlarm
+                    ? 'bg-red-500/20 text-red-300 hover:bg-red-500/30'
+                    : 'text-[#60A5FA] hover:bg-white/[0.06]'
+                }`}
               >
-                Preview
+                {previewingAlarm ? (
+                  <>
+                    <Square className="h-3 w-3 fill-current" />
+                    <span>Stop</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-3 w-3 fill-current" />
+                    <span>Preview</span>
+                  </>
+                )}
               </button>
             </div>
             <select
               id="pref-alarm-sound"
               value={prefs.defaultAlarmSound}
-              onChange={(e) =>
-                onUpdatePrefs({ defaultAlarmSound: e.target.value as AlarmSoundId })
-              }
+              onChange={(e) => {
+                stopPreviewSound();
+                setPreviewingAlarm(false);
+                onUpdatePrefs({ defaultAlarmSound: e.target.value as AlarmSoundId });
+              }}
               className="mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/80 px-3.5 text-sm text-slate-100 focus:border-[#0A84FF] focus:outline-none"
             >
               {ALARM_SOUNDS.map((s) => (
@@ -668,11 +741,9 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/[0.08] pt-4">
               <div className="min-w-0">
                 <p className="text-sm font-medium text-slate-200">
-                  Live Siri &amp; Google Assistant
+                  {assistantProfile.sectionTitle}
                 </p>
-                <p className="text-xs text-slate-400">
-                  1-tap live voice &amp; hands-free “Hey Siri / Hey Google”
-                </p>
+                <p className="text-xs text-slate-400">{assistantProfile.profileSubtitle}</p>
               </div>
               <button
                 type="button"
@@ -681,25 +752,6 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               >
                 <Command className="h-3.5 w-3.5 text-emerald-300" />
                 <span>Open Live</span>
-              </button>
-            </div>
-          )}
-
-          {onOpenIntroVideo && (
-            <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/[0.08] pt-4">
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-slate-200">Animated App Intro Video</p>
-                <p className="text-xs text-slate-400">
-                  Watch feature walkthrough or download MP4
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={onOpenIntroVideo}
-                className="ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border border-sky-400/35 bg-sky-500/15 px-3.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap"
-              >
-                <Play className="h-3.5 w-3.5 fill-current" />
-                <span>Watch / MP4</span>
               </button>
             </div>
           )}

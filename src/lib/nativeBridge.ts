@@ -1,4 +1,4 @@
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, registerPlugin } from '@capacitor/core';
 import { App as CapApp } from '@capacitor/app';
 import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { LocalNotifications } from '@capacitor/local-notifications';
@@ -12,6 +12,56 @@ import { computeNextDueAt, getTodayDateKey, hashToInt32 } from './time';
 export const ALARM_CHANNEL_ID = 'reminderme_alarms';
 export const REMINDER_CHANNEL_ID = 'reminderme_reminders';
 export const ALARM_ACTION_TYPE_ID = 'ALARM_ACTIONS';
+
+interface AlarmBridgePlugin {
+  syncAlarms(options: { alarmsJson: string; timeFormat: '12h' | '24h' }): Promise<{ scheduled: number }>;
+  scheduleLockScreenTest(options: { delaySec: number; timeFormat: '12h' | '24h' }): Promise<{ ok: boolean }>;
+  saveCustomRingtone(options: { name: string; base64: string }): Promise<{ ok: boolean }>;
+  clearCustomRingtone(): Promise<{ ok: boolean }>;
+  consumePendingAction(): Promise<{ action?: string; reminderId?: string; minutes?: number }>;
+}
+
+const AlarmBridge = registerPlugin<AlarmBridgePlugin>('AlarmBridge');
+
+export function isAndroidNative(): boolean {
+  try {
+    return Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
+  } catch {
+    return false;
+  }
+}
+
+export async function syncNativeCustomRingtone(name: string, base64: string): Promise<void> {
+  if (!isAndroidNative()) return;
+  try {
+    await AlarmBridge.saveCustomRingtone({ name, base64 });
+  } catch {
+    // ignore if native bridge unavailable
+  }
+}
+
+export async function clearNativeCustomRingtone(): Promise<void> {
+  if (!isAndroidNative()) return;
+  try {
+    await AlarmBridge.clearCustomRingtone();
+  } catch {
+    // ignore
+  }
+}
+
+export async function consumePendingNativeAlarmAction(): Promise<{
+  action?: string;
+  reminderId?: string;
+  minutes?: number;
+} | null> {
+  if (!isAndroidNative()) return null;
+  try {
+    const res = await AlarmBridge.consumePendingAction();
+    return res && res.action ? res : null;
+  } catch {
+    return null;
+  }
+}
 
 export function isNativeApp(): boolean {
   try {
@@ -331,7 +381,10 @@ export async function openExactAlarmSettings(): Promise<void> {
  * Registers every pending alarm and reminder directly with Android OS AlarmManager
  * (`allowWhileIdle: true`) so alerts trigger accurately even when the app is closed and screen is locked.
  */
-export async function syncOsSchedules(reminders: Reminder[]): Promise<number> {
+export async function syncOsSchedules(
+  reminders: Reminder[],
+  timeFormat: '12h' | '24h' = '12h'
+): Promise<number> {
   const todayKey = getTodayDateKey();
   const now = Date.now();
   const active = reminders.filter((r) => {
@@ -342,6 +395,46 @@ export async function syncOsSchedules(reminders: Reminder[]): Promise<number> {
   if (!isNativeApp()) {
     // On web, OS scheduling is backed by server-side high-urgency Web Push; return upcoming count
     return active.filter((r) => r.doneDate !== todayKey).length;
+  }
+
+  const upcomingPayloads = active
+    .map((r) => {
+      const targetMs =
+        r.snoozedUntil && r.snoozedUntil > now
+          ? r.snoozedUntil
+          : r.doneDate === todayKey
+            ? computeNextDueAt(r.time, r.days, new Date(now + 12 * 3600000))
+            : computeNextDueAt(r.time, r.days, new Date(now));
+
+      if (!Number.isFinite(targetMs) || targetMs <= now) return null;
+
+      return {
+        id: r.id,
+        requestCode: hashToInt32(r.id),
+        title: r.title,
+        note: r.note || '',
+        time: r.time,
+        triggerAtMs: targetMs,
+        isAlarm: r.isAlarm,
+        sound: String(r.sound || 'radar'),
+      };
+    })
+    .filter((x): x is NonNullable<typeof x> => x !== null)
+    .sort((a, b) => a.triggerAtMs - b.triggerAtMs);
+
+  // Native Android: sync exact AlarmManager.setAlarmClock + Full-Screen Lock-Screen Activity + Home-Screen Widget
+  if (isAndroidNative()) {
+    try {
+      const res = await AlarmBridge.syncAlarms({
+        alarmsJson: JSON.stringify(upcomingPayloads),
+        timeFormat,
+      });
+      if (typeof res?.scheduled === 'number') {
+        return res.scheduled;
+      }
+    } catch {
+      // fall back to LocalNotifications below
+    }
   }
 
   try {
@@ -355,35 +448,22 @@ export async function syncOsSchedules(reminders: Reminder[]): Promise<number> {
       });
     }
 
-    const toSchedule = active
-      .map((r) => {
-        const targetMs =
-          r.snoozedUntil && r.snoozedUntil > now
-            ? r.snoozedUntil
-            : r.doneDate === todayKey
-              ? computeNextDueAt(r.time, r.days, new Date(now + 12 * 3600000))
-              : computeNextDueAt(r.time, r.days, new Date(now));
-
-        if (!Number.isFinite(targetMs) || targetMs <= now) return null;
-
-        return {
-          id: hashToInt32(r.id),
-          title: r.isAlarm ? `ALARM: ${r.title}` : r.title,
-          body: r.note || `Scheduled for ${r.time} — tap Snooze or Dismiss`,
-          channelId: r.isAlarm ? ALARM_CHANNEL_ID : REMINDER_CHANNEL_ID,
-          actionTypeId: ALARM_ACTION_TYPE_ID,
-          schedule: {
-            at: new Date(targetMs),
-            allowWhileIdle: true,
-          },
-          extra: {
-            reminderId: r.id,
-            isAlarm: r.isAlarm,
-            sound: r.sound || 'radar',
-          },
-        };
-      })
-      .filter((x): x is NonNullable<typeof x> => x !== null);
+    const toSchedule = upcomingPayloads.map((item) => ({
+      id: item.requestCode,
+      title: item.isAlarm ? `ALARM: ${item.title}` : item.title,
+      body: item.note || `Scheduled for ${item.time} — tap Snooze or Dismiss`,
+      channelId: item.isAlarm ? ALARM_CHANNEL_ID : REMINDER_CHANNEL_ID,
+      actionTypeId: ALARM_ACTION_TYPE_ID,
+      schedule: {
+        at: new Date(item.triggerAtMs),
+        allowWhileIdle: true,
+      },
+      extra: {
+        reminderId: item.id,
+        isAlarm: item.isAlarm,
+        sound: item.sound,
+      },
+    }));
 
     if (toSchedule.length > 0) {
       await LocalNotifications.schedule({ notifications: toSchedule });
@@ -519,7 +599,8 @@ export async function subscribeDevicePush(
 
 export async function scheduleDelayedLockScreenTest(
   delaySec: number,
-  triggerServerPush?: (delaySec: number) => Promise<boolean>
+  triggerServerPush?: (delaySec: number) => Promise<boolean>,
+  timeFormat: '12h' | '24h' = '12h'
 ): Promise<{ ok: boolean; via: string; message: string }> {
   const perm = await requestOsNotificationPermission();
   if (perm !== 'granted') {
@@ -528,6 +609,21 @@ export async function scheduleDelayedLockScreenTest(
       via: 'none',
       message: 'Allow notifications first to run the lock-screen test.',
     };
+  }
+
+  if (isAndroidNative()) {
+    try {
+      const res = await AlarmBridge.scheduleLockScreenTest({ delaySec, timeFormat });
+      if (res?.ok) {
+        return {
+          ok: true,
+          via: 'android-lockscreen',
+          message: `Lock-screen alarm set for ${delaySec}s from now. Close the app & lock your phone to test Swipe-Up gestures.`,
+        };
+      }
+    } catch {
+      // fall through to LocalNotifications
+    }
   }
 
   if (isNativeApp()) {

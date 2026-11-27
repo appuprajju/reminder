@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const playwright = require('/usr/local/share/bun-global/node_modules/playwright');
 
-const DURATION_SEC = 36;
+const DURATION_SEC = 56;
 const FPS = 30;
 const TOTAL_FRAMES = DURATION_SEC * FPS;
 const SAMPLE_RATE = 44100;
@@ -38,14 +38,16 @@ function generateSoundtrackWav(outPath) {
   buf.write('data', 36);
   buf.writeUInt32LE(dataSize, 40);
 
-  // 6 gentle modern ambient chords aligned to the 6 chapters
+  // 8 gentle modern ambient chords aligned to the 8 full-app chapters
   const chords = [
-    { start: 0, end: 5.5, notes: [130.81, 196.0, 246.94, 293.66, 329.63] }, // Cmaj9
-    { start: 5.5, end: 12.0, notes: [110.0, 164.81, 196.0, 246.94, 261.63] }, // Am9
-    { start: 12.0, end: 18.0, notes: [174.61, 220.0, 261.63, 329.63, 392.0] }, // Fmaj9
-    { start: 18.0, end: 24.0, notes: [146.83, 220.0, 261.63, 329.63, 349.23] }, // Dm9
-    { start: 24.0, end: 30.0, notes: [196.0, 246.94, 293.66, 329.63, 392.0] }, // G6
-    { start: 30.0, end: 36.0, notes: [130.81, 196.0, 261.63, 329.63, 392.0] }, // Cmaj7 resolve
+    { start: 0, end: 6.5, notes: [130.81, 196.0, 246.94, 293.66, 329.63] }, // Cmaj9
+    { start: 6.5, end: 13.5, notes: [110.0, 164.81, 196.0, 246.94, 261.63] }, // Am9
+    { start: 13.5, end: 20.5, notes: [174.61, 220.0, 261.63, 329.63, 392.0] }, // Fmaj9
+    { start: 20.5, end: 28.5, notes: [146.83, 220.0, 261.63, 329.63, 349.23] }, // Dm9 (OS Voice Spotlight)
+    { start: 28.5, end: 35.5, notes: [196.0, 246.94, 293.66, 329.63, 392.0] }, // G6
+    { start: 35.5, end: 42.5, notes: [110.0, 164.81, 220.0, 261.63, 329.63] }, // Am7
+    { start: 42.5, end: 49.5, notes: [174.61, 220.0, 261.63, 329.63, 392.0] }, // Fmaj9
+    { start: 49.5, end: 56.0, notes: [130.81, 196.0, 261.63, 329.63, 392.0] }, // Cmaj7 resolve
   ];
 
   // Subtle glassy arpeggio chimes at chapter entrances
@@ -53,18 +55,23 @@ function generateSoundtrackWav(outPath) {
     { t: 0.25, f: 523.25 },
     { t: 0.55, f: 659.25 },
     { t: 0.85, f: 783.99 },
-    { t: 5.65, f: 587.33 },
-    { t: 5.9, f: 659.25 },
-    { t: 12.15, f: 698.46 },
-    { t: 12.4, f: 880.0 },
-    { t: 18.15, f: 587.33 },
-    { t: 18.4, f: 783.99 },
-    { t: 24.15, f: 659.25 },
-    { t: 24.4, f: 783.99 },
-    { t: 30.2, f: 523.25 },
-    { t: 30.5, f: 659.25 },
-    { t: 30.8, f: 783.99 },
-    { t: 31.1, f: 1046.5 },
+    { t: 6.65, f: 587.33 },
+    { t: 6.9, f: 659.25 },
+    { t: 13.65, f: 698.46 },
+    { t: 13.9, f: 880.0 },
+    { t: 20.65, f: 523.25 },
+    { t: 20.9, f: 659.25 },
+    { t: 21.15, f: 783.99 },
+    { t: 28.65, f: 659.25 },
+    { t: 28.9, f: 880.0 },
+    { t: 35.65, f: 587.33 },
+    { t: 35.9, f: 783.99 },
+    { t: 42.65, f: 698.46 },
+    { t: 42.9, f: 880.0 },
+    { t: 49.65, f: 523.25 },
+    { t: 49.95, f: 659.25 },
+    { t: 50.25, f: 783.99 },
+    { t: 53.6, f: 1046.5 },
   ];
 
   for (let i = 0; i < numSamples; i++) {

@@ -135,47 +135,27 @@ export const AuthRecoveryBanner: React.FC<AuthRecoveryBannerProps> = ({
 
       {error.actionKind === 'oauth-testing-mode' && (
         <div className="mt-3 space-y-2.5 border-t border-white/[0.1] pt-3">
-          <ol className="list-decimal space-y-1.5 pl-4 text-[11px] text-slate-300">
+          <ul className="list-disc space-y-1.5 pl-4 text-[11px] text-slate-300">
             <li>
-              <strong className="text-white">Seeing the amber “App hasn’t been verified” box?</strong>{' '}
-              That is a warning, not a block — scroll down inside Google’s popup and tap{' '}
-              <strong className="text-white">Continue</strong> (or{' '}
-              <strong className="text-white">Advanced → Go to reminderme</strong>) to connect Gmail
-              &amp; Calendar immediately.
+              <strong className="text-white">Recommended tip:</strong> Create an account or sign in
+              using <strong className="text-white">Email &amp; Password</strong> instead — full
+              cloud sync works immediately on all devices.
             </li>
             <li>
-              <strong className="text-white">Seeing “Access blocked (Error 403)” on a friend’s phone?</strong>{' '}
-              Open Google Cloud Console → <strong className="text-white">OAuth consent screen</strong> →{' '}
-              <strong className="text-white">Audience</strong> for{' '}
-              <span className="font-mono text-sky-300">{error.projectId || 'gen-lang-client-0663798259'}</span>,
-              and add their Gmail under <strong className="text-white">Test users</strong> or click{' '}
-              <strong className="text-white">Publish App</strong> (and submit for Google Verification
-              to remove the amber Gmail/Calendar warning permanently).
+              <strong className="text-white">Prefer to stay without an account?</strong> You can
+              continue offline right on this device and export a backup anytime from Profile.
             </li>
-          </ol>
+          </ul>
 
-          <div className="flex flex-col gap-2">
-            {error.consoleUrl && (
-              <a
-                href={error.consoleUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ios-spring-press flex min-h-[44px] w-full items-center justify-center gap-1.5 rounded-xl border border-amber-300/30 bg-amber-400/15 px-3 text-xs font-semibold text-amber-100 hover:bg-amber-400/25 whitespace-nowrap"
-              >
-                <span>Open Google Cloud OAuth &amp; Verification</span>
-                <ExternalLink className="h-3.5 w-3.5" />
-              </a>
-            )}
-            {onUseEmailFallback && (
-              <button
-                type="button"
-                onClick={onUseEmailFallback}
-                className="ios-spring-press flex min-h-[44px] w-full items-center justify-center rounded-xl border border-sky-400/35 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap"
-              >
-                Sign In / Create Account with Email Instead
-              </button>
-            )}
-          </div>
+          {onUseEmailFallback && (
+            <button
+              type="button"
+              onClick={onUseEmailFallback}
+              className="ios-spring-press flex min-h-[44px] w-full items-center justify-center rounded-xl border border-sky-400/35 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap"
+            >
+              Sign In / Create Account with Email Instead
+            </button>
+          )}
         </div>
       )}
     </div>
