@@ -1,12 +1,12 @@
 import { i as __toESM, n as require_react, t as require_jsx_runtime } from "./jsx-runtime-CWAvGazs.js";
 import { t as createLucideIcon } from "./createLucideIcon-1IqWJXqJ.js";
-import { A as Mail, D as Trash, I as Calendar, O as ShieldCheck, R as CalendarArrowDown, a as playAlarmCycle, c as CLOUDFLARE_EDGE_URL, d as SpringSegmentedControl, f as isNativeApp, i as deleteCustomRingtone, l as api, n as ALARM_SOUNDS, o as playNotificationChime, p as openExactAlarmSettings, r as NOTIF_SOUNDS, s as saveCustomRingtone, t as usePWAInstall } from "./index-OFjXOEAy.js";
+import { $ as Calendar, A as t, C as AuthRecoveryBanner, D as mapFirebaseAuthError, E as buildGoogleOAuthTestingError, F as getLanguageOption, G as Mail, J as Globe, K as LogIn, O as FIREBASE_PROJECT_ID, R as Trash, S as GoogleSignInButton, T as getPlatformAssistantProfile, V as ShieldCheck, X as CircleQuestionMark, _ as syncNativeCustomRingtone, a as deleteCustomRingtone, c as playNotificationChime, d as stopPreviewSound, g as openExactAlarmSettings, h as isNativeApp, i as NOTIF_SOUNDS, k as useDynamicIsland, l as previewAlarmSound, m as clearNativeCustomRingtone, n as usePWAInstall, o as fileToBase64, r as ALARM_SOUNDS, tt as CalendarArrowDown, u as saveCustomRingtone, w as detectDeviceOs, x as SpringSegmentedControl, z as Square } from "./index-C7fN5fMK.js";
+import { n as Download, t as IosSwitch } from "./IosSwitch-A3vo3Bf1.js";
 import { t as Play } from "./play-CxHGFyOa.js";
 import { t as RefreshCw } from "./refresh-cw-BYRxwx1v.js";
 import { t as Volume2 } from "./volume-2-DhSWTl4V.js";
-import { t as GoogleSignInButton } from "./GoogleSignInButton-BovHPH9A.js";
 // node_modules/lucide-react/dist/esm/icons/bell-ring.mjs
-var __iconData$9 = {
+var __iconData$6 = {
 	name: "bell-ring",
 	size: 24,
 	node: [
@@ -28,42 +28,21 @@ var __iconData$9 = {
 		}]
 	]
 };
-__iconData$9.node;
-var BellRing = createLucideIcon(__iconData$9);
-// node_modules/lucide-react/dist/esm/icons/cloud.mjs
-var __iconData$8 = {
-	name: "cloud",
+__iconData$6.node;
+var BellRing = createLucideIcon(__iconData$6);
+// node_modules/lucide-react/dist/esm/icons/command.mjs
+var __iconData$5 = {
+	name: "command",
 	size: 24,
 	node: [["path", {
-		d: "M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z",
-		key: "p7xjir"
+		d: "M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3",
+		key: "11bfej"
 	}]]
 };
-__iconData$8.node;
-var Cloud = createLucideIcon(__iconData$8);
-// node_modules/lucide-react/dist/esm/icons/download.mjs
-var __iconData$7 = {
-	name: "download",
-	size: 24,
-	node: [
-		["path", {
-			d: "M12 15V3",
-			key: "m9g1x1"
-		}],
-		["path", {
-			d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",
-			key: "ih7n3h"
-		}],
-		["path", {
-			d: "m7 10 5 5 5-5",
-			key: "brsn70"
-		}]
-	]
-};
-__iconData$7.node;
-var Download = createLucideIcon(__iconData$7);
+__iconData$5.node;
+var Command = createLucideIcon(__iconData$5);
 // node_modules/lucide-react/dist/esm/icons/file-braces.mjs
-var __iconData$6 = {
+var __iconData$4 = {
 	name: "file-braces",
 	size: 24,
 	node: [
@@ -86,10 +65,10 @@ var __iconData$6 = {
 	],
 	aliases: ["file-json"]
 };
-__iconData$6.node;
-var FileBraces = createLucideIcon(__iconData$6);
+__iconData$4.node;
+var FileBraces = createLucideIcon(__iconData$4);
 // node_modules/lucide-react/dist/esm/icons/lock.mjs
-var __iconData$5 = {
+var __iconData$3 = {
 	name: "lock",
 	size: 24,
 	node: [["rect", {
@@ -105,31 +84,10 @@ var __iconData$5 = {
 		key: "fwvmzm"
 	}]]
 };
-__iconData$5.node;
-var Lock = createLucideIcon(__iconData$5);
-// node_modules/lucide-react/dist/esm/icons/log-in.mjs
-var __iconData$4 = {
-	name: "log-in",
-	size: 24,
-	node: [
-		["path", {
-			d: "m10 17 5-5-5-5",
-			key: "1bsop3"
-		}],
-		["path", {
-			d: "M15 12H3",
-			key: "6jk70r"
-		}],
-		["path", {
-			d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4",
-			key: "u53s6r"
-		}]
-	]
-};
-__iconData$4.node;
-var LogIn = createLucideIcon(__iconData$4);
+__iconData$3.node;
+var Lock = createLucideIcon(__iconData$3);
 // node_modules/lucide-react/dist/esm/icons/log-out.mjs
-var __iconData$3 = {
+var __iconData$2 = {
 	name: "log-out",
 	size: 24,
 	node: [
@@ -147,10 +105,10 @@ var __iconData$3 = {
 		}]
 	]
 };
-__iconData$3.node;
-var LogOut = createLucideIcon(__iconData$3);
+__iconData$2.node;
+var LogOut = createLucideIcon(__iconData$2);
 // node_modules/lucide-react/dist/esm/icons/smartphone.mjs
-var __iconData$2 = {
+var __iconData$1 = {
 	name: "smartphone",
 	size: 24,
 	node: [["rect", {
@@ -166,10 +124,10 @@ var __iconData$2 = {
 		key: "mhygvu"
 	}]]
 };
-__iconData$2.node;
-var Smartphone = createLucideIcon(__iconData$2);
+__iconData$1.node;
+var Smartphone = createLucideIcon(__iconData$1);
 // node_modules/lucide-react/dist/esm/icons/upload.mjs
-var __iconData$1 = {
+var __iconData = {
 	name: "upload",
 	size: 24,
 	node: [
@@ -187,92 +145,105 @@ var __iconData$1 = {
 		}]
 	]
 };
-__iconData$1.node;
-var Upload = createLucideIcon(__iconData$1);
-// node_modules/lucide-react/dist/esm/icons/zap.mjs
-var __iconData = {
-	name: "zap",
-	size: 24,
-	node: [["path", {
-		d: "M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z",
-		key: "1v7up4"
-	}]]
-};
 __iconData.node;
-var Zap = createLucideIcon(__iconData);
-// src/components/IosSwitch.tsx
+var Upload = createLucideIcon(__iconData);
+// src/components/ProfileView.tsx
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_jsx_runtime = require_jsx_runtime();
-var IosSwitch = ({ checked, onChange, ariaLabel, accent = "emerald", disabled = false }) => {
-	const [pressed, setPressed] = (0, import_react.useState)(false);
-	const activeTrackClass = accent === "azure" ? "bg-[#0A84FF] shadow-[0_0_16px_rgba(10,132,255,0.45)]" : accent === "coral" ? "bg-[#FF453A] shadow-[0_0_16px_rgba(255,69,58,0.45)]" : "bg-[#30D158] shadow-[0_0_16px_rgba(48,209,88,0.42)]";
-	const thumbTransform = checked ? pressed ? "translate3d(17px, 0, 0) scaleX(1.14)" : "translate3d(20px, 0, 0) scaleX(1)" : pressed ? "translate3d(0px, 0, 0) scaleX(1.14)" : "translate3d(0px, 0, 0) scaleX(1)";
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-		type: "button",
-		role: "switch",
-		"aria-checked": checked,
-		"aria-label": ariaLabel,
-		disabled,
-		onPointerDown: () => setPressed(true),
-		onPointerUp: () => setPressed(false),
-		onPointerLeave: () => setPressed(false),
-		onPointerCancel: () => setPressed(false),
-		onClick: () => onChange(!checked),
-		className: "flex min-h-[44px] min-w-[54px] shrink-0 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0A84FF] disabled:opacity-50",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-			className: `ios-switch-track relative inline-flex h-[31px] w-[51px] items-center rounded-full border border-white/15 p-[2px] ${checked ? activeTrackClass : "bg-white/[0.14]"}`,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-				style: {
-					transform: thumbTransform,
-					transformOrigin: checked ? "right center" : "left center"
-				},
-				className: "ios-switch-thumb block h-[25px] w-[25px] rounded-full bg-white shadow-[0_3px_8px_rgba(0,0,0,0.34),0_1px_2px_rgba(0,0,0,0.2)]"
-			})
-		})
-	});
-};
-// src/components/ProfileView.tsx
-var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorkspaceAccess, calendarCount, gmailCount, onUpdatePrefs, onGoogleSignIn, onOpenAuth, onSignOut, onSyncNow, onRefreshWorkspace, onRequestDailyDigest, onExportAllIcs, onEnableNotifications, onSchedule10sTest, onInstantAlarmTest, onExportBackup, onImportBackup, onToast }) => {
+var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorkspaceAccess, calendarCount, gmailCount, onUpdatePrefs, onGoogleSignIn, onConnectGoogleWorkspace, onOpenAuth, onSignOut, onSyncNow, onRefreshWorkspace, onRequestDailyDigest, onExportAllIcs, onEnableNotifications, onSchedule10sTest, onInstantAlarmTest, onExportBackup, onImportBackup, onOpenVoiceShortcuts, onOpenLanguagePicker, onToast }) => {
 	const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
+	const { onTriggerIsland } = useDynamicIsland();
+	const deviceOs = (0, import_react.useMemo)(() => detectDeviceOs(), []);
+	const assistantProfile = (0, import_react.useMemo)(() => getPlatformAssistantProfile(deviceOs), [deviceOs]);
+	const activeLanguage = (0, import_react.useMemo)(() => getLanguageOption(prefs.language), [prefs.language]);
 	const [showIOSGuide, setShowIOSGuide] = (0, import_react.useState)(false);
 	const [googleBusy, setGoogleBusy] = (0, import_react.useState)(false);
-	const [pinging, setPinging] = (0, import_react.useState)(false);
-	const [pingResult, setPingResult] = (0, import_react.useState)(null);
-	const [pingError, setPingError] = (0, import_react.useState)(null);
+	const [googleAuthError, setGoogleAuthError] = (0, import_react.useState)(null);
+	const [previewingAlarm, setPreviewingAlarm] = (0, import_react.useState)(false);
 	const audioInputRef = (0, import_react.useRef)(null);
 	const backupInputRef = (0, import_react.useRef)(null);
-	const handleDirectGoogleSignIn = async () => {
+	(0, import_react.useEffect)(() => {
+		return () => {
+			stopPreviewSound();
+		};
+	}, []);
+	const toggleOAuthTestingHelp = () => {
+		setGoogleAuthError((prev) => prev?.code === "auth/oauth-access-denied" ? null : buildGoogleOAuthTestingError({
+			hostname: typeof window !== "undefined" ? window.location.hostname : "",
+			projectId: FIREBASE_PROJECT_ID
+		}));
+	};
+	const runGoogleAuth = async (fn) => {
 		setGoogleBusy(true);
+		setGoogleAuthError(null);
+		const hostname = typeof window !== "undefined" ? window.location.hostname : "";
 		try {
-			await onGoogleSignIn();
+			await fn();
 		} catch (err) {
-			const msg = err instanceof Error ? err.message : "Google Sign-In failed";
-			if (!msg.includes("popup-closed-by-user")) onToast(msg);
+			const parsed = mapFirebaseAuthError(err, {
+				hostname,
+				projectId: FIREBASE_PROJECT_ID
+			});
+			if (parsed.code === "auth/popup-closed-by-user") setGoogleAuthError(buildGoogleOAuthTestingError({
+				hostname,
+				projectId: FIREBASE_PROJECT_ID
+			}));
+			else {
+				setGoogleAuthError(parsed);
+				onTriggerIsland("alert", {
+					title: parsed.title,
+					message: parsed.message
+				});
+			}
 		} finally {
 			setGoogleBusy(false);
 		}
 	};
-	const handleTestBackendSpeed = async (overrideUrl) => {
-		setPinging(true);
-		setPingError(null);
-		try {
-			const result = await api.ping(overrideUrl !== void 0 ? overrideUrl : prefs.serverBaseUrl);
-			setPingResult(result);
-		} catch (err) {
-			setPingResult(null);
-			setPingError(err instanceof Error ? err.message : "Backend unreachable");
-		} finally {
-			setPinging(false);
+	const handleDirectGoogleSignIn = () => runGoogleAuth(onGoogleSignIn);
+	const handleWorkspaceConnect = () => runGoogleAuth(onConnectGoogleWorkspace ?? onGoogleSignIn);
+	const handlePreviewAlarmRingtone = async () => {
+		if (previewingAlarm) {
+			stopPreviewSound();
+			setPreviewingAlarm(false);
+			return;
 		}
+		setPreviewingAlarm(true);
+		const result = await previewAlarmSound(prefs.defaultAlarmSound, {
+			customAudioName: prefs.customAudioName,
+			onEnded: () => setPreviewingAlarm(false)
+		});
+		if (result.error) {
+			setPreviewingAlarm(false);
+			onTriggerIsland("alert", {
+				title: "Ringtone Preview",
+				message: result.error
+			});
+			return;
+		}
+		onTriggerIsland("alert", {
+			title: result.usedCustom ? "Custom Ringtone Preview" : "Alarm Preview",
+			message: `Playing ${result.label}`,
+			durationMs: result.usedCustom ? 4200 : 2800
+		});
 	};
 	const handleAudioUpload = async (e) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
+		stopPreviewSound();
+		setPreviewingAlarm(false);
 		try {
 			const name = await saveCustomRingtone(file);
+			if (file.size <= 8388608) try {
+				const b64 = await fileToBase64(file);
+				await syncNativeCustomRingtone(name, b64);
+			} catch {}
 			onUpdatePrefs({
 				customAudioName: name,
 				defaultAlarmSound: "custom"
+			});
+			onTriggerIsland("success", {
+				title: "Custom Ringtone Ready",
+				message: name
 			});
 			onToast(`Saved custom ringtone: ${name}`);
 		} catch {
@@ -281,7 +252,10 @@ var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorks
 		e.target.value = "";
 	};
 	const handleDeleteCustomAudio = async () => {
+		stopPreviewSound();
+		setPreviewingAlarm(false);
 		await deleteCustomRingtone();
+		await clearNativeCustomRingtone();
 		onUpdatePrefs({
 			customAudioName: null,
 			defaultAlarmSound: prefs.defaultAlarmSound === "custom" ? "radar" : prefs.defaultAlarmSound
@@ -289,7 +263,6 @@ var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorks
 		onToast("Removed custom ringtone");
 	};
 	const platformLabel = deliveryHealth.platform === "android-native" ? "Android Native App (Capacitor)" : deliveryHealth.platform === "ios-native" ? "iOS Native App (Capacitor)" : deliveryHealth.platform === "pwa-standalone" ? "Installed App (Standalone)" : "Web Preview";
-	const backendMode = prefs.serverBaseUrl === "https://api.makeuperfect.in" ? "edge" : "auto";
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		className: "grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -344,13 +317,22 @@ var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorks
 							})
 						})]
 					}),
-					!user && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					!user && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "mt-4",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GoogleSignInButton, {
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(GoogleSignInButton, {
 							onClick: handleDirectGoogleSignIn,
 							disabled: googleBusy,
 							label: googleBusy ? "Connecting to Google…" : "Sign in with Google"
-						})
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							onClick: toggleOAuthTestingHelp,
+							className: "mt-2 inline-flex min-h-[36px] w-full items-center justify-center gap-1.5 rounded-lg px-2 text-xs font-medium text-amber-200/90 transition-colors hover:bg-amber-500/10 hover:text-amber-100",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleQuestionMark, { className: "h-3.5 w-3.5 shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Can’t proceed with Google Sign-In? Use Email instead" })]
+						})]
+					}),
+					googleAuthError && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthRecoveryBanner, {
+						error: googleAuthError,
+						onUseEmailFallback: onOpenAuth
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "mt-4 border-t border-white/[0.08] pt-4",
@@ -385,18 +367,37 @@ var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorks
 									}),
 									" inbox emails"
 								]
-							}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 								className: "mt-1.5 text-xs leading-relaxed text-slate-400",
-								children: user?.authProvider === "firebase" ? "Reconnect Google to refresh live Google Calendar & Gmail permissions for this session." : "Connect Google to view Calendar events, convert Gmail into alarms, and send daily agenda digests."
+								children: [
+									"If Google shows an amber “app hasn’t been verified” notice for Gmail & Calendar, scroll down and tap ",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+										className: "text-slate-200",
+										children: "Continue"
+									}),
+									" — or use",
+									" ",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+										className: "text-slate-200",
+										children: "Email Digest"
+									}),
+									" and",
+									" ",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+										className: "text-slate-200",
+										children: "Export .ics"
+									}),
+									" directly with zero warning."
+								]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								className: "mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2",
 								children: [!hasWorkspaceAccess ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 									type: "button",
 									disabled: googleBusy,
-									onClick: handleDirectGoogleSignIn,
+									onClick: handleWorkspaceConnect,
 									className: "ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-sky-400/30 bg-sky-500/15 px-3.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 disabled:opacity-50",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: googleBusy ? "Connecting…" : user ? "Reconnect Google Workspace" : "Connect Google Workspace" })]
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: googleBusy ? "Connecting…" : user ? "Connect Live Calendar & Gmail" : "Connect Google Workspace" })]
 								}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 									type: "button",
 									onClick: onRequestDailyDigest,
@@ -406,79 +407,14 @@ var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorks
 									type: "button",
 									onClick: onExportAllIcs,
 									className: "ios-spring-press flex min-h-[44px] items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.05] px-3.5 text-xs font-semibold text-slate-100 hover:bg-white/[0.1]",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarArrowDown, { className: "h-4 w-4 text-emerald-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Export Apple Calendar (.ics)" })]
-								})]
-							})
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "mt-4 border-t border-white/[0.08] pt-4",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex flex-wrap items-center justify-between gap-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "flex items-center gap-1.5 text-xs font-medium text-slate-300",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cloud, { className: "h-3.5 w-3.5 text-sky-400" }), "Optional Custom Push Backend"]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									type: "button",
-									disabled: pinging,
-									onClick: () => handleTestBackendSpeed(),
-									className: "ios-spring-press inline-flex min-h-[34px] items-center gap-1.5 rounded-lg border border-sky-400/25 bg-sky-400/10 px-2.5 text-xs font-semibold text-sky-300 transition-colors hover:bg-sky-400/20 disabled:opacity-60",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Zap, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: pinging ? "Testing…" : "Test Speed" })]
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarArrowDown, { className: "h-4 w-4 text-emerald-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Export Calendar (.ics)" })]
 								})]
 							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								className: "mt-2.5",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpringSegmentedControl, {
-									ariaLabel: "Custom backend mode",
-									fullWidth: true,
-									size: "sm",
-									value: backendMode,
-									onChange: (mode) => {
-										onUpdatePrefs({ serverBaseUrl: mode === "edge" ? CLOUDFLARE_EDGE_URL : "" });
-										setPingResult(null);
-										setPingError(null);
-										onToast(mode === "edge" ? "Switched to Cloudflare Edge Worker (api.makeuperfect.in)" : "Switched to Auto (Same Origin) backend");
-									},
-									options: [{
-										id: "auto",
-										label: "Auto (Same Origin)"
-									}, {
-										id: "edge",
-										label: "Cloudflare Edge"
-									}]
-								})
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
-								className: "mt-2.5 block",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "sr-only",
-									children: "Cloud Sync Server URL"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-									type: "url",
-									value: prefs.serverBaseUrl,
-									onChange: (e) => {
-										onUpdatePrefs({ serverBaseUrl: e.target.value });
-										setPingResult(null);
-										setPingError(null);
-									},
-									placeholder: "https://api.makeuperfect.in (blank = same origin)",
-									className: "min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/70 px-3.5 text-xs text-slate-100 placeholder:text-slate-500 focus:border-[#0A84FF] focus:outline-none"
-								})]
-							}),
-							pingResult && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-								className: "mt-2 flex items-center justify-between rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "font-semibold",
-									children: ["Connected · ", pingResult.engine]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "font-mono font-bold tabular-nums",
-									children: [pingResult.latencyMs, "ms"]
-								})]
-							}),
-							pingError && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-2 rounded-xl border border-amber-400/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-200",
-								children: pingError
+							!hasWorkspaceAccess && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "button",
+								onClick: onRequestDailyDigest,
+								className: "ios-spring-press mt-2 flex min-h-[42px] w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3.5 text-xs font-semibold text-slate-200 hover:bg-white/[0.09]",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-3.5 w-3.5 text-amber-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Open Daily Digest in Gmail (No Verification Needed)" })]
 							})
 						]
 					})
@@ -593,14 +529,18 @@ var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorks
 								children: "Default Alarm Ringtone"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 								type: "button",
-								onClick: () => playAlarmCycle(prefs.defaultAlarmSound),
-								className: "min-h-[36px] rounded-lg px-2.5 text-xs font-semibold text-[#60A5FA] hover:bg-white/[0.06]",
-								children: "Preview"
+								onClick: () => void handlePreviewAlarmRingtone(),
+								className: `inline-flex min-h-[36px] items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold transition-colors ${previewingAlarm ? "bg-red-500/20 text-red-300 hover:bg-red-500/30" : "text-[#60A5FA] hover:bg-white/[0.06]"}`,
+								children: previewingAlarm ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Square, { className: "h-3 w-3 fill-current" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Stop" })] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "h-3 w-3 fill-current" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Preview" })] })
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", {
 							id: "pref-alarm-sound",
 							value: prefs.defaultAlarmSound,
-							onChange: (e) => onUpdatePrefs({ defaultAlarmSound: e.target.value }),
+							onChange: (e) => {
+								stopPreviewSound();
+								setPreviewingAlarm(false);
+								onUpdatePrefs({ defaultAlarmSound: e.target.value });
+							},
 							className: "mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.08] bg-[#060812]/80 px-3.5 text-sm text-slate-100 focus:border-[#0A84FF] focus:outline-none",
 							children: [ALARM_SOUNDS.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("option", {
 								value: s.id,
@@ -662,7 +602,13 @@ var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorks
 								children: "Gentle Notification Chime"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 								type: "button",
-								onClick: () => playNotificationChime(prefs.defaultNotifSound),
+								onClick: () => {
+									playNotificationChime(prefs.defaultNotifSound);
+									onTriggerIsland("success", {
+										title: "Chime Preview",
+										message: `Playing ${NOTIF_SOUNDS.find((s) => s.id === prefs.defaultNotifSound)?.label ?? "notification"} chime`
+									});
+								},
 								className: "min-h-[36px] rounded-lg px-2.5 text-xs font-semibold text-[#60A5FA] hover:bg-white/[0.06]",
 								children: "Preview"
 							})]
@@ -773,6 +719,49 @@ var ProfileView = ({ user, isOnline, syncStatus, prefs, deliveryHealth, hasWorks
 								})]
 							})
 						]
+					}),
+					onOpenVoiceShortcuts && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-4 flex items-center justify-between gap-3 border-t border-white/[0.08] pt-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "min-w-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-sm font-medium text-slate-200",
+								children: assistantProfile.sectionTitle
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs text-slate-400",
+								children: assistantProfile.profileSubtitle
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							onClick: onOpenVoiceShortcuts,
+							className: "ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border border-emerald-400/35 bg-emerald-500/15 px-3.5 text-xs font-semibold text-emerald-100 hover:bg-emerald-500/25 whitespace-nowrap",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Command, { className: "h-3.5 w-3.5 text-emerald-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Open Live" })]
+						})]
+					}),
+					onOpenLanguagePicker && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-4 flex items-center justify-between gap-3 border-t border-white/[0.08] pt-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "min-w-0",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-sm font-medium text-slate-200",
+								children: t(prefs.language, "languageTitle")
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "text-xs text-slate-400",
+								children: [
+									activeLanguage.nativeName,
+									" (",
+									activeLanguage.name,
+									") ·",
+									" ",
+									activeLanguage.states.slice(0, 2).join(", ")
+								]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							onClick: onOpenLanguagePicker,
+							className: "ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border border-sky-400/35 bg-sky-500/15 px-3.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Globe, { className: "h-3.5 w-3.5 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(prefs.language, "changeLanguage") })]
+						})]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "mt-4 grid grid-cols-2 gap-2.5 border-t border-white/[0.08] pt-4",

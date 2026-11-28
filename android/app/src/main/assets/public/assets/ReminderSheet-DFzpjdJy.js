@@ -1,6 +1,7 @@
 import { i as __toESM, n as require_react, t as require_jsx_runtime } from "./jsx-runtime-CWAvGazs.js";
-import { A as Mail, B as require_react_dom, D as Trash, E as X, F as Check, L as CalendarPlus, R as CalendarArrowDown, _ as getDateKeyFromDate, a as playAlarmCycle, d as SpringSegmentedControl, j as ListChecks, k as Plus, m as DAY_LETTERS, n as ALARM_SOUNDS } from "./index-OFjXOEAy.js";
+import { G as Mail, L as X, Q as Check, R as Trash, U as Plus, d as stopPreviewSound, et as CalendarPlus, k as useDynamicIsland, l as previewAlarmSound, q as ListChecks, r as ALARM_SOUNDS, rt as require_react_dom, tt as CalendarArrowDown, x as SpringSegmentedControl, z as Square } from "./index-C7fN5fMK.js";
 import { t as Play } from "./play-CxHGFyOa.js";
+import { c as getDateKeyFromDate, t as DAY_LETTERS } from "./time-FSROXWFI.js";
 // src/components/ReminderSheet.tsx
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_react_dom = require_react_dom();
@@ -16,6 +17,7 @@ var QUICK_EMOJIS = [
 	"🌙"
 ];
 var ReminderSheet = ({ open, editing, initialDraft, defaultDate, defaultAlarmSound, customAudioName, availableTags, onAddCustomTag, onSave, onDelete, onRequestAddToGoogleCalendar, onRequestEmailReminder, onExportIcs, onClose }) => {
+	const { onTriggerIsland } = useDynamicIsland();
 	const [title, setTitle] = (0, import_react.useState)("");
 	const [note, setNote] = (0, import_react.useState)("");
 	const [time, setTime] = (0, import_react.useState)("08:30");
@@ -30,8 +32,13 @@ var ReminderSheet = ({ open, editing, initialDraft, defaultDate, defaultAlarmSou
 	const [newSubtaskText, setNewSubtaskText] = (0, import_react.useState)("");
 	const [addingTag, setAddingTag] = (0, import_react.useState)(false);
 	const [newTagText, setNewTagText] = (0, import_react.useState)("");
+	const [previewingSound, setPreviewingSound] = (0, import_react.useState)(false);
 	(0, import_react.useEffect)(() => {
-		if (!open) return;
+		if (!open) {
+			stopPreviewSound();
+			setPreviewingSound(false);
+			return;
+		}
 		if (editing) {
 			setTitle(editing.title);
 			setNote(editing.note || "");
@@ -316,16 +323,43 @@ var ReminderSheet = ({ open, editing, initialDraft, defaultDate, defaultAlarmSou
 								htmlFor: "sheet-alarm-sound",
 								className: "text-xs font-medium text-slate-400",
 								children: "Alarm Ringtone"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 								type: "button",
-								onClick: () => playAlarmCycle(sound),
-								className: "inline-flex min-h-[36px] items-center gap-1 rounded-lg px-2.5 text-xs font-semibold text-[#60A5FA] hover:bg-white/[0.06]",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "h-3 w-3" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Preview" })]
+								onClick: async () => {
+									if (previewingSound) {
+										stopPreviewSound();
+										setPreviewingSound(false);
+										return;
+									}
+									setPreviewingSound(true);
+									const result = await previewAlarmSound(sound, {
+										customAudioName,
+										onEnded: () => setPreviewingSound(false)
+									});
+									if (result.error) {
+										setPreviewingSound(false);
+										onTriggerIsland("alert", {
+											title: "Ringtone Preview",
+											message: result.error
+										});
+										return;
+									}
+									onTriggerIsland("alert", {
+										title: result.usedCustom ? "Custom Ringtone Preview" : "Alarm Preview",
+										message: `Playing ${result.label}`
+									});
+								},
+								className: `inline-flex min-h-[36px] items-center gap-1 rounded-lg px-2.5 text-xs font-semibold transition-colors ${previewingSound ? "bg-red-500/20 text-red-300 hover:bg-red-500/30" : "text-[#60A5FA] hover:bg-white/[0.06]"}`,
+								children: previewingSound ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Square, { className: "h-3 w-3 fill-current" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Stop" })] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, { className: "h-3 w-3 fill-current" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Preview" })] })
 							})]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("select", {
 							id: "sheet-alarm-sound",
 							value: sound,
-							onChange: (e) => setSound(e.target.value),
+							onChange: (e) => {
+								stopPreviewSound();
+								setPreviewingSound(false);
+								setSound(e.target.value);
+							},
 							className: "mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.1] bg-[#060812]/80 px-3.5 text-sm text-white focus:border-[#0A84FF] focus:outline-none",
 							children: [ALARM_SOUNDS.map((s) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
 								value: s.id,

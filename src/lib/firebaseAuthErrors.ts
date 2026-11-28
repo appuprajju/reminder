@@ -1,18 +1,10 @@
-export type FirebaseAuthActionKind =
-  | 'authorized-domain'
-  | 'enable-email-provider'
-  | 'oauth-testing-mode'
-  | 'popup-blocked'
-  | 'none';
+export type FirebaseAuthActionKind = 'use-email-fallback' | 'none';
 
 export interface ParsedFirebaseAuthError {
   code: string;
   title: string;
   message: string;
   actionKind: FirebaseAuthActionKind;
-  hostname?: string;
-  projectId?: string;
-  consoleUrl?: string;
 }
 
 function extractFirebaseErrorCode(err: unknown): string {
@@ -22,27 +14,28 @@ function extractFirebaseErrorCode(err: unknown): string {
     'code' in err &&
     typeof (err as { code?: unknown }).code === 'string'
   ) {
-    return (err as { code: string }).code;
+    return (err as { code: string }).code.toLowerCase();
   }
   const msg = err instanceof Error ? err.message : String(err ?? '');
   const match = msg.match(/\((auth\/[a-z0-9-]+)\)/i) || msg.match(/(auth\/[a-z0-9-]+)/i);
   return match ? match[1].toLowerCase() : '';
 }
 
-export function buildGoogleOAuthTestingError(
-  context: { hostname?: string; projectId?: string } = {}
-): ParsedFirebaseAuthError {
-  const hostname = context.hostname?.trim() || '';
-  const projectId = context.projectId?.trim() || '';
+function logAuthDiagnostic(code: string, detail: string) {
+  if (typeof console !== 'undefined' && typeof console.warn === 'function') {
+    console.warn(`[Auth Diagnostic] (${code || 'auth/unknown'}) ${detail}`);
+  }
+}
 
+export function buildGoogleOAuthTestingError(
+  _context: { hostname?: string; projectId?: string } = {}
+): ParsedFirebaseAuthError {
   return {
     code: 'auth/oauth-access-denied',
-    title: 'Can’t Proceed with Google Sign-In?',
+    title: 'Google Sign-In Unavailable',
     message:
-      'If Google Sign-In is blocked or unavailable on your account or browser, you can sign in or create an account with Email & Password instead — your reminders, alarms, and Voice Notes sync the exact same way.',
-    actionKind: 'oauth-testing-mode',
-    hostname,
-    projectId,
+      'Google Sign-In could not be completed on this device right now. Sign in or create an account with Email & Password instead — your reminders, alarms, and Voice Notes sync the exact same way.',
+    actionKind: 'use-email-fallback',
   };
 }
 
@@ -52,50 +45,59 @@ export function mapFirebaseAuthError(
 ): ParsedFirebaseAuthError {
   const code = extractFirebaseErrorCode(err);
   const rawMessage = err instanceof Error ? err.message : String(err ?? 'Authentication failed');
-  const hostname = context.hostname?.trim() || 'your-domain.github.io';
-  const projectId = context.projectId?.trim() || '';
-  const consoleBase = projectId
-    ? `https://console.firebase.google.com/project/${projectId}/authentication`
-    : 'https://console.firebase.google.com/';
+  const hostname = context.hostname?.trim() || '';
 
   if (
     code === 'auth/oauth-access-denied' ||
-    /access_denied|verification process|developer-approved testers|error 403/i.test(rawMessage)
+    /access_denied|verification process|developer-approved testers|error 403|disallowed_useragent/i.test(
+      rawMessage
+    )
   ) {
-    return buildGoogleOAuthTestingError({ hostname, projectId });
+    logAuthDiagnostic(code || 'auth/oauth-access-denied', rawMessage);
+    return buildGoogleOAuthTestingError(context);
   }
 
   switch (code) {
-    case 'auth/unauthorized-domain':
+    case 'auth/native-google-unavailable':
+      logAuthDiagnostic(code, rawMessage);
       return {
         code,
-        title: 'Domain Not Authorized in Firebase',
-        message: `"${hostname}" needs to be added to your Firebase Auth Authorized Domains list before Google Sign-In can open here.`,
-        actionKind: 'authorized-domain',
-        hostname,
-        projectId,
-        consoleUrl: `${consoleBase}/settings`,
+        title: 'Google Sign-In Unavailable',
+        message:
+          'Google Sign-In is not available in this mobile build yet. Please sign in or create an account with Email & Password to sync your alarms and reminders.',
+        actionKind: 'use-email-fallback',
+      };
+
+    case 'auth/unauthorized-domain':
+      logAuthDiagnostic(
+        code,
+        `Unauthorized auth domain "${hostname || 'unknown'}" — add domain in Firebase Auth settings or use native Google Sign-In on mobile.`
+      );
+      return {
+        code,
+        title: 'Google Sign-In Unavailable',
+        message:
+          'Google Sign-In could not be completed right now. Please sign in or create an account with Email & Password instead.',
+        actionKind: 'use-email-fallback',
       };
 
     case 'auth/operation-not-allowed':
+      logAuthDiagnostic(code, rawMessage);
       return {
         code,
-        title: 'Email & Password Not Enabled Yet',
+        title: 'Sign-In Temporarily Unavailable',
         message:
-          'Turn on the Email/Password sign-in provider once in your Firebase Console to allow creating and logging into accounts with email.',
-        actionKind: 'enable-email-provider',
-        hostname,
-        projectId,
-        consoleUrl: `${consoleBase}/providers`,
+          'This sign-in option is currently unavailable. Please try again later or choose another sign-in method.',
+        actionKind: 'none',
       };
 
     case 'auth/popup-blocked':
       return {
         code,
-        title: 'Sign-In Popup Blocked',
+        title: 'Sign-In Window Blocked',
         message:
-          'Your browser blocked the Google sign-in window. Allow popups for this site or sign in using Email & Password below.',
-        actionKind: 'popup-blocked',
+          'Your browser blocked the Google sign-in window. Allow popups or sign in using Email & Password instead.',
+        actionKind: 'use-email-fallback',
       };
 
     case 'auth/popup-closed-by-user':
@@ -104,7 +106,7 @@ export function mapFirebaseAuthError(
         code,
         title: 'Sign-In Cancelled',
         message:
-          'The Google sign-in window was closed before finishing. Try again whenever you are ready.',
+          'The sign-in window was closed before finishing. Try again whenever you are ready.',
         actionKind: 'none',
       };
 
@@ -113,7 +115,7 @@ export function mapFirebaseAuthError(
         code,
         title: 'Account Already Exists',
         message:
-          'An account with this email already exists. Switch to Sign In or use Forgot password.',
+          'An account with this email already exists. Switch to Sign In or tap Forgot password.',
         actionKind: 'none',
       };
 
@@ -148,7 +150,7 @@ export function mapFirebaseAuthError(
         code,
         title: 'Too Many Attempts',
         message:
-          'Temporarily paused due to repeated attempts. Wait a minute or reset your password.',
+          'Sign-in is temporarily paused due to repeated attempts. Wait a minute or reset your password.',
         actionKind: 'none',
       };
 
@@ -156,17 +158,16 @@ export function mapFirebaseAuthError(
       return {
         code,
         title: 'No Internet Connection',
-        message: 'Could not reach Firebase right now. Check your connection and try again.',
+        message: 'Could not connect right now. Check your internet connection and try again.',
         actionKind: 'none',
       };
 
     default:
+      logAuthDiagnostic(code || 'auth/unknown', rawMessage);
       return {
         code: code || 'auth/unknown',
-        title: 'Sign-In Error',
-        message:
-          rawMessage.replace(/^Firebase:\s*/i, '').trim() ||
-          'Authentication failed. Please try again.',
+        title: 'Authentication Error',
+        message: 'We could not complete sign-in right now. Please try again or use Email & Password.',
         actionKind: 'none',
       };
   }

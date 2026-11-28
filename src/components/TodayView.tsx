@@ -201,7 +201,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
 
   const toggleHomeOAuthHelp = () => {
     setHomeAuthError((prev) =>
-      prev?.actionKind === 'oauth-testing-mode'
+      prev?.code === 'auth/oauth-access-denied'
         ? null
         : buildGoogleOAuthTestingError({
             hostname: typeof window !== 'undefined' ? window.location.hostname : '',
@@ -488,23 +488,23 @@ export const TodayView: React.FC<TodayViewProps> = ({
         </div>
 
         {/* Dominant Focal Anchor: Luminous iOS Liquid Glass Clock */}
-        <div className="mt-5 flex items-baseline gap-2">
-          <span className="bg-gradient-to-b from-white via-white to-sky-200/75 bg-clip-text font-mono text-5xl font-bold tracking-tight text-transparent tabular-nums drop-shadow-[0_6px_24px_rgba(10,132,255,0.28)] sm:text-6xl">
+        <div className="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+          <span className="bg-gradient-to-b from-white via-white to-sky-200/75 bg-clip-text font-mono text-[2.65rem] leading-none font-bold tracking-tight text-transparent tabular-nums drop-shadow-[0_6px_24px_rgba(10,132,255,0.28)] sm:text-6xl">
             {clock.hm}
           </span>
-          <span className="font-mono text-lg font-medium text-slate-400 tabular-nums">
+          <span className="font-mono text-base font-medium text-slate-400 tabular-nums sm:text-lg">
             :{clock.sec}
           </span>
           {clock.period && (
-            <span className="ml-1 font-mono text-base font-semibold text-sky-300">
+            <span className="ml-0.5 font-mono text-sm font-semibold text-sky-300 sm:ml-1 sm:text-base">
               {clock.period}
             </span>
           )}
         </div>
 
         {/* Daily Progress Ring + Up Next Summary */}
-        <div className="mt-6 flex items-center gap-5 border-t border-white/[0.14] pt-5">
-          <div className="relative h-24 w-24 shrink-0">
+        <div className="mt-5 flex items-center gap-4 border-t border-white/[0.14] pt-5 sm:mt-6 sm:gap-5">
+          <div className="relative h-20 w-20 shrink-0 sm:h-24 sm:w-24">
             <svg
               viewBox="0 0 96 96"
               className="h-full w-full -rotate-90 drop-shadow-[0_8px_18px_rgba(48,209,88,0.4)]"
@@ -777,16 +777,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
             </div>
 
             {homeAuthError && (
-              <AuthRecoveryBanner
-                error={homeAuthError}
-                onUseEmailFallback={onOpenAuth}
-                onCopiedDomain={(host) =>
-                  onTriggerIsland('success', {
-                    title: 'Domain Copied',
-                    message: `${host} copied to clipboard`,
-                  })
-                }
-              />
+              <AuthRecoveryBanner error={homeAuthError} onUseEmailFallback={onOpenAuth} />
             )}
           </div>
         )}

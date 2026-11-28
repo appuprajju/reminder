@@ -171,8 +171,8 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({
               Sign In &amp; Cloud Sync
             </h2>
             <p className="mt-1 text-xs leading-relaxed text-slate-400">
-              Sign in with Google or Email &amp; Password via Firebase—works on web, GitHub Pages,
-              and mobile with no separate server.
+              Sign in with Google or Email &amp; Password to back up and sync your alarms across
+              devices.
             </p>
           </div>
           <button
@@ -314,13 +314,7 @@ export const AuthSheet: React.FC<AuthSheetProps> = ({
             <AuthRecoveryBanner
               error={authError}
               onUseEmailFallback={
-                authError.actionKind === 'oauth-testing-mode' ? focusEmailFallback : undefined
-              }
-              onCopiedDomain={(host) =>
-                onTriggerIsland?.('success', {
-                  title: 'Domain Copied',
-                  message: `${host} copied to clipboard`,
-                })
+                authError.actionKind === 'use-email-fallback' ? focusEmailFallback : undefined
               }
             />
           )}

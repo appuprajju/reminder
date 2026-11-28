@@ -1,3 +1,4 @@
+import { Capacitor } from '@capacitor/core';
 import { initializeApp } from 'firebase/app';
 import {
   GoogleAuthProvider,
@@ -5,6 +6,7 @@ import {
   getAuth,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  signInWithCredential,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -164,12 +166,118 @@ export function initFirebaseAuth(
   });
 }
 
+interface NativeGoogleSignInResult {
+  user: User;
+  accessToken: string | null;
+}
+
+/**
+ * Inside Capacitor Android/iOS WebViews, Google blocks embedded WebView OAuth popups
+ * (disallowed_useragent / localhost redirect failure). Use a native Google Sign-In
+ * plugin when installed; otherwise fail immediately with a clean error code so the
+ * user is guided to Email & Password without ever seeing raw localhost/domain errors.
+ */
+async function tryNativeGoogleSignIn(
+  includeWorkspaceScopes: boolean
+): Promise<NativeGoogleSignInResult | null> {
+  if (!Capacitor.isNativePlatform()) {
+    return null;
+  }
+
+  const capWindow = window as unknown as {
+    Capacitor?: {
+      Plugins?: {
+        SocialLogin?: {
+          login: (opts: {
+            provider: 'google';
+            options?: { scopes?: string[] };
+          }) => Promise<{
+            result?: {
+              idToken?: string | null;
+              accessToken?: { token?: string | null } | string | null;
+            };
+          }>;
+        };
+        GoogleAuth?: {
+          signIn: () => Promise<{
+            authentication?: {
+              idToken?: string | null;
+              accessToken?: string | null;
+            };
+          }>;
+        };
+      };
+    };
+  };
+
+  const plugins = capWindow.Capacitor?.Plugins;
+  const scopes = includeWorkspaceScopes ? ['email', 'profile', ...WORKSPACE_SCOPES] : ['email', 'profile'];
+
+  if (plugins?.SocialLogin?.login) {
+    const response = await plugins.SocialLogin.login({
+      provider: 'google',
+      options: { scopes },
+    });
+    const idToken = response?.result?.idToken ?? null;
+    const rawAccess = response?.result?.accessToken;
+    const accessToken =
+      typeof rawAccess === 'string'
+        ? rawAccess
+        : rawAccess && typeof rawAccess === 'object'
+          ? (rawAccess.token ?? null)
+          : null;
+
+    if (!idToken) {
+      throw Object.assign(new Error('Google Sign-In did not return an ID token.'), {
+        code: 'auth/oauth-access-denied',
+      });
+    }
+
+    const credential = GoogleAuthProvider.credential(idToken, accessToken ?? undefined);
+    const result = await signInWithCredential(auth, credential);
+    if (includeWorkspaceScopes) {
+      notifyTokenChange(accessToken);
+    }
+    return { user: result.user, accessToken: includeWorkspaceScopes ? accessToken : cachedAccessToken };
+  }
+
+  if (plugins?.GoogleAuth?.signIn) {
+    const response = await plugins.GoogleAuth.signIn();
+    const idToken = response?.authentication?.idToken ?? null;
+    const accessToken = response?.authentication?.accessToken ?? null;
+
+    if (!idToken) {
+      throw Object.assign(new Error('Google Sign-In did not return an ID token.'), {
+        code: 'auth/oauth-access-denied',
+      });
+    }
+
+    const credential = GoogleAuthProvider.credential(idToken, accessToken ?? undefined);
+    const result = await signInWithCredential(auth, credential);
+    if (includeWorkspaceScopes) {
+      notifyTokenChange(accessToken);
+    }
+    return { user: result.user, accessToken: includeWorkspaceScopes ? accessToken : cachedAccessToken };
+  }
+
+  // Native Android/iOS build without a configured native Google Sign-In plugin:
+  // Never fall through to signInWithPopup inside WebView (Google blocks embedded WebViews on https://localhost).
+  throw Object.assign(
+    new Error('Native Google Sign-In plugin is not configured in this mobile build.'),
+    { code: 'auth/native-google-unavailable' }
+  );
+}
+
 export async function signInWithGoogleBasic(): Promise<{
   user: User;
   accessToken: string | null;
 }> {
   isSigningIn = true;
   try {
+    const nativeResult = await tryNativeGoogleSignIn(false);
+    if (nativeResult) {
+      return nativeResult;
+    }
     const result = await signInWithPopup(auth, basicGoogleProvider);
     return { user: result.user, accessToken: cachedAccessToken };
   } finally {
@@ -183,6 +291,10 @@ export async function signInWithGoogleWorkspace(): Promise<{
 }> {
   isSigningIn = true;
   try {
+    const nativeResult = await tryNativeGoogleSignIn(true);
+    if (nativeResult) {
+      return nativeResult;
+    }
     const result = await signInWithPopup(auth, workspaceGoogleProvider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential?.accessToken ?? null;

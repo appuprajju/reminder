@@ -1,7 +1,8 @@
 import { i as __toESM, n as require_react, t as require_jsx_runtime } from "./jsx-runtime-CWAvGazs.js";
 import { t as createLucideIcon } from "./createLucideIcon-1IqWJXqJ.js";
-import { A as Mail, I as Calendar, R as CalendarArrowDown, S as isReminderScheduledForDate, _ as getDateKeyFromDate, b as getWeekStripDates, g as formatTimeDisplay, h as DAY_SHORT, k as Plus, u as SwipeableReminderRow, v as getMonthCalendarDays, y as getTodayDateKey } from "./index-OFjXOEAy.js";
+import { $ as Calendar, G as Mail, U as Plus, p as SwipeableReminderRow, tt as CalendarArrowDown } from "./index-C7fN5fMK.js";
 import { t as RefreshCw } from "./refresh-cw-BYRxwx1v.js";
+import { c as getDateKeyFromDate, d as getWeekStripDates, l as getMonthCalendarDays, m as isReminderScheduledForDate, n as DAY_SHORT, s as formatTimeDisplay, u as getTodayDateKey } from "./time-FSROXWFI.js";
 // node_modules/lucide-react/dist/esm/icons/alarm-clock-plus.mjs
 var __iconData$3 = {
 	name: "alarm-clock-plus",
@@ -223,9 +224,16 @@ var ScheduleView = ({ reminders, prefs, calendarEvents, calendarLoading, calenda
 					})]
 				}), !hasWorkspaceAccess ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 						className: "text-xs leading-relaxed text-slate-400",
-						children: "Connect Google to scan recent inbox emails and turn any message into an exact alarm in one tap."
+						children: [
+							"Connect Gmail to scan recent inbox emails into alarms. If Google shows an amber verification notice, scroll down and tap ",
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+								className: "text-slate-200",
+								children: "Continue"
+							}),
+							"."
+						]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						type: "button",
 						onClick: onConnectGoogle,
@@ -323,9 +331,17 @@ var ScheduleView = ({ reminders, prefs, calendarEvents, calendarLoading, calenda
 							className: "ios-spring-press min-h-[36px] rounded-xl border border-sky-400/30 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25",
 							children: "Connect"
 						})]
-					}), !hasWorkspaceAccess ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					}), !hasWorkspaceAccess ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 						className: "mt-2 text-xs leading-relaxed text-slate-400",
-						children: "Sign in with Google to view your Google Calendar events alongside your alarms and add reminders directly to your calendar."
+						children: [
+							"Connect for live two-way calendar sync (tap ",
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+								className: "text-slate-200",
+								children: "Continue"
+							}),
+							" ",
+							"if Google shows its unverified app notice), or add any reminder to Google Calendar directly without verification."
+						]
 					}) : calendarError ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "mt-2 rounded-xl border border-amber-400/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-200",
 						children: calendarError

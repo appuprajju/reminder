@@ -1,5 +1,5 @@
-/* reminderme Service Worker v6: offline shell + high-urgency Web Push + lock-screen snooze/dismiss actions */
-const CACHE = 'reminderme-v6';
+/* reminderme Service Worker v8: offline shell + high-urgency Web Push + lock-screen snooze/dismiss actions */
+const CACHE = 'reminderme-v8';
 const SHELL = [
   '/',
   '/index.html',
@@ -58,7 +58,7 @@ self.addEventListener('message', (e) => {
       renotify: true,
       vibrate: [400, 200, 400, 200, 800],
       timestamp: Date.now(),
-      data: { url: '/', reminderId: r.id },
+      data: { url: `/?ring=${encodeURIComponent(r.id)}`, reminderId: r.id },
       actions: [
         { action: 'snooze', title: 'Snooze 5 min' },
         { action: 'dismiss', title: 'Dismiss' }
@@ -79,6 +79,7 @@ self.addEventListener('push', (e) => {
   const id = data.id || data.reminderId;
   const title = data.title || 'reminderme';
   const body = data.body || 'You have a scheduled reminder.';
+  const targetUrl = data.url || (id ? `/?ring=${encodeURIComponent(id)}` : '/');
   const options = {
     body,
     icon: '/icons/icon-192.png',
@@ -88,7 +89,7 @@ self.addEventListener('push', (e) => {
     requireInteraction: true,
     vibrate: data.isAlarm !== false ? [400, 180, 400, 180, 700] : [200, 100, 200],
     timestamp: Date.now(),
-    data: { id, reminderId: id, url: data.url || '/' },
+    data: { id, reminderId: id, url: targetUrl },
     actions: [
       { action: 'snooze', title: 'Snooze 5 min' },
       { action: 'dismiss', title: 'Dismiss' }
@@ -146,6 +147,7 @@ self.addEventListener('notificationclick', (e) => {
     return;
   }
 
+  const openUrl = (n.data && n.data.url) || (rid ? `/?ring=${encodeURIComponent(rid)}` : '/');
   e.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
       for (const c of list) {
@@ -154,7 +156,7 @@ self.addEventListener('notificationclick', (e) => {
           return c.focus();
         }
       }
-      return self.clients.openWindow((n.data && n.data.url) || '/');
+      return self.clients.openWindow(openUrl);
     })
   );
 });

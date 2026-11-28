@@ -135,7 +135,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
   const toggleOAuthTestingHelp = () => {
     setGoogleAuthError((prev) =>
-      prev?.actionKind === 'oauth-testing-mode'
+      prev?.code === 'auth/oauth-access-denied'
         ? null
         : buildGoogleOAuthTestingError({
             hostname: typeof window !== 'undefined' ? window.location.hostname : '',
@@ -347,16 +347,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           )}
 
           {googleAuthError && (
-            <AuthRecoveryBanner
-              error={googleAuthError}
-              onUseEmailFallback={onOpenAuth}
-              onCopiedDomain={(host) =>
-                onTriggerIsland('success', {
-                  title: 'Domain Copied',
-                  message: `${host} copied to clipboard`,
-                })
-              }
-            />
+            <AuthRecoveryBanner error={googleAuthError} onUseEmailFallback={onOpenAuth} />
           )}
 
           {/* Google Workspace & Apple Calendar Integration Hub */}

@@ -1,6 +1,8 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/ScheduleView-0aVM6n8y.js","assets/jsx-runtime-CWAvGazs.js","assets/createLucideIcon-1IqWJXqJ.js","assets/refresh-cw-BYRxwx1v.js","assets/InsightsView-B1wTshCk.js","assets/ProfileView-350bj-1n.js","assets/play-CxHGFyOa.js","assets/volume-2-DhSWTl4V.js","assets/GoogleSignInButton-BovHPH9A.js","assets/ReminderSheet-DTbGrUsf.js","assets/FocusTimerSheet-CRYFBBg0.js","assets/AuthSheet-Bmp7HYHH.js","assets/RingingAlarmOverlay-C3evqJ9f.js"])))=>i.map(i=>d[i]);
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/web-B-a4NTyM.js","assets/dist-DDUhNgTv.js","assets/web-CcTbJUde.js","assets/web-Cr0s5Qzf.js","assets/web-5wEAw-yD.js","assets/web-C69MQl-M.js","assets/ScheduleView-_DFGwkcK.js","assets/jsx-runtime-CWAvGazs.js","assets/createLucideIcon-1IqWJXqJ.js","assets/refresh-cw-BYRxwx1v.js","assets/time-FSROXWFI.js","assets/InsightsView-CBVlX6SL.js","assets/ProfileView-DuhWYLLD.js","assets/IosSwitch-A3vo3Bf1.js","assets/play-CxHGFyOa.js","assets/volume-2-DhSWTl4V.js","assets/ReminderSheet-DFzpjdJy.js","assets/FocusTimerSheet-BoDO0pCt.js","assets/AuthSheet-Baaua6mT.js","assets/RingingAlarmOverlay-CRfR873F.js","assets/VoiceShortcutsModal-UFRvjIcu.js","assets/LanguagePickerModal-BRmjSgs2.js"])))=>i.map(i=>d[i]);
 import { i as __toESM, n as require_react, r as __commonJSMin, t as require_jsx_runtime } from "./jsx-runtime-CWAvGazs.js";
 import { t as createLucideIcon } from "./createLucideIcon-1IqWJXqJ.js";
+import { a as formatCountdown, c as getDateKeyFromDate, f as hashToInt32, i as formatClockParts, m as isReminderScheduledForDate, o as formatDaysSummary, p as isReminderDoneToday, r as computeNextDueAt, s as formatTimeDisplay, u as getTodayDateKey } from "./time-FSROXWFI.js";
+import { r as registerPlugin, t as Capacitor } from "./dist-DDUhNgTv.js";
 // \0vite/modulepreload-polyfill.js
 (function polyfill() {
 	const relList = document.createElement("link").relList;
@@ -11042,7 +11044,7 @@ var require_client = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = require_react_dom_client_production();
 }));
 // node_modules/lucide-react/dist/esm/icons/alarm-clock.mjs
-var __iconData$24 = {
+var __iconData$37 = {
 	name: "alarm-clock",
 	size: 24,
 	node: [
@@ -11074,10 +11076,10 @@ var __iconData$24 = {
 		}]
 	]
 };
-__iconData$24.node;
-var AlarmClock = createLucideIcon(__iconData$24);
+__iconData$37.node;
+var AlarmClock = createLucideIcon(__iconData$37);
 // node_modules/lucide-react/dist/esm/icons/arrow-right.mjs
-var __iconData$23 = {
+var __iconData$36 = {
 	name: "arrow-right",
 	size: 24,
 	node: [["path", {
@@ -11088,10 +11090,10 @@ var __iconData$23 = {
 		key: "xquz4c"
 	}]]
 };
-__iconData$23.node;
-var ArrowRight = createLucideIcon(__iconData$23);
+__iconData$36.node;
+var ArrowRight = createLucideIcon(__iconData$36);
 // node_modules/lucide-react/dist/esm/icons/bell.mjs
-var __iconData$22 = {
+var __iconData$35 = {
 	name: "bell",
 	size: 24,
 	node: [["path", {
@@ -11102,10 +11104,10 @@ var __iconData$22 = {
 		key: "11g9vi"
 	}]]
 };
-__iconData$22.node;
-var Bell = createLucideIcon(__iconData$22);
+__iconData$35.node;
+var Bell = createLucideIcon(__iconData$35);
 // node_modules/lucide-react/dist/esm/icons/calendar-arrow-down.mjs
-var __iconData$21 = {
+var __iconData$34 = {
 	name: "calendar-arrow-down",
 	size: 24,
 	node: [
@@ -11135,10 +11137,10 @@ var __iconData$21 = {
 		}]
 	]
 };
-__iconData$21.node;
-var CalendarArrowDown = createLucideIcon(__iconData$21);
+__iconData$34.node;
+var CalendarArrowDown = createLucideIcon(__iconData$34);
 // node_modules/lucide-react/dist/esm/icons/calendar-days.mjs
-var __iconData$20 = {
+var __iconData$33 = {
 	name: "calendar-days",
 	size: 24,
 	node: [
@@ -11188,10 +11190,10 @@ var __iconData$20 = {
 		}]
 	]
 };
-__iconData$20.node;
-var CalendarDays = createLucideIcon(__iconData$20);
+__iconData$33.node;
+var CalendarDays = createLucideIcon(__iconData$33);
 // node_modules/lucide-react/dist/esm/icons/calendar-plus.mjs
-var __iconData$19 = {
+var __iconData$32 = {
 	name: "calendar-plus",
 	size: 24,
 	node: [
@@ -11221,10 +11223,10 @@ var __iconData$19 = {
 		}]
 	]
 };
-__iconData$19.node;
-var CalendarPlus = createLucideIcon(__iconData$19);
+__iconData$32.node;
+var CalendarPlus = createLucideIcon(__iconData$32);
 // node_modules/lucide-react/dist/esm/icons/calendar.mjs
-var __iconData$18 = {
+var __iconData$31 = {
 	name: "calendar",
 	size: 24,
 	node: [
@@ -11250,10 +11252,10 @@ var __iconData$18 = {
 		}]
 	]
 };
-__iconData$18.node;
-var Calendar = createLucideIcon(__iconData$18);
+__iconData$31.node;
+var Calendar = createLucideIcon(__iconData$31);
 // node_modules/lucide-react/dist/esm/icons/chart-column.mjs
-var __iconData$17 = {
+var __iconData$30 = {
 	name: "chart-column",
 	size: 24,
 	node: [
@@ -11276,10 +11278,24 @@ var __iconData$17 = {
 	],
 	aliases: ["bar-chart-3"]
 };
-__iconData$17.node;
-var ChartColumn = createLucideIcon(__iconData$17);
+__iconData$30.node;
+var ChartColumn = createLucideIcon(__iconData$30);
+// node_modules/lucide-react/dist/esm/icons/check-check.mjs
+var __iconData$29 = {
+	name: "check-check",
+	size: 24,
+	node: [["path", {
+		d: "M18 6 7 17l-5-5",
+		key: "116fxf"
+	}], ["path", {
+		d: "m22 10-7.5 7.5L13 16",
+		key: "ke71qq"
+	}]]
+};
+__iconData$29.node;
+var CheckCheck = createLucideIcon(__iconData$29);
 // node_modules/lucide-react/dist/esm/icons/check.mjs
-var __iconData$16 = {
+var __iconData$28 = {
 	name: "check",
 	size: 24,
 	node: [["path", {
@@ -11287,10 +11303,10 @@ var __iconData$16 = {
 		key: "1gmf2c"
 	}]]
 };
-__iconData$16.node;
-var Check = createLucideIcon(__iconData$16);
+__iconData$28.node;
+var Check = createLucideIcon(__iconData$28);
 // node_modules/lucide-react/dist/esm/icons/chevron-down.mjs
-var __iconData$15 = {
+var __iconData$27 = {
 	name: "chevron-down",
 	size: 24,
 	node: [["path", {
@@ -11298,10 +11314,10 @@ var __iconData$15 = {
 		key: "qrunsl"
 	}]]
 };
-__iconData$15.node;
-var ChevronDown = createLucideIcon(__iconData$15);
+__iconData$27.node;
+var ChevronDown = createLucideIcon(__iconData$27);
 // node_modules/lucide-react/dist/esm/icons/chevron-up.mjs
-var __iconData$14 = {
+var __iconData$26 = {
 	name: "chevron-up",
 	size: 24,
 	node: [["path", {
@@ -11309,10 +11325,34 @@ var __iconData$14 = {
 		key: "153udz"
 	}]]
 };
-__iconData$14.node;
-var ChevronUp = createLucideIcon(__iconData$14);
+__iconData$26.node;
+var ChevronUp = createLucideIcon(__iconData$26);
+// node_modules/lucide-react/dist/esm/icons/circle-question-mark.mjs
+var __iconData$25 = {
+	name: "circle-question-mark",
+	size: 24,
+	node: [
+		["circle", {
+			cx: "12",
+			cy: "12",
+			r: "10",
+			key: "1mglay"
+		}],
+		["path", {
+			d: "M9 9.5a3 2.5 0 016 0c0 2-2 2-3 3.5",
+			key: "1awbb0"
+		}],
+		["path", {
+			d: "M12 17h.01",
+			key: "p32p05"
+		}]
+	],
+	aliases: ["help-circle", "circle-help"]
+};
+__iconData$25.node;
+var CircleQuestionMark = createLucideIcon(__iconData$25);
 // node_modules/lucide-react/dist/esm/icons/clock.mjs
-var __iconData$13 = {
+var __iconData$24 = {
 	name: "clock",
 	size: 24,
 	node: [["circle", {
@@ -11325,10 +11365,102 @@ var __iconData$13 = {
 		key: "mmk7yg"
 	}]]
 };
-__iconData$13.node;
-var Clock = createLucideIcon(__iconData$13);
+__iconData$24.node;
+var Clock = createLucideIcon(__iconData$24);
+// node_modules/lucide-react/dist/esm/icons/copy.mjs
+var __iconData$23 = {
+	name: "copy",
+	size: 24,
+	node: [["rect", {
+		width: "14",
+		height: "14",
+		x: "8",
+		y: "8",
+		rx: "2",
+		ry: "2",
+		key: "17jyea"
+	}], ["path", {
+		d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2",
+		key: "zix9uf"
+	}]]
+};
+__iconData$23.node;
+var Copy = createLucideIcon(__iconData$23);
+// node_modules/lucide-react/dist/esm/icons/external-link.mjs
+var __iconData$22 = {
+	name: "external-link",
+	size: 24,
+	node: [
+		["path", {
+			d: "M15 3h6v6",
+			key: "1q9fwt"
+		}],
+		["path", {
+			d: "M10 14 21 3",
+			key: "gplh6r"
+		}],
+		["path", {
+			d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6",
+			key: "a6xqqp"
+		}]
+	]
+};
+__iconData$22.node;
+var ExternalLink = createLucideIcon(__iconData$22);
+// node_modules/lucide-react/dist/esm/icons/file-text.mjs
+var __iconData$21 = {
+	name: "file-text",
+	size: 24,
+	node: [
+		["path", {
+			d: "M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z",
+			key: "1oefj6"
+		}],
+		["path", {
+			d: "M14 2v5a1 1 0 0 0 1 1h5",
+			key: "wfsgrz"
+		}],
+		["path", {
+			d: "M10 9H8",
+			key: "b1mrlr"
+		}],
+		["path", {
+			d: "M16 13H8",
+			key: "t4e002"
+		}],
+		["path", {
+			d: "M16 17H8",
+			key: "z1uh3a"
+		}]
+	]
+};
+__iconData$21.node;
+var FileText = createLucideIcon(__iconData$21);
+// node_modules/lucide-react/dist/esm/icons/globe.mjs
+var __iconData$20 = {
+	name: "globe",
+	size: 24,
+	node: [
+		["circle", {
+			cx: "12",
+			cy: "12",
+			r: "10",
+			key: "1mglay"
+		}],
+		["path", {
+			d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20",
+			key: "13o1zl"
+		}],
+		["path", {
+			d: "M2 12h20",
+			key: "9i4pu4"
+		}]
+	]
+};
+__iconData$20.node;
+var Globe = createLucideIcon(__iconData$20);
 // node_modules/lucide-react/dist/esm/icons/layers.mjs
-var __iconData$12 = {
+var __iconData$19 = {
 	name: "layers",
 	size: 24,
 	node: [
@@ -11347,10 +11479,10 @@ var __iconData$12 = {
 	],
 	aliases: ["layers-3"]
 };
-__iconData$12.node;
-var Layers = createLucideIcon(__iconData$12);
+__iconData$19.node;
+var Layers = createLucideIcon(__iconData$19);
 // node_modules/lucide-react/dist/esm/icons/list-checks.mjs
-var __iconData$11 = {
+var __iconData$18 = {
 	name: "list-checks",
 	size: 24,
 	node: [
@@ -11376,10 +11508,31 @@ var __iconData$11 = {
 		}]
 	]
 };
-__iconData$11.node;
-var ListChecks = createLucideIcon(__iconData$11);
+__iconData$18.node;
+var ListChecks = createLucideIcon(__iconData$18);
+// node_modules/lucide-react/dist/esm/icons/log-in.mjs
+var __iconData$17 = {
+	name: "log-in",
+	size: 24,
+	node: [
+		["path", {
+			d: "m10 17 5-5-5-5",
+			key: "1bsop3"
+		}],
+		["path", {
+			d: "M15 12H3",
+			key: "6jk70r"
+		}],
+		["path", {
+			d: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4",
+			key: "u53s6r"
+		}]
+	]
+};
+__iconData$17.node;
+var LogIn = createLucideIcon(__iconData$17);
 // node_modules/lucide-react/dist/esm/icons/mail.mjs
-var __iconData$10 = {
+var __iconData$16 = {
 	name: "mail",
 	size: 24,
 	node: [["path", {
@@ -11394,10 +11547,10 @@ var __iconData$10 = {
 		key: "izxlao"
 	}]]
 };
-__iconData$10.node;
-var Mail = createLucideIcon(__iconData$10);
+__iconData$16.node;
+var Mail = createLucideIcon(__iconData$16);
 // node_modules/lucide-react/dist/esm/icons/mic.mjs
-var __iconData$9 = {
+var __iconData$15 = {
 	name: "mic",
 	size: 24,
 	node: [
@@ -11419,10 +11572,49 @@ var __iconData$9 = {
 		}]
 	]
 };
-__iconData$9.node;
-var Mic = createLucideIcon(__iconData$9);
+__iconData$15.node;
+var Mic = createLucideIcon(__iconData$15);
+// node_modules/lucide-react/dist/esm/icons/pin-off.mjs
+var __iconData$14 = {
+	name: "pin-off",
+	size: 24,
+	node: [
+		["path", {
+			d: "M12 17v5",
+			key: "bb1du9"
+		}],
+		["path", {
+			d: "M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89",
+			key: "znwnzq"
+		}],
+		["path", {
+			d: "m2 2 20 20",
+			key: "1ooewy"
+		}],
+		["path", {
+			d: "M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11",
+			key: "c9qhm2"
+		}]
+	]
+};
+__iconData$14.node;
+var PinOff = createLucideIcon(__iconData$14);
+// node_modules/lucide-react/dist/esm/icons/pin.mjs
+var __iconData$13 = {
+	name: "pin",
+	size: 24,
+	node: [["path", {
+		d: "M12 17v5",
+		key: "bb1du9"
+	}], ["path", {
+		d: "M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z",
+		key: "1nkz8b"
+	}]]
+};
+__iconData$13.node;
+var Pin = createLucideIcon(__iconData$13);
 // node_modules/lucide-react/dist/esm/icons/plus.mjs
-var __iconData$8 = {
+var __iconData$12 = {
 	name: "plus",
 	size: 24,
 	node: [["path", {
@@ -11433,10 +11625,41 @@ var __iconData$8 = {
 		key: "s699le"
 	}]]
 };
-__iconData$8.node;
-var Plus = createLucideIcon(__iconData$8);
+__iconData$12.node;
+var Plus = createLucideIcon(__iconData$12);
+// node_modules/lucide-react/dist/esm/icons/radio.mjs
+var __iconData$11 = {
+	name: "radio",
+	size: 24,
+	node: [
+		["path", {
+			d: "M16.247 7.761a6 6 0 0 1 0 8.478",
+			key: "1fwjs5"
+		}],
+		["path", {
+			d: "M19.075 4.933a10 10 0 0 1 0 14.134",
+			key: "ehdyv1"
+		}],
+		["path", {
+			d: "M4.925 19.067a10 10 0 0 1 0-14.134",
+			key: "1q22gi"
+		}],
+		["path", {
+			d: "M7.753 16.239a6 6 0 0 1 0-8.478",
+			key: "r2q7qm"
+		}],
+		["circle", {
+			cx: "12",
+			cy: "12",
+			r: "2",
+			key: "1c9p78"
+		}]
+	]
+};
+__iconData$11.node;
+var Radio = createLucideIcon(__iconData$11);
 // node_modules/lucide-react/dist/esm/icons/shield-check.mjs
-var __iconData$7 = {
+var __iconData$10 = {
 	name: "shield-check",
 	size: 24,
 	node: [["path", {
@@ -11447,10 +11670,10 @@ var __iconData$7 = {
 		key: "dzmm74"
 	}]]
 };
-__iconData$7.node;
-var ShieldCheck = createLucideIcon(__iconData$7);
+__iconData$10.node;
+var ShieldCheck = createLucideIcon(__iconData$10);
 // node_modules/lucide-react/dist/esm/icons/sliders-horizontal.mjs
-var __iconData$6 = {
+var __iconData$9 = {
 	name: "sliders-horizontal",
 	size: 24,
 	node: [
@@ -11492,10 +11715,10 @@ var __iconData$6 = {
 		}]
 	]
 };
-__iconData$6.node;
-var SlidersHorizontal = createLucideIcon(__iconData$6);
+__iconData$9.node;
+var SlidersHorizontal = createLucideIcon(__iconData$9);
 // node_modules/lucide-react/dist/esm/icons/sparkles.mjs
-var __iconData$5 = {
+var __iconData$8 = {
 	name: "sparkles",
 	size: 24,
 	node: [
@@ -11520,10 +11743,40 @@ var __iconData$5 = {
 	],
 	aliases: ["stars"]
 };
-__iconData$5.node;
-var Sparkles = createLucideIcon(__iconData$5);
+__iconData$8.node;
+var Sparkles = createLucideIcon(__iconData$8);
+// node_modules/lucide-react/dist/esm/icons/square-check-big.mjs
+var __iconData$7 = {
+	name: "square-check-big",
+	size: 24,
+	node: [["path", {
+		d: "M21 10.656V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.344",
+		key: "2acyp4"
+	}], ["path", {
+		d: "m9 11 3 3L22 4",
+		key: "1pflzl"
+	}]],
+	aliases: ["check-square"]
+};
+__iconData$7.node;
+var SquareCheckBig = createLucideIcon(__iconData$7);
+// node_modules/lucide-react/dist/esm/icons/square.mjs
+var __iconData$6 = {
+	name: "square",
+	size: 24,
+	node: [["rect", {
+		width: "18",
+		height: "18",
+		x: "3",
+		y: "3",
+		rx: "2",
+		key: "afitv7"
+	}]]
+};
+__iconData$6.node;
+var Square = createLucideIcon(__iconData$6);
 // node_modules/lucide-react/dist/esm/icons/timer.mjs
-var __iconData$4 = {
+var __iconData$5 = {
 	name: "timer",
 	size: 24,
 	node: [
@@ -11549,10 +11802,10 @@ var __iconData$4 = {
 		}]
 	]
 };
-__iconData$4.node;
-var Timer = createLucideIcon(__iconData$4);
+__iconData$5.node;
+var Timer = createLucideIcon(__iconData$5);
 // node_modules/lucide-react/dist/esm/icons/trash.mjs
-var __iconData$3 = {
+var __iconData$4 = {
 	name: "trash",
 	size: 24,
 	node: [
@@ -11579,8 +11832,30 @@ var __iconData$3 = {
 	],
 	aliases: ["trash-2"]
 };
+__iconData$4.node;
+var Trash = createLucideIcon(__iconData$4);
+// node_modules/lucide-react/dist/esm/icons/triangle-exclamation-point.mjs
+var __iconData$3 = {
+	name: "triangle-exclamation-point",
+	size: 24,
+	node: [
+		["path", {
+			d: "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3",
+			key: "wmoenq"
+		}],
+		["path", {
+			d: "M12 9v4",
+			key: "juzpu7"
+		}],
+		["path", {
+			d: "M12 17h.01",
+			key: "p32p05"
+		}]
+	],
+	aliases: ["alert-triangle", "triangle-alert"]
+};
 __iconData$3.node;
-var Trash = createLucideIcon(__iconData$3);
+var TriangleExclamationPoint = createLucideIcon(__iconData$3);
 // node_modules/lucide-react/dist/esm/icons/user.mjs
 var __iconData$2 = {
 	name: "user",
@@ -11650,7 +11925,6 @@ __iconData.node;
 var X$1 = createLucideIcon(__iconData);
 // src/lib/emoExpression.ts
 var import_react = /* @__PURE__ */ __toESM(require_react());
-var import_react_dom = require_react_dom();
 var import_client = /* @__PURE__ */ __toESM(require_client());
 var ACCENTS = {
 	excited: {
@@ -11678,6 +11952,38 @@ var ACCENTS = {
 		glowRgba: "rgba(255, 105, 97, 0.34)"
 	}
 };
+var TRIGGER_PRESETS = {
+	created: {
+		title: "Alarm Created",
+		message: "Scheduled and armed for you",
+		expression: "excited",
+		tone: "success"
+	},
+	success: {
+		title: "All Set",
+		message: "Completed successfully",
+		expression: "happy",
+		tone: "success"
+	},
+	alert: {
+		title: "Alarm Alert",
+		message: "Heads up — check your schedule",
+		expression: "warning",
+		tone: "warning"
+	}
+};
+function buildIslandEventFromTrigger(type, options, id = `island_${Date.now().toString(36)}`) {
+	const preset = TRIGGER_PRESETS[type];
+	return {
+		id,
+		title: options?.title ?? preset.title,
+		text: options?.message ?? preset.message,
+		expression: preset.expression,
+		tone: preset.tone,
+		undoLabel: options?.undoLabel,
+		onUndo: options?.onUndo
+	};
+}
 function resolveIslandMeta(toast) {
 	const lower = `${toast.title || ""} ${toast.text}`.toLowerCase();
 	let expression = toast.expression || "curious";
@@ -11707,14 +12013,1345 @@ function resolveIslandMeta(toast) {
 		glowRgba: palette.glowRgba
 	};
 }
-// src/components/EmoRobotEyes.tsx
+var EYE_CYCLES = {
+	excited: [
+		{
+			step: "excited",
+			durationMs: 920
+		},
+		{
+			step: "blink",
+			durationMs: 640
+		},
+		{
+			step: "happy",
+			durationMs: 1050
+		},
+		{
+			step: "blink",
+			durationMs: 680
+		}
+	],
+	happy: [
+		{
+			step: "happy",
+			durationMs: 980
+		},
+		{
+			step: "blink",
+			durationMs: 640
+		},
+		{
+			step: "excited",
+			durationMs: 880
+		},
+		{
+			step: "happy",
+			durationMs: 1050
+		}
+	],
+	warning: [
+		{
+			step: "alert",
+			durationMs: 740
+		},
+		{
+			step: "blink",
+			durationMs: 560
+		},
+		{
+			step: "alert",
+			durationMs: 740
+		},
+		{
+			step: "curious",
+			durationMs: 960
+		}
+	],
+	sleepy: [{
+		step: "sleepy",
+		durationMs: 1200
+	}, {
+		step: "blink",
+		durationMs: 680
+	}],
+	curious: [{
+		step: "curious",
+		durationMs: 1050
+	}, {
+		step: "blink",
+		durationMs: 640
+	}],
+	sad: [{
+		step: "sad",
+		durationMs: 980
+	}, {
+		step: "blink",
+		durationMs: 680
+	}]
+};
+function getEyeAnimationCycle(expression) {
+	return EYE_CYCLES[expression];
+}
+function getEyeCssClasses(step) {
+	switch (step) {
+		case "excited": return {
+			groupClass: "emo-eyes-excited",
+			eyeClass: ""
+		};
+		case "happy": return {
+			groupClass: "emo-eyes-happy",
+			eyeClass: ""
+		};
+		case "alert": return {
+			groupClass: "emo-eyes-alert",
+			eyeClass: ""
+		};
+		case "blink": return {
+			groupClass: "",
+			eyeClass: "emo-eye-blink"
+		};
+		case "sleepy": return {
+			groupClass: "emo-eyes-sleepy",
+			eyeClass: ""
+		};
+		case "curious": return {
+			groupClass: "emo-eyes-curious",
+			eyeClass: ""
+		};
+		case "sad": return {
+			groupClass: "emo-eyes-alert",
+			eyeClass: ""
+		};
+	}
+}
+// src/lib/indianLanguages.ts
+var APP_LANGUAGES = [
+	{
+		id: "en-IN",
+		speechLocale: "en-IN",
+		name: "English (India)",
+		nativeName: "English (IN)",
+		shortLabel: "EN (IN)",
+		scheduled: false,
+		states: [
+			"Pan-India",
+			"Nagaland",
+			"Meghalaya",
+			"Arunachal Pradesh",
+			"Mizoram",
+			"Delhi",
+			"Chandigarh"
+		]
+	},
+	{
+		id: "hi-IN",
+		speechLocale: "hi-IN",
+		name: "Hindi",
+		nativeName: "हिन्दी",
+		shortLabel: "हिन्दी",
+		scheduled: true,
+		states: [
+			"Uttar Pradesh",
+			"Bihar",
+			"Madhya Pradesh",
+			"Rajasthan",
+			"Haryana",
+			"Himachal Pradesh",
+			"Uttarakhand",
+			"Jharkhand",
+			"Chhattisgarh",
+			"Delhi",
+			"Chandigarh",
+			"Andaman & Nicobar Islands"
+		]
+	},
+	{
+		id: "kn-IN",
+		speechLocale: "kn-IN",
+		name: "Kannada",
+		nativeName: "ಕನ್ನಡ",
+		shortLabel: "ಕನ್ನಡ",
+		scheduled: true,
+		states: ["Karnataka"]
+	},
+	{
+		id: "ta-IN",
+		speechLocale: "ta-IN",
+		name: "Tamil",
+		nativeName: "தமிழ்",
+		shortLabel: "தமிழ்",
+		scheduled: true,
+		states: ["Tamil Nadu", "Puducherry"]
+	},
+	{
+		id: "te-IN",
+		speechLocale: "te-IN",
+		name: "Telugu",
+		nativeName: "తెలుగు",
+		shortLabel: "తెలుగు",
+		scheduled: true,
+		states: [
+			"Andhra Pradesh",
+			"Telangana",
+			"Puducherry"
+		]
+	},
+	{
+		id: "ml-IN",
+		speechLocale: "ml-IN",
+		name: "Malayalam",
+		nativeName: "മലയാളം",
+		shortLabel: "മലയാളം",
+		scheduled: true,
+		states: [
+			"Kerala",
+			"Lakshadweep",
+			"Puducherry"
+		]
+	},
+	{
+		id: "mr-IN",
+		speechLocale: "mr-IN",
+		name: "Marathi",
+		nativeName: "मराठी",
+		shortLabel: "मराठी",
+		scheduled: true,
+		states: [
+			"Maharashtra",
+			"Goa",
+			"Dadra & Nagar Haveli and Daman & Diu"
+		]
+	},
+	{
+		id: "gu-IN",
+		speechLocale: "gu-IN",
+		name: "Gujarati",
+		nativeName: "ગુજરાતી",
+		shortLabel: "ગુજરાતી",
+		scheduled: true,
+		states: ["Gujarat", "Dadra & Nagar Haveli and Daman & Diu"]
+	},
+	{
+		id: "bn-IN",
+		speechLocale: "bn-IN",
+		name: "Bengali",
+		nativeName: "বাংলা",
+		shortLabel: "বাংলা",
+		scheduled: true,
+		states: [
+			"West Bengal",
+			"Tripura",
+			"Assam",
+			"Andaman & Nicobar Islands"
+		]
+	},
+	{
+		id: "pa-IN",
+		speechLocale: "pa-IN",
+		name: "Punjabi",
+		nativeName: "ਪੰਜਾਬੀ",
+		shortLabel: "ਪੰਜਾਬੀ",
+		scheduled: true,
+		states: [
+			"Punjab",
+			"Chandigarh",
+			"Haryana",
+			"Delhi"
+		]
+	},
+	{
+		id: "or-IN",
+		speechLocale: "or-IN",
+		name: "Odia",
+		nativeName: "ଓଡ଼ିଆ",
+		shortLabel: "ଓଡ଼ିଆ",
+		scheduled: true,
+		states: ["Odisha"]
+	},
+	{
+		id: "as-IN",
+		speechLocale: "as-IN",
+		name: "Assamese",
+		nativeName: "অসমীয়া",
+		shortLabel: "অসমীয়া",
+		scheduled: true,
+		states: ["Assam"]
+	},
+	{
+		id: "ur-IN",
+		speechLocale: "ur-IN",
+		name: "Urdu",
+		nativeName: "اردو",
+		shortLabel: "اردو",
+		scheduled: true,
+		rtl: true,
+		states: [
+			"Jammu & Kashmir",
+			"Telangana",
+			"Uttar Pradesh",
+			"Bihar",
+			"Delhi",
+			"Jharkhand"
+		]
+	},
+	{
+		id: "kok-IN",
+		speechLocale: "mr-IN",
+		name: "Konkani",
+		nativeName: "कोंकणी",
+		shortLabel: "कोंकणी",
+		scheduled: true,
+		states: [
+			"Goa",
+			"Karnataka",
+			"Maharashtra"
+		]
+	},
+	{
+		id: "mni-IN",
+		speechLocale: "bn-IN",
+		name: "Manipuri (Meitei)",
+		nativeName: "মৈতৈলোন্",
+		shortLabel: "মৈতৈলোন্",
+		scheduled: true,
+		states: ["Manipur"]
+	},
+	{
+		id: "ne-IN",
+		speechLocale: "ne-NP",
+		name: "Nepali",
+		nativeName: "नेपाली",
+		shortLabel: "नेपाली",
+		scheduled: true,
+		states: ["Sikkim", "West Bengal"]
+	},
+	{
+		id: "sa-IN",
+		speechLocale: "hi-IN",
+		name: "Sanskrit",
+		nativeName: "संस्कृतम्",
+		shortLabel: "संस्कृतम्",
+		scheduled: true,
+		states: ["Uttarakhand", "Himachal Pradesh"]
+	},
+	{
+		id: "ks-IN",
+		speechLocale: "ur-IN",
+		name: "Kashmiri",
+		nativeName: "कॉशुर / کٲشُر",
+		shortLabel: "कॉशुर",
+		scheduled: true,
+		states: ["Jammu & Kashmir"]
+	},
+	{
+		id: "doi-IN",
+		speechLocale: "hi-IN",
+		name: "Dogri",
+		nativeName: "डोगरी",
+		shortLabel: "डोगरी",
+		scheduled: true,
+		states: [
+			"Jammu & Kashmir",
+			"Himachal Pradesh",
+			"Punjab"
+		]
+	},
+	{
+		id: "brx-IN",
+		speechLocale: "hi-IN",
+		name: "Bodo",
+		nativeName: "बड़ो",
+		shortLabel: "बड़ो",
+		scheduled: true,
+		states: ["Assam"]
+	},
+	{
+		id: "mai-IN",
+		speechLocale: "hi-IN",
+		name: "Maithili",
+		nativeName: "मैथिली",
+		shortLabel: "मैथिली",
+		scheduled: true,
+		states: ["Bihar", "Jharkhand"]
+	},
+	{
+		id: "sat-IN",
+		speechLocale: "hi-IN",
+		name: "Santali",
+		nativeName: "ᱥᱟᱱᱛᱟᱲᱤ",
+		shortLabel: "ᱥᱟᱱᱛᱟᱲᱤ",
+		scheduled: true,
+		states: [
+			"Jharkhand",
+			"Odisha",
+			"West Bengal"
+		]
+	},
+	{
+		id: "sd-IN",
+		speechLocale: "hi-IN",
+		name: "Sindhi",
+		nativeName: "सिंधी / سنڌي",
+		shortLabel: "सिंधी",
+		scheduled: true,
+		states: [
+			"Gujarat",
+			"Maharashtra",
+			"Rajasthan"
+		]
+	},
+	{
+		id: "lus-IN",
+		speechLocale: "en-IN",
+		name: "Mizo",
+		nativeName: "Mizo ṭawng",
+		shortLabel: "Mizo",
+		scheduled: false,
+		states: ["Mizoram"]
+	},
+	{
+		id: "kha-IN",
+		speechLocale: "en-IN",
+		name: "Khasi",
+		nativeName: "Ka Ktien Khasi",
+		shortLabel: "Khasi",
+		scheduled: false,
+		states: ["Meghalaya"]
+	},
+	{
+		id: "trp-IN",
+		speechLocale: "bn-IN",
+		name: "Kokborok",
+		nativeName: "ককবরক",
+		shortLabel: "ককবরক",
+		scheduled: false,
+		states: ["Tripura"]
+	},
+	{
+		id: "lbj-IN",
+		speechLocale: "hi-IN",
+		name: "Ladakhi (Bhoti)",
+		nativeName: "ལ་དྭགས་སྐད",
+		shortLabel: "ལ་དྭགས",
+		scheduled: false,
+		states: ["Ladakh"]
+	},
+	{
+		id: "en-US",
+		speechLocale: "en-US",
+		name: "English (US)",
+		nativeName: "English (US)",
+		shortLabel: "EN (US)",
+		scheduled: false,
+		states: ["Global"]
+	}
+];
+/** Complete registry of all 28 States + 8 Union Territories of India (36 regions) */
+var INDIA_STATES_AND_UTS = [
+	{
+		id: "andhra-pradesh",
+		name: "Andhra Pradesh",
+		kind: "state",
+		primaryLanguageId: "te-IN",
+		otherLanguageIds: ["ur-IN", "en-IN"]
+	},
+	{
+		id: "arunachal-pradesh",
+		name: "Arunachal Pradesh",
+		kind: "state",
+		primaryLanguageId: "en-IN",
+		otherLanguageIds: ["hi-IN", "as-IN"]
+	},
+	{
+		id: "assam",
+		name: "Assam",
+		kind: "state",
+		primaryLanguageId: "as-IN",
+		otherLanguageIds: [
+			"brx-IN",
+			"bn-IN",
+			"en-IN"
+		]
+	},
+	{
+		id: "bihar",
+		name: "Bihar",
+		kind: "state",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: ["mai-IN", "ur-IN"]
+	},
+	{
+		id: "chhattisgarh",
+		name: "Chhattisgarh",
+		kind: "state",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: ["en-IN"]
+	},
+	{
+		id: "goa",
+		name: "Goa",
+		kind: "state",
+		primaryLanguageId: "kok-IN",
+		otherLanguageIds: ["mr-IN", "en-IN"]
+	},
+	{
+		id: "gujarat",
+		name: "Gujarat",
+		kind: "state",
+		primaryLanguageId: "gu-IN",
+		otherLanguageIds: ["hi-IN", "sd-IN"]
+	},
+	{
+		id: "haryana",
+		name: "Haryana",
+		kind: "state",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: ["pa-IN", "en-IN"]
+	},
+	{
+		id: "himachal-pradesh",
+		name: "Himachal Pradesh",
+		kind: "state",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: ["sa-IN", "doi-IN"]
+	},
+	{
+		id: "jharkhand",
+		name: "Jharkhand",
+		kind: "state",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: [
+			"sat-IN",
+			"mai-IN",
+			"ur-IN",
+			"bn-IN"
+		]
+	},
+	{
+		id: "karnataka",
+		name: "Karnataka",
+		kind: "state",
+		primaryLanguageId: "kn-IN",
+		otherLanguageIds: [
+			"kok-IN",
+			"ur-IN",
+			"en-IN"
+		]
+	},
+	{
+		id: "kerala",
+		name: "Kerala",
+		kind: "state",
+		primaryLanguageId: "ml-IN",
+		otherLanguageIds: ["en-IN", "ta-IN"]
+	},
+	{
+		id: "madhya-pradesh",
+		name: "Madhya Pradesh",
+		kind: "state",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: ["mr-IN", "ur-IN"]
+	},
+	{
+		id: "maharashtra",
+		name: "Maharashtra",
+		kind: "state",
+		primaryLanguageId: "mr-IN",
+		otherLanguageIds: [
+			"hi-IN",
+			"kok-IN",
+			"sd-IN",
+			"en-IN"
+		]
+	},
+	{
+		id: "manipur",
+		name: "Manipur",
+		kind: "state",
+		primaryLanguageId: "mni-IN",
+		otherLanguageIds: ["en-IN", "hi-IN"]
+	},
+	{
+		id: "meghalaya",
+		name: "Meghalaya",
+		kind: "state",
+		primaryLanguageId: "kha-IN",
+		otherLanguageIds: ["en-IN", "bn-IN"]
+	},
+	{
+		id: "mizoram",
+		name: "Mizoram",
+		kind: "state",
+		primaryLanguageId: "lus-IN",
+		otherLanguageIds: ["en-IN", "hi-IN"]
+	},
+	{
+		id: "nagaland",
+		name: "Nagaland",
+		kind: "state",
+		primaryLanguageId: "en-IN",
+		otherLanguageIds: ["hi-IN", "as-IN"]
+	},
+	{
+		id: "odisha",
+		name: "Odisha",
+		kind: "state",
+		primaryLanguageId: "or-IN",
+		otherLanguageIds: [
+			"sat-IN",
+			"hi-IN",
+			"en-IN"
+		]
+	},
+	{
+		id: "punjab",
+		name: "Punjab",
+		kind: "state",
+		primaryLanguageId: "pa-IN",
+		otherLanguageIds: ["hi-IN", "en-IN"]
+	},
+	{
+		id: "rajasthan",
+		name: "Rajasthan",
+		kind: "state",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: ["sd-IN", "en-IN"]
+	},
+	{
+		id: "sikkim",
+		name: "Sikkim",
+		kind: "state",
+		primaryLanguageId: "ne-IN",
+		otherLanguageIds: ["en-IN", "hi-IN"]
+	},
+	{
+		id: "tamil-nadu",
+		name: "Tamil Nadu",
+		kind: "state",
+		primaryLanguageId: "ta-IN",
+		otherLanguageIds: ["en-IN"]
+	},
+	{
+		id: "telangana",
+		name: "Telangana",
+		kind: "state",
+		primaryLanguageId: "te-IN",
+		otherLanguageIds: ["ur-IN", "en-IN"]
+	},
+	{
+		id: "tripura",
+		name: "Tripura",
+		kind: "state",
+		primaryLanguageId: "bn-IN",
+		otherLanguageIds: ["trp-IN", "en-IN"]
+	},
+	{
+		id: "uttar-pradesh",
+		name: "Uttar Pradesh",
+		kind: "state",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: ["ur-IN", "en-IN"]
+	},
+	{
+		id: "uttarakhand",
+		name: "Uttarakhand",
+		kind: "state",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: ["sa-IN", "en-IN"]
+	},
+	{
+		id: "west-bengal",
+		name: "West Bengal",
+		kind: "state",
+		primaryLanguageId: "bn-IN",
+		otherLanguageIds: [
+			"ne-IN",
+			"sat-IN",
+			"ur-IN",
+			"hi-IN"
+		]
+	},
+	{
+		id: "andaman-nicobar",
+		name: "Andaman & Nicobar Islands",
+		kind: "ut",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: [
+			"bn-IN",
+			"ta-IN",
+			"te-IN",
+			"en-IN"
+		]
+	},
+	{
+		id: "chandigarh",
+		name: "Chandigarh",
+		kind: "ut",
+		primaryLanguageId: "en-IN",
+		otherLanguageIds: ["hi-IN", "pa-IN"]
+	},
+	{
+		id: "dnh-dd",
+		name: "Dadra & Nagar Haveli and Daman & Diu",
+		kind: "ut",
+		primaryLanguageId: "gu-IN",
+		otherLanguageIds: [
+			"mr-IN",
+			"hi-IN",
+			"en-IN"
+		]
+	},
+	{
+		id: "delhi",
+		name: "Delhi (NCT)",
+		kind: "ut",
+		primaryLanguageId: "hi-IN",
+		otherLanguageIds: [
+			"en-IN",
+			"pa-IN",
+			"ur-IN"
+		]
+	},
+	{
+		id: "jammu-kashmir",
+		name: "Jammu & Kashmir",
+		kind: "ut",
+		primaryLanguageId: "ks-IN",
+		otherLanguageIds: [
+			"doi-IN",
+			"ur-IN",
+			"hi-IN",
+			"en-IN"
+		]
+	},
+	{
+		id: "ladakh",
+		name: "Ladakh",
+		kind: "ut",
+		primaryLanguageId: "lbj-IN",
+		otherLanguageIds: [
+			"hi-IN",
+			"ur-IN",
+			"en-IN"
+		]
+	},
+	{
+		id: "lakshadweep",
+		name: "Lakshadweep",
+		kind: "ut",
+		primaryLanguageId: "ml-IN",
+		otherLanguageIds: ["en-IN"]
+	},
+	{
+		id: "puducherry",
+		name: "Puducherry",
+		kind: "ut",
+		primaryLanguageId: "ta-IN",
+		otherLanguageIds: [
+			"te-IN",
+			"ml-IN",
+			"en-IN"
+		]
+	}
+];
+var LANG_BY_ID = new Map(APP_LANGUAGES.map((lang) => [lang.id, lang]));
+function getLanguageOption(code) {
+	if (code && LANG_BY_ID.has(code)) return LANG_BY_ID.get(code);
+	return APP_LANGUAGES[0];
+}
+function getSpeechRecognitionLocale(code) {
+	return getLanguageOption(code).speechLocale;
+}
+function getLanguagesForState(stateId) {
+	const region = INDIA_STATES_AND_UTS.find((s) => s.id === stateId);
+	if (!region) return [APP_LANGUAGES[0]];
+	return [region.primaryLanguageId, ...region.otherLanguageIds].map((id) => LANG_BY_ID.get(id)).filter((item) => Boolean(item));
+}
+function filterStatesByQuery(query) {
+	const q = query.trim().toLowerCase();
+	if (!q) return INDIA_STATES_AND_UTS;
+	return INDIA_STATES_AND_UTS.filter((region) => {
+		if (region.name.toLowerCase().includes(q)) return true;
+		return getLanguagesForState(region.id).some((l) => l.name.toLowerCase().includes(q) || l.nativeName.toLowerCase().includes(q) || l.id.toLowerCase().includes(q));
+	});
+}
+function filterLanguagesByQuery(query) {
+	const q = query.trim().toLowerCase();
+	if (!q) return APP_LANGUAGES;
+	return APP_LANGUAGES.filter((lang) => lang.name.toLowerCase().includes(q) || lang.nativeName.toLowerCase().includes(q) || lang.id.toLowerCase().includes(q) || lang.states.some((s) => s.toLowerCase().includes(q)));
+}
+// src/lib/i18n.ts
+var EN_BASE = {
+	navToday: "Today",
+	navSchedule: "Schedule",
+	navInsights: "Insights",
+	navProfile: "Profile",
+	newAlarm: "New Alarm",
+	newShort: "New",
+	add: "Add",
+	signIn: "Sign In",
+	signInGoogle: "Sign In / Google",
+	goodMorning: "Good morning",
+	goodAfternoon: "Good afternoon",
+	goodEvening: "Good evening",
+	goodNight: "Good night",
+	voiceNotes: "Voice Notes",
+	recordNote: "Record Note",
+	writeNote: "Write",
+	quickAddPlaceholder: "Quick add: \"Wake me at 6:30am\" or \"Take pills 9pm\"",
+	filterAll: "All",
+	filterAlarms: "Alarms",
+	filterTodo: "To Do",
+	filterDone: "Done",
+	allTags: "All Tags",
+	createAlarm: "Create Alarm",
+	noRemindersYet: "No reminders here yet",
+	detailedAlarm: "Detailed Alarm",
+	languageTitle: "India State & App Language",
+	languageSubtitle: "Choose your state or regional language for app labels & voice dictation",
+	changeLanguage: "Change Language"
+};
+var TRANSLATIONS = {
+	"en-IN": EN_BASE,
+	"en-US": EN_BASE,
+	"hi-IN": {
+		navToday: "आज",
+		navSchedule: "शेड्यूल",
+		navInsights: "इनसाइट्स",
+		navProfile: "प्रोफ़ाइल",
+		newAlarm: "नया अलार्म",
+		newShort: "नया",
+		add: "जोड़ें",
+		signIn: "साइन इन",
+		signInGoogle: "साइन इन / Google",
+		goodMorning: "सुप्रभात",
+		goodAfternoon: "नमस्कार",
+		goodEvening: "शुभ संध्या",
+		goodNight: "शुभ रात्रि",
+		voiceNotes: "वॉइस नोट्स",
+		recordNote: "नोट रिकॉर्ड करें",
+		writeNote: "लिखें",
+		quickAddPlaceholder: "जल्दी जोड़ें: \"सुबह 6:30 अलार्म\" या \"दवाई 9pm\"",
+		filterAll: "सभी",
+		filterAlarms: "अलार्म",
+		filterTodo: "बाकी",
+		filterDone: "पूर्ण",
+		allTags: "सभी टैग",
+		createAlarm: "अलार्म बनाएँ",
+		noRemindersYet: "अभी कोई रिमाइंडर नहीं है",
+		detailedAlarm: "विस्तृत अलार्म",
+		languageTitle: "भारत राज्य और भाषा",
+		languageSubtitle: "ऐप और वॉइस डिक्टेशन के लिए अपना राज्य या भाषा चुनें",
+		changeLanguage: "भाषा बदलें"
+	},
+	"kn-IN": {
+		navToday: "ಇಂದು",
+		navSchedule: "ವೇಳಾಪಟ್ಟಿ",
+		navInsights: "ವಿಶ್ಲೇಷಣೆ",
+		navProfile: "ಪ್ರೊಫೈಲ್",
+		newAlarm: "ಹೊಸ ಅಲಾರಾಂ",
+		newShort: "ಹೊಸದು",
+		add: "ಸೇರಿಸಿ",
+		signIn: "ಸೈನ್ ಇನ್",
+		signInGoogle: "ಸೈನ್ ಇನ್ / Google",
+		goodMorning: "ಶುಭೋದಯ",
+		goodAfternoon: "ಶುಭ ಮಧ್ಯಾಹ್ನ",
+		goodEvening: "ಶುಭ ಸಂಜೆ",
+		goodNight: "ಶುಭ ರಾತ್ರಿ",
+		voiceNotes: "ಧ್ವನಿ ಟಿಪ್ಪಣಿಗಳು",
+		recordNote: "ನೋಟ್ ರೆಕಾರ್ಡ್",
+		writeNote: "ಬರೆಯಿರಿ",
+		quickAddPlaceholder: "ಬೇಗ ಸೇರಿಸಿ: \"ಬೆಳಿಗ್ಗೆ 6:30 ಅಲಾರಾಂ\" ಅಥವಾ \"ಮಾತ್ರೆ 9pm\"",
+		filterAll: "ಎಲ್ಲಾ",
+		filterAlarms: "ಅಲಾರಾಂಗಳು",
+		filterTodo: "ಬಾಕಿ",
+		filterDone: "ಮುಗಿದಿದೆ",
+		allTags: "ಎಲ್ಲಾ ಟ್ಯಾಗ್‌ಗಳು",
+		createAlarm: "ಅಲಾರಾಂ ರಚಿಸಿ",
+		noRemindersYet: "ಇಲ್ಲಿ ಇನ್ನೂ ಯಾವುದೇ ಜ್ಞಾಪನೆಗಳಿಲ್ಲ",
+		detailedAlarm: "ವಿವರವಾದ ಅಲಾರಾಂ",
+		languageTitle: "ಭಾರತದ ರಾಜ್ಯ ಮತ್ತು ಭಾಷೆ",
+		languageSubtitle: "ಆ್ಯಪ್ ಮತ್ತು ಧ್ವನಿ ಟಿಪ್ಪಣಿಗಳಿಗೆ ನಿಮ್ಮ ರಾಜ್ಯ ಅಥವಾ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+		changeLanguage: "ಭಾಷೆ ಬದಲಿಸಿ"
+	},
+	"ta-IN": {
+		navToday: "இன்று",
+		navSchedule: "அட்டவணை",
+		navInsights: "புள்ளிவிவரம்",
+		navProfile: "சுயவிவரம்",
+		newAlarm: "புதிய அலாரம்",
+		newShort: "புதியது",
+		add: "சேர்",
+		signIn: "உள்நுழை",
+		signInGoogle: "உள்நுழை / Google",
+		goodMorning: "காலை வணக்கம்",
+		goodAfternoon: "மதிய வணக்கம்",
+		goodEvening: "மாலை வணக்கம்",
+		goodNight: "இனிய இரவு",
+		voiceNotes: "குரல் குறிப்புகள்",
+		recordNote: "பதிவு செய்",
+		writeNote: "எழுது",
+		quickAddPlaceholder: "விரைவாக சேர்: \"காலை 6:30 அலாரம்\" அல்லது \"மருந்து 9pm\"",
+		filterAll: "அனைத்தும்",
+		filterAlarms: "அலாரங்கள்",
+		filterTodo: "செய்ய வேண்டியவை",
+		filterDone: "முடிந்தது",
+		allTags: "அனைத்து குறிச்சொற்கள்",
+		createAlarm: "அலாரம் உருவாக்கு",
+		noRemindersYet: "இங்கே நினைவூட்டல்கள் எதுவும் இல்லை",
+		detailedAlarm: "விரிவான அலாரம்",
+		languageTitle: "இந்திய மாநிலம் & மொழி",
+		languageSubtitle: "செயலி மற்றும் குரல் குறிப்புகளுக்கு உங்கள் மாநிலம் அல்லது மொழியைத் தேர்ந்தெடுக்கவும்",
+		changeLanguage: "மொழி மாற்று"
+	},
+	"te-IN": {
+		navToday: "ఈరోజు",
+		navSchedule: "షెడ్యూల్",
+		navInsights: "గణాంకాలు",
+		navProfile: "ప్రొఫైల్",
+		newAlarm: "కొత్త అలారం",
+		newShort: "కొత్తది",
+		add: "జోడించు",
+		signIn: "సైన్ ఇన్",
+		signInGoogle: "సైన్ ఇన్ / Google",
+		goodMorning: "శుభోదయం",
+		goodAfternoon: "శుభ మధ్యాహ్నం",
+		goodEvening: "శుభ సాయంత్రం",
+		goodNight: "శుభ రాత్రి",
+		voiceNotes: "వాయిస్ నోట్స్",
+		recordNote: "రికార్డ్ నోట్",
+		writeNote: "రాయండి",
+		quickAddPlaceholder: "త్వరగా జోడించండి: \"ఉదయం 6:30 అలారం\" లేదా \"మందులు 9pm\"",
+		filterAll: "అన్నీ",
+		filterAlarms: "అలారాలు",
+		filterTodo: "చేయవలసినవి",
+		filterDone: "పూర్తయింది",
+		allTags: "అన్ని ట్యాగ్‌లు",
+		createAlarm: "అలారం సృష్టించు",
+		noRemindersYet: "ఇక్కడ ఇంకా రిమైండర్లు లేవు",
+		detailedAlarm: "వివరమైన అలారం",
+		languageTitle: "భారత రాష్ట్రం & భాష",
+		languageSubtitle: "యాప్ మరియు వాయిస్ నోట్స్ కోసం మీ రాష్ట్రం లేదా భాషను ఎంచుకోండి",
+		changeLanguage: "భాష మార్చండి"
+	},
+	"ml-IN": {
+		navToday: "ഇന്ന്",
+		navSchedule: "ഷെഡ്യൂൾ",
+		navInsights: "വിശകലനം",
+		navProfile: "പ്രൊഫൈൽ",
+		newAlarm: "പുതിയ അലാറം",
+		newShort: "പുതിയത്",
+		add: "ചേർക്കുക",
+		signIn: "സൈൻ ഇൻ",
+		signInGoogle: "സൈൻ ഇൻ / Google",
+		goodMorning: "സുപ്രഭാതം",
+		goodAfternoon: "ശുഭ ഉച്ച",
+		goodEvening: "ശുഭ സായാഹ്നം",
+		goodNight: "ശുഭ രാത്രി",
+		voiceNotes: "വോയിസ് നോട്ടുകൾ",
+		recordNote: "നോട്ട് റെക്കോർഡ്",
+		writeNote: "എഴുതുക",
+		quickAddPlaceholder: "വേഗം ചേർക്കുക: \"6:30am അലാറം\" അല്ലെങ്കിൽ \"മരുന്ന് 9pm\"",
+		filterAll: "എല്ലാം",
+		filterAlarms: "അലാറങ്ങൾ",
+		filterTodo: "ചെയ്യാനുള്ളവ",
+		filterDone: "പൂർത്തിയായി",
+		allTags: "എല്ലാ ടാഗുകളും",
+		createAlarm: "അലാറം ഉണ്ടാക്കുക",
+		noRemindersYet: "ഇവിടെ ഇതുവരെ ഓർമ്മപ്പെടുത്തലുകളില്ല",
+		detailedAlarm: "വിശദമായ അലാറം",
+		languageTitle: "ഇന്ത്യൻ സംസ്ഥാനവും ഭാഷയും",
+		languageSubtitle: "ആപ്പിനും വോയിസ് നോട്ടുകൾക്കും നിങ്ങളുടെ സംസ്ഥാനമോ ഭാഷയോ തിരഞ്ഞെടുക്കുക",
+		changeLanguage: "ഭാഷ മാറ്റുക"
+	},
+	"mr-IN": {
+		navToday: "आज",
+		navSchedule: "वेळापत्रक",
+		navInsights: "आढावा",
+		navProfile: "प्रोफाइल",
+		newAlarm: "नवीन अलार्म",
+		newShort: "नवीन",
+		add: "जोडा",
+		signIn: "साइन इन",
+		signInGoogle: "साइन इन / Google",
+		goodMorning: "सुप्रभात",
+		goodAfternoon: "शुभ दुपार",
+		goodEvening: "शुभ संध्याकाळ",
+		goodNight: "शुभ रात्री",
+		voiceNotes: "व्हॉइस नोट्स",
+		recordNote: "नोट रेकॉर्ड करा",
+		writeNote: "लिहा",
+		quickAddPlaceholder: "झटपट जोडा: \"सकाळी 6:30 अलार्म\" किंवा \"औषध 9pm\"",
+		filterAll: "सर्व",
+		filterAlarms: "अलार्म",
+		filterTodo: "बाकी",
+		filterDone: "पूर्ण",
+		allTags: "सर्व टॅग",
+		createAlarm: "अलार्म तयार करा",
+		noRemindersYet: "अद्याप कोणतेही रिमाइंडर नाहीत",
+		detailedAlarm: "तपशीलवार अलार्म",
+		languageTitle: "भारतीय राज्य आणि भाषा",
+		languageSubtitle: "अ‍ॅप आणि व्हॉइस नोट्ससाठी तुमचे राज्य किंवा भाषा निवडा",
+		changeLanguage: "भाषा बदला"
+	},
+	"gu-IN": {
+		navToday: "આજે",
+		navSchedule: "શેડ્યૂલ",
+		navInsights: "અહેવાલ",
+		navProfile: "પ્રોફાઇલ",
+		newAlarm: "નવો અલાર્મ",
+		newShort: "નવું",
+		add: "ઉમેરો",
+		signIn: "સાઇન ઇન",
+		signInGoogle: "સાઇન ઇન / Google",
+		goodMorning: "સુપ્રભાત",
+		goodAfternoon: "શુભ બપોર",
+		goodEvening: "શુભ સાંજ",
+		goodNight: "શુભ રાત્રિ",
+		voiceNotes: "વૉઇસ નોટ્સ",
+		recordNote: "નોટ રેકોર્ડ કરો",
+		writeNote: "લખો",
+		quickAddPlaceholder: "ઝડપથી ઉમેરો: \"સવારે 6:30 અલાર્મ\" અથવા \"દવા 9pm\"",
+		filterAll: "બધા",
+		filterAlarms: "અલાર્મ",
+		filterTodo: "બાકી",
+		filterDone: "પૂર્ણ",
+		allTags: "બધા ટૅગ્સ",
+		createAlarm: "અલાર્મ બનાવો",
+		noRemindersYet: "અહીં હજુ સુધી કોઈ રિમાઇન્ડર નથી",
+		detailedAlarm: "વિગતવાર અલાર્મ",
+		languageTitle: "ભારતનું રાજ્ય અને ભાષા",
+		languageSubtitle: "એપ અને વૉઇસ નોટ્સ માટે તમારું રાજ્ય અથવા ભાષા પસંદ કરો",
+		changeLanguage: "ભાષા બદલો"
+	},
+	"bn-IN": {
+		navToday: "আজ",
+		navSchedule: "সময়সূচি",
+		navInsights: "পরিসংখ্যান",
+		navProfile: "প্রোফাইল",
+		newAlarm: "নতুন অ্যালার্ম",
+		newShort: "নতুন",
+		add: "যোগ করুন",
+		signIn: "সাইন ইন",
+		signInGoogle: "সাইন ইন / Google",
+		goodMorning: "সুপ্রভাত",
+		goodAfternoon: "শুভ অপরাহ্ণ",
+		goodEvening: "শুভ সন্ধ্যা",
+		goodNight: "শুভ রাত্রি",
+		voiceNotes: "ভয়েস নোটস",
+		recordNote: "নোট রেকর্ড করুন",
+		writeNote: "লিখুন",
+		quickAddPlaceholder: "দ্রুত যোগ করুন: \"সকাল 6:30 অ্যালার্ম\" বা \"ওষুধ 9pm\"",
+		filterAll: "সব",
+		filterAlarms: "অ্যালার্ম",
+		filterTodo: "বাকি",
+		filterDone: "সম্পন্ন",
+		allTags: "সব ট্যাগ",
+		createAlarm: "অ্যালার্ম তৈরি করুন",
+		noRemindersYet: "এখনো কোনো রিমাইন্ডার নেই",
+		detailedAlarm: "বিস্তারিত অ্যালার্ম",
+		languageTitle: "ভারতের রাজ্য ও ভাষা",
+		languageSubtitle: "অ্যাপ ও ভয়েস নোটের জন্য আপনার রাজ্য বা ভাষা বেছে নিন",
+		changeLanguage: "ভাষা পরিবর্তন"
+	},
+	"pa-IN": {
+		navToday: "ਅੱਜ",
+		navSchedule: "ਸ਼ਡਿਊਲ",
+		navInsights: "ਵੇਰਵਾ",
+		navProfile: "ਪ੍ਰੋਫਾਈਲ",
+		newAlarm: "ਨਵਾਂ ਅਲਾਰਮ",
+		newShort: "ਨਵਾਂ",
+		add: "ਜੋੜੋ",
+		signIn: "ਸਾਈਨ ਇਨ",
+		signInGoogle: "ਸਾਈਨ ਇਨ / Google",
+		goodMorning: "ਸ਼ੁਭ ਸਵੇਰ",
+		goodAfternoon: "ਸ਼ੁਭ ਦੁਪਹਿਰ",
+		goodEvening: "ਸ਼ੁਭ ਸ਼ਾਮ",
+		goodNight: "ਸ਼ੁਭ ਰਾਤ",
+		voiceNotes: "ਵੌਇਸ ਨੋਟਸ",
+		recordNote: "ਨੋਟ ਰਿਕਾਰਡ ਕਰੋ",
+		writeNote: "ਲਿਖੋ",
+		quickAddPlaceholder: "ਜਲਦੀ ਜੋੜੋ: \"ਸਵੇਰੇ 6:30 ਅਲਾਰਮ\" ਜਾਂ \"ਦਵਾਈ 9pm\"",
+		filterAll: "ਸਭ",
+		filterAlarms: "ਅਲਾਰਮ",
+		filterTodo: "ਬਾਕੀ",
+		filterDone: "ਪੂਰਾ",
+		allTags: "ਸਾਰੇ ਟੈਗ",
+		createAlarm: "ਅਲਾਰਮ ਬਣਾਓ",
+		noRemindersYet: "ਅਜੇ ਕੋਈ ਰਿਮਾਈਂਡਰ ਨਹੀਂ ਹੈ",
+		detailedAlarm: "ਵਿਸਤ੍ਰਿਤ ਅਲਾਰਮ",
+		languageTitle: "ਭਾਰਤ ਦਾ ਰਾਜ ਅਤੇ ਭਾਸ਼ਾ",
+		languageSubtitle: "ਐਪ ਅਤੇ ਵੌਇਸ ਨੋਟਸ ਲਈ ਆਪਣਾ ਰਾਜ ਜਾਂ ਭਾਸ਼ਾ ਚੁਣੋ",
+		changeLanguage: "ਭਾਸ਼ਾ ਬਦਲੋ"
+	},
+	"or-IN": {
+		navToday: "ଆଜି",
+		navSchedule: "ସୂଚୀ",
+		navInsights: "ତଥ୍ୟ",
+		navProfile: "ପ୍ରୋଫାଇଲ୍",
+		newAlarm: "ନୂତନ ଆଲାର୍ମ",
+		newShort: "ନୂଆ",
+		add: "ଯୋଗ କରନ୍ତୁ",
+		signIn: "ସାଇନ୍ ଇନ୍",
+		goodMorning: "ସୁପ୍ରଭାତ",
+		goodAfternoon: "ଶୁଭ ଅପରାହ୍ନ",
+		goodEvening: "ଶୁଭ ସନ୍ଧ୍ୟା",
+		goodNight: "ଶୁଭ ରାତ୍ରି",
+		voiceNotes: "ଭଏସ୍ ନୋଟ୍ସ",
+		recordNote: "ନୋଟ୍ ରେକର୍ଡ",
+		writeNote: "ଲେଖନ୍ତୁ",
+		filterAll: "ସବୁ",
+		filterAlarms: "ଆଲାର୍ମ",
+		filterTodo: "ବାକି",
+		filterDone: "ସମ୍ପୂର୍ଣ୍ଣ",
+		createAlarm: "ଆଲାର୍ମ ତିଆରି କରନ୍ତୁ",
+		languageTitle: "ଭାରତର ରାଜ୍ୟ ଏବଂ ଭାଷା",
+		changeLanguage: "ଭାଷା ବଦଳାନ୍ତୁ"
+	},
+	"as-IN": {
+		navToday: "আজি",
+		navSchedule: "সময়সূচী",
+		navInsights: "তথ্য",
+		navProfile: "প্ৰফাইল",
+		newAlarm: "নতুন এলাৰ্ম",
+		newShort: "নতুন",
+		add: "যোগ কৰক",
+		signIn: "চাইন ইন",
+		goodMorning: "সুপ্ৰভাত",
+		goodAfternoon: "শুভ বিয়লি",
+		goodEvening: "শুভ সন্ধিয়া",
+		goodNight: "শুভ ৰাত্ৰি",
+		voiceNotes: "ভয়েচ নোটছ",
+		recordNote: "নোট ৰেকৰ্ড",
+		writeNote: "লিখক",
+		filterAll: "সকলো",
+		filterAlarms: "এলাৰ্ম",
+		filterTodo: "বাকী",
+		filterDone: "সম্পূৰ্ণ",
+		createAlarm: "এলাৰ্ম বনাওক",
+		languageTitle: "ভাৰতৰ ৰাজ্য আৰু ভাষা",
+		changeLanguage: "ভাষা সলনি কৰক"
+	},
+	"ur-IN": {
+		navToday: "آج",
+		navSchedule: "شیڈول",
+		navInsights: "جائزہ",
+		navProfile: "پروفائل",
+		newAlarm: "نیا الارم",
+		newShort: "نیا",
+		add: "شامل کریں",
+		signIn: "سائن ان",
+		goodMorning: "صبح بخیر",
+		goodAfternoon: "سہ پہر بخیر",
+		goodEvening: "شام بخیر",
+		goodNight: "شب بخیر",
+		voiceNotes: "وائس نوٹس",
+		recordNote: "نوٹ ریکارڈ کریں",
+		writeNote: "لکھیں",
+		filterAll: "سب",
+		filterAlarms: "الارم",
+		filterTodo: "باقی",
+		filterDone: "مکمل",
+		createAlarm: "الارم بنائیں",
+		languageTitle: "بھارتی ریاست اور زبان",
+		changeLanguage: "زبان تبدیل کریں"
+	},
+	"kok-IN": {
+		navToday: "आयज",
+		navSchedule: "वेळापत्रक",
+		navInsights: "विश्लेषण",
+		navProfile: "प्रोफायल",
+		newAlarm: "नवो अलार्म",
+		add: "जोडात",
+		goodMorning: "सुप्रभात",
+		goodEvening: "शुभ सांज",
+		voiceNotes: "व्हॉइस नोट्स",
+		recordNote: "नोट रेकॉर्ड",
+		writeNote: "बरयात",
+		languageTitle: "राज्य आनी भास"
+	},
+	"ne-IN": {
+		navToday: "आज",
+		navSchedule: "तालिका",
+		navInsights: "विवरण",
+		navProfile: "प्रोफाइल",
+		newAlarm: "नयाँ अलार्म",
+		add: "थप्नुहोस्",
+		goodMorning: "शुभ प्रभात",
+		goodAfternoon: "नमस्कार",
+		goodEvening: "शुभ सन्ध्या",
+		goodNight: "शुभ रात्री",
+		voiceNotes: "भ्वाइस नोट्स",
+		recordNote: "नोट रेकर्ड",
+		writeNote: "लेख्नुहोस्",
+		languageTitle: "राज्य र भाषा"
+	},
+	"sa-IN": {
+		navToday: "अद्य",
+		navSchedule: "समयसारिणी",
+		navInsights: "विश्लेषणम्",
+		navProfile: "परिचयः",
+		newAlarm: "नूतनः प्रबोधकः",
+		add: "योजयतु",
+		goodMorning: "सुप्रभातम्",
+		goodAfternoon: "शुभमध्याह्नम्",
+		goodEvening: "शुभसन्ध्या",
+		goodNight: "शुभरात्रिः",
+		voiceNotes: "ध्वनिलेखाः",
+		recordNote: "अभिलेखयतु",
+		writeNote: "लिखतु",
+		languageTitle: "राज्यं भाषा च"
+	},
+	"mni-IN": {
+		navToday: "ঙসি",
+		navSchedule: "পঞ্জী",
+		navProfile: "প্রোফাইল",
+		newAlarm: "অনৌবা অলার্ম",
+		goodMorning: "খুরুমজরি",
+		goodAfternoon: "খুরুমজরি",
+		goodEvening: "খুরুমজরি",
+		voiceNotes: "খোঞ্জেল নোটস",
+		recordNote: "নোট রেকর্দ",
+		writeNote: "ইয়ু"
+	},
+	"ks-IN": {
+		navToday: "अज़",
+		navProfile: "प्रोफ़ाइल",
+		goodMorning: "आदाब / नमस्कार",
+		goodAfternoon: "आदाब / नमस्कार",
+		goodEvening: "आदाब / नमस्कार",
+		voiceNotes: "आवाज़ नोट्स",
+		recordNote: "नोट रिकॉर्ड"
+	},
+	"doi-IN": {
+		navToday: "अज्ज",
+		navProfile: "प्रोफाइल",
+		newAlarm: "नमां अलार्म",
+		goodMorning: "नमस्ते / सुप्रभात",
+		goodAfternoon: "नमस्ते",
+		goodEvening: "शुभ संझा",
+		voiceNotes: "वॉइस नोट्स",
+		recordNote: "नोट रिकॉर्ड"
+	},
+	"brx-IN": {
+		navToday: "दिनै",
+		navProfile: "प्रफाइल",
+		goodMorning: "खुलुमबाय",
+		goodAfternoon: "खुलुमबाय",
+		goodEvening: "खुलुमबाय",
+		voiceNotes: "गारां नटस",
+		recordNote: "नट रेकर्ड"
+	},
+	"mai-IN": {
+		navToday: "आइ",
+		navSchedule: "समयसारणी",
+		navProfile: "प्रोफाइल",
+		newAlarm: "नव अलार्म",
+		goodMorning: "प्रणाम / सुप्रभात",
+		goodAfternoon: "प्रणाम",
+		goodEvening: "शुभ साँझ",
+		voiceNotes: "वॉइस नोट्स",
+		recordNote: "नोट रिकॉर्ड करू"
+	},
+	"sat-IN": {
+		navToday: "ᱛᱮᱦᱮᱧ",
+		goodMorning: "ᱡᱚᱦᱟᱨ",
+		goodAfternoon: "ᱡᱚᱦᱟᱨ",
+		goodEvening: "ᱡᱚᱦᱟᱨ",
+		voiceNotes: "Voice Notes · ᱥᱟᱱᱛᱟᱲᱤ"
+	},
+	"sd-IN": {
+		navToday: "अॼु",
+		goodMorning: "सुबह बखैर / नमस्ते",
+		goodAfternoon: "नमस्ते",
+		goodEvening: "शाम बखैर",
+		voiceNotes: "वॉइस नोट्स"
+	},
+	"lus-IN": {
+		navToday: "Vawiin",
+		navSchedule: "Hun Ruahman",
+		navProfile: "Profile",
+		newAlarm: "Alarm Thar",
+		goodMorning: "Chibai (Zing)",
+		goodAfternoon: "Chibai",
+		goodEvening: "Chibai (Tlai)",
+		voiceNotes: "Aw Note-te",
+		recordNote: "Note Record",
+		writeNote: "Ziak rawh"
+	},
+	"kha-IN": {
+		navToday: "Mynta",
+		navSchedule: "Prokram",
+		navProfile: "Profile",
+		newAlarm: "Alarm Thymmai",
+		goodMorning: "Khublei (Step)",
+		goodAfternoon: "Khublei",
+		goodEvening: "Khublei (Janmiet)",
+		voiceNotes: "Jingkynmaw Sur",
+		recordNote: "Record Note",
+		writeNote: "Thoh"
+	},
+	"trp-IN": {
+		navToday: "Tini",
+		goodMorning: "Khulumkha",
+		goodAfternoon: "Khulumkha",
+		goodEvening: "Khulumkha",
+		voiceNotes: "Voice Notes · ককবরক"
+	},
+	"lbj-IN": {
+		navToday: "དེ་རིང་",
+		goodMorning: "ཇུ་ལེགས (Julley)",
+		goodAfternoon: "ཇུ་ལེགས (Julley)",
+		goodEvening: "ཇུ་ལེགས (Julley)",
+		voiceNotes: "Voice Notes · ལ་དྭགས"
+	}
+};
+function t(langCode, key) {
+	return TRANSLATIONS[getLanguageOption(langCode).id]?.[key] || EN_BASE[key];
+}
+function getLocalizedGreeting(date, langCode) {
+	const h = date.getHours();
+	if (h < 12) return t(langCode, "goodMorning");
+	if (h < 17) return t(langCode, "goodAfternoon");
+	if (h < 21) return t(langCode, "goodEvening");
+	return t(langCode, "goodNight");
+}
+function formatLocalizedDate(date, langCode) {
+	const opt = getLanguageOption(langCode);
+	try {
+		return date.toLocaleDateString(opt.id, {
+			weekday: "long",
+			month: "short",
+			day: "numeric"
+		});
+	} catch {
+		return date.toLocaleDateString("en-IN", {
+			weekday: "long",
+			month: "short",
+			day: "numeric"
+		});
+	}
+}
+// src/components/DynamicIsland.tsx
+var import_react_dom = require_react_dom();
 var import_jsx_runtime = require_jsx_runtime();
+var DynamicIslandContext = (0, import_react.createContext)({ onTriggerIsland: () => {} });
 /**
-* Expressive EMO-robot-inspired glowing OLED eye pair rendered inside the top Dynamic Island.
-* Uses crisp geometric eye shapes with pure GPU transform/opacity animations.
+* Allows any component inside AppShell to trigger the top-of-screen Dynamic Island
+* with expressive EMO robot eyes: onTriggerIsland('created' | 'success' | 'alert').
 */
-var EmoRobotEyes = ({ expression, accentHex }) => {
-	const groupMotionClass = expression === "excited" ? "emo-eyes-excited" : expression === "happy" ? "emo-eyes-happy" : expression === "sleepy" ? "emo-eyes-sleepy" : expression === "curious" ? "emo-eyes-curious" : "emo-eyes-alert";
+function useDynamicIsland() {
+	return (0, import_react.useContext)(DynamicIslandContext);
+}
+var RETRACT_ANIMATION_MS = 250;
+/**
+* Renders the glowing OLED EMO robot eye SVGs directly responsive to the animation classes
+* defined in index.css (.emo-eyes-excited, .emo-eyes-happy, .emo-eyes-alert, .emo-eye-blink,
+* .emo-eyes-sleepy, .emo-eyes-curious, .emo-sparkle).
+*/
+function renderEmoEyeSvg(step, accentHex, cycleKey) {
+	const { groupClass, eyeClass } = getEyeCssClasses(step);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		"aria-hidden": "true",
 		className: "relative flex h-9 w-[54px] shrink-0 items-center justify-center rounded-full border border-white/[0.12] bg-[#02040A] shadow-[inset_0_2px_6px_rgba(0,0,0,0.85)]",
@@ -11723,12 +13360,14 @@ var EmoRobotEyes = ({ expression, accentHex }) => {
 			style: { backgroundColor: accentHex }
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("svg", {
 			viewBox: "0 0 64 34",
+			"data-testid": "emo-robot-eyes",
+			"data-eye-step": step,
 			className: "relative z-10 h-[26px] w-[48px] overflow-visible",
 			style: { filter: `drop-shadow(0 0 5px ${accentHex})` },
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-				className: groupMotionClass,
+				className: groupClass,
 				children: [
-					expression === "happy" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+					step === "happy" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
 							d: "M10 21 C13 11, 23 11, 26 21",
 							fill: "none",
@@ -11758,8 +13397,8 @@ var EmoRobotEyes = ({ expression, accentHex }) => {
 							className: "emo-sparkle"
 						})
 					] }),
-					expression === "excited" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-						className: "emo-eye-blink",
+					(step === "excited" || step === "blink") && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
+						className: eyeClass,
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
 								x: "9",
@@ -11785,7 +13424,7 @@ var EmoRobotEyes = ({ expression, accentHex }) => {
 							})
 						]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-						className: "emo-eye-blink",
+						className: eyeClass,
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
 								x: "37",
@@ -11811,7 +13450,51 @@ var EmoRobotEyes = ({ expression, accentHex }) => {
 							})
 						]
 					})] }),
-					expression === "sleepy" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+					step === "alert" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							x: "10",
+							y: "8",
+							width: "16",
+							height: "18",
+							rx: "6",
+							fill: accentHex
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							x: "38",
+							y: "8",
+							width: "16",
+							height: "18",
+							rx: "6",
+							fill: accentHex
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+							cx: "18",
+							cy: "17",
+							r: "3.1",
+							fill: "#02040A"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+							cx: "46",
+							cy: "17",
+							r: "3.1",
+							fill: "#02040A"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+							cx: "16.5",
+							cy: "15.5",
+							r: "1.1",
+							fill: "#FFFFFF",
+							opacity: "0.85"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+							cx: "44.5",
+							cy: "15.5",
+							r: "1.1",
+							fill: "#FFFFFF",
+							opacity: "0.85"
+						})
+					] }),
+					step === "sleepy" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
 							x: "9",
 							y: "15",
@@ -11843,70 +13526,39 @@ var EmoRobotEyes = ({ expression, accentHex }) => {
 							strokeLinecap: "round"
 						})
 					] }),
-					expression === "curious" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-						className: "emo-eye-blink",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+					step === "curious" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
 							x: "9",
 							y: "7",
 							width: "17",
 							height: "20",
 							rx: "6.5",
 							fill: accentHex
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
 							cx: "15",
 							cy: "12.5",
 							r: "2.2",
 							fill: "#FFFFFF",
-							opacity: "0.8"
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("g", {
-						className: "emo-eye-blink",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
+							opacity: "0.82"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
 							x: "38",
 							y: "10",
 							width: "17",
 							height: "14",
 							rx: "6",
 							fill: accentHex
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
 							cx: "44",
 							cy: "14",
 							r: "1.8",
 							fill: "#FFFFFF",
-							opacity: "0.8"
-						})]
-					})] }),
-					expression === "warning" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
-							x: "10",
-							y: "8",
-							width: "16",
-							height: "18",
-							rx: "6",
-							fill: accentHex
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
-							x: "38",
-							y: "8",
-							width: "16",
-							height: "18",
-							rx: "6",
-							fill: accentHex
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-							cx: "18",
-							cy: "17",
-							r: "3",
-							fill: "#02040A"
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-							cx: "46",
-							cy: "17",
-							r: "3",
-							fill: "#02040A"
+							opacity: "0.82"
 						})
 					] }),
-					expression === "sad" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+					step === "sad" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("rect", {
 							x: "10",
 							y: "11",
@@ -11941,73 +13593,164 @@ var EmoRobotEyes = ({ expression, accentHex }) => {
 						})
 					] })
 				]
-			})
+			}, cycleKey)
 		})]
 	});
-};
-// src/components/DynamicIslandToast.tsx
+}
 /**
-* Top-of-phone Apple Dynamic Island notification banner powered by live EMO robot eye expressions.
-* Pops down elastically from the top bezel whenever alarms, reminders, completions, or updates fire,
-* then retracts smoothly back upward into the top edge.
+* Apple Dynamic Island component that manages the complete pop-in, hold, and retract-to-top
+* lifecycle with cycling glowing OLED EMO robot eye SVG animations.
 */
-var DynamicIslandToast = ({ toasts, onDismiss }) => {
-	const latest = toasts.length > 0 ? toasts[toasts.length - 1] : null;
-	const [renderedToast, setRenderedToast] = (0, import_react.useState)(latest);
-	const [exiting, setExiting] = (0, import_react.useState)(false);
+var DynamicIsland = ({ activeEvent = null, toasts = [], onDismissToast, onEventRetracted }) => {
+	const latestToast = toasts.length > 0 ? toasts[toasts.length - 1] : null;
+	const incomingEvent = activeEvent ?? latestToast;
+	const incomingIsImperative = Boolean(activeEvent);
+	const [renderedEvent, setRenderedEvent] = (0, import_react.useState)(incomingEvent);
+	const [renderedIsImperative, setRenderedIsImperative] = (0, import_react.useState)(incomingIsImperative);
+	const [phase, setPhase] = (0, import_react.useState)("visible");
+	const [cycleIndex, setCycleIndex] = (0, import_react.useState)(0);
+	const autoRetractTimerRef = (0, import_react.useRef)(null);
+	const exitCleanupTimerRef = (0, import_react.useRef)(null);
+	const lastIncomingIdRef = (0, import_react.useRef)(incomingEvent?.id ?? null);
+	const renderedEventRef = (0, import_react.useRef)(renderedEvent);
+	const pausedRef = (0, import_react.useRef)(false);
+	renderedEventRef.current = renderedEvent;
+	const clearTimers = (0, import_react.useCallback)(() => {
+		if (autoRetractTimerRef.current !== null) {
+			window.clearTimeout(autoRetractTimerRef.current);
+			autoRetractTimerRef.current = null;
+		}
+		if (exitCleanupTimerRef.current !== null) {
+			window.clearTimeout(exitCleanupTimerRef.current);
+			exitCleanupTimerRef.current = null;
+		}
+	}, []);
+	const beginRetract = (0, import_react.useCallback)((targetId, isImperative) => {
+		clearTimers();
+		setPhase("retracting");
+		exitCleanupTimerRef.current = window.setTimeout(() => {
+			exitCleanupTimerRef.current = null;
+			setRenderedEvent((cur) => cur?.id === targetId ? null : cur);
+			setPhase("visible");
+			if (isImperative) onEventRetracted?.(targetId);
+			else onDismissToast?.(targetId);
+		}, RETRACT_ANIMATION_MS);
+	}, [
+		clearTimers,
+		onDismissToast,
+		onEventRetracted
+	]);
+	const scheduleAutoRetract = (0, import_react.useCallback)((ev, isImperative) => {
+		if (autoRetractTimerRef.current !== null) {
+			window.clearTimeout(autoRetractTimerRef.current);
+			autoRetractTimerRef.current = null;
+		}
+		if (!isImperative) return;
+		const duration = ev.durationMs ?? (ev.onUndo ? 5200 : 3400);
+		autoRetractTimerRef.current = window.setTimeout(() => {
+			autoRetractTimerRef.current = null;
+			if (!pausedRef.current) beginRetract(ev.id, true);
+		}, duration);
+	}, [beginRetract]);
 	(0, import_react.useEffect)(() => {
-		if (latest) {
-			setRenderedToast(latest);
-			setExiting(false);
+		const incomingId = incomingEvent?.id ?? null;
+		if (incomingEvent && incomingId !== lastIncomingIdRef.current) {
+			lastIncomingIdRef.current = incomingId;
+			clearTimers();
+			setRenderedEvent(incomingEvent);
+			setRenderedIsImperative(incomingIsImperative);
+			setPhase("visible");
+			setCycleIndex(0);
+			scheduleAutoRetract(incomingEvent, incomingIsImperative);
 			return;
 		}
-		if (renderedToast) {
-			setExiting(true);
-			const timer = window.setTimeout(() => {
-				setRenderedToast(null);
-				setExiting(false);
-			}, 240);
-			return () => window.clearTimeout(timer);
+		if (!incomingEvent) {
+			lastIncomingIdRef.current = null;
+			const current = renderedEventRef.current;
+			if (current && exitCleanupTimerRef.current === null) {
+				clearTimers();
+				setPhase("retracting");
+				const targetId = current.id;
+				exitCleanupTimerRef.current = window.setTimeout(() => {
+					exitCleanupTimerRef.current = null;
+					setRenderedEvent((cur) => cur?.id === targetId ? null : cur);
+					setPhase("visible");
+				}, RETRACT_ANIMATION_MS);
+			}
 		}
-	}, [latest, renderedToast]);
-	if (!renderedToast) return null;
-	const meta = resolveIslandMeta(renderedToast);
+	}, [
+		clearTimers,
+		incomingEvent,
+		incomingIsImperative,
+		scheduleAutoRetract
+	]);
+	(0, import_react.useEffect)(() => clearTimers, [clearTimers]);
+	const resolvedMeta = renderedEvent ? resolveIslandMeta(renderedEvent) : null;
+	const eyeCycle = resolvedMeta ? getEyeAnimationCycle(resolvedMeta.expression) : null;
+	(0, import_react.useEffect)(() => {
+		if (!renderedEvent || !eyeCycle || phase === "retracting") return;
+		const currentFrame = eyeCycle[cycleIndex % eyeCycle.length];
+		const timer = window.setTimeout(() => {
+			setCycleIndex((idx) => (idx + 1) % eyeCycle.length);
+		}, currentFrame.durationMs);
+		return () => window.clearTimeout(timer);
+	}, [
+		cycleIndex,
+		eyeCycle,
+		phase,
+		renderedEvent
+	]);
+	if (!renderedEvent || !resolvedMeta || !eyeCycle) return null;
+	const activeFrame = eyeCycle[cycleIndex % eyeCycle.length];
+	const handleDismissNow = () => {
+		if (phase === "retracting") return;
+		beginRetract(renderedEvent.id, renderedIsImperative);
+	};
 	const island = /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		"aria-live": "polite",
-		className: "pointer-events-none fixed inset-x-0 top-0 z-[95] flex justify-center px-3 pt-[max(10px,env(safe-area-inset-top))]",
+		"data-testid": "dynamic-island-container",
+		className: "pointer-events-none fixed inset-x-0 top-0 z-[110] flex justify-center px-3 pt-[max(10px,env(safe-area-inset-top))]",
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 			role: "status",
-			onClick: () => onDismiss(renderedToast.id),
-			style: { boxShadow: `0 18px 44px rgba(0, 0, 0, 0.65), 0 0 28px ${meta.glowRgba}, inset 0 1px 0 rgba(255, 255, 255, 0.24)` },
-			className: `pointer-events-auto flex w-full max-w-[376px] cursor-pointer items-center gap-3 rounded-[28px] border border-white/[0.18] bg-[#04060E]/96 py-2 pr-3 pl-2.5 backdrop-blur-2xl sm:max-w-[410px] ${exiting ? "dynamic-island-exit" : "dynamic-island-enter"}`,
+			"data-testid": "dynamic-island",
+			"data-expression": resolvedMeta.expression,
+			"data-eye-step": activeFrame.step,
+			"data-phase": phase,
+			onClick: handleDismissNow,
+			onMouseEnter: () => {
+				pausedRef.current = true;
+			},
+			onMouseLeave: () => {
+				pausedRef.current = false;
+				if (renderedIsImperative && phase === "visible") scheduleAutoRetract(renderedEvent, true);
+			},
+			style: { boxShadow: `0 18px 44px rgba(0, 0, 0, 0.65), 0 0 28px ${resolvedMeta.glowRgba}, inset 0 1px 0 rgba(255, 255, 255, 0.24)` },
+			className: `pointer-events-auto flex w-full max-w-[376px] cursor-pointer items-center gap-3 rounded-[28px] border border-white/[0.18] bg-[#04060E]/96 py-2 pr-3 pl-2.5 backdrop-blur-2xl sm:max-w-[410px] ${phase === "retracting" ? "dynamic-island-exit" : "dynamic-island-enter"}`,
 			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(EmoRobotEyes, {
-					expression: meta.expression,
-					accentHex: meta.accentHex
-				}),
+				renderEmoEyeSvg(activeFrame.step, resolvedMeta.accentHex, `${renderedEvent.id}-${cycleIndex}-${activeFrame.step}`),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "min-w-0 flex-1",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "text-[11px] font-bold tracking-wide",
-						style: { color: meta.accentHex },
-						children: meta.label
+						style: { color: resolvedMeta.accentHex },
+						children: resolvedMeta.label
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 						className: "truncate text-[13px] font-semibold text-white",
-						children: renderedToast.text
+						children: renderedEvent.text
 					})]
 				}),
-				renderedToast.onUndo && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+				renderedEvent.onUndo && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 					type: "button",
 					onClick: (e) => {
 						e.stopPropagation();
-						renderedToast.onUndo?.();
-						onDismiss(renderedToast.id);
+						renderedEvent.onUndo?.();
+						handleDismissNow();
 					},
 					className: "ios-spring-press min-h-[36px] shrink-0 rounded-full border border-white/15 bg-white/[0.12] px-3.5 text-xs font-bold text-white hover:bg-white/[0.2]",
-					children: renderedToast.undoLabel || "Undo"
+					children: renderedEvent.undoLabel || "Undo"
 				})
 			]
-		}, renderedToast.id)
+		}, renderedEvent.id)
 	});
 	return typeof document !== "undefined" ? (0, import_react_dom.createPortal)(island, document.body) : island;
 };
@@ -12148,137 +13891,285 @@ var NAV_ITEMS = [
 		icon: User$1
 	}
 ];
-var AppShell = ({ activeTab, tabDirection = "right", onSelectTab, onOpenNewSheet, isOnline, syncStatus, toasts, onDismissToast, children }) => {
+var AppShell = (0, import_react.forwardRef)(({ activeTab, tabDirection = "right", onSelectTab, onOpenNewSheet, user = null, language = "en-IN", onOpenAuth, onOpenLanguagePicker, isOnline, syncStatus, toasts, onDismissToast, onTriggerIsland: onTriggerIslandProp, children }, ref) => {
+	const [activeIslandEvent, setActiveIslandEvent] = (0, import_react.useState)(null);
+	const islandSeqRef = (0, import_react.useRef)(0);
+	const triggerIsland = (0, import_react.useCallback)((type, options) => {
+		islandSeqRef.current += 1;
+		const base = buildIslandEventFromTrigger(type, options, `island_${Date.now().toString(36)}_${islandSeqRef.current}`);
+		setActiveIslandEvent({
+			...base,
+			durationMs: options?.durationMs
+		});
+		onTriggerIslandProp?.(type, options);
+	}, [onTriggerIslandProp]);
+	const handleIslandRetracted = (0, import_react.useCallback)((id) => {
+		setActiveIslandEvent((cur) => cur?.id === id ? null : cur);
+	}, []);
+	(0, import_react.useImperativeHandle)(ref, () => ({ onTriggerIsland: triggerIsland }), [triggerIsland]);
+	const islandContextValue = (0, import_react.useMemo)(() => ({ onTriggerIsland: triggerIsland }), [triggerIsland]);
 	const activeIndex = Math.max(0, NAV_ITEMS.findIndex((item) => item.id === activeTab));
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "relative flex min-h-[100dvh] w-full flex-col lg:flex-row",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Liquid3DBackground, {}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
-				className: "liquid-nav relative z-20 hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-64 lg:shrink-0 lg:flex-col lg:justify-between lg:border-r lg:border-white/[0.14] lg:px-5 lg:py-6",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center gap-3 px-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-							src: "/icons/icon-192.png",
-							alt: "reminderme icon",
-							className: "h-10 w-10 rounded-xl shadow-[0_8px_22px_rgba(10,132,255,0.45)]"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-display text-lg font-bold tracking-tight text-white whitespace-nowrap",
-							children: "reminderme"
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-						type: "button",
-						onClick: onOpenNewSheet,
-						className: "liquid-primary-btn ios-spring-press mt-6 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-semibold text-white",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "New Alarm" })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
-						"aria-label": "Primary navigation",
-						className: "relative mt-6 flex flex-col gap-1.5",
+	const activeLanguage = (0, import_react.useMemo)(() => getLanguageOption(language), [language]);
+	const getNavLabel = (id) => {
+		switch (id) {
+			case "today": return t(language, "navToday");
+			case "schedule": return t(language, "navSchedule");
+			case "insights": return t(language, "navInsights");
+			case "profile": return t(language, "navProfile");
+		}
+	};
+	const resolvedChildren = typeof children === "function" ? children({ onTriggerIsland: triggerIsland }) : children;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DynamicIslandContext.Provider, {
+		value: islandContextValue,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "relative flex min-h-[100dvh] w-full flex-col lg:flex-row",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Liquid3DBackground, {}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
+					className: "liquid-nav hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-30 lg:flex lg:w-64 lg:flex-col lg:justify-between lg:overflow-y-auto lg:border-r lg:border-white/[0.14] lg:px-5 lg:py-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-3 px-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+								src: "/icons/icon-192.png",
+								alt: "reminderme icon",
+								className: "h-10 w-10 rounded-xl shadow-[0_8px_22px_rgba(10,132,255,0.45)]"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-display text-lg font-bold tracking-tight text-white whitespace-nowrap",
+								children: "reminderme"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							onClick: onOpenNewSheet,
+							className: "liquid-primary-btn ios-spring-press mt-6 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-semibold text-white",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(language, "newAlarm") })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
+							"aria-label": "Primary navigation",
+							className: "relative mt-6 flex flex-col gap-1.5",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								"aria-hidden": "true",
+								className: "ios-pill-slider pointer-events-none absolute top-0 right-0 left-0 h-[44px] rounded-2xl border border-white/25 bg-white/[0.14] shadow-[0_8px_24px_rgba(10,132,255,0.18),inset_0_1px_0_rgba(255,255,255,0.38)]",
+								style: { transform: `translate3d(0, ${activeIndex * 50}px, 0)` }
+							}), NAV_ITEMS.map((item) => {
+								const Icon = item.icon;
+								const active = activeTab === item.id;
+								return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: () => onSelectTab(item.id),
+									className: `ios-spring-press relative z-10 flex h-[44px] w-full items-center gap-3 rounded-2xl px-3.5 text-sm font-semibold transition-colors whitespace-nowrap ${active ? "text-white" : "text-slate-300/80 hover:text-white"}`,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { className: `h-4 w-4 transition-transform duration-200 ${active ? "scale-110 text-sky-300" : "text-slate-400"}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: getNavLabel(item.id) })]
+								}, item.id);
+							})]
+						}),
+						onOpenLanguagePicker && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							onClick: onOpenLanguagePicker,
+							className: "ios-spring-press mt-5 flex min-h-[42px] w-full items-center justify-between gap-2 rounded-2xl border border-white/[0.12] bg-white/[0.05] px-3.5 text-xs font-semibold text-slate-200 transition-colors hover:bg-white/[0.11] hover:text-white",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "flex min-w-0 items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Globe, { className: "h-4 w-4 shrink-0 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "truncate",
+									children: activeLanguage.nativeName
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "shrink-0 font-mono text-[10px] text-sky-300",
+								children: activeLanguage.id.split("-")[0].toUpperCase()
+							})]
+						})
+					] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "border-t border-white/[0.12] px-2 pt-4 text-xs text-slate-400",
+						children: [
+							user ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "button",
+								onClick: () => onSelectTab("profile"),
+								className: "ios-spring-press mb-3 flex w-full items-center gap-2.5 rounded-2xl border border-white/[0.1] bg-white/[0.05] p-2 text-left transition-colors hover:bg-white/[0.1]",
+								children: [user.photoURL ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+									src: user.photoURL,
+									alt: user.name,
+									referrerPolicy: "no-referrer",
+									className: "h-8 w-8 shrink-0 rounded-full border border-white/25 object-cover"
+								}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sky-500/25 font-bold text-sky-200",
+									children: user.name.charAt(0).toUpperCase()
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "min-w-0 flex-1",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "truncate font-semibold text-white",
+										children: user.name
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "truncate text-[11px] text-slate-400",
+										children: !isOnline ? "Offline" : syncStatus === "synced" ? "Cloud Synced" : "Signed In"
+									})]
+								})]
+							}) : onOpenAuth && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "button",
+								onClick: onOpenAuth,
+								className: "ios-spring-press mb-3 flex min-h-[42px] w-full items-center justify-center gap-2 rounded-2xl border border-sky-400/35 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 transition-colors hover:bg-sky-500/25 whitespace-nowrap",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LogIn, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(language, "signInGoogle") })]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "font-medium text-slate-200",
+								children: !isOnline ? "Offline Mode" : syncStatus === "synced" ? "Cloud Synced" : user ? "Signed In" : "On-Device Mode"
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+								className: "mt-1 text-slate-400",
+								children: ["Prajwal M ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "font-mono text-sky-300",
+									children: "</yourstudio>"
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: "/privacy-policy",
+								className: "mt-2 inline-block text-xs font-medium text-sky-300/90 underline underline-offset-4 transition-colors hover:text-sky-200",
+								children: "Privacy Policy"
+							})
+						]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "relative z-10 flex min-h-[100dvh] min-w-0 flex-1 flex-col lg:pl-64",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("header", {
+							className: "liquid-nav sticky top-0 z-30 border-b border-white/[0.14] pt-[env(safe-area-inset-top,0px)] lg:hidden",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex min-h-[54px] items-center justify-between gap-1.5 px-3 sm:gap-2 sm:px-4",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex min-w-0 items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+										src: "/icons/icon-192.png",
+										alt: "reminderme icon",
+										className: "h-7 w-7 shrink-0 rounded-lg shadow-[0_4px_14px_rgba(10,132,255,0.45)]"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-display truncate text-[15px] font-bold tracking-tight text-white whitespace-nowrap sm:text-base",
+										children: "reminderme"
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex shrink-0 items-center gap-1.5 sm:gap-2",
+									children: [
+										onOpenLanguagePicker && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+											type: "button",
+											onClick: onOpenLanguagePicker,
+											"aria-label": "Choose India state or language",
+											className: "ios-spring-press flex min-h-[36px] items-center gap-1 rounded-full border border-white/[0.15] bg-white/[0.06] px-2 text-xs font-semibold text-slate-100 hover:bg-white/[0.14] whitespace-nowrap shrink-0 sm:min-h-[38px] sm:px-2.5",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Globe, { className: "h-3.5 w-3.5 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "max-w-[54px] truncate sm:max-w-[68px]",
+												children: activeLanguage.shortLabel
+											})]
+										}),
+										user ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+											type: "button",
+											onClick: () => onSelectTab("profile"),
+											"aria-label": `Account: ${user.name}`,
+											className: "ios-spring-press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-white/25 bg-white/[0.09] text-xs font-bold text-white",
+											children: user.photoURL ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+												src: user.photoURL,
+												alt: user.name,
+												referrerPolicy: "no-referrer",
+												className: "h-full w-full object-cover"
+											}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: user.name.charAt(0).toUpperCase() })
+										}) : onOpenAuth && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+											type: "button",
+											onClick: onOpenAuth,
+											className: "ios-spring-press flex min-h-[36px] items-center gap-1 rounded-full border border-sky-400/35 bg-sky-500/15 px-2.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap shrink-0 sm:min-h-[38px] sm:gap-1.5 sm:px-3",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LogIn, { className: "h-3.5 w-3.5 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(language, "signIn") })]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+											type: "button",
+											onClick: onOpenNewSheet,
+											"aria-label": "Create new alarm or reminder",
+											className: "liquid-primary-btn ios-spring-press flex min-h-[36px] items-center gap-1 rounded-full px-2.5 text-xs font-semibold text-white whitespace-nowrap shrink-0 sm:min-h-[38px] sm:gap-1.5 sm:px-3.5",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(language, "newShort") })]
+										})
+									]
+								})]
+							})
+						}),
+						!isOnline && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center justify-center gap-2 border-b border-amber-400/20 bg-amber-500/15 px-4 py-2 text-xs font-medium text-amber-100 backdrop-blur-md",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(WifiOff, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Offline Mode — OS alarms stay active; cloud sync will resume when online." })]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
+							className: "mx-auto w-full max-w-6xl flex-1 px-3.5 pt-4 pb-[calc(6rem+env(safe-area-inset-bottom,0px))] sm:px-6 sm:pt-5 lg:px-8 lg:py-8",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: tabDirection === "right" ? "animate-view-right" : "animate-view-left",
+								children: resolvedChildren
+							}, activeTab), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("footer", {
+								className: "mt-10 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.08] pt-4 text-xs text-slate-400",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+									"reminderme · Prajwal M",
+									" ",
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-mono text-sky-300",
+										children: "</yourstudio>"
+									})
+								] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+									href: "/privacy-policy",
+									className: "inline-flex min-h-[36px] items-center font-medium text-sky-300/90 underline underline-offset-4 transition-colors hover:text-sky-200",
+									children: "Privacy Policy"
+								})]
+							})]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
+					"aria-label": "Mobile navigation",
+					className: "liquid-nav fixed inset-x-0 bottom-0 z-40 border-t border-white/[0.18] pb-safe lg:hidden",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "relative mx-2 my-1.5 grid h-[54px] grid-cols-4 items-center",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 							"aria-hidden": "true",
-							className: "ios-pill-slider pointer-events-none absolute top-0 right-0 left-0 h-[44px] rounded-2xl border border-white/25 bg-white/[0.14] shadow-[0_8px_24px_rgba(10,132,255,0.18),inset_0_1px_0_rgba(255,255,255,0.38)]",
-							style: { transform: `translate3d(0, ${activeIndex * 50}px, 0)` }
+							className: "ios-pill-slider pointer-events-none absolute top-0 bottom-0 left-0 rounded-2xl border border-white/25 bg-white/[0.14] shadow-[0_6px_18px_rgba(10,132,255,0.22),inset_0_1px_0_rgba(255,255,255,0.38)]",
+							style: {
+								width: "25%",
+								transform: `translate3d(${activeIndex * 100}%, 0, 0)`
+							}
 						}), NAV_ITEMS.map((item) => {
 							const Icon = item.icon;
 							const active = activeTab === item.id;
 							return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 								type: "button",
 								onClick: () => onSelectTab(item.id),
-								className: `ios-spring-press relative z-10 flex h-[44px] w-full items-center gap-3 rounded-2xl px-3.5 text-sm font-semibold transition-colors whitespace-nowrap ${active ? "text-white" : "text-slate-300/80 hover:text-white"}`,
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { className: `h-4 w-4 transition-transform duration-200 ${active ? "scale-110 text-sky-300" : "text-slate-400"}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: item.label })]
+								className: `ios-spring-press relative z-10 flex min-h-[48px] flex-col items-center justify-center gap-0.5 rounded-2xl transition-colors ${active ? "text-sky-300" : "text-slate-300/75 hover:text-white"}`,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { className: `h-5 w-5 transition-transform duration-200 ${active ? "scale-110" : "scale-100"}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-[11px] font-semibold tracking-tight",
+									children: getNavLabel(item.id)
+								})]
 							}, item.id);
 						})]
 					})
-				] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "border-t border-white/[0.12] px-2 pt-4 text-xs text-slate-400",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						className: "font-medium text-slate-200",
-						children: !isOnline ? "Offline Mode" : syncStatus === "synced" ? "Cloud Synced" : "On-Device Mode"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-						className: "mt-1 text-slate-400",
-						children: ["Prajwal M ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "font-mono text-sky-300",
-							children: "</yourstudio>"
-						})]
-					})]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "relative z-10 flex min-w-0 flex-1 flex-col",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-						className: "liquid-nav sticky top-0 z-30 flex h-[52px] items-center justify-between border-b border-white/[0.14] px-4 lg:hidden",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center gap-2.5",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-								src: "/icons/icon-192.png",
-								alt: "reminderme icon",
-								className: "h-7 w-7 rounded-lg shadow-[0_4px_14px_rgba(10,132,255,0.45)]"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "font-display text-base font-bold tracking-tight text-white whitespace-nowrap",
-								children: "reminderme"
-							})]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							type: "button",
-							onClick: onOpenNewSheet,
-							"aria-label": "Create new alarm or reminder",
-							className: "liquid-primary-btn ios-spring-press flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-white whitespace-nowrap shrink-0",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "New" })]
-						})]
-					}),
-					!isOnline && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center justify-center gap-2 border-b border-amber-400/20 bg-amber-500/15 px-4 py-2 text-xs font-medium text-amber-100 backdrop-blur-md",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(WifiOff, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Offline Mode — OS alarms stay active; cloud sync will resume when online." })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
-						className: "mx-auto w-full max-w-6xl flex-1 px-4 pt-5 pb-24 sm:px-6 lg:px-8 lg:py-8",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: tabDirection === "right" ? "animate-view-right" : "animate-view-left",
-							children
-						}, activeTab)
-					})
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
-				"aria-label": "Mobile navigation",
-				className: "liquid-nav fixed inset-x-0 bottom-0 z-40 border-t border-white/[0.18] pb-safe lg:hidden",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "relative mx-2 my-1.5 grid h-[54px] grid-cols-4 items-center",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"aria-hidden": "true",
-						className: "ios-pill-slider pointer-events-none absolute top-0 bottom-0 left-0 rounded-2xl border border-white/25 bg-white/[0.14] shadow-[0_6px_18px_rgba(10,132,255,0.22),inset_0_1px_0_rgba(255,255,255,0.38)]",
-						style: {
-							width: "25%",
-							transform: `translate3d(${activeIndex * 100}%, 0, 0)`
-						}
-					}), NAV_ITEMS.map((item) => {
-						const Icon = item.icon;
-						const active = activeTab === item.id;
-						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							type: "button",
-							onClick: () => onSelectTab(item.id),
-							className: `ios-spring-press relative z-10 flex min-h-[48px] flex-col items-center justify-center gap-0.5 rounded-2xl transition-colors ${active ? "text-sky-300" : "text-slate-300/75 hover:text-white"}`,
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { className: `h-5 w-5 transition-transform duration-200 ${active ? "scale-110" : "scale-100"}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-[11px] font-semibold tracking-tight",
-								children: item.label
-							})]
-						}, item.id);
-					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DynamicIsland, {
+					activeEvent: activeIslandEvent,
+					toasts,
+					onDismissToast,
+					onEventRetracted: handleIslandRetracted
 				})
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DynamicIslandToast, {
-				toasts,
-				onDismiss: onDismissToast
-			})
-		]
+			]
+		})
 	});
-};
+});
+AppShell.displayName = "AppShell";
 // src/components/ConfirmActionModal.tsx
 var ConfirmActionModal = ({ action, busy, onCancel, onConfirm }) => {
+	(0, import_react.useEffect)(() => {
+		if (!action) return;
+		const handleKey = (e) => {
+			if (e.key === "Escape" && !busy) {
+				e.preventDefault();
+				onCancel();
+			}
+		};
+		window.addEventListener("keydown", handleKey);
+		return () => window.removeEventListener("keydown", handleKey);
+	}, [
+		action,
+		busy,
+		onCancel
+	]);
 	if (!action) return null;
+	const isDestructive = action.kind === "bulk-delete";
 	const content = /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 		role: "dialog",
 		"aria-modal": "true",
@@ -12299,8 +14190,8 @@ var ConfirmActionModal = ({ action, busy, onCancel, onConfirm }) => {
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 						className: "flex items-start gap-3",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-sky-500/20 text-sky-300",
-							children: action.kind === "calendar-add" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarPlus, { className: "h-5 w-5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-5 w-5" })
+							className: `flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${isDestructive ? "border-red-400/35 bg-[#FF453A]/20 text-red-300" : "border-white/20 bg-sky-500/20 text-sky-300"}`,
+							children: action.kind === "calendar-add" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarPlus, { className: "h-5 w-5" }) : action.kind === "bulk-delete" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-5 w-5" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-5 w-5" })
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 							className: "font-display text-base font-bold text-white",
 							children: action.title
@@ -12335,7 +14226,7 @@ var ConfirmActionModal = ({ action, busy, onCancel, onConfirm }) => {
 						className: "rounded-2xl border border-white/[0.08] bg-[#060812]/70 p-3.5",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-[11px] font-medium text-slate-400",
-							children: "Message preview"
+							children: isDestructive ? "Selected reminders" : "Message preview"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("pre", {
 							className: "mt-1.5 max-h-40 overflow-y-auto whitespace-pre-wrap font-sans text-xs leading-relaxed text-slate-200",
 							children: action.bodyPreview
@@ -12350,11 +14241,18 @@ var ConfirmActionModal = ({ action, busy, onCancel, onConfirm }) => {
 						onClick: onCancel,
 						className: "ios-spring-press min-h-[48px] rounded-xl border border-white/[0.1] bg-white/[0.05] text-sm font-semibold text-slate-200 hover:bg-white/[0.1] disabled:opacity-50",
 						children: "Cancel"
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+					}), action.externalHref ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+						href: action.externalHref,
+						target: "_blank",
+						rel: "noopener noreferrer",
+						onClick: onCancel,
+						className: "liquid-primary-btn ios-spring-press flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: action.confirmLabel }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ExternalLink, { className: "h-4 w-4 shrink-0" })]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
 						type: "button",
 						disabled: busy,
 						onClick: onConfirm,
-						className: "liquid-primary-btn ios-spring-press min-h-[48px] rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-50",
+						className: `ios-spring-press min-h-[48px] rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-50 ${isDestructive ? "border border-red-400/40 bg-[#FF453A] shadow-[0_10px_24px_rgba(255,69,58,0.35)] hover:bg-[#FF3B30]" : "liquid-primary-btn"}`,
 						children: busy ? "Working…" : action.confirmLabel
 					})]
 				})
@@ -12498,3310 +14396,108 @@ var DeveloperIntro = ({ visible, onFinish }) => {
 					})
 				]
 			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-				type: "button",
-				onClick: (e) => {
-					e.stopPropagation();
-					triggerExit();
-				},
-				className: "absolute bottom-8 z-10 inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-5 text-xs font-semibold text-slate-300 backdrop-blur-md transition-colors hover:bg-white/[0.14] hover:text-white pb-safe",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Tap to enter" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-3.5 w-3.5" })]
-			})
-		]
-	});
-};
-// node_modules/@capacitor/core/dist/index.js
-/*! Capacitor: https://capacitorjs.com/ - MIT License */
-var ExceptionCode;
-(function(ExceptionCode) {
-	/**
-	* API is not implemented.
-	*
-	* This usually means the API can't be used because it is not implemented for
-	* the current platform.
-	*/
-	ExceptionCode["Unimplemented"] = "UNIMPLEMENTED";
-	/**
-	* API is not available.
-	*
-	* This means the API can't be used right now because:
-	*   - it is currently missing a prerequisite, such as network connectivity
-	*   - it requires a particular platform or browser version
-	*/
-	ExceptionCode["Unavailable"] = "UNAVAILABLE";
-})(ExceptionCode || (ExceptionCode = {}));
-var CapacitorException = class extends Error {
-	constructor(message, code, data) {
-		super(message);
-		this.message = message;
-		this.code = code;
-		this.data = data;
-	}
-};
-var getPlatformId = (win) => {
-	var _a, _b;
-	if (win === null || win === void 0 ? void 0 : win.androidBridge) return "android";
-	else if ((_b = (_a = win === null || win === void 0 ? void 0 : win.webkit) === null || _a === void 0 ? void 0 : _a.messageHandlers) === null || _b === void 0 ? void 0 : _b.bridge) return "ios";
-	else return "web";
-};
-var createCapacitor = (win) => {
-	const capCustomPlatform = win.CapacitorCustomPlatform || null;
-	const cap = win.Capacitor || {};
-	const Plugins = cap.Plugins = cap.Plugins || {};
-	const getPlatform = () => {
-		return capCustomPlatform !== null ? capCustomPlatform.name : getPlatformId(win);
-	};
-	const isNativePlatform = () => getPlatform() !== "web";
-	const isPluginAvailable = (pluginName) => {
-		const plugin = registeredPlugins.get(pluginName);
-		if (plugin === null || plugin === void 0 ? void 0 : plugin.platforms.has(getPlatform())) return true;
-		if (getPluginHeader(pluginName)) return true;
-		return false;
-	};
-	const getPluginHeader = (pluginName) => {
-		var _a;
-		return (_a = cap.PluginHeaders) === null || _a === void 0 ? void 0 : _a.find((h) => h.name === pluginName);
-	};
-	const handleError = (err) => win.console.error(err);
-	const registeredPlugins = /* @__PURE__ */ new Map();
-	const registerPlugin = (pluginName, jsImplementations = {}) => {
-		const registeredPlugin = registeredPlugins.get(pluginName);
-		if (registeredPlugin) {
-			console.warn(`Capacitor plugin "${pluginName}" already registered. Cannot register plugins twice.`);
-			return registeredPlugin.proxy;
-		}
-		const platform = getPlatform();
-		const pluginHeader = getPluginHeader(pluginName);
-		let jsImplementation;
-		const loadPluginImplementation = async () => {
-			if (!jsImplementation && platform in jsImplementations) jsImplementation = typeof jsImplementations[platform] === "function" ? jsImplementation = await jsImplementations[platform]() : jsImplementation = jsImplementations[platform];
-			else if (capCustomPlatform !== null && !jsImplementation && "web" in jsImplementations) jsImplementation = typeof jsImplementations["web"] === "function" ? jsImplementation = await jsImplementations["web"]() : jsImplementation = jsImplementations["web"];
-			return jsImplementation;
-		};
-		const createPluginMethod = (impl, prop) => {
-			var _a, _b;
-			if (pluginHeader) {
-				const methodHeader = pluginHeader === null || pluginHeader === void 0 ? void 0 : pluginHeader.methods.find((m) => prop === m.name);
-				if (methodHeader) {
-					if (methodHeader.rtype === "promise") return (options) => cap.nativePromise(pluginName, prop.toString(), options);
-					else return (options, callback) => cap.nativeCallback(pluginName, prop.toString(), options, callback);
-				} else if (impl) return (_a = impl[prop]) === null || _a === void 0 ? void 0 : _a.bind(impl);
-			} else if (impl) return (_b = impl[prop]) === null || _b === void 0 ? void 0 : _b.bind(impl);
-			else throw new CapacitorException(`"${pluginName}" plugin is not implemented on ${platform}`, ExceptionCode.Unimplemented);
-		};
-		const createPluginMethodWrapper = (prop) => {
-			let remove;
-			const wrapper = (...args) => {
-				const p = loadPluginImplementation().then((impl) => {
-					const fn = createPluginMethod(impl, prop);
-					if (fn) {
-						const p = fn(...args);
-						remove = p === null || p === void 0 ? void 0 : p.remove;
-						return p;
-					} else throw new CapacitorException(`"${pluginName}.${prop}()" is not implemented on ${platform}`, ExceptionCode.Unimplemented);
-				});
-				if (prop === "addListener") p.remove = async () => remove();
-				return p;
-			};
-			wrapper.toString = () => `${prop.toString()}() { [capacitor code] }`;
-			Object.defineProperty(wrapper, "name", {
-				value: prop,
-				writable: false,
-				configurable: false
-			});
-			return wrapper;
-		};
-		const addListener = createPluginMethodWrapper("addListener");
-		const removeListener = createPluginMethodWrapper("removeListener");
-		const addListenerNative = (eventName, callback) => {
-			const call = addListener({ eventName }, callback).then((callbackId) => callbackId);
-			const remove = async () => {
-				const callbackId = await call;
-				await removeListener({
-					eventName,
-					callbackId
-				});
-			};
-			const p = new Promise((resolve) => call.then(() => resolve({ remove })));
-			p.remove = async () => {
-				console.warn(`Using addListener() without 'await' is deprecated.`);
-				await remove();
-			};
-			return p;
-		};
-		const proxy = new Proxy({}, { get(_, prop) {
-			switch (prop) {
-				case "$$typeof": return;
-				case "toJSON": return () => ({});
-				case "addListener": return pluginHeader ? addListenerNative : addListener;
-				case "removeListener": return removeListener;
-				default: return createPluginMethodWrapper(prop);
-			}
-		} });
-		Plugins[pluginName] = proxy;
-		registeredPlugins.set(pluginName, {
-			name: pluginName,
-			proxy,
-			platforms: /* @__PURE__ */ new Set([...Object.keys(jsImplementations), ...pluginHeader ? [platform] : []])
-		});
-		return proxy;
-	};
-	if (!cap.convertFileSrc) cap.convertFileSrc = (filePath) => filePath;
-	cap.getPlatform = getPlatform;
-	cap.handleError = handleError;
-	cap.isNativePlatform = isNativePlatform;
-	cap.isPluginAvailable = isPluginAvailable;
-	cap.registerPlugin = registerPlugin;
-	cap.Exception = CapacitorException;
-	cap.DEBUG = !!cap.DEBUG;
-	cap.isLoggingEnabled = !!cap.isLoggingEnabled;
-	return cap;
-};
-var initCapacitorGlobal = (win) => win.Capacitor = createCapacitor(win);
-var Capacitor = /*#__PURE__*/ initCapacitorGlobal(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : {});
-var registerPlugin = Capacitor.registerPlugin;
-/**
-* Base class web plugins should extend.
-*/
-var WebPlugin = class {
-	constructor() {
-		this.listeners = {};
-		this.retainedEventArguments = {};
-		this.windowListeners = {};
-	}
-	addListener(eventName, listenerFunc) {
-		let firstListener = false;
-		if (!this.listeners[eventName]) {
-			this.listeners[eventName] = [];
-			firstListener = true;
-		}
-		this.listeners[eventName].push(listenerFunc);
-		const windowListener = this.windowListeners[eventName];
-		if (windowListener && !windowListener.registered) this.addWindowListener(windowListener);
-		if (firstListener) this.sendRetainedArgumentsForEvent(eventName);
-		const remove = async () => this.removeListener(eventName, listenerFunc);
-		return Promise.resolve({ remove });
-	}
-	async removeAllListeners() {
-		this.listeners = {};
-		for (const listener in this.windowListeners) this.removeWindowListener(this.windowListeners[listener]);
-		this.windowListeners = {};
-	}
-	notifyListeners(eventName, data, retainUntilConsumed) {
-		const listeners = this.listeners[eventName];
-		if (!listeners) {
-			if (retainUntilConsumed) {
-				let args = this.retainedEventArguments[eventName];
-				if (!args) args = [];
-				args.push(data);
-				this.retainedEventArguments[eventName] = args;
-			}
-			return;
-		}
-		listeners.forEach((listener) => listener(data));
-	}
-	hasListeners(eventName) {
-		var _a;
-		return !!((_a = this.listeners[eventName]) === null || _a === void 0 ? void 0 : _a.length);
-	}
-	registerWindowListener(windowEventName, pluginEventName) {
-		this.windowListeners[pluginEventName] = {
-			registered: false,
-			windowEventName,
-			pluginEventName,
-			handler: (event) => {
-				this.notifyListeners(pluginEventName, event);
-			}
-		};
-	}
-	unimplemented(msg = "not implemented") {
-		return new Capacitor.Exception(msg, ExceptionCode.Unimplemented);
-	}
-	unavailable(msg = "not available") {
-		return new Capacitor.Exception(msg, ExceptionCode.Unavailable);
-	}
-	async removeListener(eventName, listenerFunc) {
-		const listeners = this.listeners[eventName];
-		if (!listeners) return;
-		const index = listeners.indexOf(listenerFunc);
-		if (index !== -1) this.listeners[eventName].splice(index, 1);
-		if (!this.listeners[eventName].length) this.removeWindowListener(this.windowListeners[eventName]);
-	}
-	addWindowListener(handle) {
-		window.addEventListener(handle.windowEventName, handle.handler);
-		handle.registered = true;
-	}
-	removeWindowListener(handle) {
-		if (!handle) return;
-		window.removeEventListener(handle.windowEventName, handle.handler);
-		handle.registered = false;
-	}
-	sendRetainedArgumentsForEvent(eventName) {
-		const args = this.retainedEventArguments[eventName];
-		if (!args) return;
-		delete this.retainedEventArguments[eventName];
-		args.forEach((arg) => {
-			this.notifyListeners(eventName, arg);
-		});
-	}
-};
-/******** END WEB VIEW PLUGIN ********/
-/******** COOKIES PLUGIN ********/
-/**
-* Safely web encode a string value (inspired by js-cookie)
-* @param str The string value to encode
-*/
-var encode = (str) => encodeURIComponent(str).replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent).replace(/[()]/g, escape);
-/**
-* Safely web decode a string value (inspired by js-cookie)
-* @param str The string value to decode
-*/
-var decode = (str) => str.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
-var CapacitorCookiesPluginWeb = class extends WebPlugin {
-	async getCookies() {
-		const cookies = document.cookie;
-		const cookieMap = {};
-		cookies.split(";").forEach((cookie) => {
-			if (cookie.length <= 0) return;
-			let [key, value] = cookie.replace(/=/, "CAP_COOKIE").split("CAP_COOKIE");
-			key = decode(key).trim();
-			value = decode(value).trim();
-			cookieMap[key] = value;
-		});
-		return cookieMap;
-	}
-	async setCookie(options) {
-		try {
-			const encodedKey = encode(options.key);
-			const encodedValue = encode(options.value);
-			const expires = options.expires ? `; expires=${options.expires.replace("expires=", "")}` : "";
-			const path = (options.path || "/").replace("path=", "");
-			const domain = options.url != null && options.url.length > 0 ? `domain=${options.url}` : "";
-			document.cookie = `${encodedKey}=${encodedValue || ""}${expires}; path=${path}; ${domain};`;
-		} catch (error) {
-			return Promise.reject(error);
-		}
-	}
-	async deleteCookie(options) {
-		try {
-			document.cookie = `${options.key}=; Max-Age=0`;
-		} catch (error) {
-			return Promise.reject(error);
-		}
-	}
-	async clearCookies() {
-		try {
-			const cookies = document.cookie.split(";") || [];
-			for (const cookie of cookies) document.cookie = cookie.replace(/^ +/, "").replace(/=.*/, `=;expires=${(/* @__PURE__ */ new Date()).toUTCString()};path=/`);
-		} catch (error) {
-			return Promise.reject(error);
-		}
-	}
-	async clearAllCookies() {
-		try {
-			await this.clearCookies();
-		} catch (error) {
-			return Promise.reject(error);
-		}
-	}
-};
-registerPlugin("CapacitorCookies", { web: () => new CapacitorCookiesPluginWeb() });
-/**
-* Read in a Blob value and return it as a base64 string
-* @param blob The blob value to convert to a base64 string
-*/
-var readBlobAsBase64 = async (blob) => new Promise((resolve, reject) => {
-	const reader = new FileReader();
-	reader.onload = () => {
-		const base64String = reader.result;
-		resolve(base64String.indexOf(",") >= 0 ? base64String.split(",")[1] : base64String);
-	};
-	reader.onerror = (error) => reject(error);
-	reader.readAsDataURL(blob);
-});
-/**
-* Normalize an HttpHeaders map by lowercasing all of the values
-* @param headers The HttpHeaders object to normalize
-*/
-var normalizeHttpHeaders = (headers = {}) => {
-	const originalKeys = Object.keys(headers);
-	return Object.keys(headers).map((k) => k.toLocaleLowerCase()).reduce((acc, key, index) => {
-		acc[key] = headers[originalKeys[index]];
-		return acc;
-	}, {});
-};
-/**
-* Builds a string of url parameters that
-* @param params A map of url parameters
-* @param shouldEncode true if you should encodeURIComponent() the values (true by default)
-*/
-var buildUrlParams = (params, shouldEncode = true) => {
-	if (!params) return null;
-	return Object.entries(params).reduce((accumulator, entry) => {
-		const [key, value] = entry;
-		let encodedValue;
-		let item;
-		if (Array.isArray(value)) {
-			item = "";
-			value.forEach((str) => {
-				encodedValue = shouldEncode ? encodeURIComponent(str) : str;
-				item += `${key}=${encodedValue}&`;
-			});
-			item.slice(0, -1);
-		} else {
-			encodedValue = shouldEncode ? encodeURIComponent(value) : value;
-			item = `${key}=${encodedValue}`;
-		}
-		return `${accumulator}&${item}`;
-	}, "").substr(1);
-};
-/**
-* Build the RequestInit object based on the options passed into the initial request
-* @param options The Http plugin options
-* @param extra Any extra RequestInit values
-*/
-var buildRequestInit = (options, extra = {}) => {
-	const output = Object.assign({
-		method: options.method || "GET",
-		headers: options.headers
-	}, extra);
-	const type = normalizeHttpHeaders(options.headers)["content-type"] || "";
-	if (typeof options.data === "string") output.body = options.data;
-	else if (type.includes("application/x-www-form-urlencoded")) {
-		const params = new URLSearchParams();
-		for (const [key, value] of Object.entries(options.data || {})) params.set(key, value);
-		output.body = params.toString();
-	} else if (type.includes("multipart/form-data") || options.data instanceof FormData) {
-		const form = new FormData();
-		if (options.data instanceof FormData) options.data.forEach((value, key) => {
-			form.append(key, value);
-		});
-		else for (const key of Object.keys(options.data)) form.append(key, options.data[key]);
-		output.body = form;
-		const headers = new Headers(output.headers);
-		headers.delete("content-type");
-		output.headers = headers;
-	} else if (type.includes("application/json") || typeof options.data === "object") output.body = JSON.stringify(options.data);
-	return output;
-};
-var CapacitorHttpPluginWeb = class extends WebPlugin {
-	/**
-	* Perform an Http request given a set of options
-	* @param options Options to build the HTTP request
-	*/
-	async request(options) {
-		const requestInit = buildRequestInit(options, options.webFetchExtra);
-		const urlParams = buildUrlParams(options.params, options.shouldEncodeUrlParams);
-		const url = urlParams ? `${options.url}?${urlParams}` : options.url;
-		const response = await fetch(url, requestInit);
-		const contentType = response.headers.get("content-type") || "";
-		let { responseType = "text" } = response.ok ? options : {};
-		if (contentType.includes("application/json")) responseType = "json";
-		let data;
-		let blob;
-		switch (responseType) {
-			case "arraybuffer":
-			case "blob":
-				blob = await response.blob();
-				data = await readBlobAsBase64(blob);
-				break;
-			case "json":
-				data = await response.json();
-				break;
-			default: data = await response.text();
-		}
-		const headers = {};
-		response.headers.forEach((value, key) => {
-			headers[key] = value;
-		});
-		return {
-			data,
-			headers,
-			status: response.status,
-			url: response.url
-		};
-	}
-	/**
-	* Perform an Http GET request given a set of options
-	* @param options Options to build the HTTP request
-	*/
-	async get(options) {
-		return this.request(Object.assign(Object.assign({}, options), { method: "GET" }));
-	}
-	/**
-	* Perform an Http POST request given a set of options
-	* @param options Options to build the HTTP request
-	*/
-	async post(options) {
-		return this.request(Object.assign(Object.assign({}, options), { method: "POST" }));
-	}
-	/**
-	* Perform an Http PUT request given a set of options
-	* @param options Options to build the HTTP request
-	*/
-	async put(options) {
-		return this.request(Object.assign(Object.assign({}, options), { method: "PUT" }));
-	}
-	/**
-	* Perform an Http PATCH request given a set of options
-	* @param options Options to build the HTTP request
-	*/
-	async patch(options) {
-		return this.request(Object.assign(Object.assign({}, options), { method: "PATCH" }));
-	}
-	/**
-	* Perform an Http DELETE request given a set of options
-	* @param options Options to build the HTTP request
-	*/
-	async delete(options) {
-		return this.request(Object.assign(Object.assign({}, options), { method: "DELETE" }));
-	}
-};
-registerPlugin("CapacitorHttp", { web: () => new CapacitorHttpPluginWeb() });
-/******** END HTTP PLUGIN ********/
-/******** SYSTEM BARS PLUGIN ********/
-/**
-* Available status bar styles.
-*/
-var SystemBarsStyle;
-(function(SystemBarsStyle) {
-	/**
-	* Light system bar content on a dark background.
-	*
-	* @since 8.0.0
-	*/
-	SystemBarsStyle["Dark"] = "DARK";
-	/**
-	* For dark system bar content on a light background.
-	*
-	* @since 8.0.0
-	*/
-	SystemBarsStyle["Light"] = "LIGHT";
-	/**
-	* The style is based on the device appearance or the underlying content.
-	* If the device is using Dark mode, the system bars content will be light.
-	* If the device is using Light mode, the system bars content will be dark.
-	*
-	* @since 8.0.0
-	*/
-	SystemBarsStyle["Default"] = "DEFAULT";
-})(SystemBarsStyle || (SystemBarsStyle = {}));
-/**
-* Available system bar types.
-*/
-var SystemBarType;
-(function(SystemBarType) {
-	/**
-	* The top status bar on both Android and iOS.
-	*
-	* @since 8.0.0
-	*/
-	SystemBarType["StatusBar"] = "StatusBar";
-	/**
-	* The navigation bar (or gesture bar on iOS) on both Android and iOS.
-	*
-	* @since 8.0.0
-	*/
-	SystemBarType["NavigationBar"] = "NavigationBar";
-})(SystemBarType || (SystemBarType = {}));
-var SystemBarsPluginWeb = class extends WebPlugin {
-	async setStyle() {
-		this.unavailable("not available for web");
-	}
-	async setAnimation() {
-		this.unavailable("not available for web");
-	}
-	async show() {
-		this.unavailable("not available for web");
-	}
-	async hide() {
-		this.unavailable("not available for web");
-	}
-};
-registerPlugin("SystemBars", { web: () => new SystemBarsPluginWeb() });
-// \0vite/preload-helper.js
-var scriptRel = "modulepreload";
-var assetsURL = function(dep) {
-	return "/" + dep;
-};
-var seen = {};
-var isCssPreloadUrl = function isCssPreloadUrl(url) {
-	return url.pathname.endsWith(".css");
-};
-var preloadOnce = function preloadOnce(seen, href, preload) {
-	if (href in seen) return seen[href];
-	const promise = preload();
-	if (!promise) {
-		seen[href] = void 0;
-		return;
-	}
-	const preloadPromise = promise.then(() => {
-		seen[href] = void 0;
-	}, (err) => {
-		seen[href] = void 0;
-		throw err;
-	});
-	seen[href] = preloadPromise;
-	return preloadPromise;
-};
-var __vitePreload = function preload(baseModule, deps, importerUrl) {
-	let promise = Promise.resolve();
-	if (deps && deps.length > 0) {
-		let preloadedHrefs;
-		const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
-		const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
-		function allSettled(promises) {
-			return Promise.all(promises.map((p) => Promise.resolve(p).then((value) => ({
-				status: "fulfilled",
-				value
-			}), (reason) => ({
-				status: "rejected",
-				reason
-			}))));
-		}
-		function importMetaResolve(specifier) {
-			if (import.meta.resolve) return new URL(import.meta.resolve(specifier));
-			return new URL(
-				specifier,
-				/** #__KEEP__ */
-				import.meta.url
-			);
-		}
-		promise = allSettled(deps.map((depString) => {
-			depString = assetsURL(depString, importerUrl);
-			const dep = importMetaResolve(depString);
-			const isCss = isCssPreloadUrl(dep);
-			return preloadOnce(seen, dep.href, () => {
-				if (preloadedHrefs === void 0) {
-					preloadedHrefs = {
-						all: /* @__PURE__ */ new Set(),
-						styles: /* @__PURE__ */ new Set()
-					};
-					const links = document.getElementsByTagName("link");
-					for (let i = links.length - 1; i >= 0; i--) {
-						const link = links[i];
-						preloadedHrefs.all.add(link.href);
-						if (link.rel === "stylesheet") preloadedHrefs.styles.add(link.href);
-					}
-				}
-				if ((isCss ? preloadedHrefs.styles : preloadedHrefs.all).has(dep.href)) return;
-				const link = document.createElement("link");
-				link.rel = isCss ? "stylesheet" : scriptRel;
-				if (!isCss) link.as = "script";
-				link.crossOrigin = "";
-				link.href = dep.href;
-				if (cspNonce) link.setAttribute("nonce", cspNonce);
-				document.head.appendChild(link);
-				if (isCss) return new Promise((res, rej) => {
-					const handleSettle = (e) => {
-						link.removeEventListener("load", handleSettle);
-						link.removeEventListener("error", handleSettle);
-						if (e.type === "error") rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`));
-						else res(e);
-					};
-					link.addEventListener("load", handleSettle);
-					link.addEventListener("error", handleSettle);
-				});
-			});
-		}).filter((p) => p !== void 0));
-	}
-	function handlePreloadError(err) {
-		const e = new Event("vite:preloadError", { cancelable: true });
-		e.payload = err;
-		window.dispatchEvent(e);
-		if (!e.defaultPrevented) throw err;
-	}
-	return promise.then((res) => {
-		for (const item of res || []) {
-			if (item.status !== "rejected") continue;
-			handlePreloadError(item.reason);
-		}
-		return baseModule().catch(handlePreloadError);
-	});
-};
-// node_modules/@capacitor/app/dist/esm/index.js
-var App$1 = registerPlugin("App", { web: () => __vitePreload(() => import("./web-BwdxOthz.js").then((m) => new m.AppWeb()), []) });
-// node_modules/@capacitor/haptics/dist/esm/definitions.js
-var ImpactStyle;
-(function(ImpactStyle) {
-	/**
-	* A collision between large, heavy user interface elements
-	*
-	* @since 1.0.0
-	*/
-	ImpactStyle["Heavy"] = "HEAVY";
-	/**
-	* A collision between moderately sized user interface elements
-	*
-	* @since 1.0.0
-	*/
-	ImpactStyle["Medium"] = "MEDIUM";
-	/**
-	* A collision between small, light user interface elements
-	*
-	* @since 1.0.0
-	*/
-	ImpactStyle["Light"] = "LIGHT";
-})(ImpactStyle || (ImpactStyle = {}));
-var NotificationType;
-(function(NotificationType) {
-	/**
-	* A notification feedback type indicating that a task has completed successfully
-	*
-	* @since 1.0.0
-	*/
-	NotificationType["Success"] = "SUCCESS";
-	/**
-	* A notification feedback type indicating that a task has produced a warning
-	*
-	* @since 1.0.0
-	*/
-	NotificationType["Warning"] = "WARNING";
-	/**
-	* A notification feedback type indicating that a task has failed
-	*
-	* @since 1.0.0
-	*/
-	NotificationType["Error"] = "ERROR";
-})(NotificationType || (NotificationType = {}));
-// node_modules/@capacitor/haptics/dist/esm/index.js
-var Haptics = registerPlugin("Haptics", { web: () => __vitePreload(() => import("./web-CJCAanQO.js").then((m) => new m.HapticsWeb()), []) });
-// node_modules/@capacitor/local-notifications/dist/esm/definitions.js
-/**
-* Day of the week. Used for scheduling notifications on a particular weekday.
-*/
-var Weekday;
-(function(Weekday) {
-	Weekday[Weekday["Sunday"] = 1] = "Sunday";
-	Weekday[Weekday["Monday"] = 2] = "Monday";
-	Weekday[Weekday["Tuesday"] = 3] = "Tuesday";
-	Weekday[Weekday["Wednesday"] = 4] = "Wednesday";
-	Weekday[Weekday["Thursday"] = 5] = "Thursday";
-	Weekday[Weekday["Friday"] = 6] = "Friday";
-	Weekday[Weekday["Saturday"] = 7] = "Saturday";
-})(Weekday || (Weekday = {}));
-// node_modules/@capacitor/local-notifications/dist/esm/index.js
-var LocalNotifications = registerPlugin("LocalNotifications", { web: () => __vitePreload(() => import("./web-BenJO-xG.js").then((m) => new m.LocalNotificationsWeb()), []) });
-// node_modules/@capacitor/push-notifications/dist/esm/index.js
-var PushNotifications = registerPlugin("PushNotifications", {});
-// node_modules/@capacitor/preferences/dist/esm/index.js
-var Preferences = registerPlugin("Preferences", { web: () => __vitePreload(() => import("./web-B9jweYOd.js").then((m) => new m.PreferencesWeb()), []) });
-// node_modules/@capacitor/splash-screen/dist/esm/index.js
-var SplashScreen = registerPlugin("SplashScreen", { web: () => __vitePreload(() => import("./web-CJmD-6sr.js").then((m) => new m.SplashScreenWeb()), []) });
-// node_modules/@capacitor/status-bar/dist/esm/definitions.js
-var Style;
-(function(Style) {
-	/**
-	* Light text for dark backgrounds.
-	*
-	* @since 1.0.0
-	*/
-	Style["Dark"] = "DARK";
-	/**
-	* Dark text for light backgrounds.
-	*
-	* @since 1.0.0
-	*/
-	Style["Light"] = "LIGHT";
-	/**
-	* The style is based on the device appearance.
-	* If the device is using Dark mode, the statusbar text will be light.
-	* If the device is using Light mode, the statusbar text will be dark.
-	*
-	* @since 1.0.0
-	*/
-	Style["Default"] = "DEFAULT";
-})(Style || (Style = {}));
-var Animation;
-(function(Animation) {
-	/**
-	* No animation during show/hide.
-	*
-	* @since 1.0.0
-	*/
-	Animation["None"] = "NONE";
-	/**
-	* Slide animation during show/hide.
-	* It doesn't work on iOS 15+.
-	*
-	* @deprecated Use Animation.Fade or Animation.None instead.
-	*
-	* @since 1.0.0
-	*/
-	Animation["Slide"] = "SLIDE";
-	/**
-	* Fade animation during show/hide.
-	*
-	* @since 1.0.0
-	*/
-	Animation["Fade"] = "FADE";
-})(Animation || (Animation = {}));
-// node_modules/@capacitor/status-bar/dist/esm/index.js
-var StatusBar = registerPlugin("StatusBar");
-// src/lib/time.ts
-var DAY_LETTERS = [
-	"S",
-	"M",
-	"T",
-	"W",
-	"T",
-	"F",
-	"S"
-];
-var DAY_SHORT = [
-	"Sun",
-	"Mon",
-	"Tue",
-	"Wed",
-	"Thu",
-	"Fri",
-	"Sat"
-];
-function getTodayDateKey(d = /* @__PURE__ */ new Date()) {
-	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
-function getDateKeyFromDate(d) {
-	return getTodayDateKey(d);
-}
-function formatTimeDisplay(time24, format) {
-	const [hRaw, mRaw] = (time24 || "09:00").split(":").map(Number);
-	const h = Number.isFinite(hRaw) ? hRaw : 9;
-	const mm = String(Number.isFinite(mRaw) ? mRaw : 0).padStart(2, "0");
-	if (format === "24h") return `${String(h).padStart(2, "0")}:${mm}`;
-	const period = h >= 12 ? "PM" : "AM";
-	return `${h % 12 || 12}:${mm} ${period}`;
-}
-function formatClockParts(now, format) {
-	const h = now.getHours();
-	const m = String(now.getMinutes()).padStart(2, "0");
-	const s = String(now.getSeconds()).padStart(2, "0");
-	if (format === "24h") return {
-		hm: `${String(h).padStart(2, "0")}:${m}`,
-		sec: s,
-		period: ""
-	};
-	const period = h >= 12 ? "PM" : "AM";
-	return {
-		hm: `${String(h % 12 || 12).padStart(2, "0")}:${m}`,
-		sec: s,
-		period
-	};
-}
-function formatDaysSummary(days, oneTimeDate) {
-	if (oneTimeDate) {
-		if (oneTimeDate === getTodayDateKey()) return "Today";
-		return (/* @__PURE__ */ new Date(`${oneTimeDate}T12:00:00`)).toLocaleDateString(void 0, {
-			month: "short",
-			day: "numeric"
-		});
-	}
-	if (!days || days.length === 0 || days.length === 7) return "Daily";
-	const sorted = [...days].sort((a, b) => a - b);
-	if (sorted.length === 5 && sorted.join(",") === "1,2,3,4,5") return "Weekdays";
-	if (sorted.length === 2 && sorted.join(",") === "0,6") return "Weekends";
-	return sorted.map((d) => DAY_SHORT[d]).join(", ");
-}
-function computeNextDueAt(timeStr, days, from = /* @__PURE__ */ new Date()) {
-	const [h, m] = (timeStr || "09:00").split(":").map(Number);
-	const targetH = Number.isFinite(h) ? h : 9;
-	const targetM = Number.isFinite(m) ? m : 0;
-	for (let offset = 0; offset <= 7; offset++) {
-		const candidate = new Date(from);
-		candidate.setDate(from.getDate() + offset);
-		candidate.setHours(targetH, targetM, 0, 0);
-		if (days && days.length > 0 && !days.includes(candidate.getDay())) continue;
-		if (candidate.getTime() > from.getTime() - 15e3) return candidate.getTime();
-	}
-	const fallback = new Date(from);
-	fallback.setDate(from.getDate() + 1);
-	fallback.setHours(targetH, targetM, 0, 0);
-	return fallback.getTime();
-}
-function isReminderDoneToday(r, todayKey = getTodayDateKey()) {
-	return r.doneDate === todayKey;
-}
-function isReminderScheduledForDate(r, date) {
-	const key = getDateKeyFromDate(date);
-	if (r.oneTimeDate) return r.oneTimeDate === key;
-	if (!r.days || r.days.length === 0) return true;
-	return r.days.includes(date.getDay());
-}
-function formatCountdown(targetMs, nowMs = Date.now()) {
-	const diff = targetMs - nowMs;
-	if (diff <= 0) return "Due now";
-	const totalMin = Math.ceil(diff / 6e4);
-	if (totalMin < 60) return `In ${totalMin}m`;
-	const hrs = Math.floor(totalMin / 60);
-	const mins = totalMin % 60;
-	if (hrs < 24) return mins > 0 ? `In ${hrs}h ${mins}m` : `In ${hrs}h`;
-	return `In ${Math.floor(hrs / 24)}d ${hrs % 24}h`;
-}
-function getGreeting(now = /* @__PURE__ */ new Date()) {
-	const h = now.getHours();
-	if (h < 5) return "Quiet night";
-	if (h < 12) return "Good morning";
-	if (h < 17) return "Good afternoon";
-	if (h < 21) return "Good evening";
-	return "Winding down";
-}
-function hashToInt32(str) {
-	let hash = 2166136261;
-	for (let i = 0; i < str.length; i++) {
-		hash ^= str.charCodeAt(i);
-		hash = Math.imul(hash, 16777619);
-	}
-	return Math.abs(hash) % 214748e4 + 100;
-}
-function getMonthCalendarDays(year, monthIndex) {
-	const startDow = new Date(year, monthIndex, 1).getDay();
-	const days = [];
-	for (let i = startDow - 1; i >= 0; i--) days.push(new Date(year, monthIndex, -i));
-	const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-	for (let d = 1; d <= daysInMonth; d++) days.push(new Date(year, monthIndex, d));
-	while (days.length % 7 !== 0) {
-		const nextIdx = days.length - startDow - daysInMonth + 1;
-		days.push(new Date(year, monthIndex + 1, nextIdx));
-	}
-	return days;
-}
-function getWeekStripDates(anchor = /* @__PURE__ */ new Date()) {
-	const start = new Date(anchor);
-	start.setDate(anchor.getDate() - anchor.getDay());
-	return Array.from({ length: 7 }, (_, i) => {
-		const d = new Date(start);
-		d.setDate(start.getDate() + i);
-		return d;
-	});
-}
-// src/lib/nativeBridge.ts
-var ALARM_CHANNEL_ID = "reminderme_alarms";
-var REMINDER_CHANNEL_ID = "reminderme_reminders";
-var ALARM_ACTION_TYPE_ID = "ALARM_ACTIONS";
-function isNativeApp() {
-	try {
-		return Capacitor.isNativePlatform();
-	} catch {
-		return false;
-	}
-}
-function getRuntimePlatform() {
-	if (isNativeApp()) return Capacitor.getPlatform() === "ios" ? "ios-native" : "android-native";
-	if (typeof window !== "undefined") {
-		if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) return "pwa-standalone";
-	}
-	return "web";
-}
-async function deviceStorageGet(key) {
-	if (isNativeApp()) try {
-		return (await Preferences.get({ key })).value ?? null;
-	} catch {
-		return null;
-	}
-	try {
-		return window.localStorage.getItem(key);
-	} catch {
-		return null;
-	}
-}
-async function deviceStorageSet(key, value) {
-	if (isNativeApp()) try {
-		await Preferences.set({
-			key,
-			value
-		});
-		return;
-	} catch {}
-	try {
-		window.localStorage.setItem(key, value);
-	} catch {}
-}
-async function nativeTokenGet() {
-	if (!isNativeApp()) return null;
-	try {
-		const { value } = await Preferences.get({ key: "rm_native_token" });
-		return value ?? null;
-	} catch {
-		return null;
-	}
-}
-async function nativeTokenSet(token) {
-	if (!isNativeApp()) return;
-	try {
-		if (!token) await Preferences.remove({ key: "rm_native_token" });
-		else await Preferences.set({
-			key: "rm_native_token",
-			value: token
-		});
-	} catch {}
-}
-async function triggerHaptic(kind = "light", enabled = true) {
-	if (!enabled) return;
-	if (isNativeApp()) try {
-		if (kind === "success") await Haptics.notification({ type: NotificationType.Success });
-		else if (kind === "warning") await Haptics.notification({ type: NotificationType.Warning });
-		else {
-			const style = kind === "heavy" ? ImpactStyle.Heavy : kind === "medium" ? ImpactStyle.Medium : ImpactStyle.Light;
-			await Haptics.impact({ style });
-		}
-		return;
-	} catch {}
-	if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-		const ms = kind === "heavy" ? 40 : kind === "medium" ? 24 : 12;
-		navigator.vibrate(ms);
-	}
-}
-async function initNativePlatform(callbacks) {
-	const cleanups = [];
-	if (isNativeApp()) {
-		try {
-			await StatusBar.setStyle({ style: Style.Dark });
-			await StatusBar.setBackgroundColor({ color: "#060812" });
-		} catch {}
-		try {
-			await SplashScreen.hide();
-		} catch {}
-		try {
-			await LocalNotifications.createChannel({
-				id: ALARM_CHANNEL_ID,
-				name: "Loud Alarms",
-				description: "High-priority exact alarms that ring on the lock screen even when the app is closed.",
-				importance: 5,
-				visibility: 1,
-				vibration: true,
-				lights: true,
-				lightColor: "#2F80FF"
-			});
-			await LocalNotifications.createChannel({
-				id: REMINDER_CHANNEL_ID,
-				name: "Daily Reminders",
-				description: "Scheduled reminders and gentle task alerts.",
-				importance: 4,
-				visibility: 1,
-				vibration: true
-			});
-			await LocalNotifications.registerActionTypes({ types: [{
-				id: ALARM_ACTION_TYPE_ID,
-				actions: [{
-					id: "snooze",
-					title: "Snooze 5 min"
-				}, {
-					id: "dismiss",
-					title: "Dismiss",
-					destructive: false
-				}]
-			}] });
-		} catch {}
-		try {
-			const actionListener = await LocalNotifications.addListener("localNotificationActionPerformed", (event) => {
-				const rid = String(event.notification.extra?.reminderId || "");
-				if (!rid) return;
-				if (event.actionId === "snooze") callbacks.onSnooze(rid, 5);
-				else if (event.actionId === "dismiss") callbacks.onDismiss(rid);
-				else callbacks.onOpenReminder(rid);
-			});
-			cleanups.push(() => {
-				actionListener.remove().catch(() => {});
-			});
-		} catch {}
-		try {
-			const backListener = await App$1.addListener("backButton", () => {
-				if (!callbacks.onHardwareBack()) App$1.minimizeApp().catch(() => {});
-			});
-			cleanups.push(() => {
-				backListener.remove().catch(() => {});
-			});
-		} catch {}
-	} else if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
-		navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {});
-		const onSwMessage = (ev) => {
-			const msg = ev.data || {};
-			if (msg.type === "alarm-dismissed" && msg.reminderId) callbacks.onDismiss(msg.reminderId);
-			else if (msg.type === "alarm-snoozed" && msg.reminderId) callbacks.onSnooze(msg.reminderId, Number(msg.minutes) || 5);
-			else if (msg.type === "notification-opened" && msg.reminderId) callbacks.onOpenReminder(msg.reminderId);
-		};
-		navigator.serviceWorker.addEventListener("message", onSwMessage);
-		cleanups.push(() => navigator.serviceWorker.removeEventListener("message", onSwMessage));
-	}
-	return () => {
-		cleanups.forEach((fn) => fn());
-	};
-}
-async function getNotificationPermissionState() {
-	if (isNativeApp()) try {
-		const status = await LocalNotifications.checkPermissions();
-		if (status.display === "granted") return "granted";
-		if (status.display === "denied") return "denied";
-		return "prompt";
-	} catch {
-		return "prompt";
-	}
-	if (typeof window === "undefined" || !("Notification" in window)) return "unsupported";
-	const p = Notification.permission;
-	if (p === "granted") return "granted";
-	if (p === "denied") return "denied";
-	return "prompt";
-}
-async function requestOsNotificationPermission() {
-	if (isNativeApp()) try {
-		const status = await LocalNotifications.requestPermissions();
-		if (status.display === "granted") return "granted";
-		if (status.display === "denied") return "denied";
-		return "prompt";
-	} catch {
-		return "denied";
-	}
-	if (typeof window === "undefined" || !("Notification" in window)) return "unsupported";
-	try {
-		const res = await Notification.requestPermission();
-		return res === "granted" ? "granted" : res === "denied" ? "denied" : "prompt";
-	} catch {
-		return "denied";
-	}
-}
-async function checkExactAlarmReadiness() {
-	if (!isNativeApp()) return false;
-	try {
-		return (await LocalNotifications.checkExactNotificationSetting()).exact_alarm === "granted";
-	} catch {
-		return true;
-	}
-}
-async function openExactAlarmSettings() {
-	if (!isNativeApp()) return;
-	try {
-		await LocalNotifications.changeExactNotificationSetting();
-	} catch {}
-}
-/**
-* Registers every pending alarm and reminder directly with Android OS AlarmManager
-* (`allowWhileIdle: true`) so alerts trigger accurately even when the app is closed and screen is locked.
-*/
-async function syncOsSchedules(reminders) {
-	const todayKey = getTodayDateKey();
-	const now = Date.now();
-	const active = reminders.filter((r) => {
-		if (r.doneDate === todayKey && r.oneTimeDate === todayKey) return false;
-		return true;
-	});
-	if (!isNativeApp()) return active.filter((r) => r.doneDate !== todayKey).length;
-	try {
-		if ((await LocalNotifications.checkPermissions()).display !== "granted") return 0;
-		const pending = await LocalNotifications.getPending();
-		if (pending.notifications.length > 0) await LocalNotifications.cancel({ notifications: pending.notifications.map((n) => ({ id: n.id })) });
-		const toSchedule = active.map((r) => {
-			const targetMs = r.snoozedUntil && r.snoozedUntil > now ? r.snoozedUntil : r.doneDate === todayKey ? computeNextDueAt(r.time, r.days, new Date(now + 432e5)) : computeNextDueAt(r.time, r.days, new Date(now));
-			if (!Number.isFinite(targetMs) || targetMs <= now) return null;
-			return {
-				id: hashToInt32(r.id),
-				title: r.isAlarm ? `ALARM: ${r.title}` : r.title,
-				body: r.note || `Scheduled for ${r.time} — tap Snooze or Dismiss`,
-				channelId: r.isAlarm ? ALARM_CHANNEL_ID : REMINDER_CHANNEL_ID,
-				actionTypeId: ALARM_ACTION_TYPE_ID,
-				schedule: {
-					at: new Date(targetMs),
-					allowWhileIdle: true
-				},
-				extra: {
-					reminderId: r.id,
-					isAlarm: r.isAlarm,
-					sound: r.sound || "radar"
-				}
-			};
-		}).filter((x) => x !== null);
-		if (toSchedule.length > 0) await LocalNotifications.schedule({ notifications: toSchedule });
-		return toSchedule.length;
-	} catch {
-		return 0;
-	}
-}
-function urlBase64ToUint8Array(base64String) {
-	const base64 = (base64String + "=".repeat((4 - base64String.length % 4) % 4)).replace(/-/g, "+").replace(/_/g, "/");
-	const raw = window.atob(base64);
-	const out = new Uint8Array(raw.length);
-	for (let i = 0; i < raw.length; ++i) out[i] = raw.charCodeAt(i);
-	return out;
-}
-async function subscribeDevicePush(getVapidKey, sendWebSub, sendFcmToken) {
-	if (await requestOsNotificationPermission() !== "granted") return {
-		ok: false,
-		devices: 0,
-		mode: "none",
-		message: "Notification permission is blocked. Enable notifications in system settings."
-	};
-	if (isNativeApp()) try {
-		if ((await PushNotifications.requestPermissions()).receive === "granted") return await new Promise((resolve) => {
-			let settled = false;
-			const timer = window.setTimeout(() => {
-				if (!settled) {
-					settled = true;
-					resolve({
-						ok: true,
-						devices: 1,
-						mode: "fcm",
-						message: "OS AlarmManager enabled. Add google-services.json for remote FCM push."
-					});
-				}
-			}, 2500);
-			PushNotifications.addListener("registration", async (token) => {
-				if (settled) return;
-				settled = true;
-				window.clearTimeout(timer);
-				try {
-					resolve({
-						ok: true,
-						devices: await sendFcmToken(token.value, Capacitor.getPlatform()),
-						mode: "fcm",
-						message: "Android OS alarms & FCM push enabled."
-					});
-				} catch {
-					resolve({
-						ok: true,
-						devices: 1,
-						mode: "fcm",
-						message: "Android OS alarms active on this device."
-					});
-				}
-			});
-			PushNotifications.register().catch(() => {
-				if (!settled) {
-					settled = true;
-					window.clearTimeout(timer);
-					resolve({
-						ok: true,
-						devices: 1,
-						mode: "fcm",
-						message: "Android OS exact alarms enabled locally."
-					});
-				}
-			});
-		});
-	} catch {
-		return {
-			ok: true,
-			devices: 1,
-			mode: "fcm",
-			message: "Android OS local alarm channel enabled."
-		};
-	}
-	if (typeof window === "undefined" || !("serviceWorker" in navigator) || !("PushManager" in window)) return {
-		ok: true,
-		devices: 0,
-		mode: "none",
-		message: "Browser notifications enabled (Web Push not supported on this browser)."
-	};
-	try {
-		const reg = await navigator.serviceWorker.ready;
-		const vapidKey = await getVapidKey();
-		if (!vapidKey) return {
-			ok: true,
-			devices: 0,
-			mode: "none",
-			message: "Local notifications enabled. Sign in online for server-side push backup."
-		};
-		let sub = await reg.pushManager.getSubscription();
-		if (!sub) sub = await reg.pushManager.subscribe({
-			userVisibleOnly: true,
-			applicationServerKey: urlBase64ToUint8Array(vapidKey)
-		});
-		const devices = await sendWebSub(sub.toJSON());
-		return {
-			ok: true,
-			devices,
-			mode: "webpush",
-			message: `Lock-screen Web Push active on ${devices} device${devices === 1 ? "" : "s"}.`
-		};
-	} catch (err) {
-		return {
-			ok: false,
-			devices: 0,
-			mode: "none",
-			message: err instanceof Error ? err.message : "Could not register push subscription."
-		};
-	}
-}
-async function scheduleDelayedLockScreenTest(delaySec, triggerServerPush) {
-	if (await requestOsNotificationPermission() !== "granted") return {
-		ok: false,
-		via: "none",
-		message: "Allow notifications first to run the lock-screen test."
-	};
-	if (isNativeApp()) try {
-		await LocalNotifications.schedule({ notifications: [{
-			id: Math.floor(Date.now() % 1e6) + 9e5,
-			title: "ALARM: Lock-Screen Delivery Verified",
-			body: `Triggered ${delaySec}s later by Android OS AlarmManager while backgrounded.`,
-			channelId: ALARM_CHANNEL_ID,
-			actionTypeId: ALARM_ACTION_TYPE_ID,
-			schedule: {
-				at: new Date(Date.now() + delaySec * 1e3),
-				allowWhileIdle: true
-			},
-			extra: {
-				reminderId: "lockscreen-test",
-				isAlarm: true
-			}
-		}] });
-		return {
-			ok: true,
-			via: "android-os",
-			message: `OS alarm scheduled for ${delaySec}s from now. Lock your phone now to verify.`
-		};
-	} catch {
-		return {
-			ok: false,
-			via: "none",
-			message: "Failed to schedule Android OS test alarm."
-		};
-	}
-	if (triggerServerPush) try {
-		if (await triggerServerPush(delaySec)) return {
-			ok: true,
-			via: "server-push",
-			message: `Server push queued for ${delaySec}s from now. You can close or lock your screen.`
-		};
-	} catch {}
-	window.setTimeout(async () => {
-		try {
-			const reg = "serviceWorker" in navigator ? await navigator.serviceWorker.ready : null;
-			if (reg) await reg.showNotification("ALARM: reminderme Lock-Screen Test", {
-				body: `Delivered ${delaySec}s later via Service Worker.`,
-				icon: "/icons/icon-192.png",
-				badge: "/icons/badge-96.png",
-				tag: "test-delayed",
-				requireInteraction: true
-			});
-			else if ("Notification" in window && Notification.permission === "granted") new Notification("ALARM: reminderme Lock-Screen Test", {
-				body: `Delivered ${delaySec}s later.`,
-				icon: "/icons/icon-192.png"
-			});
-		} catch {}
-	}, delaySec * 1e3);
-	return {
-		ok: true,
-		via: "service-worker",
-		message: `Test notification scheduled in ${delaySec}s. Sign in & enable Push for closed-app cloud delivery.`
-	};
-}
-// src/lib/parser.ts
-var DAY_MAP$1 = {
-	sun: 0,
-	sunday: 0,
-	mon: 1,
-	monday: 1,
-	tue: 2,
-	tues: 2,
-	tuesday: 2,
-	wed: 3,
-	wednesday: 3,
-	thu: 4,
-	thur: 4,
-	thurs: 4,
-	thursday: 4,
-	fri: 5,
-	friday: 5,
-	sat: 6,
-	saturday: 6
-};
-function pickEmoji(text, isAlarm) {
-	const lower = text.toLowerCase();
-	if (/water|hydrat|drink/.test(lower)) return "💧";
-	if (/med|pill|vitamin|tablet/.test(lower)) return "💊";
-	if (/gym|workout|run|walk|yoga|exercise/.test(lower)) return "🏃";
-	if (/meet|standup|call|zoom|sync|client/.test(lower)) return "📞";
-	if (/sleep|bed|wind down|night/.test(lower)) return "🌙";
-	if (/wake|morning|alarm/.test(lower)) return "⏰";
-	if (/study|read|book|learn|code|work/.test(lower)) return "🎯";
-	if (/pay|bill|rent|bank/.test(lower)) return "💳";
-	if (/lunch|dinner|breakfast|eat|cook/.test(lower)) return "🍽️";
-	return isAlarm ? "⏰" : "🔔";
-}
-function parseQuickInput(raw, now = /* @__PURE__ */ new Date()) {
-	let working = raw.trim();
-	let hours = now.getHours();
-	let minutes = now.getMinutes();
-	let timeExplicit = false;
-	let days = null;
-	let oneTimeDate = null;
-	let isAlarm = true;
-	let priority = "med";
-	let tag = null;
-	if (/\b(urgent|important|critical|high|!)\b/i.test(working)) {
-		priority = "high";
-		working = working.replace(/\b(urgent|important|critical|high)\b/gi, "").trim();
-	} else if (/\b(low|later|optional)\b/i.test(working)) {
-		priority = "low";
-		working = working.replace(/\b(low|optional)\b/gi, "").trim();
-	}
-	if (/\b(notify|notification|gentle|quiet|silent)\b/i.test(working)) {
-		isAlarm = false;
-		working = working.replace(/\b(notify|notification|gentle|quiet|silent)\b/gi, "").trim();
-	} else if (/\b(alarm|wake)\b/i.test(working)) isAlarm = true;
-	const tagMatch = working.match(/#([a-zA-Z0-9_-]{2,20})/);
-	if (tagMatch) {
-		tag = tagMatch[1];
-		working = working.replace(tagMatch[0], "").trim();
-	}
-	const relMatch = working.match(/\bin\s+(?:(\d+)\s*(?:hr|hrs|hour|hours|h))?\s*(?:(\d+)\s*(?:min|mins|minute|minutes|m))?\b/i);
-	if (relMatch && (relMatch[1] || relMatch[2])) {
-		const addH = Number(relMatch[1] || 0);
-		const addM = Number(relMatch[2] || 0);
-		const target = new Date(now.getTime() + (addH * 60 + addM) * 6e4);
-		hours = target.getHours();
-		minutes = target.getMinutes();
-		oneTimeDate = getTodayDateKey(target);
-		days = [target.getDay()];
-		timeExplicit = true;
-		working = working.replace(relMatch[0], "").trim();
-	}
-	if (!timeExplicit) {
-		const absMatch = working.match(/\b(?:at\s+)?(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)\b/i) || working.match(/\bat\s+(\d{1,2}):(\d{2})\b/i);
-		if (absMatch) {
-			let h = Number(absMatch[1]);
-			const m = Number(absMatch[2] || 0);
-			const mer = (absMatch[3] || "").toLowerCase();
-			if (mer === "pm" && h < 12) h += 12;
-			if (mer === "am" && h === 12) h = 0;
-			if (h >= 0 && h <= 23 && m >= 0 && m <= 59) {
-				hours = h;
-				minutes = m;
-				timeExplicit = true;
-				working = working.replace(absMatch[0], "").trim();
-			}
-		}
-	}
-	if (!timeExplicit) {
-		if (/\bmorning\b/i.test(working)) {
-			hours = 8;
-			minutes = 0;
-			timeExplicit = true;
-		} else if (/\bnoon\b/i.test(working)) {
-			hours = 12;
-			minutes = 0;
-			timeExplicit = true;
-		} else if (/\bafternoon\b/i.test(working)) {
-			hours = 15;
-			minutes = 0;
-			timeExplicit = true;
-		} else if (/\bevening\b/i.test(working)) {
-			hours = 19;
-			minutes = 0;
-			timeExplicit = true;
-		} else if (/\bnight|tonight\b/i.test(working)) {
-			hours = 21;
-			minutes = 30;
-			timeExplicit = true;
-		}
-	}
-	if (/\b(every\s*day|daily)\b/i.test(working)) {
-		days = null;
-		oneTimeDate = null;
-		working = working.replace(/\b(every\s*day|daily)\b/gi, "").trim();
-	} else if (/\bweekdays?\b/i.test(working)) {
-		days = [
-			1,
-			2,
-			3,
-			4,
-			5
-		];
-		working = working.replace(/\b(?:on\s+|every\s+)?weekdays?\b/gi, "").trim();
-	} else if (/\bweekends?\b/i.test(working)) {
-		days = [0, 6];
-		working = working.replace(/\b(?:on\s+|every\s+)?weekends?\b/gi, "").trim();
-	} else if (/\btomorrow\b/i.test(working)) {
-		const tom = new Date(now);
-		tom.setDate(now.getDate() + 1);
-		oneTimeDate = getTodayDateKey(tom);
-		days = [tom.getDay()];
-		working = working.replace(/\btomorrow\b/gi, "").trim();
-	} else if (/\btoday\b/i.test(working)) {
-		oneTimeDate = getTodayDateKey(now);
-		days = [now.getDay()];
-		working = working.replace(/\btoday\b/gi, "").trim();
-	} else {
-		const foundDays = /* @__PURE__ */ new Set();
-		const dayRegex = /\b(sun(?:day)?|mon(?:day)?|tue(?:s|sday)?|wed(?:nesday)?|thu(?:r|rs|rsday)?|fri(?:day)?|sat(?:urday)?)\b/gi;
-		let match;
-		while ((match = dayRegex.exec(working)) !== null) {
-			const idx = DAY_MAP$1[match[1].toLowerCase()];
-			if (idx !== void 0) foundDays.add(idx);
-		}
-		if (foundDays.size > 0) {
-			days = [...foundDays].sort((a, b) => a - b);
-			working = working.replace(/\bevery\b/gi, "").replace(dayRegex, "").replace(/\b(and|on|,)\b/gi, " ").trim();
-		}
-	}
-	if (!timeExplicit) {
-		const nextSlot = new Date(now.getTime() + 9e5);
-		hours = nextSlot.getHours();
-		minutes = Math.ceil(nextSlot.getMinutes() / 5) * 5;
-		if (minutes >= 60) {
-			minutes = 0;
-			hours = (hours + 1) % 24;
-		}
-	}
-	const time = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
-	const cleanTitle = working.replace(/^(remind\s+me\s+to|set\s+(?:an?\s+)?alarm\s+(?:for|to)?|alarm\s+for)\s+/i, "").replace(/\s{2,}/g, " ").replace(/^[\s,-]+|[\s,-]+$/g, "").slice(0, 60) || "Quick reminder";
-	const capitalized = cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1);
-	const dueAt = computeNextDueAt(time, days, now);
-	const emoji = pickEmoji(capitalized, isAlarm);
-	const repeatText = oneTimeDate ? "One-time" : days ? `${days.length}d/wk` : "Daily";
-	return {
-		title: capitalized,
-		time,
-		days,
-		oneTimeDate,
-		isAlarm,
-		priority,
-		tag,
-		emoji,
-		dueAt,
-		summary: `${time} · ${repeatText} · ${isAlarm ? "Loud Alarm" : "Notification"}`
-	};
-}
-var VOICE_EXAMPLE_PHRASES = [
-	"Take vitamins daily at 8:30am",
-	"Call Sam in 20 min urgent",
-	"Stretch weekdays at 6pm gentle"
-];
-function mapSpeechError(code) {
-	switch (code) {
-		case "not-allowed":
-		case "service-not-allowed": return "Microphone access was blocked. Allow microphone permission in browser or device settings, or type your reminder below.";
-		case "audio-capture": return "No microphone was detected on this device. Connect a mic or type your reminder below.";
-		case "no-speech": return "No speech was detected. Hold the mic button and speak clearly, or type below.";
-		case "network": return "Speech recognition needs a brief network connection on this browser. You can still type naturally below.";
-		case "unsupported": return "Voice recognition is not available in this browser. Type naturally below to use the same smart parser.";
-		case "aborted": return "";
-		default: return "Could not finish voice capture. Hold to try again or type your reminder below.";
-	}
-}
-function combineTranscript(finalText, interimText) {
-	return `${finalText} ${interimText}`.replace(/\s+/g, " ").trim();
-}
-/**
-* Determines the next phase when the user releases the press-and-hold mic trigger.
-* - Any captured transcript transitions straight to 'review' for quick confirm or edit.
-* - A brief tap (< 280ms) with no transcript opens the sheet in 'ready' mode cleanly.
-* - An error state stays in 'error' so the user sees actionable recovery guidance.
-*/
-function resolveReleasePhase(holdDurationMs, transcript, hasError) {
-	if (transcript.trim().length > 0) return "review";
-	if (hasError) return "error";
-	if (holdDurationMs < 280) return "ready";
-	return "ready";
-}
-function buildReminderDraftFromVoice(transcript, now = /* @__PURE__ */ new Date()) {
-	const clean = transcript.trim();
-	if (!clean) return null;
-	return parseQuickInput(clean, now);
-}
-// src/hooks/useVoiceCapture.ts
-function getSpeechRecognitionCtor() {
-	if (typeof window === "undefined") return null;
-	const w = window;
-	return w.SpeechRecognition || w.webkitSpeechRecognition || null;
-}
-function useVoiceCapture(vibrate, now) {
-	const [phase, setPhase] = (0, import_react.useState)("closed");
-	const [finalText, setFinalText] = (0, import_react.useState)("");
-	const [interimText, setInterimText] = (0, import_react.useState)("");
-	const [errorMessage, setErrorMessage] = (0, import_react.useState)(null);
-	const [isHolding, setIsHolding] = (0, import_react.useState)(false);
-	const recRef = (0, import_react.useRef)(null);
-	const holdStartRef = (0, import_react.useRef)(0);
-	const holdingRef = (0, import_react.useRef)(false);
-	const finalRef = (0, import_react.useRef)("");
-	const interimRef = (0, import_react.useRef)("");
-	const hadErrorRef = (0, import_react.useRef)(false);
-	const closedIntentionallyRef = (0, import_react.useRef)(false);
-	const isSupported = (0, import_react.useMemo)(() => getSpeechRecognitionCtor() !== null, []);
-	const combinedTranscript = (0, import_react.useMemo)(() => combineTranscript(finalText, interimText), [finalText, interimText]);
-	const parsedPreview = (0, import_react.useMemo)(() => buildReminderDraftFromVoice(combinedTranscript, now), [combinedTranscript, now]);
-	const teardownRecognition = (0, import_react.useCallback)((abort = true) => {
-		const rec = recRef.current;
-		if (!rec) return;
-		rec.onresult = null;
-		rec.onerror = null;
-		rec.onend = null;
-		recRef.current = null;
-		try {
-			if (abort) rec.abort();
-			else rec.stop();
-		} catch {}
-	}, []);
-	(0, import_react.useEffect)(() => {
-		return () => {
-			closedIntentionallyRef.current = true;
-			teardownRecognition(true);
-		};
-	}, [teardownRecognition]);
-	const openReady = (0, import_react.useCallback)(() => {
-		closedIntentionallyRef.current = false;
-		setErrorMessage(isSupported ? null : mapSpeechError("unsupported"));
-		setPhase(isSupported ? "ready" : "error");
-	}, [isSupported]);
-	const startHoldCapture = (0, import_react.useCallback)(() => {
-		closedIntentionallyRef.current = false;
-		holdingRef.current = true;
-		setIsHolding(true);
-		holdStartRef.current = Date.now();
-		hadErrorRef.current = false;
-		setErrorMessage(null);
-		triggerHaptic("light", vibrate);
-		const Ctor = getSpeechRecognitionCtor();
-		if (!Ctor) {
-			hadErrorRef.current = true;
-			setErrorMessage(mapSpeechError("unsupported"));
-			setPhase("error");
-			return;
-		}
-		teardownRecognition(true);
-		finalRef.current = "";
-		interimRef.current = "";
-		setFinalText("");
-		setInterimText("");
-		setPhase("listening");
-		try {
-			const rec = new Ctor();
-			rec.lang = navigator.language || "en-US";
-			rec.continuous = true;
-			rec.interimResults = true;
-			rec.maxAlternatives = 1;
-			recRef.current = rec;
-			rec.onresult = (event) => {
-				let nextFinal = "";
-				let nextInterim = "";
-				for (let i = 0; i < event.results.length; i++) {
-					const item = event.results[i];
-					const text = item?.[0]?.transcript || "";
-					if (item?.isFinal) nextFinal += `${text} `;
-					else nextInterim += `${text} `;
-				}
-				finalRef.current = nextFinal.trim();
-				interimRef.current = nextInterim.trim();
-				setFinalText(finalRef.current);
-				setInterimText(interimRef.current);
-			};
-			rec.onerror = (event) => {
-				if (closedIntentionallyRef.current) return;
-				const msg = mapSpeechError(event?.error || "unknown");
-				if (!msg) return;
-				hadErrorRef.current = true;
-				setErrorMessage(msg);
-				if (!holdingRef.current) {
-					const combined = combineTranscript(finalRef.current, interimRef.current);
-					setPhase(resolveReleasePhase(Date.now() - holdStartRef.current, combined, true));
-				}
-			};
-			rec.onend = () => {
-				recRef.current = null;
-				if (closedIntentionallyRef.current) return;
-				const combined = combineTranscript(finalRef.current, interimRef.current);
-				if (combined) {
-					finalRef.current = combined;
-					interimRef.current = "";
-					setFinalText(combined);
-					setInterimText("");
-				}
-				holdingRef.current = false;
-				setIsHolding(false);
-				const duration = Date.now() - holdStartRef.current;
-				setPhase(resolveReleasePhase(duration, combined, hadErrorRef.current));
-			};
-			rec.start();
-		} catch {
-			hadErrorRef.current = true;
-			holdingRef.current = false;
-			setIsHolding(false);
-			setErrorMessage(mapSpeechError("audio-capture"));
-			setPhase("error");
-		}
-	}, [teardownRecognition, vibrate]);
-	const endHoldCapture = (0, import_react.useCallback)(() => {
-		if (!holdingRef.current) return;
-		holdingRef.current = false;
-		setIsHolding(false);
-		const duration = Date.now() - holdStartRef.current;
-		triggerHaptic("medium", vibrate);
-		const rec = recRef.current;
-		if (rec) {
-			try {
-				rec.stop();
-			} catch {
-				teardownRecognition(true);
-			}
-			window.setTimeout(() => {
-				if (recRef.current === rec && !closedIntentionallyRef.current) {
-					teardownRecognition(true);
-					const combined = combineTranscript(finalRef.current, interimRef.current);
-					setPhase(resolveReleasePhase(duration, combined, hadErrorRef.current));
-				}
-			}, 450);
-		} else {
-			const combined = combineTranscript(finalRef.current, interimRef.current);
-			setPhase(resolveReleasePhase(duration, combined, hadErrorRef.current));
-		}
-	}, [teardownRecognition, vibrate]);
-	const updateTranscript = (0, import_react.useCallback)((nextText) => {
-		finalRef.current = nextText;
-		interimRef.current = "";
-		setFinalText(nextText);
-		setInterimText("");
-		setErrorMessage(null);
-		setPhase((prev) => {
-			if (prev === "closed") return prev;
-			return nextText.trim() ? "review" : "ready";
-		});
-	}, []);
-	const close = (0, import_react.useCallback)(() => {
-		closedIntentionallyRef.current = true;
-		holdingRef.current = false;
-		setIsHolding(false);
-		teardownRecognition(true);
-		finalRef.current = "";
-		interimRef.current = "";
-		setFinalText("");
-		setInterimText("");
-		setErrorMessage(null);
-		setPhase("closed");
-	}, [teardownRecognition]);
-	return {
-		phase,
-		isOpen: phase !== "closed",
-		isHolding,
-		isSupported,
-		transcript: combinedTranscript,
-		interimText,
-		parsedPreview,
-		errorMessage,
-		openReady,
-		startHoldCapture,
-		endHoldCapture,
-		updateTranscript,
-		close
-	};
-}
-// src/lib/routines.ts
-var SMART_ROUTINES = [
-	{
-		id: "morning-launch",
-		name: "Morning Launch",
-		subtitle: "Hydration, stretch & top-3 priorities",
-		emoji: "🌅",
-		items: [{
-			title: "Sunlight & hydration reset",
-			note: "500ml water + 5 minutes daylight",
-			time: "07:15",
-			days: null,
-			emoji: "💧",
-			color: "#0A84FF",
-			priority: "high",
-			tag: "Health",
-			isAlarm: true,
-			subtasks: [{ title: "Drink full glass of water" }, { title: "Step outside for morning light" }]
-		}, {
-			title: "Plan today’s top 3 wins",
-			note: "Review calendar & pick the single non-negotiable task",
-			time: "08:15",
-			days: [
-				1,
-				2,
-				3,
-				4,
-				5
-			],
-			emoji: "📋",
-			color: "#30D158",
-			priority: "med",
-			tag: "Focus",
-			isAlarm: false,
-			subtasks: [{ title: "Check Google Calendar" }, { title: "Block 90m deep work slot" }]
-		}]
-	},
-	{
-		id: "deep-work-block",
-		name: "Deep Work Sprint",
-		subtitle: "Distraction-free block & afternoon inbox triage",
-		emoji: "🎯",
-		items: [{
-			title: "Deep work focus block",
-			note: "Silence phone and launch ambient brown noise",
-			time: "10:00",
-			days: [
-				1,
-				2,
-				3,
-				4,
-				5
-			],
-			emoji: "🎯",
-			color: "#6366F1",
-			priority: "high",
-			tag: "Work",
-			isAlarm: false,
-			subtasks: [{ title: "Close chat tabs" }, { title: "Start 45m focus timer" }]
-		}, {
-			title: "Gmail inbox zero check",
-			note: "Convert urgent emails into scheduled reminders",
-			time: "16:30",
-			days: [
-				1,
-				2,
-				3,
-				4,
-				5
-			],
-			emoji: "✉️",
-			color: "#FF9F0A",
-			priority: "med",
-			tag: "Work",
-			isAlarm: false
-		}]
-	},
-	{
-		id: "evening-winddown",
-		name: "Evening Wind-Down",
-		subtitle: "Screen sunset & tomorrow prep",
-		emoji: "🌙",
-		items: [{
-			title: "Digital sunset & stretch",
-			note: "Dim lights and put devices on charge away from bed",
-			time: "21:30",
-			days: null,
-			emoji: "🌙",
-			color: "#BF5AF2",
-			priority: "med",
-			tag: "Personal",
-			isAlarm: true,
-			subtasks: [{ title: "Enable Do Not Disturb" }, { title: "Set morning wake alarm" }]
-		}]
-	}
-];
-// src/components/LiquidGlassCard.tsx
-/**
-* iOS Liquid Glass interactive surface with specular pointer glare and subtle
-* 3D perspective tilt on fine pointer devices (desktop/trackpad).
-*/
-var LiquidGlassCard = ({ children, className = "", enableTilt = true }) => {
-	const cardRef = (0, import_react.useRef)(null);
-	const handlePointerMove = (e) => {
-		if (!enableTilt || e.pointerType !== "mouse") return;
-		const el = cardRef.current;
-		if (!el) return;
-		const rect = el.getBoundingClientRect();
-		const px = (e.clientX - rect.left) / rect.width;
-		const py = (e.clientY - rect.top) / rect.height;
-		const rx = (.5 - py) * 7;
-		const ry = (px - .5) * 8;
-		el.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
-		el.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
-		el.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
-		el.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
-		el.setAttribute("data-tilting", "true");
-	};
-	const handlePointerLeave = () => {
-		const el = cardRef.current;
-		if (!el) return;
-		el.style.setProperty("--rx", "0deg");
-		el.style.setProperty("--ry", "0deg");
-		el.removeAttribute("data-tilting");
-	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		ref: cardRef,
-		onPointerMove: handlePointerMove,
-		onPointerLeave: handlePointerLeave,
-		className: `glass-surface liquid-tilt ${className}`,
-		children
-	});
-};
-// src/components/SpringSegmentedControl.tsx
-function SpringSegmentedControl({ options, value, onChange, ariaLabel, size = "md", fullWidth = false }) {
-	const activeIndex = Math.max(0, options.findIndex((o) => o.id === value));
-	const count = Math.max(1, options.length);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		role: "tablist",
-		"aria-label": ariaLabel,
-		className: `relative grid rounded-2xl border border-white/[0.12] bg-[#0B1022]/85 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ${fullWidth ? "w-full" : "inline-grid"}`,
-		style: { gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` },
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-			"aria-hidden": "true",
-			className: "ios-pill-slider pointer-events-none absolute top-1 bottom-1 left-1 rounded-xl border border-white/30 bg-gradient-to-b from-[#4BA3FF] to-[#0A84FF] shadow-[0_6px_18px_rgba(10,132,255,0.42),inset_0_1px_0_rgba(255,255,255,0.5)]",
-			style: {
-				width: `calc((100% - 8px) / ${count})`,
-				transform: `translate3d(${activeIndex * 100}%, 0, 0)`
-			}
-		}), options.map((option) => {
-			const selected = option.id === value;
-			return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-				type: "button",
-				role: "tab",
-				"aria-selected": selected,
-				onClick: () => onChange(option.id),
-				className: `relative z-10 flex items-center justify-center rounded-xl font-semibold transition-colors duration-150 whitespace-nowrap ${size === "sm" ? "min-h-[34px] px-3 text-xs" : "min-h-[38px] px-3.5 text-xs"} ${selected ? "text-white" : "text-slate-400 hover:text-slate-100"}`,
-				children: option.label
-			}, option.id);
-		})]
-	});
-}
-// src/components/SwipeableReminderRow.tsx
-var SwipeableReminderRow = ({ reminder, timeFormat, onToggleDone, onSnooze, onDelete, onEdit, onFocus, onToggleSubtask, onExportIcs }) => {
-	const done = isReminderDoneToday(reminder);
-	const [offsetX, setOffsetX] = (0, import_react.useState)(0);
-	const [dragging, setDragging] = (0, import_react.useState)(false);
-	const [actionsOpen, setActionsOpen] = (0, import_react.useState)(false);
-	const [checklistOpen, setChecklistOpen] = (0, import_react.useState)(false);
-	const startXRef = (0, import_react.useRef)(0);
-	const startYRef = (0, import_react.useRef)(0);
-	const lockedAxisRef = (0, import_react.useRef)(null);
-	const movedRef = (0, import_react.useRef)(false);
-	const subtasks = reminder.subtasks || [];
-	const subtasksDone = subtasks.filter((s) => s.done).length;
-	const handlePointerDown = (e) => {
-		if (e.target.closest("button, [data-subtask-drawer]")) return;
-		startXRef.current = e.clientX;
-		startYRef.current = e.clientY;
-		lockedAxisRef.current = null;
-		movedRef.current = false;
-		setDragging(true);
-	};
-	const handlePointerMove = (e) => {
-		if (!dragging) return;
-		const dx = e.clientX - startXRef.current;
-		const dy = e.clientY - startYRef.current;
-		if (!lockedAxisRef.current) {
-			if (Math.abs(dx) > 10 || Math.abs(dy) > 10) lockedAxisRef.current = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
-		}
-		if (lockedAxisRef.current !== "x") return;
-		movedRef.current = true;
-		const clamped = Math.max(-152, Math.min(116, (actionsOpen ? -136 : 0) + dx));
-		setOffsetX(clamped);
-	};
-	const handlePointerEnd = () => {
-		if (!dragging) return;
-		setDragging(false);
-		if (lockedAxisRef.current === "x") {
-			if (offsetX >= 80) {
-				onToggleDone(reminder.id);
-				setOffsetX(0);
-				setActionsOpen(false);
-			} else if (offsetX <= -64) {
-				setOffsetX(-136);
-				setActionsOpen(true);
-			} else {
-				setOffsetX(0);
-				setActionsOpen(false);
-			}
-		}
-		lockedAxisRef.current = null;
-	};
-	const priorityLabel = reminder.priority === "high" ? "High" : reminder.priority === "med" ? "Medium" : "Normal";
-	const scheduleLabel = formatDaysSummary(reminder.days, reminder.oneTimeDate);
-	const isSnoozed = !!(reminder.snoozedUntil && reminder.snoozedUntil > Date.now());
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "relative overflow-hidden rounded-[22px] border border-white/[0.18] bg-white/[0.06] shadow-[0_14px_34px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.3)] backdrop-blur-2xl",
-		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: `pointer-events-none absolute inset-y-0 left-0 flex w-28 items-center justify-start bg-[#30D158]/25 pl-5 text-emerald-300 transition-opacity duration-150 ${offsetX > 4 ? "opacity-100" : "opacity-0"}`,
-				"aria-hidden": "true",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-5 w-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "ml-1.5 text-xs font-semibold",
-					children: done ? "Undo" : "Done"
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				"aria-hidden": !(offsetX < -4 || actionsOpen),
-				className: `absolute inset-y-0 right-0 flex items-stretch transition-opacity duration-150 ${offsetX < -4 || actionsOpen ? "opacity-100" : "pointer-events-none opacity-0"}`,
+				className: "absolute bottom-6 z-10 flex flex-col items-center gap-2 pb-safe",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 					type: "button",
-					tabIndex: actionsOpen ? 0 : -1,
-					onClick: () => {
-						setOffsetX(0);
-						setActionsOpen(false);
-						onSnooze(reminder.id, 10);
+					onClick: (e) => {
+						e.stopPropagation();
+						triggerExit();
 					},
-					className: "flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF9F0A]/25 px-3 text-xs font-semibold text-amber-200 transition-colors hover:bg-[#FF9F0A]/35",
-					"aria-label": `Snooze ${reminder.title} 10 minutes`,
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "10m" })]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-					type: "button",
-					tabIndex: actionsOpen ? 0 : -1,
-					onClick: () => {
-						setOffsetX(0);
-						setActionsOpen(false);
-						onDelete(reminder.id);
-					},
-					className: "flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF453A]/30 px-3 text-xs font-semibold text-red-200 transition-colors hover:bg-[#FF453A]/45",
-					"aria-label": `Delete ${reminder.title}`,
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Delete" })]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				onPointerDown: handlePointerDown,
-				onPointerMove: handlePointerMove,
-				onPointerUp: handlePointerEnd,
-				onPointerCancel: handlePointerEnd,
-				onClick: () => {
-					if (movedRef.current) return;
-					if (actionsOpen) {
-						setOffsetX(0);
-						setActionsOpen(false);
-						return;
-					}
-					onEdit(reminder);
-				},
-				style: {
-					transform: `translate3d(${offsetX}px, 0, 0)`,
-					transition: dragging ? "none" : "transform 280ms cubic-bezier(0.22, 1, 0.36, 1)"
-				},
-				className: "relative z-10 cursor-pointer bg-gradient-to-br from-[#161E3B]/92 to-[#0D1329]/92 select-none touch-pan-y hover:from-[#1B2547]/95 hover:to-[#111936]/95",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex min-h-[76px] items-center gap-3.5 px-4 py-3.5",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							type: "button",
-							onClick: (e) => {
-								e.stopPropagation();
-								onToggleDone(reminder.id);
-							},
-							"aria-label": done ? `Mark ${reminder.title} not done` : `Complete ${reminder.title}`,
-							className: "ios-spring-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#0A84FF]",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: `flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-150 ${done ? "animate-check-pop border-[#30D158] bg-[#30D158] text-[#050712] shadow-[0_0_16px_rgba(48,209,88,0.6)]" : "border-white/40 bg-white/[0.04] text-transparent hover:border-white/75"}`,
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 stroke-[3]" })
-							})
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							"aria-hidden": "true",
-							style: { background: `linear-gradient(145deg, ${reminder.color || "#0A84FF"}, rgba(255,255,255,0.12))` },
-							className: `flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/25 text-lg shadow-[0_8px_18px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.55)] transition-all ${done ? "grayscale opacity-55" : ""}`,
-							children: reminder.emoji || (reminder.isAlarm ? "⏰" : "🔔")
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "min-w-0 flex-1",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "flex items-center gap-2",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: `truncate text-[15px] font-semibold leading-snug ${done ? "text-slate-400/70 line-through" : "text-white"}`,
-										children: reminder.title
-									})
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-300/80",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-											className: "inline-flex items-center gap-1 font-mono font-semibold text-white tabular-nums",
-											children: [reminder.isAlarm ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-3.5 w-3.5 text-red-400" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-3.5 w-3.5 text-sky-300" }), formatTimeDisplay(reminder.time, timeFormat)]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											"aria-hidden": "true",
-											className: "text-slate-500",
-											children: "·"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: scheduleLabel }),
-										reminder.tag && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											"aria-hidden": "true",
-											className: "text-slate-500",
-											children: "·"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: reminder.tag })] }),
-										reminder.priority === "high" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											"aria-hidden": "true",
-											className: "text-slate-500",
-											children: "·"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "font-semibold text-amber-300",
-											children: priorityLabel
-										})] }),
-										isSnoozed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											"aria-hidden": "true",
-											className: "text-slate-500",
-											children: "·"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "font-semibold text-sky-300",
-											children: "Snoozed"
-										})] }),
-										subtasks.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											"aria-hidden": "true",
-											className: "text-slate-500",
-											children: "·"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-											type: "button",
-											onClick: (e) => {
-												e.stopPropagation();
-												setChecklistOpen((v) => !v);
-											},
-											"aria-expanded": checklistOpen,
-											"aria-label": `${checklistOpen ? "Hide" : "Show"} ${subtasks.length} checklist steps`,
-											className: "inline-flex items-center gap-1 rounded-md px-1 py-0.5 font-mono text-xs font-semibold text-sky-300 transition-colors hover:bg-white/[0.08] tabular-nums",
-											children: [
-												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ListChecks, { className: "h-3.5 w-3.5" }),
-												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
-													subtasksDone,
-													"/",
-													subtasks.length
-												] }),
-												checklistOpen ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronUp, { className: "h-3 w-3" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "h-3 w-3" })
-											]
-										})] })
-									]
-								}),
-								reminder.note && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "mt-0.5 truncate text-xs text-slate-400",
-									children: reminder.note
-								})
-							]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex shrink-0 items-center gap-1",
-							children: [
-								!done && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: (e) => {
-										e.stopPropagation();
-										onFocus(reminder);
-									},
-									title: "Start focus session with ambient soundscapes",
-									"aria-label": `Focus on ${reminder.title}`,
-									className: "ios-spring-press flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-slate-100",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Timer, { className: "h-4 w-4" })
-								}),
-								onExportIcs && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: (e) => {
-										e.stopPropagation();
-										onExportIcs(reminder);
-									},
-									title: "Export .ics for Apple Calendar",
-									"aria-label": `Export ${reminder.title} to Apple Calendar`,
-									className: "ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-sky-300 sm:flex",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarArrowDown, { className: "h-4 w-4" })
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: (e) => {
-										e.stopPropagation();
-										onSnooze(reminder.id, 10);
-									},
-									title: "Snooze 10 minutes",
-									"aria-label": `Snooze ${reminder.title}`,
-									className: "ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-amber-300 sm:flex",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-4 w-4" })
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: (e) => {
-										e.stopPropagation();
-										onDelete(reminder.id);
-									},
-									title: "Delete reminder",
-									"aria-label": `Delete ${reminder.title}`,
-									className: "ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-500/15 hover:text-red-400 sm:flex",
-									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4" })
-								})
-							]
-						})
-					]
-				}), checklistOpen && subtasks.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					"data-subtask-drawer": true,
+					className: "inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.06] px-5 text-xs font-semibold text-slate-300 backdrop-blur-md transition-colors hover:bg-white/[0.14] hover:text-white",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Tap to enter" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "h-3.5 w-3.5" })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+					href: "/privacy-policy",
 					onClick: (e) => e.stopPropagation(),
-					className: "border-t border-white/[0.08] bg-[#090E20]/65 px-4 py-2.5 pl-[64px]",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-						className: "space-y-1",
-						children: subtasks.map((st) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							type: "button",
-							onClick: () => onToggleSubtask?.(reminder.id, st.id),
-							className: "ios-spring-press flex min-h-[38px] w-full items-center gap-2.5 rounded-xl px-2 py-1 text-left transition-colors hover:bg-white/[0.05]",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: `flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-all ${st.done ? "animate-check-pop border-[#30D158] bg-[#30D158] text-[#050712]" : "border-white/35 bg-white/[0.04] text-transparent"}`,
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3 w-3 stroke-[3]" })
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: `text-xs font-medium ${st.done ? "text-slate-400/75 line-through" : "text-slate-200"}`,
-								children: st.title
-							})]
-						}) }, st.id))
-					})
+					className: "text-[11px] font-medium text-sky-300/85 underline underline-offset-4 hover:text-sky-200",
+					children: "Privacy Policy"
 				})]
 			})
 		]
 	});
 };
-// src/components/VoiceCaptureSheet.tsx
-var BAR_DELAYS = [
-	"0ms",
-	"110ms",
-	"220ms",
-	"90ms",
-	"180ms"
-];
-var VoiceCaptureSheet = ({ open, phase, isHolding, isSupported, transcript, parsedPreview, errorMessage, timeFormat, onHoldStart, onHoldEnd, onTranscriptChange, onConfirmSave, onEditDetails, onClose }) => {
-	const inputRef = (0, import_react.useRef)(null);
-	(0, import_react.useEffect)(() => {
-		if (!open) return;
-		const onKeyDown = (e) => {
-			if (e.key === "Escape") {
-				e.preventDefault();
-				onClose();
-			}
-		};
-		window.addEventListener("keydown", onKeyDown);
-		return () => window.removeEventListener("keydown", onKeyDown);
-	}, [open, onClose]);
-	if (!open) return null;
-	const isListening = phase === "listening";
-	const canSave = Boolean(transcript.trim() && parsedPreview);
-	const scheduleLabel = parsedPreview ? formatDaysSummary(parsedPreview.days, parsedPreview.oneTimeDate) : "";
-	const priorityLabel = parsedPreview?.priority === "high" ? "High priority" : parsedPreview?.priority === "low" ? "Normal priority" : "Medium priority";
-	const handlePadPointerDown = (e) => {
-		e.preventDefault();
-		try {
-			e.currentTarget.setPointerCapture(e.pointerId);
-		} catch {}
-		onHoldStart();
-	};
-	const handlePadPointerUp = (e) => {
-		if (e.currentTarget.hasPointerCapture?.(e.pointerId)) try {
-			e.currentTarget.releasePointerCapture(e.pointerId);
-		} catch {}
-		onHoldEnd();
-	};
-	const handlePadKeyDown = (e) => {
-		if ((e.key === " " || e.key === "Enter") && !e.repeat) {
-			e.preventDefault();
-			onHoldStart();
-		}
-	};
-	const handlePadKeyUp = (e) => {
-		if (e.key === " " || e.key === "Enter") {
-			e.preventDefault();
-			onHoldEnd();
-		}
-	};
-	const sheetContent = /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-		role: "dialog",
-		"aria-modal": "true",
-		"aria-label": "Voice reminder capture",
-		className: "fixed inset-0 z-[80] flex items-end justify-center bg-black/65 backdrop-blur-sm sm:items-center sm:p-4",
-		onClick: (e) => {
-			if (e.target === e.currentTarget) onClose();
-		},
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "glass-elevated animate-sheet-up flex max-h-[90dvh] w-full max-w-lg flex-col rounded-t-3xl sm:rounded-3xl",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "flex justify-center pt-3 sm:hidden",
-					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-1.5 w-10 rounded-full bg-white/20" })
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center justify-between border-b border-white/[0.08] px-5 py-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "min-w-0",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-							className: "font-display text-lg font-bold text-white",
-							children: isListening ? "Listening — release to finish" : phase === "review" && canSave ? "Ready to schedule" : phase === "error" ? "Voice capture unavailable" : "Hold to speak your reminder"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "mt-0.5 text-xs text-slate-400",
-							children: isListening ? "Speak naturally with a time, day, or priority" : "Uses smart natural-language parsing before saving"
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-						type: "button",
-						onClick: onClose,
-						"aria-label": "Close voice capture",
-						className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.08] hover:text-white",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X$1, { className: "h-5 w-5" })
-					})]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex-1 space-y-5 overflow-y-auto px-5 py-5",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex flex-col items-center text-center",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									type: "button",
-									onPointerDown: handlePadPointerDown,
-									onPointerUp: handlePadPointerUp,
-									onPointerCancel: handlePadPointerUp,
-									onKeyDown: handlePadKeyDown,
-									onKeyUp: handlePadKeyUp,
-									"aria-pressed": isListening || isHolding,
-									"aria-label": isListening ? "Release to finish speaking" : "Hold to speak reminder",
-									className: `group relative flex h-24 w-24 select-none touch-none items-center justify-center rounded-full border transition-transform duration-150 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0A84FF] ${isListening ? "scale-105 border-[#FF453A]/70 bg-gradient-to-b from-[#FF6961] to-[#FF453A] text-white shadow-[0_14px_38px_rgba(255,69,58,0.5),inset_0_1px_0_rgba(255,255,255,0.45)]" : "border-white/30 bg-gradient-to-b from-[#4BA3FF] to-[#0A84FF] text-white shadow-[0_14px_34px_rgba(10,132,255,0.42),inset_0_1px_0_rgba(255,255,255,0.5)] hover:brightness-105 active:scale-95"}`,
-									children: [isListening && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										"aria-hidden": "true",
-										className: "animate-alarm-ripple pointer-events-none absolute inset-0 rounded-full border-2 border-[#FF453A]/75"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mic, { className: "h-9 w-9" })]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									"aria-hidden": "true",
-									className: "mt-4 flex h-7 items-center justify-center gap-1.5",
-									children: BAR_DELAYS.map((delay, idx) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										style: { animationDelay: delay },
-										className: `h-6 w-1.5 rounded-full transition-colors duration-150 ${isListening ? "voice-bar-active bg-[#FF6961]" : canSave ? "scale-y-[0.35] bg-[#30D158]/70" : "scale-y-[0.3] bg-white/20"}`
-									}, idx))
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "mt-2 text-xs font-medium text-slate-300",
-									children: isListening ? "Recording live… lift your finger or release mouse when done" : isSupported ? "Press & hold mic button to speak (or edit text below)" : "Type your reminder below — smart parsing is active"
-								})
-							]
-						}),
-						errorMessage && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							role: "status",
-							className: "rounded-2xl border border-amber-400/25 bg-amber-500/10 px-4 py-3 text-xs leading-relaxed text-amber-200",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: errorMessage }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: () => inputRef.current?.focus(),
-								className: "mt-2 inline-flex min-h-[36px] items-center rounded-lg bg-white/10 px-3 text-xs font-semibold text-white hover:bg-white/15",
-								children: "Type Instead"
-							})]
-						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
-							className: "block",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-xs font-medium text-slate-400",
-								children: isListening ? "Live transcript" : "Heard transcript (tap to tweak)"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-								ref: inputRef,
-								type: "text",
-								maxLength: 120,
-								value: transcript,
-								onChange: (e) => onTranscriptChange(e.target.value),
-								placeholder: "Try \"Take vitamins daily at 8:30am\"",
-								className: "mt-1.5 min-h-[46px] w-full rounded-xl border border-white/[0.12] bg-[#060812]/80 px-3.5 text-base text-white placeholder:text-slate-500 focus:border-[#0A84FF] focus:outline-none sm:text-sm"
-							})]
-						}),
-						parsedPreview ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "rounded-2xl border border-white/[0.14] bg-white/[0.04] p-4",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "text-xs font-medium text-emerald-300",
-								children: "Parsed preview"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "mt-2.5 flex items-center gap-3.5",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									"aria-hidden": "true",
-									style: { background: `linear-gradient(145deg, ${parsedPreview.isAlarm ? "#0A84FF" : "#30D158"}, rgba(255,255,255,0.14))` },
-									className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/25 text-lg shadow-[0_8px_18px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.5)]",
-									children: parsedPreview.emoji
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "min-w-0 flex-1",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "truncate text-base font-bold text-white",
-										children: parsedPreview.title
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-300",
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-												className: "inline-flex items-center gap-1 font-mono font-semibold text-white tabular-nums",
-												children: [parsedPreview.isAlarm ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-3.5 w-3.5 text-red-400" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-3.5 w-3.5 text-sky-300" }), formatTimeDisplay(parsedPreview.time, timeFormat)]
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												"aria-hidden": "true",
-												className: "text-slate-500",
-												children: "·"
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: scheduleLabel }),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												"aria-hidden": "true",
-												className: "text-slate-500",
-												children: "·"
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: parsedPreview.isAlarm ? "Loud Alarm" : "Notification" }),
-											parsedPreview.tag && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												"aria-hidden": "true",
-												className: "text-slate-500",
-												children: "·"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["#", parsedPreview.tag] })] }),
-											parsedPreview.priority === "high" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												"aria-hidden": "true",
-												className: "text-slate-500",
-												children: "·"
-											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-												className: "font-semibold text-amber-300",
-												children: priorityLabel
-											})] })
-										]
-									})]
-								})]
-							})]
-						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs font-medium text-slate-400",
-							children: "Example phrases you can say"
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "mt-2 flex flex-col gap-1.5",
-							children: VOICE_EXAMPLE_PHRASES.map((phrase) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-								type: "button",
-								onClick: () => onTranscriptChange(phrase),
-								className: "flex min-h-[44px] items-center justify-between rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 text-left text-xs text-slate-300 transition-colors hover:bg-white/[0.08] hover:text-white",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "truncate",
-									children: [
-										"“",
-										phrase,
-										"”"
-									]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "ml-2 shrink-0 text-[11px] font-semibold text-sky-300",
-									children: "Try"
-								})]
-							}, phrase))
-						})] })
-					]
-				}),
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col gap-2.5 border-t border-white/[0.08] px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:py-4",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: `grid gap-2.5 sm:flex sm:items-center ${canSave && parsedPreview ? "grid-cols-2" : "grid-cols-1"}`,
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							type: "button",
-							onClick: onClose,
-							className: "min-h-[48px] rounded-xl border border-white/[0.1] bg-white/[0.04] px-4 text-sm font-semibold text-slate-300 transition-colors hover:bg-white/[0.09] whitespace-nowrap",
-							children: "Cancel"
-						}), canSave && parsedPreview && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							type: "button",
-							onClick: () => onEditDetails(parsedPreview),
-							className: "inline-flex min-h-[48px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.14] bg-white/[0.06] px-4 text-sm font-semibold text-slate-100 transition-colors hover:bg-white/[0.12] whitespace-nowrap",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlidersHorizontal, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Edit Details" })]
-						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-						type: "button",
-						disabled: !canSave,
-						onClick: () => {
-							if (!canSave) return;
-							onConfirmSave(transcript.trim());
-							onClose();
-						},
-						className: "liquid-primary-btn inline-flex min-h-[48px] w-full items-center justify-center gap-1.5 rounded-xl px-5 text-sm font-semibold text-white transition-transform active:scale-[0.98] disabled:opacity-45 sm:w-auto sm:flex-1 whitespace-nowrap",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Save Reminder" })]
-					})]
-				})
-			]
-		})
-	});
-	return typeof document !== "undefined" ? (0, import_react_dom.createPortal)(sheetContent, document.body) : sheetContent;
-};
-// src/components/TodayView.tsx
-var TodayView = ({ reminders, prefs, userName, deliveryHealth, calendarEvents, hasWorkspaceAccess, onToggleTimeFormat, onQuickAdd, onEditVoiceDraft, onOpenNewSheet, onToggleDone, onToggleSubtask, onSnooze, onDelete, onEdit, onFocus, onExportIcs, onApplyRoutine, onRequestDailyDigest, onConnectGoogle, onOpenDeliverySetup, onRegisterVoiceClose }) => {
-	const [now, setNow] = (0, import_react.useState)(() => /* @__PURE__ */ new Date());
-	const [filter, setFilter] = (0, import_react.useState)("all");
-	const [selectedTag, setSelectedTag] = (0, import_react.useState)("all");
-	const [quickText, setQuickText] = (0, import_react.useState)("");
-	const [routinesOpen, setRoutinesOpen] = (0, import_react.useState)(false);
-	const voice = useVoiceCapture(prefs.vibrate, now);
-	(0, import_react.useEffect)(() => {
-		if (!onRegisterVoiceClose) return;
-		onRegisterVoiceClose(voice.isOpen ? voice.close : null);
-		return () => onRegisterVoiceClose(null);
-	}, [
-		onRegisterVoiceClose,
-		voice.close,
-		voice.isOpen
-	]);
-	(0, import_react.useEffect)(() => {
-		const id = window.setInterval(() => setNow(/* @__PURE__ */ new Date()), 1e3);
-		return () => window.clearInterval(id);
-	}, []);
-	const todayKey = getTodayDateKey(now);
-	const clock = formatClockParts(now, prefs.timeFormat);
-	const dateLabel = now.toLocaleDateString(void 0, {
-		weekday: "long",
-		month: "short",
-		day: "numeric"
-	});
-	const todayItems = (0, import_react.useMemo)(() => reminders.filter((r) => isReminderScheduledForDate(r, now)), [reminders, now]);
-	const completedToday = (0, import_react.useMemo)(() => todayItems.filter((r) => isReminderDoneToday(r, todayKey)).length, [todayItems, todayKey]);
-	const pendingAlarmsToday = (0, import_react.useMemo)(() => todayItems.filter((r) => r.isAlarm && !isReminderDoneToday(r, todayKey)).length, [todayItems, todayKey]);
-	const nextCalendarEvent = (0, import_react.useMemo)(() => calendarEvents.filter((ev) => ev.dateKey === todayKey), [calendarEvents, todayKey])[0] || calendarEvents[0] || null;
-	const completionPct = todayItems.length === 0 ? 0 : Math.round(completedToday / todayItems.length * 100);
-	const upNext = (0, import_react.useMemo)(() => {
-		return reminders.filter((r) => !isReminderDoneToday(r, todayKey)).sort((a, b) => (a.dueAt || 0) - (b.dueAt || 0))[0] || null;
-	}, [reminders, todayKey]);
-	const availableTags = (0, import_react.useMemo)(() => {
-		const set = new Set(prefs.customTags);
-		reminders.forEach((r) => {
-			if (r.tag) set.add(r.tag);
-		});
-		return Array.from(set);
-	}, [prefs.customTags, reminders]);
-	const filteredReminders = (0, import_react.useMemo)(() => {
-		return reminders.filter((r) => {
-			const done = isReminderDoneToday(r, todayKey);
-			if (filter === "alarms" && !r.isAlarm) return false;
-			if (filter === "todo" && done) return false;
-			if (filter === "done" && !done) return false;
-			if (selectedTag !== "all" && r.tag !== selectedTag) return false;
-			return true;
-		}).sort((a, b) => {
-			const aDone = isReminderDoneToday(a, todayKey) ? 1 : 0;
-			const bDone = isReminderDoneToday(b, todayKey) ? 1 : 0;
-			if (aDone !== bDone) return aDone - bDone;
-			return a.time.localeCompare(b.time);
-		});
-	}, [
-		filter,
-		reminders,
-		selectedTag,
-		todayKey
-	]);
-	const parsedPreview = (0, import_react.useMemo)(() => {
-		if (!quickText.trim()) return null;
-		return parseQuickInput(quickText, now);
-	}, [quickText, now]);
-	const handleQuickSubmit = (e) => {
-		e.preventDefault();
-		if (!quickText.trim()) return;
-		onQuickAdd(quickText.trim());
-		setQuickText("");
-	};
-	const handleVoiceTriggerDown = (e) => {
-		e.preventDefault();
-		try {
-			e.currentTarget.setPointerCapture(e.pointerId);
-		} catch {}
-		voice.startHoldCapture();
-	};
-	const handleVoiceTriggerUp = (e) => {
-		if (e.currentTarget.hasPointerCapture?.(e.pointerId)) try {
-			e.currentTarget.releasePointerCapture(e.pointerId);
-		} catch {}
-		voice.endHoldCapture();
-	};
-	const handleVoiceTriggerKeyDown = (e) => {
-		if ((e.key === " " || e.key === "Enter") && !e.repeat) {
-			e.preventDefault();
-			voice.startHoldCapture();
-		}
-	};
-	const handleVoiceTriggerKeyUp = (e) => {
-		if (e.key === " " || e.key === "Enter") {
-			e.preventDefault();
-			voice.endHoldCapture();
-		}
-	};
-	const ringCircumference = 2 * Math.PI * 38;
-	const ringOffset = ringCircumference * (1 - completionPct / 100);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LiquidGlassCard, {
-				className: "rounded-[28px] p-5 sm:p-6 lg:sticky lg:top-6 lg:col-span-5",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-center justify-between gap-3",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs font-semibold tracking-wide text-slate-300/80 uppercase",
-							children: dateLabel
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
-							className: "font-display mt-1 text-lg font-bold tracking-tight text-white",
-							children: [getGreeting(now), userName ? `, ${userName}` : ""]
-						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							type: "button",
-							onClick: onToggleTimeFormat,
-							className: "ios-spring-press min-h-[44px] rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition-colors hover:bg-white/[0.16] whitespace-nowrap shrink-0",
-							title: "Switch 12-hour or 24-hour clock",
-							children: prefs.timeFormat === "12h" ? "12H" : "24H"
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "mt-5 flex items-baseline gap-2",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "bg-gradient-to-b from-white via-white to-sky-200/75 bg-clip-text font-mono text-5xl font-bold tracking-tight text-transparent tabular-nums drop-shadow-[0_6px_24px_rgba(10,132,255,0.28)] sm:text-6xl",
-								children: clock.hm
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-								className: "font-mono text-lg font-medium text-slate-400 tabular-nums",
-								children: [":", clock.sec]
-							}),
-							clock.period && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "ml-1 font-mono text-base font-semibold text-sky-300",
-								children: clock.period
-							})
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "mt-6 flex items-center gap-5 border-t border-white/[0.14] pt-5",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "relative h-24 w-24 shrink-0",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
-								viewBox: "0 0 96 96",
-								className: "h-full w-full -rotate-90 drop-shadow-[0_8px_18px_rgba(48,209,88,0.4)]",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
-										id: "liquidRingGrad",
-										x1: "0",
-										y1: "0",
-										x2: "1",
-										y2: "1",
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-												offset: "0%",
-												stopColor: "#6EE7B7"
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-												offset: "55%",
-												stopColor: "#30D158"
-											}),
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
-												offset: "100%",
-												stopColor: "#38BDF8"
-											})
-										]
-									}) }),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-										cx: "48",
-										cy: "48",
-										r: "38",
-										fill: "none",
-										stroke: "rgba(255,255,255,0.12)",
-										strokeWidth: "8"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
-										cx: "48",
-										cy: "48",
-										r: "38",
-										fill: "none",
-										stroke: "url(#liquidRingGrad)",
-										strokeWidth: "8",
-										strokeLinecap: "round",
-										strokeDasharray: ringCircumference,
-										strokeDashoffset: ringOffset,
-										className: "transition-[stroke-dashoffset] duration-500 ease-out"
-									})
-								]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "absolute inset-0 flex flex-col items-center justify-center",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "font-mono text-xl font-bold text-white tabular-nums",
-									children: [completionPct, "%"]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "font-mono text-[11px] text-slate-300/80 tabular-nums",
-									children: [
-										completedToday,
-										"/",
-										todayItems.length
-									]
-								})]
-							})]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "min-w-0 flex-1",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "text-xs font-semibold tracking-wide text-slate-300/75 uppercase",
-								children: "Up next"
-							}), upNext ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-1 truncate text-base font-bold text-white",
-								children: upNext.title
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "mt-1 flex items-center gap-2 text-xs text-slate-300",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-mono font-semibold text-white tabular-nums",
-										children: formatTimeDisplay(upNext.time, prefs.timeFormat)
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										"aria-hidden": "true",
-										className: "text-slate-500",
-										children: "·"
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "font-mono font-semibold text-sky-300 tabular-nums",
-										children: formatCountdown(upNext.dueAt, now.getTime())
-									})
-								]
-							})] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-1 text-sm font-semibold text-emerald-300",
-								children: "All clear for today"
-							})]
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "mt-5 flex items-center justify-between gap-3 border-t border-white/[0.14] pt-4",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "min-w-0 text-xs text-slate-300/85",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "font-semibold text-white",
-								children: deliveryHealth.notificationPermission === "granted" ? "OS Lock-Screen Delivery Active" : "Enable Lock-Screen Alarms"
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-0.5 truncate text-slate-400",
-								children: deliveryHealth.notificationPermission === "granted" ? `${deliveryHealth.osScheduledCount} scheduled via OS / push` : "Allow OS AlarmManager & Push for closed-app alerts"
-							})]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-							type: "button",
-							onClick: onOpenDeliverySetup,
-							className: "ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] transition-colors hover:bg-white/[0.16] whitespace-nowrap",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: deliveryHealth.notificationPermission === "granted" ? "Inspect" : "Enable" })]
-						})]
-					})
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
-				className: "flex flex-col gap-4 lg:col-span-7",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
-						onSubmit: handleQuickSubmit,
-						className: "glass-surface rounded-2xl p-2.5",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex items-center gap-2",
-							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
-									type: "text",
-									value: quickText,
-									onChange: (e) => setQuickText(e.target.value),
-									placeholder: "Try \"Take vitamins daily at 8:30am\" or hold mic to speak",
-									maxLength: 100,
-									className: "min-h-[48px] min-w-0 flex-1 bg-transparent px-3 text-sm text-white placeholder:text-slate-400 focus:outline-none"
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									type: "button",
-									onPointerDown: handleVoiceTriggerDown,
-									onPointerUp: handleVoiceTriggerUp,
-									onPointerCancel: handleVoiceTriggerUp,
-									onKeyDown: handleVoiceTriggerKeyDown,
-									onKeyUp: handleVoiceTriggerKeyUp,
-									"aria-pressed": voice.phase === "listening" || voice.isHolding,
-									"aria-label": "Hold to speak reminder",
-									title: "Press and hold to speak a reminder",
-									className: `ios-spring-press inline-flex min-h-[48px] min-w-[48px] shrink-0 select-none touch-none items-center justify-center gap-2 rounded-xl border px-3.5 text-xs font-semibold transition-all duration-150 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-[#0A84FF] ${voice.phase === "listening" ? "scale-[0.98] border-[#FF453A]/70 bg-[#FF453A] text-white shadow-[0_8px_24px_rgba(255,69,58,0.45)]" : "border-sky-400/35 bg-sky-500/20 text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] hover:bg-sky-500/30"}`,
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mic, { className: "h-4 w-4 shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "hidden sm:inline",
-										children: voice.phase === "listening" ? "Release" : "Hold to Speak"
-									})]
-								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									type: "submit",
-									disabled: !quickText.trim(),
-									className: "liquid-primary-btn ios-spring-press flex min-h-[48px] shrink-0 items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-45 whitespace-nowrap",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Add" })]
-								})
-							]
-						}), parsedPreview && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06] px-3 pt-2 text-xs text-slate-400",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "truncate font-medium text-slate-200",
-								children: parsedPreview.title
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "font-mono text-[#60A5FA] tabular-nums",
-								children: parsedPreview.summary
-							})]
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "glass-surface rounded-2xl p-4",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "min-w-0 flex-1",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex flex-wrap items-center gap-x-2 gap-y-0.5",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "h-4 w-4 shrink-0 text-sky-300" }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-											className: "font-display text-sm font-bold text-white",
-											children: "Daily Briefing"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											"aria-hidden": "true",
-											className: "text-slate-500",
-											children: "·"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-											className: "font-mono text-xs text-slate-300 tabular-nums",
-											children: [
-												pendingAlarmsToday,
-												" alarm",
-												pendingAlarmsToday === 1 ? "" : "s",
-												" left"
-											]
-										})
-									]
-								}), nextCalendarEvent ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-									className: "mt-1 flex items-center gap-1.5 truncate text-xs text-slate-300",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3.5 w-3.5 shrink-0 text-emerald-300" }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "font-mono font-semibold text-white tabular-nums",
-											children: nextCalendarEvent.allDay ? "All day" : formatTimeDisplay(nextCalendarEvent.timeHm, prefs.timeFormat)
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											"aria-hidden": "true",
-											className: "text-slate-500",
-											children: "·"
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "truncate",
-											children: nextCalendarEvent.summary
-										})
-									]
-								}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "mt-1 text-xs leading-relaxed text-slate-400",
-									children: hasWorkspaceAccess ? "No upcoming Google Calendar events found for today." : "Connect Google Calendar & Gmail to see events and send daily agenda digests."
-								})]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:items-center",
-								children: [hasWorkspaceAccess ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									type: "button",
-									onClick: onRequestDailyDigest,
-									className: "ios-spring-press inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.12] bg-white/[0.06] px-3 text-xs font-semibold text-slate-100 hover:bg-white/[0.12] whitespace-nowrap",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-3.5 w-3.5 text-amber-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Email Digest" })]
-								}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									type: "button",
-									onClick: onConnectGoogle,
-									className: "ios-spring-press inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-xl border border-sky-400/30 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3.5 w-3.5 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Connect Google" })]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									type: "button",
-									onClick: () => setRoutinesOpen((v) => !v),
-									"aria-expanded": routinesOpen,
-									className: "ios-spring-press inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.12] bg-white/[0.06] px-3 text-xs font-semibold text-slate-100 hover:bg-white/[0.12] whitespace-nowrap",
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layers, { className: "h-3.5 w-3.5 text-sky-300" }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Routines" }),
-										routinesOpen ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronUp, { className: "h-3.5 w-3.5 text-slate-400" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "h-3.5 w-3.5 text-slate-400" })
-									]
-								})]
-							})]
-						}), routinesOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "mt-3.5 grid grid-cols-1 gap-2.5 border-t border-white/[0.08] pt-3.5 sm:grid-cols-3",
-							children: SMART_ROUTINES.map((pack) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#0B1022]/70 p-3",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex items-center gap-2",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-base",
-										"aria-hidden": "true",
-										children: pack.emoji
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-										className: "text-xs font-bold text-white",
-										children: pack.name
-									})]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-									className: "mt-1 text-[11px] leading-relaxed text-slate-400",
-									children: pack.subtitle
-								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-									type: "button",
-									onClick: () => onApplyRoutine(pack),
-									className: "ios-spring-press mt-3 inline-flex min-h-[38px] w-full items-center justify-center gap-1 rounded-xl border border-sky-400/25 bg-sky-500/15 px-3 text-xs font-semibold text-sky-200 hover:bg-sky-500/25",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
-										"Add ",
-										pack.items.length,
-										" ",
-										pack.items.length === 1 ? "step" : "steps"
-									] })]
-								})]
-							}, pack.id))
-						})]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col gap-3",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "flex flex-wrap items-center justify-between gap-3",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpringSegmentedControl, {
-								ariaLabel: "Filter reminders",
-								value: filter,
-								onChange: setFilter,
-								options: [
-									{
-										id: "all",
-										label: "All"
-									},
-									{
-										id: "alarms",
-										label: "Alarms"
-									},
-									{
-										id: "todo",
-										label: "To Do"
-									},
-									{
-										id: "done",
-										label: "Done"
-									}
-								]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-								type: "button",
-								onClick: onOpenNewSheet,
-								className: "ios-spring-press hidden min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.09] sm:inline-flex whitespace-nowrap shrink-0",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-4 w-4 text-[#60A5FA]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Detailed Alarm" })]
-							})]
-						}), availableTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "no-scrollbar flex items-center gap-2 overflow-x-auto pb-1",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: () => setSelectedTag("all"),
-								className: `ios-spring-press min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${selectedTag === "all" ? "bg-white/[0.14] text-white" : "bg-white/[0.04] text-slate-400 hover:text-slate-200"}`,
-								children: "All Tags"
-							}), availableTags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: () => setSelectedTag(selectedTag === tag ? "all" : tag),
-								className: `ios-spring-press min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${selectedTag === tag ? "bg-[#0A84FF]/25 text-[#93C5FD]" : "bg-white/[0.04] text-slate-400 hover:text-slate-200"}`,
-								children: tag
-							}, tag))]
-						})]
-					}),
-					filteredReminders.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "glass-surface flex flex-col items-center justify-center rounded-3xl px-6 py-12 text-center",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-9 w-9 text-slate-600" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-								className: "mt-3 text-base font-semibold text-slate-200",
-								children: "No reminders here yet"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-1 max-w-xs text-sm text-slate-400",
-								children: "Use the quick bar above or tap New Alarm to schedule an exact OS reminder."
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: onOpenNewSheet,
-								className: "liquid-primary-btn ios-spring-press mt-5 min-h-[44px] rounded-xl px-5 text-sm font-semibold text-white",
-								children: "Create Alarm"
-							})
-						]
-					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col gap-2.5",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "px-1 text-xs text-slate-500",
-							children: "Swipe right to complete · Swipe left for snooze or delete"
-						}), filteredReminders.map((r) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SwipeableReminderRow, {
-							reminder: r,
-							timeFormat: prefs.timeFormat,
-							onToggleDone,
-							onToggleSubtask,
-							onSnooze,
-							onDelete,
-							onEdit,
-							onFocus,
-							onExportIcs
-						}, r.id))]
-					})
-				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(VoiceCaptureSheet, {
-				open: voice.isOpen,
-				phase: voice.phase,
-				isHolding: voice.isHolding,
-				isSupported: voice.isSupported,
-				transcript: voice.transcript,
-				parsedPreview: voice.parsedPreview,
-				errorMessage: voice.errorMessage,
-				timeFormat: prefs.timeFormat,
-				onHoldStart: voice.startHoldCapture,
-				onHoldEnd: voice.endHoldCapture,
-				onTranscriptChange: voice.updateTranscript,
-				onConfirmSave: (spokenText) => onQuickAdd(spokenText),
-				onEditDetails: (parsed) => {
-					voice.close();
-					onEditVoiceDraft(parsed);
-				},
-				onClose: voice.close
-			})
-		]
-	});
-};
-// src/lib/api.ts
-var CLOUDFLARE_EDGE_URL = "https://api.makeuperfect.in";
-var memoryToken = null;
-var configuredBaseUrl = "";
+// src/lib/bulkSelection.ts
 /**
-* Safely normalize a user-provided backend URL.
-* Allows empty string (same origin) or valid http(s):// origins only.
+* Keep only selected IDs that exist in the currently visible list so users never
+* act on hidden reminders after changing status or tag filters.
 */
-function normalizeServerBaseUrl(raw) {
-	const trimmed = (raw || "").trim().replace(/\/+$/, "");
-	if (!trimmed) return "";
-	try {
-		const parsed = new URL(trimmed);
-		if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return "";
-		return `${parsed.origin}${parsed.pathname}`.replace(/\/+$/, "");
-	} catch {
-		return "";
-	}
+function pruneSelectedIds(selected, visibleIds) {
+	if (selected.size === 0) return /* @__PURE__ */ new Set();
+	const visibleSet = new Set(visibleIds);
+	const next = /* @__PURE__ */ new Set();
+	for (const id of selected) if (visibleSet.has(id)) next.add(id);
+	return next;
 }
-function setApiBaseUrl(url) {
-	configuredBaseUrl = normalizeServerBaseUrl(url);
+function toggleSelectedId(selected, id) {
+	const next = new Set(selected);
+	if (next.has(id)) next.delete(id);
+	else next.add(id);
+	return next;
 }
-function getApiBaseUrl() {
-	if (configuredBaseUrl) return configuredBaseUrl;
-	return normalizeServerBaseUrl("reminder.makeuperfect.in");
+function toggleSelectAllVisible(selected, visibleIds) {
+	if (visibleIds.length === 0) return /* @__PURE__ */ new Set();
+	return visibleIds.every((id) => selected.has(id)) ? /* @__PURE__ */ new Set() : new Set(visibleIds);
 }
-async function hydrateAuthToken() {
-	if (memoryToken) return memoryToken;
-	if (isNativeApp()) memoryToken = await nativeTokenGet();
-	return memoryToken;
-}
-async function setAuthToken(token) {
-	memoryToken = token;
-	if (isNativeApp()) await nativeTokenSet(token);
-}
-async function apiRequest(path, options = {}) {
-	const base = options.baseOverride !== void 0 ? normalizeServerBaseUrl(options.baseOverride) : getApiBaseUrl();
-	const headers = { "X-Requested-With": "reminderme-app" };
-	if (options.body !== void 0) headers["Content-Type"] = "application/json";
-	const token = await hydrateAuthToken();
-	if (token) headers["Authorization"] = `Bearer ${token}`;
-	const controller = new AbortController();
-	const timer = globalThis.setTimeout(() => controller.abort(), options.timeoutMs ?? 6e3);
-	try {
-		const res = await fetch(`${base}${path}`, {
-			method: options.method || "GET",
-			credentials: "include",
-			headers,
-			signal: controller.signal,
-			body: options.body !== void 0 ? JSON.stringify(options.body) : void 0
-		});
-		const data = await res.json().catch(() => ({}));
-		if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
-		return data;
-	} catch (err) {
-		if (err?.name === "AbortError") throw new Error("Server timed out — working offline");
-		throw err;
-	} finally {
-		globalThis.clearTimeout(timer);
-	}
-}
-var api = {
-	ping: async (baseOverride) => {
-		const target = baseOverride !== void 0 ? normalizeServerBaseUrl(baseOverride) : getApiBaseUrl();
-		const start = performance.now();
-		const res = await apiRequest("/api/health", {
-			timeoutMs: 4500,
-			baseOverride: target
-		});
-		const latencyMs = Math.max(1, Math.round(performance.now() - start));
-		return {
-			ok: !!res.ok,
-			latencyMs,
-			engine: res.engine === "cloudflare-worker-d1" ? "Cloudflare Edge + D1" : res.engine === "node-server" ? "Node.js Server" : res.service || "Cloud Backend",
-			target: target || "Same Origin"
-		};
-	},
-	me: () => apiRequest("/api/me"),
-	login: (payload) => apiRequest("/api/login", {
-		method: "POST",
-		body: payload
-	}),
-	signup: (payload) => apiRequest("/api/signup", {
-		method: "POST",
-		body: payload
-	}),
-	logout: () => apiRequest("/api/logout", { method: "POST" }),
-	saveReminders: (reminders) => apiRequest("/api/reminders", {
-		method: "PUT",
-		body: { reminders }
-	}),
-	markDone: (id, source = "app") => apiRequest(`/api/reminders/${encodeURIComponent(id)}/done`, {
-		method: "POST",
-		body: { source }
-	}),
-	snooze: (id, minutes, source = "app") => apiRequest(`/api/reminders/${encodeURIComponent(id)}/snooze`, {
-		method: "POST",
-		body: {
-			minutes,
-			source
+/**
+* Mark all pending reminders in `ids` as completed for `todayKey`.
+* Already-completed reminders are preserved untouched. One-day reminders respect
+* `autoDeleteCompleted` identically to single-item completion.
+*/
+function applyBulkComplete(reminders, ids, todayKey, autoDeleteCompleted, now = /* @__PURE__ */ new Date()) {
+	const targetIds = new Set(ids);
+	if (targetIds.size === 0) return {
+		next: [...reminders],
+		completedCount: 0,
+		clearedCount: 0,
+		completedIds: []
+	};
+	const nextDueRef = new Date(now.getTime() + 432e5);
+	const completedIds = [];
+	let clearedCount = 0;
+	const next = [];
+	for (const r of reminders) {
+		if (!targetIds.has(r.id) || isReminderDoneToday(r, todayKey)) {
+			next.push(r);
+			continue;
 		}
-	}),
-	sendEvents: (events) => apiRequest("/api/events", {
-		method: "POST",
-		body: { events }
-	}),
-	analytics: () => apiRequest("/api/analytics"),
-	adminAnalytics: () => apiRequest("/api/admin/analytics"),
-	pushKey: () => apiRequest("/api/push/key"),
-	pushSubscribe: (subscription, tz) => apiRequest("/api/push/subscribe", {
-		method: "POST",
-		body: {
-			subscription,
-			tz
+		completedIds.push(r.id);
+		const isOneDay = !!r.oneTimeDate || Array.isArray(r.days) && r.days.length === 1;
+		if (autoDeleteCompleted && isOneDay) {
+			clearedCount += 1;
+			continue;
 		}
-	}),
-	pushFcm: (token, platform, tz) => apiRequest("/api/push/fcm", {
-		method: "POST",
-		body: {
-			token,
-			platform,
-			tz
-		}
-	}),
-	pushTest: (delaySec = 0) => apiRequest("/api/push/test", {
-		method: "POST",
-		body: { delaySec }
-	})
-};
-// src/lib/audio.ts
-var ALARM_SOUNDS = [
-	{
-		id: "radar",
-		label: "Radar Sonar",
-		subtitle: "Crisp ascending alarm pulse"
-	},
-	{
-		id: "marimba",
-		label: "Marimba Chimes",
-		subtitle: "Warm melodic wake pattern"
-	},
-	{
-		id: "apex",
-		label: "Apex Alert",
-		subtitle: "High-clarity dual-tone beacon"
-	},
-	{
-		id: "digital-alarm",
-		label: "Classic Digital",
-		subtitle: "Traditional quadruple beep"
-	},
-	{
-		id: "morning",
-		label: "Morning Breeze",
-		subtitle: "Gentle rising major chord"
-	},
-	{
-		id: "synth",
-		label: "Arcade Pulse",
-		subtitle: "Bright rhythmic arpeggio"
-	},
-	{
-		id: "gong",
-		label: "Zen Gong",
-		subtitle: "Deep resonant harmonic bell"
-	}
-];
-var NOTIF_SOUNDS = [
-	{
-		id: "glass",
-		label: "Glass Chime"
-	},
-	{
-		id: "digital",
-		label: "Digital Ping"
-	},
-	{
-		id: "bell",
-		label: "Soft Vibraphone"
-	},
-	{
-		id: "zen",
-		label: "Singing Bowl"
-	},
-	{
-		id: "droplet",
-		label: "Water Droplet"
-	}
-];
-var sharedCtx = null;
-var alarmLoopTimer = null;
-var alarmStopTimeout = null;
-var customAudioEl = null;
-function getAudioContext() {
-	if (typeof window === "undefined") return null;
-	const Ctx = window.AudioContext || window.webkitAudioContext;
-	if (!Ctx) return null;
-	if (!sharedCtx) sharedCtx = new Ctx();
-	if (sharedCtx.state === "suspended") sharedCtx.resume().catch(() => {});
-	return sharedCtx;
-}
-function playTone(ctx, freq, startOffset, duration, type = "sine", gainPeak = .22) {
-	const now = ctx.currentTime + startOffset;
-	const osc = ctx.createOscillator();
-	const gain = ctx.createGain();
-	osc.type = type;
-	osc.frequency.setValueAtTime(freq, now);
-	gain.gain.setValueAtTime(1e-4, now);
-	gain.gain.exponentialRampToValueAtTime(gainPeak, now + .015);
-	gain.gain.exponentialRampToValueAtTime(1e-4, now + duration);
-	osc.connect(gain);
-	gain.connect(ctx.destination);
-	osc.start(now);
-	osc.stop(now + duration + .02);
-}
-function playNotificationChime(sound = "glass") {
-	const ctx = getAudioContext();
-	if (!ctx) return;
-	switch (sound) {
-		case "digital":
-			playTone(ctx, 880, 0, .1, "triangle", .2);
-			playTone(ctx, 1174, .11, .14, "triangle", .22);
-			break;
-		case "bell":
-			playTone(ctx, 523.25, 0, .45, "sine", .22);
-			playTone(ctx, 1046.5, .02, .35, "sine", .1);
-			break;
-		case "zen":
-			playTone(ctx, 432, 0, .9, "sine", .22);
-			playTone(ctx, 648, .04, .7, "sine", .08);
-			break;
-		case "droplet":
-			playTone(ctx, 600, 0, .08, "sine", .18);
-			playTone(ctx, 980, .07, .12, "sine", .22);
-			break;
-		default:
-			playTone(ctx, 1046.5, 0, .25, "sine", .18);
-			playTone(ctx, 1568, .12, .35, "sine", .16);
-	}
-}
-function playAlarmCycle(sound = "radar") {
-	const ctx = getAudioContext();
-	if (!ctx) return;
-	switch (sound) {
-		case "marimba":
-			[
-				523.25,
-				659.25,
-				783.99,
-				1046.5
-			].forEach((f, i) => playTone(ctx, f, i * .14, .22, "triangle", .26));
-			break;
-		case "apex":
-			[
-				987.77,
-				1318.5,
-				987.77,
-				1318.5
-			].forEach((f, i) => playTone(ctx, f, i * .16, .14, "sawtooth", .16));
-			break;
-		case "digital-alarm":
-			[
-				0,
-				.14,
-				.28,
-				.42
-			].forEach((t) => playTone(ctx, 1760, t, .09, "square", .14));
-			break;
-		case "morning":
-			[
-				440,
-				554.37,
-				659.25,
-				880
-			].forEach((f, i) => playTone(ctx, f, i * .18, .42, "sine", .22));
-			break;
-		case "synth":
-			[
-				440,
-				587.33,
-				659.25,
-				880,
-				659.25
-			].forEach((f, i) => playTone(ctx, f, i * .11, .14, "square", .12));
-			break;
-		case "gong":
-			playTone(ctx, 196, 0, 1.3, "sine", .28);
-			playTone(ctx, 294, .03, 1, "triangle", .14);
-			break;
-		default: [
-			0,
-			.22,
-			.44
-		].forEach((t) => {
-			playTone(ctx, 880, t, .14, "sine", .26);
-			playTone(ctx, 1320, t + .05, .12, "triangle", .18);
+		const nextDue = computeNextDueAt(r.time, r.days, nextDueRef);
+		next.push({
+			...r,
+			doneDate: todayKey,
+			snoozedUntil: null,
+			dueAt: nextDue,
+			sent: false
 		});
 	}
+	return {
+		next,
+		completedCount: completedIds.length,
+		clearedCount,
+		completedIds
+	};
 }
-var IDB_NAME = "reminderme-audio-v1";
-var IDB_STORE = "ringtones";
-function openAudioDb() {
-	return new Promise((resolve, reject) => {
-		const req = indexedDB.open(IDB_NAME, 1);
-		req.onupgradeneeded = () => {
-			if (!req.result.objectStoreNames.contains(IDB_STORE)) req.result.createObjectStore(IDB_STORE);
-		};
-		req.onsuccess = () => resolve(req.result);
-		req.onerror = () => reject(req.error);
-	});
-}
-async function saveCustomRingtone(file) {
-	const db = await openAudioDb();
-	const buf = await file.arrayBuffer();
-	return new Promise((resolve, reject) => {
-		const tx = db.transaction(IDB_STORE, "readwrite");
-		tx.objectStore(IDB_STORE).put({
-			name: file.name,
-			type: file.type,
-			data: buf
-		}, "primary");
-		tx.oncomplete = () => resolve(file.name);
-		tx.onerror = () => reject(tx.error);
-	});
-}
-async function loadCustomRingtoneUrl() {
-	try {
-		const db = await openAudioDb();
-		return await new Promise((resolve) => {
-			const req = db.transaction(IDB_STORE, "readonly").objectStore(IDB_STORE).get("primary");
-			req.onsuccess = () => {
-				const val = req.result;
-				if (!val?.data) return resolve(null);
-				const blob = new Blob([val.data], { type: val.type || "audio/mpeg" });
-				resolve({
-					name: val.name,
-					url: URL.createObjectURL(blob)
-				});
-			};
-			req.onerror = () => resolve(null);
-		});
-	} catch {
-		return null;
-	}
-}
-async function deleteCustomRingtone() {
-	try {
-		const db = await openAudioDb();
-		await new Promise((resolve) => {
-			const tx = db.transaction(IDB_STORE, "readwrite");
-			tx.objectStore(IDB_STORE).delete("primary");
-			tx.oncomplete = () => resolve();
-			tx.onerror = () => resolve();
-		});
-	} catch {}
-}
-function stopAlarmSound() {
-	if (alarmLoopTimer !== null) {
-		window.clearInterval(alarmLoopTimer);
-		alarmLoopTimer = null;
-	}
-	if (alarmStopTimeout !== null) {
-		window.clearTimeout(alarmStopTimeout);
-		alarmStopTimeout = null;
-	}
-	if (customAudioEl) {
-		customAudioEl.pause();
-		customAudioEl.currentTime = 0;
-		customAudioEl = null;
-	}
-	if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate(0);
-}
-async function startAlarmSound(sound = "radar", durationSec = 30, vibrate = true) {
-	stopAlarmSound();
-	if (sound === "custom") {
-		const loaded = await loadCustomRingtoneUrl();
-		if (loaded) {
-			const el = new Audio(loaded.url);
-			el.loop = true;
-			customAudioEl = el;
-			el.play().catch(() => playAlarmCycle("radar"));
-		} else {
-			playAlarmCycle("radar");
-			alarmLoopTimer = window.setInterval(() => playAlarmCycle("radar"), 1500);
-		}
-	} else {
-		playAlarmCycle(sound);
-		alarmLoopTimer = window.setInterval(() => {
-			playAlarmCycle(sound);
-			if (vibrate && typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate([
-				320,
-				160,
-				320
-			]);
-		}, 1500);
-	}
-	if (vibrate && typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate([
-		380,
-		160,
-		380,
-		160,
-		500
-	]);
-	if (durationSec > 0) alarmStopTimeout = window.setTimeout(() => stopAlarmSound(), durationSec * 1e3);
+function applyBulkDelete(reminders, ids) {
+	const targetIds = new Set(ids);
+	if (targetIds.size === 0) return {
+		next: [...reminders],
+		deletedCount: 0,
+		deletedIds: []
+	};
+	const deletedIds = [];
+	const next = [];
+	for (const r of reminders) if (targetIds.has(r.id)) deletedIds.push(r.id);
+	else next.push(r);
+	return {
+		next,
+		deletedCount: deletedIds.length,
+		deletedIds
+	};
 }
 // node_modules/@firebase/util/dist/postinstall.mjs
 /**
@@ -21148,6 +19844,12 @@ async function linkEmailPassword(auth, request) {
 async function signInWithPassword(auth, request) {
 	return _performSignInRequest(auth, "POST", "/v1/accounts:signInWithPassword", _addTidIfNecessary(auth, request));
 }
+async function sendOobCode(auth, request) {
+	return _performApiRequest(auth, "POST", "/v1/accounts:sendOobCode", _addTidIfNecessary(auth, request));
+}
+async function sendPasswordResetEmail$1(auth, request) {
+	return sendOobCode(auth, request);
+}
 /**
 * @license
 * Copyright 2020 Google LLC
@@ -22295,6 +20997,9 @@ TwitterAuthProvider.PROVIDER_ID = "twitter.com";
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+async function signUp(auth, request) {
+	return _performSignInRequest(auth, "POST", "/v1/accounts:signUp", _addTidIfNecessary(auth, request));
+}
 /**
 * @license
 * Copyright 2020 Google LLC
@@ -22493,21 +21198,22 @@ async function _signInWithCredential(auth, credential, bypassAuthState = false) 
 	return userCredential;
 }
 /**
-* @license
-* Copyright 2020 Google LLC
+* Asynchronously signs in with the given credentials.
 *
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
+* @remarks
+* An {@link AuthProvider} can be used to generate the credential.
 *
-*   http://www.apache.org/licenses/LICENSE-2.0
+* This method is not supported by {@link Auth} instances created with a
+* {@link @firebase/app#FirebaseServerApp}.
 *
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
+* @param auth - The {@link Auth} instance.
+* @param credential - The auth credential.
+*
+* @public
 */
+async function signInWithCredential(auth, credential) {
+	return _signInWithCredential(_castAuth(auth), credential);
+}
 /**
 * @license
 * Copyright 2020 Google LLC
@@ -22572,6 +21278,169 @@ async function _signInWithCredential(auth, credential, bypassAuthState = false) 
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+function _setActionCodeSettingsOnRequest(auth, request, actionCodeSettings) {
+	_assert(actionCodeSettings.url?.length > 0, auth, "invalid-continue-uri");
+	_assert(typeof actionCodeSettings.dynamicLinkDomain === "undefined" || actionCodeSettings.dynamicLinkDomain.length > 0, auth, "invalid-dynamic-link-domain");
+	_assert(typeof actionCodeSettings.linkDomain === "undefined" || actionCodeSettings.linkDomain.length > 0, auth, "invalid-hosting-link-domain");
+	request.continueUrl = actionCodeSettings.url;
+	request.dynamicLinkDomain = actionCodeSettings.dynamicLinkDomain;
+	request.linkDomain = actionCodeSettings.linkDomain;
+	request.canHandleCodeInApp = actionCodeSettings.handleCodeInApp;
+	if (actionCodeSettings.iOS) {
+		_assert(actionCodeSettings.iOS.bundleId.length > 0, auth, "missing-ios-bundle-id");
+		request.iOSBundleId = actionCodeSettings.iOS.bundleId;
+	}
+	if (actionCodeSettings.android) {
+		_assert(actionCodeSettings.android.packageName.length > 0, auth, "missing-android-pkg-name");
+		request.androidInstallApp = actionCodeSettings.android.installApp;
+		request.androidMinimumVersionCode = actionCodeSettings.android.minimumVersion;
+		request.androidPackageName = actionCodeSettings.android.packageName;
+	}
+}
+/**
+* @license
+* Copyright 2020 Google LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+* Updates the password policy cached in the {@link Auth} instance if a policy is already
+* cached for the project or tenant.
+*
+* @remarks
+* We only fetch the password policy if the password did not meet policy requirements and
+* there is an existing policy cached. A developer must call validatePassword at least
+* once for the cache to be automatically updated.
+*
+* @param auth - The {@link Auth} instance.
+*
+* @private
+*/
+async function recachePasswordPolicy(auth) {
+	const authInternal = _castAuth(auth);
+	if (authInternal._getPasswordPolicyInternal()) await authInternal._updatePasswordPolicy();
+}
+/**
+* Sends a password reset email to the given email address. This method does not throw an error when
+* there's no user account with the given email address and
+* {@link https://cloud.google.com/identity-platform/docs/admin/email-enumeration-protection | Email Enumeration Protection}
+* is enabled.
+*
+* @remarks
+* To complete the password reset, call {@link confirmPasswordReset} with the code supplied in
+* the email sent to the user, along with the new password specified by the user.
+*
+* @example
+* ```javascript
+* const actionCodeSettings = {
+*   url: 'https://www.example.com/?email=user@example.com',
+*   iOS: {
+*      bundleId: 'com.example.ios'
+*   },
+*   android: {
+*     packageName: 'com.example.android',
+*     installApp: true,
+*     minimumVersion: '12'
+*   },
+*   handleCodeInApp: true
+* };
+* await sendPasswordResetEmail(auth, 'user@example.com', actionCodeSettings);
+* // Obtain code from user.
+* await confirmPasswordReset('user@example.com', code);
+* ```
+*
+* @param auth - The {@link Auth} instance.
+* @param email - The user's email address.
+* @param actionCodeSettings - The {@link ActionCodeSettings}.
+*
+* @public
+*/
+async function sendPasswordResetEmail(auth, email, actionCodeSettings) {
+	const authInternal = _castAuth(auth);
+	const request = {
+		requestType: "PASSWORD_RESET",
+		email,
+		clientType: "CLIENT_TYPE_WEB"
+	};
+	if (actionCodeSettings) _setActionCodeSettingsOnRequest(authInternal, request, actionCodeSettings);
+	await handleRecaptchaFlow(authInternal, request, "getOobCode", sendPasswordResetEmail$1, "EMAIL_PASSWORD_PROVIDER");
+}
+/**
+* Creates a new user account associated with the specified email address and password.
+*
+* @remarks
+* On successful creation of the user account, this user will also be signed in to your application.
+*
+* User account creation can fail if the account already exists or the password is invalid.
+*
+* This method is not supported on {@link Auth} instances created with a
+* {@link @firebase/app#FirebaseServerApp}.
+*
+* Note: The email address acts as a unique identifier for the user and enables an email-based
+* password reset. This function will create a new user account and set the initial user password.
+*
+* @param auth - The {@link Auth} instance.
+* @param email - The user's email address.
+* @param password - The user's chosen password.
+*
+* @public
+*/
+async function createUserWithEmailAndPassword(auth, email, password) {
+	if (_isFirebaseServerApp(auth.app)) return Promise.reject(_serverAppCurrentUserOperationNotSupportedError(auth));
+	const authInternal = _castAuth(auth);
+	const response = await handleRecaptchaFlow(authInternal, {
+		returnSecureToken: true,
+		email,
+		password,
+		clientType: "CLIENT_TYPE_WEB"
+	}, "signUpPassword", signUp, "EMAIL_PASSWORD_PROVIDER").catch((error) => {
+		if (error.code === `auth/password-does-not-meet-requirements`) recachePasswordPolicy(auth);
+		throw error;
+	});
+	const userCredential = await UserCredentialImpl._fromIdTokenResponse(authInternal, "signIn", response);
+	await authInternal._updateCurrentUser(userCredential.user);
+	return userCredential;
+}
+/**
+* Asynchronously signs in using an email and password.
+*
+* @remarks
+* Fails with an error if the email address and password do not match. When
+* {@link https://cloud.google.com/identity-platform/docs/admin/email-enumeration-protection | Email Enumeration Protection}
+* is enabled, this method fails with "auth/invalid-credential" in case of an invalid
+* email/password.
+*
+* This method is not supported on {@link Auth} instances created with a
+* {@link @firebase/app#FirebaseServerApp}.
+*
+* Note: The user's password is NOT the password used to access the user's email account. The
+* email address serves as a unique identifier for the user, and the password is used to access
+* the user's account in your Firebase project. See also: {@link createUserWithEmailAndPassword}.
+*
+*
+* @param auth - The {@link Auth} instance.
+* @param email - The users email address.
+* @param password - The users password.
+*
+* @public
+*/
+function signInWithEmailAndPassword(auth, email, password) {
+	if (_isFirebaseServerApp(auth.app)) return Promise.reject(_serverAppCurrentUserOperationNotSupportedError(auth));
+	return signInWithCredential(getModularInstance(auth), EmailAuthProvider.credential(email, password)).catch(async (error) => {
+		if (error.code === `auth/password-does-not-meet-requirements`) recachePasswordPolicy(auth);
+		throw error;
+	});
+}
 /**
 * @license
 * Copyright 2020 Google LLC
@@ -22636,6 +21505,9 @@ async function _signInWithCredential(auth, credential, bypassAuthState = false) 
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+async function updateProfile$1(auth, request) {
+	return _performApiRequest(auth, "POST", "/v1/accounts:update", request);
+}
 /**
 * @license
 * Copyright 2020 Google LLC
@@ -22652,6 +21524,34 @@ async function _signInWithCredential(auth, credential, bypassAuthState = false) 
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+/**
+* Updates a user's profile data.
+*
+* @param user - The user.
+* @param profile - The profile's `displayName` and `photoURL` to update.
+*
+* @public
+*/
+async function updateProfile(user, profile) {
+	const { displayName, photoURL: photoUrl } = profile;
+	if (displayName === void 0 && photoUrl === void 0) return;
+	const userInternal = getModularInstance(user);
+	const profileRequest = {
+		idToken: await userInternal.getIdToken(),
+		displayName,
+		photoUrl,
+		returnSecureToken: true
+	};
+	const response = await _logoutIfInvalidated(userInternal, updateProfile$1(userInternal.auth, profileRequest));
+	userInternal.displayName = response.displayName || null;
+	userInternal.photoURL = response.photoUrl || null;
+	const passwordProvider = userInternal.providerData.find(({ providerId }) => providerId === "password");
+	if (passwordProvider) {
+		passwordProvider.displayName = userInternal.displayName;
+		passwordProvider.photoURL = userInternal.photoURL;
+	}
+	await userInternal._updateTokensIfNecessary(response);
+}
 /**
 * @license
 * Copyright 2019 Google LLC
@@ -52735,13 +51635,16 @@ var WORKSPACE_SCOPES = [
 	"https://www.googleapis.com/auth/gmail.send"
 ];
 var app = initializeApp(firebase_applet_config_default);
+var FIREBASE_PROJECT_ID = firebase_applet_config_default.projectId || "";
 var configuredDbId = firebase_applet_config_default.firestoreDatabaseId?.trim() || "";
 var isFirestoreEnabled = Boolean(configuredDbId);
 var db = configuredDbId ? getFirestore(app, configuredDbId) : null;
 var auth = getAuth(app);
-var googleProvider = new GoogleAuthProvider();
-WORKSPACE_SCOPES.forEach((scope) => googleProvider.addScope(scope));
-googleProvider.setCustomParameters({ prompt: "select_account" });
+var basicGoogleProvider = new GoogleAuthProvider();
+basicGoogleProvider.setCustomParameters({ prompt: "select_account" });
+var workspaceGoogleProvider = new GoogleAuthProvider();
+WORKSPACE_SCOPES.forEach((scope) => workspaceGoogleProvider.addScope(scope));
+workspaceGoogleProvider.setCustomParameters({ prompt: "select_account" });
 var isSigningIn = false;
 var cachedAccessToken = null;
 var tokenListeners = /* @__PURE__ */ new Set();
@@ -52804,10 +51707,69 @@ function initFirebaseAuth(onUserChange) {
 		}
 	});
 }
+/**
+* Inside Capacitor Android/iOS WebViews, Google blocks embedded WebView OAuth popups
+* (disallowed_useragent / localhost redirect failure). Use a native Google Sign-In
+* plugin when installed; otherwise fail immediately with a clean error code so the
+* user is guided to Email & Password without ever seeing raw localhost/domain errors.
+*/
+async function tryNativeGoogleSignIn(includeWorkspaceScopes) {
+	if (!Capacitor.isNativePlatform()) return null;
+	const plugins = window.Capacitor?.Plugins;
+	const scopes = includeWorkspaceScopes ? [
+		"email",
+		"profile",
+		...WORKSPACE_SCOPES
+	] : ["email", "profile"];
+	if (plugins?.SocialLogin?.login) {
+		const response = await plugins.SocialLogin.login({
+			provider: "google",
+			options: { scopes }
+		});
+		const idToken = response?.result?.idToken ?? null;
+		const rawAccess = response?.result?.accessToken;
+		const accessToken = typeof rawAccess === "string" ? rawAccess : rawAccess && typeof rawAccess === "object" ? rawAccess.token ?? null : null;
+		if (!idToken) throw Object.assign(/* @__PURE__ */ new Error("Google Sign-In did not return an ID token."), { code: "auth/oauth-access-denied" });
+		const result = await signInWithCredential(auth, GoogleAuthProvider.credential(idToken, accessToken ?? void 0));
+		if (includeWorkspaceScopes) notifyTokenChange(accessToken);
+		return {
+			user: result.user,
+			accessToken: includeWorkspaceScopes ? accessToken : cachedAccessToken
+		};
+	}
+	if (plugins?.GoogleAuth?.signIn) {
+		const response = await plugins.GoogleAuth.signIn();
+		const idToken = response?.authentication?.idToken ?? null;
+		const accessToken = response?.authentication?.accessToken ?? null;
+		if (!idToken) throw Object.assign(/* @__PURE__ */ new Error("Google Sign-In did not return an ID token."), { code: "auth/oauth-access-denied" });
+		const result = await signInWithCredential(auth, GoogleAuthProvider.credential(idToken, accessToken ?? void 0));
+		if (includeWorkspaceScopes) notifyTokenChange(accessToken);
+		return {
+			user: result.user,
+			accessToken: includeWorkspaceScopes ? accessToken : cachedAccessToken
+		};
+	}
+	throw Object.assign(/* @__PURE__ */ new Error("Native Google Sign-In plugin is not configured in this mobile build."), { code: "auth/native-google-unavailable" });
+}
+async function signInWithGoogleBasic() {
+	isSigningIn = true;
+	try {
+		const nativeResult = await tryNativeGoogleSignIn(false);
+		if (nativeResult) return nativeResult;
+		return {
+			user: (await signInWithPopup(auth, basicGoogleProvider)).user,
+			accessToken: cachedAccessToken
+		};
+	} finally {
+		isSigningIn = false;
+	}
+}
 async function signInWithGoogleWorkspace() {
 	isSigningIn = true;
 	try {
-		const result = await signInWithPopup(auth, googleProvider);
+		const nativeResult = await tryNativeGoogleSignIn(true);
+		if (nativeResult) return nativeResult;
+		const result = await signInWithPopup(auth, workspaceGoogleProvider);
 		const token = GoogleAuthProvider.credentialFromResult(result)?.accessToken ?? null;
 		notifyTokenChange(token);
 		return {
@@ -52817,6 +51779,31 @@ async function signInWithGoogleWorkspace() {
 	} finally {
 		isSigningIn = false;
 	}
+}
+async function signInWithEmailPassword(email, password) {
+	isSigningIn = true;
+	try {
+		const result = await signInWithEmailAndPassword(auth, email.trim(), password);
+		notifyTokenChange(null);
+		return result.user;
+	} finally {
+		isSigningIn = false;
+	}
+}
+async function signUpWithEmailPassword(name, email, password) {
+	isSigningIn = true;
+	try {
+		const result = await createUserWithEmailAndPassword(auth, email.trim(), password);
+		const trimmedName = name.trim().slice(0, 60);
+		if (trimmedName) await updateProfile(result.user, { displayName: trimmedName }).catch(() => {});
+		notifyTokenChange(null);
+		return result.user;
+	} finally {
+		isSigningIn = false;
+	}
+}
+async function sendFirebasePasswordReset(email) {
+	await sendPasswordResetEmail(auth, email.trim());
 }
 async function signOutFirebase() {
 	notifyTokenChange(null);
@@ -52961,6 +51948,4101 @@ async function syncAllRemindersToFirestore(userId, reminders, existingCloudIds) 
 	} catch (error) {
 		handleFirestoreError(error, "write", path);
 	}
+}
+// src/lib/firebaseAuthErrors.ts
+function extractFirebaseErrorCode(err) {
+	if (err && typeof err === "object" && "code" in err && typeof err.code === "string") return err.code.toLowerCase();
+	const msg = err instanceof Error ? err.message : String(err ?? "");
+	const match = msg.match(/\((auth\/[a-z0-9-]+)\)/i) || msg.match(/(auth\/[a-z0-9-]+)/i);
+	return match ? match[1].toLowerCase() : "";
+}
+function logAuthDiagnostic(code, detail) {
+	if (typeof console !== "undefined" && typeof console.warn === "function") console.warn(`[Auth Diagnostic] (${code || "auth/unknown"}) ${detail}`);
+}
+function buildGoogleOAuthTestingError(_context = {}) {
+	return {
+		code: "auth/oauth-access-denied",
+		title: "Google Sign-In Unavailable",
+		message: "Google Sign-In could not be completed on this device right now. Sign in or create an account with Email & Password instead — your reminders, alarms, and Voice Notes sync the exact same way.",
+		actionKind: "use-email-fallback"
+	};
+}
+function mapFirebaseAuthError(err, context = {}) {
+	const code = extractFirebaseErrorCode(err);
+	const rawMessage = err instanceof Error ? err.message : String(err ?? "Authentication failed");
+	const hostname = context.hostname?.trim() || "";
+	if (code === "auth/oauth-access-denied" || /access_denied|verification process|developer-approved testers|error 403|disallowed_useragent/i.test(rawMessage)) {
+		logAuthDiagnostic(code || "auth/oauth-access-denied", rawMessage);
+		return buildGoogleOAuthTestingError(context);
+	}
+	switch (code) {
+		case "auth/native-google-unavailable":
+			logAuthDiagnostic(code, rawMessage);
+			return {
+				code,
+				title: "Google Sign-In Unavailable",
+				message: "Google Sign-In is not available in this mobile build yet. Please sign in or create an account with Email & Password to sync your alarms and reminders.",
+				actionKind: "use-email-fallback"
+			};
+		case "auth/unauthorized-domain":
+			logAuthDiagnostic(code, `Unauthorized auth domain "${hostname || "unknown"}" — add domain in Firebase Auth settings or use native Google Sign-In on mobile.`);
+			return {
+				code,
+				title: "Google Sign-In Unavailable",
+				message: "Google Sign-In could not be completed right now. Please sign in or create an account with Email & Password instead.",
+				actionKind: "use-email-fallback"
+			};
+		case "auth/operation-not-allowed":
+			logAuthDiagnostic(code, rawMessage);
+			return {
+				code,
+				title: "Sign-In Temporarily Unavailable",
+				message: "This sign-in option is currently unavailable. Please try again later or choose another sign-in method.",
+				actionKind: "none"
+			};
+		case "auth/popup-blocked": return {
+			code,
+			title: "Sign-In Window Blocked",
+			message: "Your browser blocked the Google sign-in window. Allow popups or sign in using Email & Password instead.",
+			actionKind: "use-email-fallback"
+		};
+		case "auth/popup-closed-by-user":
+		case "auth/cancelled-popup-request": return {
+			code,
+			title: "Sign-In Cancelled",
+			message: "The sign-in window was closed before finishing. Try again whenever you are ready.",
+			actionKind: "none"
+		};
+		case "auth/email-already-in-use": return {
+			code,
+			title: "Account Already Exists",
+			message: "An account with this email already exists. Switch to Sign In or tap Forgot password.",
+			actionKind: "none"
+		};
+		case "auth/invalid-credential":
+		case "auth/wrong-password":
+		case "auth/user-not-found": return {
+			code,
+			title: "Incorrect Email or Password",
+			message: "Check your email and password, or tap Forgot password to reset it.",
+			actionKind: "none"
+		};
+		case "auth/invalid-email": return {
+			code,
+			title: "Invalid Email Address",
+			message: "Please enter a valid email address (for example, name@example.com).",
+			actionKind: "none"
+		};
+		case "auth/weak-password": return {
+			code,
+			title: "Password Too Weak",
+			message: "Choose a stronger password with at least 6 characters.",
+			actionKind: "none"
+		};
+		case "auth/too-many-requests": return {
+			code,
+			title: "Too Many Attempts",
+			message: "Sign-in is temporarily paused due to repeated attempts. Wait a minute or reset your password.",
+			actionKind: "none"
+		};
+		case "auth/network-request-failed": return {
+			code,
+			title: "No Internet Connection",
+			message: "Could not connect right now. Check your internet connection and try again.",
+			actionKind: "none"
+		};
+		default:
+			logAuthDiagnostic(code || "auth/unknown", rawMessage);
+			return {
+				code: code || "auth/unknown",
+				title: "Authentication Error",
+				message: "We could not complete sign-in right now. Please try again or use Email & Password.",
+				actionKind: "none"
+			};
+	}
+}
+// src/lib/parser.ts
+var DAY_MAP$1 = {
+	sun: 0,
+	sunday: 0,
+	mon: 1,
+	monday: 1,
+	tue: 2,
+	tues: 2,
+	tuesday: 2,
+	wed: 3,
+	wednesday: 3,
+	thu: 4,
+	thur: 4,
+	thurs: 4,
+	thursday: 4,
+	fri: 5,
+	friday: 5,
+	sat: 6,
+	saturday: 6
+};
+var SPOKEN_NUMBER_WORDS = {
+	one: "1",
+	two: "2",
+	three: "3",
+	four: "4",
+	five: "5",
+	six: "6",
+	seven: "7",
+	eight: "8",
+	nine: "9",
+	ten: "10",
+	eleven: "11",
+	twelve: "12",
+	fifteen: "15",
+	twenty: "20",
+	thirty: "30",
+	forty: "40",
+	"forty five": "45",
+	"forty-five": "45",
+	fifty: "50"
+};
+function normalizeSpokenNumbers(input) {
+	let out = input;
+	out = out.replace(/\b(?:in|after)\s+(?:a\s+)?half\s+(?:an\s+)?hour\b/gi, "in 30 min");
+	out = out.replace(/\b(?:in|after)\s+an?\s+hour\b/gi, "in 1 hour");
+	out = out.replace(/\b(?:in|after)\s+a\s+minute\b/gi, "in 1 min");
+	out = out.replace(/\bafter\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|forty(?:-|\s)five|fifty)\s*(hr|hrs|hour|hours|h|min|mins|minute|minutes|m)\b/gi, (_m, num, unit) => {
+		return `in ${SPOKEN_NUMBER_WORDS[String(num).toLowerCase()] ?? num} ${unit}`;
+	});
+	out = out.replace(/\bin\s+(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|forty(?:-|\s)five|fifty)\s*(hr|hrs|hour|hours|h|min|mins|minute|minutes|m)\b/gi, (_m, num, unit) => {
+		return `in ${SPOKEN_NUMBER_WORDS[String(num).toLowerCase()] ?? num} ${unit}`;
+	});
+	out = out.replace(/\ba\.m\.?\b/gi, "am").replace(/\bp\.m\.?\b/gi, "pm");
+	return out;
+}
+function pickEmoji(text, isAlarm) {
+	const lower = text.toLowerCase();
+	if (/water|hydrat|drink/.test(lower)) return "💧";
+	if (/med|pill|vitamin|tablet/.test(lower)) return "💊";
+	if (/gym|workout|run|walk|yoga|exercise/.test(lower)) return "🏃";
+	if (/meet|standup|call|zoom|sync|client/.test(lower)) return "📞";
+	if (/sleep|bed|wind down|night/.test(lower)) return "🌙";
+	if (/wake|morning|alarm/.test(lower)) return "⏰";
+	if (/study|read|book|learn|code|work/.test(lower)) return "🎯";
+	if (/pay|bill|rent|bank/.test(lower)) return "💳";
+	if (/lunch|dinner|breakfast|eat|cook/.test(lower)) return "🍽️";
+	if (/buy|milk|grocer|shop/.test(lower)) return "🛒";
+	return isAlarm ? "⏰" : "🔔";
+}
+function buildSummary(time, days, oneTimeDate, isAlarm) {
+	return `${time} · ${oneTimeDate ? "One-time" : days ? `${days.length}d/wk` : "Daily"} · ${isAlarm ? "Loud Alarm" : "Notification"}`;
+}
+function parseQuickInput(raw, now = /* @__PURE__ */ new Date()) {
+	const originalLower = raw.toLowerCase();
+	let working = normalizeSpokenNumbers(raw.trim());
+	let hours = now.getHours();
+	let minutes = now.getMinutes();
+	let timeExplicit = false;
+	let days = null;
+	let oneTimeDate = null;
+	let isAlarm = true;
+	let priority = "med";
+	let tag = null;
+	if (/\b(urgent|important|critical|high|!)\b/i.test(working)) {
+		priority = "high";
+		working = working.replace(/\b(urgent|important|critical|high)\b/gi, "").trim();
+	} else if (/\b(low|later|optional)\b/i.test(working)) {
+		priority = "low";
+		working = working.replace(/\b(low|optional)\b/gi, "").trim();
+	}
+	const explicitAlarmWord = /\b(alarm|wake\s+me|wake\s+up|loud)\b/i.test(originalLower);
+	if (/\b(notify|notification|gentle|quiet|silent)\b/i.test(working)) {
+		isAlarm = false;
+		working = working.replace(/\b(notify|notification|gentle|quiet|silent)\b/gi, "").trim();
+	} else if (explicitAlarmWord) {
+		isAlarm = true;
+		working = working.replace(/\bloud\b/gi, "").trim();
+	} else if (/\b(remind\s+me|reminder)\b/i.test(originalLower)) isAlarm = false;
+	const tagMatch = working.match(/#([a-zA-Z0-9_-]{2,20})/);
+	if (tagMatch) {
+		tag = tagMatch[1];
+		working = working.replace(tagMatch[0], "").trim();
+	}
+	const relMatch = working.match(/\bin\s+(?:(\d+)\s*(?:hr|hrs|hour|hours|h))?\s*(?:(\d+)\s*(?:min|mins|minute|minutes|m))?\b/i);
+	if (relMatch && (relMatch[1] || relMatch[2])) {
+		const addH = Number(relMatch[1] || 0);
+		const addM = Number(relMatch[2] || 0);
+		const target = new Date(now.getTime() + (addH * 60 + addM) * 6e4);
+		hours = target.getHours();
+		minutes = target.getMinutes();
+		oneTimeDate = getTodayDateKey(target);
+		days = [target.getDay()];
+		timeExplicit = true;
+		working = working.replace(relMatch[0], "").trim();
+	}
+	if (!timeExplicit) {
+		const fracMatch = working.match(/\b(?:at\s+)?(half\s+past|quarter\s+past|quarter\s+to)\s+(\d{1,2})(?:\s*(am|pm))?\b/i);
+		if (fracMatch) {
+			const kind = fracMatch[1].toLowerCase().replace(/\s+/g, " ");
+			let h = Number(fracMatch[2]);
+			const mer = (fracMatch[3] || "").toLowerCase();
+			if (mer === "pm" && h < 12) h += 12;
+			if (mer === "am" && h === 12) h = 0;
+			if (kind === "half past") {
+				hours = h;
+				minutes = 30;
+			} else if (kind === "quarter past") {
+				hours = h;
+				minutes = 15;
+			} else {
+				hours = (h + 23) % 24;
+				minutes = 45;
+			}
+			if (hours >= 0 && hours <= 23) {
+				timeExplicit = true;
+				working = working.replace(fracMatch[0], "").trim();
+			}
+		}
+	}
+	if (!timeExplicit) {
+		const absMatch = working.match(/\b(?:at\s+)?(\d{1,2})(?:(?::|\.|\s+)(\d{2}))?\s*(?:o'?clock\s*)?(am|pm)\b/i) || working.match(/\bat\s+(\d{1,2})(?::(\d{2}))\b/i) || working.match(/\b(?:at\s+)?(\d{1,2})\s*o'?clock\b/i);
+		if (absMatch) {
+			let h = Number(absMatch[1]);
+			const m = Number(absMatch[2] || 0);
+			const mer = (absMatch[3] || "").toLowerCase();
+			if (mer === "pm" && h < 12) h += 12;
+			if (mer === "am" && h === 12) h = 0;
+			if (!mer && /\b(evening|night|tonight)\b/i.test(working) && h >= 1 && h <= 11) h += 12;
+			if (h >= 0 && h <= 23 && m >= 0 && m <= 59) {
+				hours = h;
+				minutes = m;
+				timeExplicit = true;
+				working = working.replace(absMatch[0], "").trim();
+			}
+		}
+	}
+	if (!timeExplicit) {
+		if (/\bmorning\b/i.test(working)) {
+			hours = 8;
+			minutes = 0;
+			timeExplicit = true;
+		} else if (/\bnoon\b/i.test(working)) {
+			hours = 12;
+			minutes = 0;
+			timeExplicit = true;
+		} else if (/\bafternoon\b/i.test(working)) {
+			hours = 15;
+			minutes = 0;
+			timeExplicit = true;
+		} else if (/\bevening\b/i.test(working)) {
+			hours = 19;
+			minutes = 0;
+			timeExplicit = true;
+		} else if (/\bnight|tonight\b/i.test(working)) {
+			hours = 21;
+			minutes = 30;
+			timeExplicit = true;
+		}
+	}
+	if (/\b(every\s*day|daily|every\s+morning|every\s+evening|every\s+night)\b/i.test(working)) {
+		days = null;
+		oneTimeDate = null;
+		working = working.replace(/\b(every\s*day|daily|every\s+morning|every\s+evening|every\s+night)\b/gi, "").trim();
+	} else if (/\bweekdays?\b/i.test(working)) {
+		days = [
+			1,
+			2,
+			3,
+			4,
+			5
+		];
+		working = working.replace(/\b(?:on\s+|every\s+)?weekdays?\b/gi, "").trim();
+	} else if (/\bweekends?\b/i.test(working)) {
+		days = [0, 6];
+		working = working.replace(/\b(?:on\s+|every\s+)?weekends?\b/gi, "").trim();
+	} else if (/\btomorrow\b/i.test(working)) {
+		const tom = new Date(now);
+		tom.setDate(now.getDate() + 1);
+		oneTimeDate = getTodayDateKey(tom);
+		days = [tom.getDay()];
+		working = working.replace(/\btomorrow\b/gi, "").trim();
+	} else if (/\b(today|tonight)\b/i.test(working)) {
+		oneTimeDate = getTodayDateKey(now);
+		days = [now.getDay()];
+		working = working.replace(/\b(today|tonight)\b/gi, "").trim();
+	} else {
+		const foundDays = /* @__PURE__ */ new Set();
+		const dayRegex = /\b(sun(?:day)?|mon(?:day)?|tue(?:s|sday)?|wed(?:nesday)?|thu(?:r|rs|rsday)?|fri(?:day)?|sat(?:urday)?)\b/gi;
+		let match;
+		while ((match = dayRegex.exec(working)) !== null) {
+			const idx = DAY_MAP$1[match[1].toLowerCase()];
+			if (idx !== void 0) foundDays.add(idx);
+		}
+		if (foundDays.size > 0) {
+			days = [...foundDays].sort((a, b) => a - b);
+			working = working.replace(/\bevery\b/gi, "").replace(dayRegex, "").replace(/\b(and|on|,)\b/gi, " ").trim();
+		}
+	}
+	if (!timeExplicit) {
+		const nextSlot = new Date(now.getTime() + 9e5);
+		hours = nextSlot.getHours();
+		minutes = Math.ceil(nextSlot.getMinutes() / 5) * 5;
+		if (minutes >= 60) {
+			minutes = 0;
+			hours = (hours + 1) % 24;
+		}
+	}
+	const time = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+	const cleanTitle = working.replace(/^(?:hey\s+|ok\s+|please\s+|can\s+you\s+)+/i, "").replace(/^(?:remind\s+me(?:\s+to)?(?:\s+|$)|add\s+(?:a\s+)?(?:reminder|alarm)(?:\s+(?:to|for))?(?:\s+|$)|create\s+(?:a\s+)?(?:reminder|alarm)(?:\s+(?:to|for))?(?:\s+|$)|set\s+(?:an?\s+)?(?:alarm|reminder)(?:\s+(?:for|to))?(?:\s+|$)|wake\s+me(?:\s+up)?(?:\s+(?:for|to|at))?(?:\s+|$)|alarm(?:\s+(?:for|to))?(?:\s+|$))/i, "").replace(/\b(?:at|for|on)\s*$/i, "").replace(/\s{2,}/g, " ").replace(/^[\s,-]+|[\s,-]+$/g, "").slice(0, 60) || (isAlarm ? "Wake-up alarm" : "Quick reminder");
+	const capitalized = cleanTitle.charAt(0).toUpperCase() + cleanTitle.slice(1);
+	const dueAt = computeNextDueAt(time, days, now);
+	const emoji = pickEmoji(capitalized, isAlarm);
+	return {
+		title: capitalized,
+		time,
+		days,
+		oneTimeDate,
+		isAlarm,
+		priority,
+		tag,
+		emoji,
+		dueAt,
+		summary: buildSummary(time, days, oneTimeDate, isAlarm)
+	};
+}
+// src/lib/notes.ts
+function deriveNoteTitle(title, content) {
+	const trimmedTitle = title.trim();
+	if (trimmedTitle) return trimmedTitle.slice(0, 80);
+	const firstLine = content.trim().split(/\r?\n/)[0]?.replace(/\s+/g, " ").trim();
+	if (!firstLine) return "Voice Note";
+	const candidate = firstLine.split(" ").slice(0, 7).join(" ");
+	return candidate.length > 56 ? `${candidate.slice(0, 53)}…` : candidate;
+}
+function createVoiceNote(input) {
+	const now = input.nowMs ?? Date.now();
+	const content = input.content.trim();
+	return {
+		id: `note_${now.toString(36)}_${Math.random().toString(36).slice(2, 6)}`,
+		title: deriveNoteTitle(input.title || "", content),
+		content,
+		pinned: Boolean(input.pinned),
+		createdAt: now,
+		updatedAt: now,
+		durationSec: input.durationSec
+	};
+}
+function sortVoiceNotes(notes) {
+	return [...notes].sort((a, b) => {
+		if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+		return b.updatedAt - a.updatedAt;
+	});
+}
+function formatNoteTimestamp(ts, nowMs = Date.now()) {
+	const diffMin = Math.max(0, Math.floor((nowMs - ts) / 6e4));
+	if (diffMin < 1) return "Just now";
+	if (diffMin < 60) return `${diffMin}m ago`;
+	const diffHr = Math.floor(diffMin / 60);
+	if (diffHr < 24) return `${diffHr}h ago`;
+	return new Date(ts).toLocaleDateString(void 0, {
+		month: "short",
+		day: "numeric"
+	});
+}
+function buildReminderDraftFromNote(note, now = /* @__PURE__ */ new Date()) {
+	return {
+		...parseQuickInput((note.title && note.title !== "Voice Note" ? note.title : note.content).slice(0, 100), now),
+		note: note.content.slice(0, 140)
+	};
+}
+// src/lib/platform.ts
+/**
+* Accurately detects whether the current user is on iOS (iPhone/iPad),
+* Android, or Desktop (neither iOS nor Android).
+*/
+function detectDeviceOs(opts) {
+	let nativePlatform = opts?.nativePlatform;
+	if (nativePlatform === void 0) try {
+		if (Capacitor.isNativePlatform()) nativePlatform = Capacitor.getPlatform();
+	} catch {}
+	if (nativePlatform === "ios") return "ios";
+	if (nativePlatform === "android") return "android";
+	const ua = opts?.userAgent ?? (typeof navigator !== "undefined" ? navigator.userAgent || "" : "");
+	const plat = opts?.platform ?? (typeof navigator !== "undefined" ? navigator.platform || "" : "");
+	const touchPoints = opts?.maxTouchPoints ?? (typeof navigator !== "undefined" ? navigator.maxTouchPoints || 0 : 0);
+	if (/iphone|ipad|ipod/i.test(ua)) return "ios";
+	if ((/macintosh/i.test(ua) || /macintel/i.test(plat)) && touchPoints > 1) return "ios";
+	if (/android/i.test(ua)) return "android";
+	return "desktop";
+}
+function getPlatformAssistantProfile(os) {
+	if (os === "ios") return {
+		os: "ios",
+		source: "siri",
+		buttonLabel: "Hey Siri",
+		assistantName: "Siri",
+		sectionTitle: "Live Siri Voice",
+		handsFreeTitle: "Hands-Free “Hey Siri”",
+		wakeExample: "“Hey Siri, add a reminder to take medicine at 9pm”",
+		listeningTitle: "Hey Siri · Listening…",
+		profileSubtitle: "1-tap live Siri voice & hands-free “Hey Siri”",
+		footerHint: "Works live with 1 tap right here on iPhone & iPad. System-level lock-screen Siri Shortcuts activate automatically in the iOS app."
+	};
+	if (os === "android") return {
+		os: "android",
+		source: "google-assistant",
+		buttonLabel: "Hey Google",
+		assistantName: "Google Assistant",
+		sectionTitle: "Live Google Assistant",
+		handsFreeTitle: "Hands-Free “Hey Google”",
+		wakeExample: "“Hey Google, add a reminder to take medicine at 9pm”",
+		listeningTitle: "Hey Google · Listening…",
+		profileSubtitle: "1-tap live Google Assistant & hands-free “Hey Google”",
+		footerHint: "Works live with 1 tap right here on Android. Lock-screen “Hey Google” App Actions activate automatically in the Android app."
+	};
+	return {
+		os: "desktop",
+		source: "voice",
+		buttonLabel: "Hands-Free Voice",
+		assistantName: "Hands-Free Voice",
+		sectionTitle: "Hands-Free Voice",
+		handsFreeTitle: "Hands-Free “Hey reminderme”",
+		wakeExample: "“Hey reminderme, take medicine at 9pm”",
+		listeningTitle: "Hands-Free Voice · Listening…",
+		profileSubtitle: "1-tap live voice commands & hands-free wake phrase",
+		footerHint: "Works live in desktop Chrome, Edge, and Safari with 1 tap — no setup required."
+	};
+}
+// src/lib/routines.ts
+var SMART_ROUTINES = [
+	{
+		id: "morning-launch",
+		name: "Morning Launch",
+		subtitle: "Hydration, stretch & top-3 priorities",
+		emoji: "🌅",
+		items: [{
+			title: "Sunlight & hydration reset",
+			note: "500ml water + 5 minutes daylight",
+			time: "07:15",
+			days: null,
+			emoji: "💧",
+			color: "#0A84FF",
+			priority: "high",
+			tag: "Health",
+			isAlarm: true,
+			subtasks: [{ title: "Drink full glass of water" }, { title: "Step outside for morning light" }]
+		}, {
+			title: "Plan today’s top 3 wins",
+			note: "Review calendar & pick the single non-negotiable task",
+			time: "08:15",
+			days: [
+				1,
+				2,
+				3,
+				4,
+				5
+			],
+			emoji: "📋",
+			color: "#30D158",
+			priority: "med",
+			tag: "Focus",
+			isAlarm: false,
+			subtasks: [{ title: "Check Google Calendar" }, { title: "Block 90m deep work slot" }]
+		}]
+	},
+	{
+		id: "deep-work-block",
+		name: "Deep Work Sprint",
+		subtitle: "Distraction-free block & afternoon inbox triage",
+		emoji: "🎯",
+		items: [{
+			title: "Deep work focus block",
+			note: "Silence phone and launch ambient brown noise",
+			time: "10:00",
+			days: [
+				1,
+				2,
+				3,
+				4,
+				5
+			],
+			emoji: "🎯",
+			color: "#6366F1",
+			priority: "high",
+			tag: "Work",
+			isAlarm: false,
+			subtasks: [{ title: "Close chat tabs" }, { title: "Start 45m focus timer" }]
+		}, {
+			title: "Gmail inbox zero check",
+			note: "Convert urgent emails into scheduled reminders",
+			time: "16:30",
+			days: [
+				1,
+				2,
+				3,
+				4,
+				5
+			],
+			emoji: "✉️",
+			color: "#FF9F0A",
+			priority: "med",
+			tag: "Work",
+			isAlarm: false
+		}]
+	},
+	{
+		id: "evening-winddown",
+		name: "Evening Wind-Down",
+		subtitle: "Screen sunset & tomorrow prep",
+		emoji: "🌙",
+		items: [{
+			title: "Digital sunset & stretch",
+			note: "Dim lights and put devices on charge away from bed",
+			time: "21:30",
+			days: null,
+			emoji: "🌙",
+			color: "#BF5AF2",
+			priority: "med",
+			tag: "Personal",
+			isAlarm: true,
+			subtasks: [{ title: "Enable Do Not Disturb" }, { title: "Set morning wake alarm" }]
+		}]
+	}
+];
+// src/components/AuthRecoveryBanner.tsx
+var AuthRecoveryBanner = ({ error, onUseEmailFallback }) => {
+	const isFallbackHint = error.actionKind === "use-email-fallback";
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		role: "alert",
+		"data-testid": "auth-recovery-banner",
+		"data-auth-code": error.code,
+		className: `mt-4 rounded-2xl border p-3.5 text-xs leading-relaxed ${isFallbackHint ? "border-amber-400/30 bg-amber-500/10 text-amber-100" : "border-red-400/25 bg-red-500/10 text-red-200"}`,
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-start gap-2.5",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleExclamationPoint, { className: `mt-0.5 h-4 w-4 shrink-0 ${isFallbackHint ? "text-amber-300" : "text-red-400"}` }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "min-w-0 flex-1",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "font-semibold text-white",
+					children: error.title
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "mt-1 text-slate-300",
+					children: error.message
+				})]
+			})]
+		}), isFallbackHint && onUseEmailFallback && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			className: "mt-3 border-t border-white/[0.1] pt-3",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+				type: "button",
+				onClick: onUseEmailFallback,
+				className: "ios-spring-press flex min-h-[44px] w-full items-center justify-center rounded-xl border border-sky-400/35 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap",
+				children: "Sign In / Create Account with Email Instead"
+			})
+		})]
+	});
+};
+// src/components/BulkActionBar.tsx
+var BulkActionBar = ({ open, selectedCount, visibleCount, pendingSelectedCount, allVisibleSelected, onToggleSelectAll, onBulkComplete, onRequestBulkDelete, onCancel }) => {
+	if (!open) return null;
+	const canComplete = pendingSelectedCount > 0;
+	const canDelete = selectedCount > 0;
+	const completeLabel = selectedCount > 0 && pendingSelectedCount === 0 ? "All Done" : "Mark Done";
+	const dock = /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		role: "region",
+		"aria-label": "Bulk reminder actions",
+		className: "pointer-events-none fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-50 px-3 sm:px-6 lg:bottom-6 lg:left-64 lg:px-8",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "animate-sheet-up pointer-events-auto mx-auto flex max-w-2xl flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/20 bg-[#0D142B]/92 px-3 py-2.5 shadow-[0_18px_48px_rgba(0,0,0,0.58),inset_0_1px_0_rgba(255,255,255,0.28)] backdrop-blur-2xl sm:flex-nowrap sm:gap-3 sm:px-4",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+					type: "button",
+					onClick: onToggleSelectAll,
+					disabled: visibleCount === 0,
+					"aria-label": allVisibleSelected ? "Clear all selected reminders" : "Select all visible reminders",
+					className: "ios-spring-press inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.12] bg-white/[0.06] px-3 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.12] disabled:opacity-40 whitespace-nowrap shrink-0",
+					children: [allVisibleSelected ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-4 w-4 text-sky-300" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Square, { className: "h-4 w-4 text-slate-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: allVisibleSelected ? "Clear" : "Select All" })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+					className: "font-mono text-xs font-semibold text-slate-200 tabular-nums whitespace-nowrap",
+					children: [selectedCount, " selected"]
+				})]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex items-center gap-2",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+						type: "button",
+						onClick: onBulkComplete,
+						disabled: !canComplete,
+						"aria-label": canComplete ? `Mark ${pendingSelectedCount} selected reminder${pendingSelectedCount === 1 ? "" : "s"} as completed` : "No pending reminders selected to complete",
+						className: "ios-spring-press inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-emerald-400/35 bg-[#30D158]/20 px-3.5 text-xs font-semibold text-emerald-100 transition-colors hover:bg-[#30D158]/30 disabled:cursor-not-allowed disabled:border-white/[0.08] disabled:bg-white/[0.04] disabled:text-slate-500 whitespace-nowrap shrink-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CheckCheck, { className: "h-4 w-4 shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: completeLabel })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+						type: "button",
+						onClick: onRequestBulkDelete,
+						disabled: !canDelete,
+						"aria-label": canDelete ? `Delete ${selectedCount} selected reminder${selectedCount === 1 ? "" : "s"}` : "Select reminders to delete",
+						className: "ios-spring-press inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-red-400/35 bg-[#FF453A]/20 px-3.5 text-xs font-semibold text-red-100 transition-colors hover:bg-[#FF453A]/32 disabled:cursor-not-allowed disabled:border-white/[0.08] disabled:bg-white/[0.04] disabled:text-slate-500 whitespace-nowrap shrink-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4 shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Delete" })]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						type: "button",
+						onClick: onCancel,
+						"aria-label": "Exit selection mode",
+						title: "Exit selection mode (Esc)",
+						className: "ios-spring-press flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/[0.1] bg-white/[0.05] text-slate-300 transition-colors hover:bg-white/[0.12] hover:text-white",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X$1, { className: "h-4 w-4" })
+					})
+				]
+			})]
+		})
+	});
+	return typeof document !== "undefined" ? (0, import_react_dom.createPortal)(dock, document.body) : dock;
+};
+// src/components/GoogleSignInButton.tsx
+var GoogleSignInButton = ({ onClick, disabled = false, label = "Sign in with Google" }) => {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+		type: "button",
+		disabled,
+		onClick,
+		className: "gsi-material-button",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "gsi-material-button-content-wrapper",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "gsi-material-button-icon",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+					version: "1.1",
+					xmlns: "http://www.w3.org/2000/svg",
+					viewBox: "0 0 48 48",
+					style: { display: "block" },
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+							fill: "#EA4335",
+							d: "M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+							fill: "#4285F4",
+							d: "M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+							fill: "#FBBC05",
+							d: "M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+							fill: "#34A853",
+							d: "M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", {
+							fill: "none",
+							d: "M0 0h48v48H0z"
+						})
+					]
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: "gsi-material-button-contents",
+				children: label
+			})]
+		})
+	});
+};
+// src/components/LiquidGlassCard.tsx
+/**
+* iOS Liquid Glass interactive surface with specular pointer glare and subtle
+* 3D perspective tilt on fine pointer devices (desktop/trackpad).
+*/
+var LiquidGlassCard = ({ children, className = "", enableTilt = true }) => {
+	const cardRef = (0, import_react.useRef)(null);
+	const handlePointerMove = (e) => {
+		if (!enableTilt || e.pointerType !== "mouse") return;
+		const el = cardRef.current;
+		if (!el) return;
+		const rect = el.getBoundingClientRect();
+		const px = (e.clientX - rect.left) / rect.width;
+		const py = (e.clientY - rect.top) / rect.height;
+		const rx = (.5 - py) * 7;
+		const ry = (px - .5) * 8;
+		el.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
+		el.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
+		el.style.setProperty("--gx", `${(px * 100).toFixed(1)}%`);
+		el.style.setProperty("--gy", `${(py * 100).toFixed(1)}%`);
+		el.setAttribute("data-tilting", "true");
+	};
+	const handlePointerLeave = () => {
+		const el = cardRef.current;
+		if (!el) return;
+		el.style.setProperty("--rx", "0deg");
+		el.style.setProperty("--ry", "0deg");
+		el.removeAttribute("data-tilting");
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		ref: cardRef,
+		onPointerMove: handlePointerMove,
+		onPointerLeave: handlePointerLeave,
+		className: `glass-surface liquid-tilt ${className}`,
+		children
+	});
+};
+// src/components/SpringSegmentedControl.tsx
+function SpringSegmentedControl({ options, value, onChange, ariaLabel, size = "md", fullWidth = false }) {
+	const activeIndex = Math.max(0, options.findIndex((o) => o.id === value));
+	const count = Math.max(1, options.length);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		role: "tablist",
+		"aria-label": ariaLabel,
+		className: `relative grid rounded-2xl border border-white/[0.12] bg-[#0B1022]/85 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ${fullWidth ? "w-full" : "inline-grid"}`,
+		style: { gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` },
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			"aria-hidden": "true",
+			className: "ios-pill-slider pointer-events-none absolute top-1 bottom-1 left-1 rounded-xl border border-white/30 bg-gradient-to-b from-[#4BA3FF] to-[#0A84FF] shadow-[0_6px_18px_rgba(10,132,255,0.42),inset_0_1px_0_rgba(255,255,255,0.5)]",
+			style: {
+				width: `calc((100% - 8px) / ${count})`,
+				transform: `translate3d(${activeIndex * 100}%, 0, 0)`
+			}
+		}), options.map((option) => {
+			const selected = option.id === value;
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+				type: "button",
+				role: "tab",
+				"aria-selected": selected,
+				onClick: () => onChange(option.id),
+				className: `relative z-10 flex items-center justify-center rounded-xl font-semibold transition-colors duration-150 whitespace-nowrap ${size === "sm" ? "min-h-[34px] px-3 text-xs" : "min-h-[38px] px-3.5 text-xs"} ${selected ? "text-white" : "text-slate-400 hover:text-slate-100"}`,
+				children: option.label
+			}, option.id);
+		})]
+	});
+}
+// \0vite/preload-helper.js
+var scriptRel = "modulepreload";
+var assetsURL = function(dep) {
+	return "/" + dep;
+};
+var seen = {};
+var isCssPreloadUrl = function isCssPreloadUrl(url) {
+	return url.pathname.endsWith(".css");
+};
+var preloadOnce = function preloadOnce(seen, href, preload) {
+	if (href in seen) return seen[href];
+	const promise = preload();
+	if (!promise) {
+		seen[href] = void 0;
+		return;
+	}
+	const preloadPromise = promise.then(() => {
+		seen[href] = void 0;
+	}, (err) => {
+		seen[href] = void 0;
+		throw err;
+	});
+	seen[href] = preloadPromise;
+	return preloadPromise;
+};
+var __vitePreload = function preload(baseModule, deps, importerUrl) {
+	let promise = Promise.resolve();
+	if (deps && deps.length > 0) {
+		let preloadedHrefs;
+		const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
+		const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
+		function allSettled(promises) {
+			return Promise.all(promises.map((p) => Promise.resolve(p).then((value) => ({
+				status: "fulfilled",
+				value
+			}), (reason) => ({
+				status: "rejected",
+				reason
+			}))));
+		}
+		function importMetaResolve(specifier) {
+			if (import.meta.resolve) return new URL(import.meta.resolve(specifier));
+			return new URL(
+				specifier,
+				/** #__KEEP__ */
+				import.meta.url
+			);
+		}
+		promise = allSettled(deps.map((depString) => {
+			depString = assetsURL(depString, importerUrl);
+			const dep = importMetaResolve(depString);
+			const isCss = isCssPreloadUrl(dep);
+			return preloadOnce(seen, dep.href, () => {
+				if (preloadedHrefs === void 0) {
+					preloadedHrefs = {
+						all: /* @__PURE__ */ new Set(),
+						styles: /* @__PURE__ */ new Set()
+					};
+					const links = document.getElementsByTagName("link");
+					for (let i = links.length - 1; i >= 0; i--) {
+						const link = links[i];
+						preloadedHrefs.all.add(link.href);
+						if (link.rel === "stylesheet") preloadedHrefs.styles.add(link.href);
+					}
+				}
+				if ((isCss ? preloadedHrefs.styles : preloadedHrefs.all).has(dep.href)) return;
+				const link = document.createElement("link");
+				link.rel = isCss ? "stylesheet" : scriptRel;
+				if (!isCss) link.as = "script";
+				link.crossOrigin = "";
+				link.href = dep.href;
+				if (cspNonce) link.setAttribute("nonce", cspNonce);
+				document.head.appendChild(link);
+				if (isCss) return new Promise((res, rej) => {
+					const handleSettle = (e) => {
+						link.removeEventListener("load", handleSettle);
+						link.removeEventListener("error", handleSettle);
+						if (e.type === "error") rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`));
+						else res(e);
+					};
+					link.addEventListener("load", handleSettle);
+					link.addEventListener("error", handleSettle);
+				});
+			});
+		}).filter((p) => p !== void 0));
+	}
+	function handlePreloadError(err) {
+		const e = new Event("vite:preloadError", { cancelable: true });
+		e.payload = err;
+		window.dispatchEvent(e);
+		if (!e.defaultPrevented) throw err;
+	}
+	return promise.then((res) => {
+		for (const item of res || []) {
+			if (item.status !== "rejected") continue;
+			handlePreloadError(item.reason);
+		}
+		return baseModule().catch(handlePreloadError);
+	});
+};
+// node_modules/@capacitor/app/dist/esm/index.js
+var App$1 = registerPlugin("App", { web: () => __vitePreload(() => import("./web-B-a4NTyM.js").then((m) => new m.AppWeb()), __vite__mapDeps([0,1])) });
+// node_modules/@capacitor/haptics/dist/esm/definitions.js
+var ImpactStyle;
+(function(ImpactStyle) {
+	/**
+	* A collision between large, heavy user interface elements
+	*
+	* @since 1.0.0
+	*/
+	ImpactStyle["Heavy"] = "HEAVY";
+	/**
+	* A collision between moderately sized user interface elements
+	*
+	* @since 1.0.0
+	*/
+	ImpactStyle["Medium"] = "MEDIUM";
+	/**
+	* A collision between small, light user interface elements
+	*
+	* @since 1.0.0
+	*/
+	ImpactStyle["Light"] = "LIGHT";
+})(ImpactStyle || (ImpactStyle = {}));
+var NotificationType;
+(function(NotificationType) {
+	/**
+	* A notification feedback type indicating that a task has completed successfully
+	*
+	* @since 1.0.0
+	*/
+	NotificationType["Success"] = "SUCCESS";
+	/**
+	* A notification feedback type indicating that a task has produced a warning
+	*
+	* @since 1.0.0
+	*/
+	NotificationType["Warning"] = "WARNING";
+	/**
+	* A notification feedback type indicating that a task has failed
+	*
+	* @since 1.0.0
+	*/
+	NotificationType["Error"] = "ERROR";
+})(NotificationType || (NotificationType = {}));
+// node_modules/@capacitor/haptics/dist/esm/index.js
+var Haptics = registerPlugin("Haptics", { web: () => __vitePreload(() => import("./web-CcTbJUde.js").then((m) => new m.HapticsWeb()), __vite__mapDeps([2,1])) });
+// node_modules/@capacitor/local-notifications/dist/esm/definitions.js
+/**
+* Day of the week. Used for scheduling notifications on a particular weekday.
+*/
+var Weekday;
+(function(Weekday) {
+	Weekday[Weekday["Sunday"] = 1] = "Sunday";
+	Weekday[Weekday["Monday"] = 2] = "Monday";
+	Weekday[Weekday["Tuesday"] = 3] = "Tuesday";
+	Weekday[Weekday["Wednesday"] = 4] = "Wednesday";
+	Weekday[Weekday["Thursday"] = 5] = "Thursday";
+	Weekday[Weekday["Friday"] = 6] = "Friday";
+	Weekday[Weekday["Saturday"] = 7] = "Saturday";
+})(Weekday || (Weekday = {}));
+// node_modules/@capacitor/local-notifications/dist/esm/index.js
+var LocalNotifications = registerPlugin("LocalNotifications", { web: () => __vitePreload(() => import("./web-Cr0s5Qzf.js").then((m) => new m.LocalNotificationsWeb()), __vite__mapDeps([3,1])) });
+// node_modules/@capacitor/push-notifications/dist/esm/index.js
+var PushNotifications = registerPlugin("PushNotifications", {});
+// node_modules/@capacitor/preferences/dist/esm/index.js
+var Preferences = registerPlugin("Preferences", { web: () => __vitePreload(() => import("./web-5wEAw-yD.js").then((m) => new m.PreferencesWeb()), __vite__mapDeps([4,1])) });
+// node_modules/@capacitor/splash-screen/dist/esm/index.js
+var SplashScreen = registerPlugin("SplashScreen", { web: () => __vitePreload(() => import("./web-C69MQl-M.js").then((m) => new m.SplashScreenWeb()), __vite__mapDeps([5,1])) });
+// node_modules/@capacitor/status-bar/dist/esm/definitions.js
+var Style;
+(function(Style) {
+	/**
+	* Light text for dark backgrounds.
+	*
+	* @since 1.0.0
+	*/
+	Style["Dark"] = "DARK";
+	/**
+	* Dark text for light backgrounds.
+	*
+	* @since 1.0.0
+	*/
+	Style["Light"] = "LIGHT";
+	/**
+	* The style is based on the device appearance.
+	* If the device is using Dark mode, the statusbar text will be light.
+	* If the device is using Light mode, the statusbar text will be dark.
+	*
+	* @since 1.0.0
+	*/
+	Style["Default"] = "DEFAULT";
+})(Style || (Style = {}));
+var Animation;
+(function(Animation) {
+	/**
+	* No animation during show/hide.
+	*
+	* @since 1.0.0
+	*/
+	Animation["None"] = "NONE";
+	/**
+	* Slide animation during show/hide.
+	* It doesn't work on iOS 15+.
+	*
+	* @deprecated Use Animation.Fade or Animation.None instead.
+	*
+	* @since 1.0.0
+	*/
+	Animation["Slide"] = "SLIDE";
+	/**
+	* Fade animation during show/hide.
+	*
+	* @since 1.0.0
+	*/
+	Animation["Fade"] = "FADE";
+})(Animation || (Animation = {}));
+// node_modules/@capacitor/status-bar/dist/esm/index.js
+var StatusBar = registerPlugin("StatusBar");
+// src/lib/nativeBridge.ts
+var ALARM_CHANNEL_ID = "reminderme_alarms";
+var REMINDER_CHANNEL_ID = "reminderme_reminders";
+var ALARM_ACTION_TYPE_ID = "ALARM_ACTIONS";
+var AlarmBridge = registerPlugin("AlarmBridge");
+function isAndroidNative() {
+	try {
+		return Capacitor.isNativePlatform() && Capacitor.getPlatform() === "android";
+	} catch {
+		return false;
+	}
+}
+async function syncNativeCustomRingtone(name, base64) {
+	if (!isAndroidNative()) return;
+	try {
+		await AlarmBridge.saveCustomRingtone({
+			name,
+			base64
+		});
+	} catch {}
+}
+async function clearNativeCustomRingtone() {
+	if (!isAndroidNative()) return;
+	try {
+		await AlarmBridge.clearCustomRingtone();
+	} catch {}
+}
+async function consumePendingNativeAlarmAction() {
+	if (!isAndroidNative()) return null;
+	try {
+		const res = await AlarmBridge.consumePendingAction();
+		return res && res.action ? res : null;
+	} catch {
+		return null;
+	}
+}
+function isNativeApp() {
+	try {
+		return Capacitor.isNativePlatform();
+	} catch {
+		return false;
+	}
+}
+function getRuntimePlatform() {
+	if (isNativeApp()) return Capacitor.getPlatform() === "ios" ? "ios-native" : "android-native";
+	if (typeof window !== "undefined") {
+		if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true) return "pwa-standalone";
+	}
+	return "web";
+}
+async function deviceStorageGet(key) {
+	if (isNativeApp()) try {
+		return (await Preferences.get({ key })).value ?? null;
+	} catch {
+		return null;
+	}
+	try {
+		return window.localStorage.getItem(key);
+	} catch {
+		return null;
+	}
+}
+async function deviceStorageSet(key, value) {
+	if (isNativeApp()) try {
+		await Preferences.set({
+			key,
+			value
+		});
+		return;
+	} catch {}
+	try {
+		window.localStorage.setItem(key, value);
+	} catch {}
+}
+async function nativeTokenGet() {
+	if (!isNativeApp()) return null;
+	try {
+		const { value } = await Preferences.get({ key: "rm_native_token" });
+		return value ?? null;
+	} catch {
+		return null;
+	}
+}
+async function nativeTokenSet(token) {
+	if (!isNativeApp()) return;
+	try {
+		if (!token) await Preferences.remove({ key: "rm_native_token" });
+		else await Preferences.set({
+			key: "rm_native_token",
+			value: token
+		});
+	} catch {}
+}
+async function triggerHaptic(kind = "light", enabled = true) {
+	if (!enabled) return;
+	if (isNativeApp()) try {
+		if (kind === "success") await Haptics.notification({ type: NotificationType.Success });
+		else if (kind === "warning") await Haptics.notification({ type: NotificationType.Warning });
+		else {
+			const style = kind === "heavy" ? ImpactStyle.Heavy : kind === "medium" ? ImpactStyle.Medium : ImpactStyle.Light;
+			await Haptics.impact({ style });
+		}
+		return;
+	} catch {}
+	if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+		const ms = kind === "heavy" ? 40 : kind === "medium" ? 24 : 12;
+		navigator.vibrate(ms);
+	}
+}
+async function initNativePlatform(callbacks) {
+	const cleanups = [];
+	if (isNativeApp()) {
+		try {
+			await StatusBar.setStyle({ style: Style.Dark });
+			await StatusBar.setBackgroundColor({ color: "#060812" });
+		} catch {}
+		try {
+			await SplashScreen.hide();
+		} catch {}
+		try {
+			await LocalNotifications.createChannel({
+				id: ALARM_CHANNEL_ID,
+				name: "Loud Alarms",
+				description: "High-priority exact alarms that ring on the lock screen even when the app is closed.",
+				importance: 5,
+				visibility: 1,
+				vibration: true,
+				lights: true,
+				lightColor: "#2F80FF"
+			});
+			await LocalNotifications.createChannel({
+				id: REMINDER_CHANNEL_ID,
+				name: "Daily Reminders",
+				description: "Scheduled reminders and gentle task alerts.",
+				importance: 4,
+				visibility: 1,
+				vibration: true
+			});
+			await LocalNotifications.registerActionTypes({ types: [{
+				id: ALARM_ACTION_TYPE_ID,
+				actions: [{
+					id: "snooze",
+					title: "Snooze 5 min"
+				}, {
+					id: "dismiss",
+					title: "Dismiss",
+					destructive: false
+				}]
+			}] });
+		} catch {}
+		try {
+			const actionListener = await LocalNotifications.addListener("localNotificationActionPerformed", (event) => {
+				const rid = String(event.notification.extra?.reminderId || "");
+				if (!rid) return;
+				if (event.actionId === "snooze") callbacks.onSnooze(rid, 5);
+				else if (event.actionId === "dismiss") callbacks.onDismiss(rid);
+				else callbacks.onOpenReminder(rid);
+			});
+			cleanups.push(() => {
+				actionListener.remove().catch(() => {});
+			});
+		} catch {}
+		try {
+			const backListener = await App$1.addListener("backButton", () => {
+				if (!callbacks.onHardwareBack()) App$1.minimizeApp().catch(() => {});
+			});
+			cleanups.push(() => {
+				backListener.remove().catch(() => {});
+			});
+		} catch {}
+		try {
+			const urlListener = await App$1.addListener("appUrlOpen", (event) => {
+				if (event?.url) callbacks.onAppUrlOpen?.(event.url);
+			});
+			cleanups.push(() => {
+				urlListener.remove().catch(() => {});
+			});
+		} catch {}
+	} else if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
+		navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {});
+		const onSwMessage = (ev) => {
+			const msg = ev.data || {};
+			if (msg.type === "alarm-dismissed" && msg.reminderId) callbacks.onDismiss(msg.reminderId);
+			else if (msg.type === "alarm-snoozed" && msg.reminderId) callbacks.onSnooze(msg.reminderId, Number(msg.minutes) || 5);
+			else if (msg.type === "notification-opened" && msg.reminderId) callbacks.onOpenReminder(msg.reminderId);
+		};
+		navigator.serviceWorker.addEventListener("message", onSwMessage);
+		cleanups.push(() => navigator.serviceWorker.removeEventListener("message", onSwMessage));
+	}
+	return () => {
+		cleanups.forEach((fn) => fn());
+	};
+}
+async function getNotificationPermissionState() {
+	if (isNativeApp()) try {
+		const status = await LocalNotifications.checkPermissions();
+		if (status.display === "granted") return "granted";
+		if (status.display === "denied") return "denied";
+		return "prompt";
+	} catch {
+		return "prompt";
+	}
+	if (typeof window === "undefined" || !("Notification" in window)) return "unsupported";
+	const p = Notification.permission;
+	if (p === "granted") return "granted";
+	if (p === "denied") return "denied";
+	return "prompt";
+}
+async function requestOsNotificationPermission() {
+	if (isNativeApp()) try {
+		const status = await LocalNotifications.requestPermissions();
+		if (status.display === "granted") return "granted";
+		if (status.display === "denied") return "denied";
+		return "prompt";
+	} catch {
+		return "denied";
+	}
+	if (typeof window === "undefined" || !("Notification" in window)) return "unsupported";
+	try {
+		const res = await Notification.requestPermission();
+		return res === "granted" ? "granted" : res === "denied" ? "denied" : "prompt";
+	} catch {
+		return "denied";
+	}
+}
+async function checkExactAlarmReadiness() {
+	if (!isNativeApp()) return false;
+	try {
+		return (await LocalNotifications.checkExactNotificationSetting()).exact_alarm === "granted";
+	} catch {
+		return true;
+	}
+}
+async function openExactAlarmSettings() {
+	if (!isNativeApp()) return;
+	try {
+		await LocalNotifications.changeExactNotificationSetting();
+	} catch {}
+}
+/**
+* Registers every pending alarm and reminder directly with Android OS AlarmManager
+* (`allowWhileIdle: true`) so alerts trigger accurately even when the app is closed and screen is locked.
+*/
+async function syncOsSchedules(reminders, timeFormat = "12h") {
+	const todayKey = getTodayDateKey();
+	const now = Date.now();
+	const active = reminders.filter((r) => {
+		if (r.doneDate === todayKey && r.oneTimeDate === todayKey) return false;
+		return true;
+	});
+	if (!isNativeApp()) return active.filter((r) => r.doneDate !== todayKey).length;
+	const upcomingPayloads = active.map((r) => {
+		const targetMs = r.snoozedUntil && r.snoozedUntil > now ? r.snoozedUntil : r.doneDate === todayKey ? computeNextDueAt(r.time, r.days, new Date(now + 432e5)) : computeNextDueAt(r.time, r.days, new Date(now));
+		if (!Number.isFinite(targetMs) || targetMs <= now) return null;
+		return {
+			id: r.id,
+			requestCode: hashToInt32(r.id),
+			title: r.title,
+			note: r.note || "",
+			time: r.time,
+			triggerAtMs: targetMs,
+			isAlarm: r.isAlarm,
+			sound: String(r.sound || "radar")
+		};
+	}).filter((x) => x !== null).sort((a, b) => a.triggerAtMs - b.triggerAtMs);
+	if (isAndroidNative()) try {
+		const res = await AlarmBridge.syncAlarms({
+			alarmsJson: JSON.stringify(upcomingPayloads),
+			timeFormat
+		});
+		if (typeof res?.scheduled === "number") return res.scheduled;
+	} catch {}
+	try {
+		if ((await LocalNotifications.checkPermissions()).display !== "granted") return 0;
+		const pending = await LocalNotifications.getPending();
+		if (pending.notifications.length > 0) await LocalNotifications.cancel({ notifications: pending.notifications.map((n) => ({ id: n.id })) });
+		const toSchedule = upcomingPayloads.map((item) => ({
+			id: item.requestCode,
+			title: item.isAlarm ? `ALARM: ${item.title}` : item.title,
+			body: item.note || `Scheduled for ${item.time} — tap Snooze or Dismiss`,
+			channelId: item.isAlarm ? ALARM_CHANNEL_ID : REMINDER_CHANNEL_ID,
+			actionTypeId: ALARM_ACTION_TYPE_ID,
+			schedule: {
+				at: new Date(item.triggerAtMs),
+				allowWhileIdle: true
+			},
+			extra: {
+				reminderId: item.id,
+				isAlarm: item.isAlarm,
+				sound: item.sound
+			}
+		}));
+		if (toSchedule.length > 0) await LocalNotifications.schedule({ notifications: toSchedule });
+		return toSchedule.length;
+	} catch {
+		return 0;
+	}
+}
+function urlBase64ToUint8Array(base64String) {
+	const base64 = (base64String + "=".repeat((4 - base64String.length % 4) % 4)).replace(/-/g, "+").replace(/_/g, "/");
+	const raw = window.atob(base64);
+	const out = new Uint8Array(raw.length);
+	for (let i = 0; i < raw.length; ++i) out[i] = raw.charCodeAt(i);
+	return out;
+}
+async function subscribeDevicePush(getVapidKey, sendWebSub, sendFcmToken) {
+	if (await requestOsNotificationPermission() !== "granted") return {
+		ok: false,
+		devices: 0,
+		mode: "none",
+		message: "Notification permission is blocked. Enable notifications in system settings."
+	};
+	if (isNativeApp()) try {
+		if ((await PushNotifications.requestPermissions()).receive === "granted") return await new Promise((resolve) => {
+			let settled = false;
+			const timer = window.setTimeout(() => {
+				if (!settled) {
+					settled = true;
+					resolve({
+						ok: true,
+						devices: 1,
+						mode: "fcm",
+						message: "OS AlarmManager enabled. Add google-services.json for remote FCM push."
+					});
+				}
+			}, 2500);
+			PushNotifications.addListener("registration", async (token) => {
+				if (settled) return;
+				settled = true;
+				window.clearTimeout(timer);
+				try {
+					resolve({
+						ok: true,
+						devices: await sendFcmToken(token.value, Capacitor.getPlatform()),
+						mode: "fcm",
+						message: "Android OS alarms & FCM push enabled."
+					});
+				} catch {
+					resolve({
+						ok: true,
+						devices: 1,
+						mode: "fcm",
+						message: "Android OS alarms active on this device."
+					});
+				}
+			});
+			PushNotifications.register().catch(() => {
+				if (!settled) {
+					settled = true;
+					window.clearTimeout(timer);
+					resolve({
+						ok: true,
+						devices: 1,
+						mode: "fcm",
+						message: "Android OS exact alarms enabled locally."
+					});
+				}
+			});
+		});
+	} catch {
+		return {
+			ok: true,
+			devices: 1,
+			mode: "fcm",
+			message: "Android OS local alarm channel enabled."
+		};
+	}
+	if (typeof window === "undefined" || !("serviceWorker" in navigator) || !("PushManager" in window)) return {
+		ok: true,
+		devices: 0,
+		mode: "none",
+		message: "Browser notifications enabled (Web Push not supported on this browser)."
+	};
+	try {
+		const reg = await navigator.serviceWorker.ready;
+		const vapidKey = await getVapidKey();
+		if (!vapidKey) return {
+			ok: true,
+			devices: 0,
+			mode: "none",
+			message: "Local notifications enabled. Sign in online for server-side push backup."
+		};
+		let sub = await reg.pushManager.getSubscription();
+		if (!sub) sub = await reg.pushManager.subscribe({
+			userVisibleOnly: true,
+			applicationServerKey: urlBase64ToUint8Array(vapidKey)
+		});
+		const devices = await sendWebSub(sub.toJSON());
+		return {
+			ok: true,
+			devices,
+			mode: "webpush",
+			message: `Lock-screen Web Push active on ${devices} device${devices === 1 ? "" : "s"}.`
+		};
+	} catch (err) {
+		return {
+			ok: false,
+			devices: 0,
+			mode: "none",
+			message: err instanceof Error ? err.message : "Could not register push subscription."
+		};
+	}
+}
+async function scheduleDelayedLockScreenTest(delaySec, triggerServerPush, timeFormat = "12h") {
+	if (await requestOsNotificationPermission() !== "granted") return {
+		ok: false,
+		via: "none",
+		message: "Allow notifications first to run the lock-screen test."
+	};
+	if (isAndroidNative()) try {
+		if ((await AlarmBridge.scheduleLockScreenTest({
+			delaySec,
+			timeFormat
+		}))?.ok) return {
+			ok: true,
+			via: "android-lockscreen",
+			message: `Lock-screen alarm set for ${delaySec}s from now. Close the app & lock your phone to test Swipe-Up gestures.`
+		};
+	} catch {}
+	if (isNativeApp()) try {
+		await LocalNotifications.schedule({ notifications: [{
+			id: Math.floor(Date.now() % 1e6) + 9e5,
+			title: "ALARM: Lock-Screen Delivery Verified",
+			body: `Triggered ${delaySec}s later by Android OS AlarmManager while backgrounded.`,
+			channelId: ALARM_CHANNEL_ID,
+			actionTypeId: ALARM_ACTION_TYPE_ID,
+			schedule: {
+				at: new Date(Date.now() + delaySec * 1e3),
+				allowWhileIdle: true
+			},
+			extra: {
+				reminderId: "lockscreen-test",
+				isAlarm: true
+			}
+		}] });
+		return {
+			ok: true,
+			via: "android-os",
+			message: `OS alarm scheduled for ${delaySec}s from now. Lock your phone now to verify.`
+		};
+	} catch {
+		return {
+			ok: false,
+			via: "none",
+			message: "Failed to schedule Android OS test alarm."
+		};
+	}
+	if (triggerServerPush) try {
+		if (await triggerServerPush(delaySec)) return {
+			ok: true,
+			via: "server-push",
+			message: `Server push queued for ${delaySec}s from now. You can close or lock your screen.`
+		};
+	} catch {}
+	window.setTimeout(async () => {
+		try {
+			const reg = "serviceWorker" in navigator ? await navigator.serviceWorker.ready : null;
+			if (reg) await reg.showNotification("ALARM: reminderme Lock-Screen Test", {
+				body: `Delivered ${delaySec}s later via Service Worker.`,
+				icon: "/icons/icon-192.png",
+				badge: "/icons/badge-96.png",
+				tag: "test-delayed",
+				requireInteraction: true
+			});
+			else if ("Notification" in window && Notification.permission === "granted") new Notification("ALARM: reminderme Lock-Screen Test", {
+				body: `Delivered ${delaySec}s later.`,
+				icon: "/icons/icon-192.png"
+			});
+		} catch {}
+	}, delaySec * 1e3);
+	return {
+		ok: true,
+		via: "service-worker",
+		message: `Test notification scheduled in ${delaySec}s. Sign in & enable Push for closed-app cloud delivery.`
+	};
+}
+// src/components/SwipeableReminderRow.tsx
+var LONG_PRESS_MS = 450;
+var SwipeableReminderRow = ({ reminder, timeFormat, onToggleDone, onSnooze, onDelete, onEdit, onFocus, onToggleSubtask, onExportIcs, selectionMode = false, selected = false, onToggleSelect, onEnterSelection, vibrate = true }) => {
+	const done = isReminderDoneToday(reminder);
+	const [offsetX, setOffsetX] = (0, import_react.useState)(0);
+	const [dragging, setDragging] = (0, import_react.useState)(false);
+	const [actionsOpen, setActionsOpen] = (0, import_react.useState)(false);
+	const [checklistOpen, setChecklistOpen] = (0, import_react.useState)(false);
+	const startXRef = (0, import_react.useRef)(0);
+	const startYRef = (0, import_react.useRef)(0);
+	const lockedAxisRef = (0, import_react.useRef)(null);
+	const movedRef = (0, import_react.useRef)(false);
+	const longPressTimerRef = (0, import_react.useRef)(null);
+	const longPressedRef = (0, import_react.useRef)(false);
+	const clearLongPressTimer = () => {
+		if (longPressTimerRef.current !== null) {
+			window.clearTimeout(longPressTimerRef.current);
+			longPressTimerRef.current = null;
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		if (selectionMode) {
+			clearLongPressTimer();
+			setOffsetX(0);
+			setActionsOpen(false);
+			setDragging(false);
+		}
+	}, [selectionMode]);
+	(0, import_react.useEffect)(() => clearLongPressTimer, []);
+	const subtasks = reminder.subtasks || [];
+	const subtasksDone = subtasks.filter((s) => s.done).length;
+	const handlePointerDown = (e) => {
+		if (selectionMode) return;
+		if (e.pointerType === "mouse" && e.button !== 0) return;
+		if (e.target.closest("button, [data-subtask-drawer]")) return;
+		startXRef.current = e.clientX;
+		startYRef.current = e.clientY;
+		lockedAxisRef.current = null;
+		movedRef.current = false;
+		longPressedRef.current = false;
+		setDragging(true);
+		if (onEnterSelection) {
+			clearLongPressTimer();
+			longPressTimerRef.current = window.setTimeout(() => {
+				longPressTimerRef.current = null;
+				longPressedRef.current = true;
+				setDragging(false);
+				setOffsetX(0);
+				setActionsOpen(false);
+				triggerHaptic("medium", vibrate);
+				onEnterSelection(reminder.id);
+			}, LONG_PRESS_MS);
+		}
+	};
+	const handlePointerMove = (e) => {
+		if (!dragging || selectionMode) return;
+		const dx = e.clientX - startXRef.current;
+		const dy = e.clientY - startYRef.current;
+		if (Math.hypot(dx, dy) > 10) clearLongPressTimer();
+		if (!lockedAxisRef.current) {
+			if (Math.abs(dx) > 10 || Math.abs(dy) > 10) lockedAxisRef.current = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+		}
+		if (lockedAxisRef.current !== "x") return;
+		movedRef.current = true;
+		const clamped = Math.max(-152, Math.min(116, (actionsOpen ? -136 : 0) + dx));
+		setOffsetX(clamped);
+	};
+	const handlePointerEnd = () => {
+		clearLongPressTimer();
+		if (!dragging) return;
+		setDragging(false);
+		if (lockedAxisRef.current === "x") {
+			if (offsetX >= 80) {
+				onToggleDone(reminder.id);
+				setOffsetX(0);
+				setActionsOpen(false);
+			} else if (offsetX <= -64) {
+				setOffsetX(-136);
+				setActionsOpen(true);
+			} else {
+				setOffsetX(0);
+				setActionsOpen(false);
+			}
+		}
+		lockedAxisRef.current = null;
+	};
+	const priorityLabel = reminder.priority === "high" ? "High" : reminder.priority === "med" ? "Medium" : "Normal";
+	const scheduleLabel = formatDaysSummary(reminder.days, reminder.oneTimeDate);
+	const isSnoozed = !!(reminder.snoozedUntil && reminder.snoozedUntil > Date.now());
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		"data-selected": selectionMode && selected ? "true" : "false",
+		className: `relative overflow-hidden rounded-[22px] border backdrop-blur-2xl transition-colors duration-150 ${selectionMode && selected ? "border-[#0A84FF]/70 bg-[#0A84FF]/15 shadow-[0_14px_34px_rgba(10,132,255,0.22),inset_0_1px_0_rgba(147,197,253,0.4)]" : "border-white/[0.18] bg-white/[0.06] shadow-[0_14px_34px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.3)]"}`,
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: `pointer-events-none absolute inset-y-0 left-0 flex w-28 items-center justify-start bg-[#30D158]/25 pl-5 text-emerald-300 transition-opacity duration-150 ${offsetX > 4 ? "opacity-100" : "opacity-0"}`,
+				"aria-hidden": "true",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-5 w-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "ml-1.5 text-xs font-semibold",
+					children: done ? "Undo" : "Done"
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				"aria-hidden": !(offsetX < -4 || actionsOpen),
+				className: `absolute inset-y-0 right-0 flex items-stretch transition-opacity duration-150 ${offsetX < -4 || actionsOpen ? "opacity-100" : "pointer-events-none opacity-0"}`,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+					type: "button",
+					tabIndex: actionsOpen ? 0 : -1,
+					onClick: () => {
+						setOffsetX(0);
+						setActionsOpen(false);
+						onSnooze(reminder.id, 10);
+					},
+					className: "flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF9F0A]/25 px-3 text-xs font-semibold text-amber-200 transition-colors hover:bg-[#FF9F0A]/35",
+					"aria-label": `Snooze ${reminder.title} 10 minutes`,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "10m" })]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+					type: "button",
+					tabIndex: actionsOpen ? 0 : -1,
+					onClick: () => {
+						setOffsetX(0);
+						setActionsOpen(false);
+						onDelete(reminder.id);
+					},
+					className: "flex min-w-[68px] flex-col items-center justify-center gap-1 bg-[#FF453A]/30 px-3 text-xs font-semibold text-red-200 transition-colors hover:bg-[#FF453A]/45",
+					"aria-label": `Delete ${reminder.title}`,
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Delete" })]
+				})]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				onPointerDown: handlePointerDown,
+				onPointerMove: handlePointerMove,
+				onPointerUp: handlePointerEnd,
+				onPointerCancel: handlePointerEnd,
+				onPointerLeave: clearLongPressTimer,
+				onContextMenu: (e) => {
+					if (onEnterSelection) e.preventDefault();
+				},
+				onClick: () => {
+					if (longPressedRef.current) {
+						longPressedRef.current = false;
+						return;
+					}
+					if (selectionMode) {
+						onToggleSelect?.(reminder.id);
+						return;
+					}
+					if (movedRef.current) return;
+					if (actionsOpen) {
+						setOffsetX(0);
+						setActionsOpen(false);
+						return;
+					}
+					onEdit(reminder);
+				},
+				style: {
+					transform: `translate3d(${selectionMode ? 0 : offsetX}px, 0, 0)`,
+					transition: dragging ? "none" : "transform 280ms cubic-bezier(0.22, 1, 0.36, 1)"
+				},
+				className: `relative z-10 cursor-pointer select-none touch-pan-y transition-colors duration-150 ${selectionMode && selected ? "bg-gradient-to-br from-[#162752]/95 to-[#0D1A3B]/95" : "bg-gradient-to-br from-[#161E3B]/92 to-[#0D1329]/92 hover:from-[#1B2547]/95 hover:to-[#111936]/95"}`,
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex min-h-[76px] items-center gap-3.5 px-4 py-3.5",
+					children: [
+						selectionMode ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							role: "checkbox",
+							"aria-checked": selected,
+							onClick: (e) => {
+								e.stopPropagation();
+								onToggleSelect?.(reminder.id);
+							},
+							"aria-label": selected ? `Deselect ${reminder.title}` : `Select ${reminder.title}`,
+							className: "ios-spring-press flex h-11 w-11 shrink-0 items-center justify-center rounded-xl focus-visible:outline-2 focus-visible:outline-[#0A84FF]",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: `flex h-6 w-6 items-center justify-center rounded-lg border transition-all duration-150 ${selected ? "animate-check-pop border-[#0A84FF] bg-[#0A84FF] text-white shadow-[0_0_16px_rgba(10,132,255,0.6)]" : "border-white/45 bg-white/[0.05] text-transparent hover:border-sky-300/80"}`,
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 stroke-[3]" })
+							})
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: (e) => {
+								e.stopPropagation();
+								onToggleDone(reminder.id);
+							},
+							"aria-label": done ? `Mark ${reminder.title} not done` : `Complete ${reminder.title}`,
+							className: "ios-spring-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#0A84FF]",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: `flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-150 ${done ? "animate-check-pop border-[#30D158] bg-[#30D158] text-[#050712] shadow-[0_0_16px_rgba(48,209,88,0.6)]" : "border-white/40 bg-white/[0.04] text-transparent hover:border-white/75"}`,
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 stroke-[3]" })
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							"aria-hidden": "true",
+							style: { background: `linear-gradient(145deg, ${reminder.color || "#0A84FF"}, rgba(255,255,255,0.12))` },
+							className: `flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/25 text-lg shadow-[0_8px_18px_rgba(0,0,0,0.34),inset_0_1px_0_rgba(255,255,255,0.55)] transition-all ${done ? "grayscale opacity-55" : ""}`,
+							children: reminder.emoji || (reminder.isAlarm ? "⏰" : "🔔")
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "min-w-0 flex-1",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "flex items-center gap-2",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: `truncate text-[15px] font-semibold leading-snug ${done ? "text-slate-400/70 line-through" : "text-white"}`,
+										children: reminder.title
+									})
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-slate-300/80",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "inline-flex items-center gap-1 font-mono font-semibold text-white tabular-nums",
+											children: [reminder.isAlarm ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-3.5 w-3.5 text-red-400" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-3.5 w-3.5 text-sky-300" }), formatTimeDisplay(reminder.time, timeFormat)]
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											"aria-hidden": "true",
+											className: "text-slate-500",
+											children: "·"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: scheduleLabel }),
+										reminder.tag && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											"aria-hidden": "true",
+											className: "text-slate-500",
+											children: "·"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: reminder.tag })] }),
+										reminder.priority === "high" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											"aria-hidden": "true",
+											className: "text-slate-500",
+											children: "·"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-semibold text-amber-300",
+											children: priorityLabel
+										})] }),
+										isSnoozed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											"aria-hidden": "true",
+											className: "text-slate-500",
+											children: "·"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-semibold text-sky-300",
+											children: "Snoozed"
+										})] }),
+										subtasks.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											"aria-hidden": "true",
+											className: "text-slate-500",
+											children: "·"
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+											type: "button",
+											onClick: (e) => {
+												e.stopPropagation();
+												setChecklistOpen((v) => !v);
+											},
+											"aria-expanded": checklistOpen,
+											"aria-label": `${checklistOpen ? "Hide" : "Show"} ${subtasks.length} checklist steps`,
+											className: "inline-flex items-center gap-1 rounded-md px-1 py-0.5 font-mono text-xs font-semibold text-sky-300 transition-colors hover:bg-white/[0.08] tabular-nums",
+											children: [
+												/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ListChecks, { className: "h-3.5 w-3.5" }),
+												/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+													subtasksDone,
+													"/",
+													subtasks.length
+												] }),
+												checklistOpen ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronUp, { className: "h-3 w-3" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "h-3 w-3" })
+											]
+										})] })
+									]
+								}),
+								reminder.note && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "mt-0.5 truncate text-xs text-slate-400",
+									children: reminder.note
+								})
+							]
+						}),
+						!selectionMode && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex shrink-0 items-center gap-1",
+							children: [
+								!done && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: (e) => {
+										e.stopPropagation();
+										onFocus(reminder);
+									},
+									title: "Start focus session with ambient soundscapes",
+									"aria-label": `Focus on ${reminder.title}`,
+									className: "ios-spring-press flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-slate-100",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Timer, { className: "h-4 w-4" })
+								}),
+								onExportIcs && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: (e) => {
+										e.stopPropagation();
+										onExportIcs(reminder);
+									},
+									title: "Export .ics for Apple Calendar",
+									"aria-label": `Export ${reminder.title} to Apple Calendar`,
+									className: "ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-sky-300 sm:flex",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CalendarArrowDown, { className: "h-4 w-4" })
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: (e) => {
+										e.stopPropagation();
+										onSnooze(reminder.id, 10);
+									},
+									title: "Snooze 10 minutes",
+									"aria-label": `Snooze ${reminder.title}`,
+									className: "ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-amber-300 sm:flex",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Clock, { className: "h-4 w-4" })
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: (e) => {
+										e.stopPropagation();
+										onDelete(reminder.id);
+									},
+									title: "Delete reminder",
+									"aria-label": `Delete ${reminder.title}`,
+									className: "ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-500/15 hover:text-red-400 sm:flex",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4" })
+								})
+							]
+						})
+					]
+				}), checklistOpen && subtasks.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					"data-subtask-drawer": true,
+					onClick: (e) => e.stopPropagation(),
+					className: "border-t border-white/[0.08] bg-[#090E20]/65 px-4 py-2.5 pl-[64px]",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+						className: "space-y-1",
+						children: subtasks.map((st) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							onClick: () => onToggleSubtask?.(reminder.id, st.id),
+							className: "ios-spring-press flex min-h-[38px] w-full items-center gap-2.5 rounded-xl px-2 py-1 text-left transition-colors hover:bg-white/[0.05]",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: `flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-all ${st.done ? "animate-check-pop border-[#30D158] bg-[#30D158] text-[#050712]" : "border-white/35 bg-white/[0.04] text-transparent"}`,
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3 w-3 stroke-[3]" })
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: `text-xs font-medium ${st.done ? "text-slate-400/75 line-through" : "text-slate-200"}`,
+								children: st.title
+							})]
+						}) }, st.id))
+					})
+				})]
+			})
+		]
+	});
+};
+// src/components/VoiceNoteSheet.tsx
+function getSpeechCtor() {
+	if (typeof window === "undefined") return null;
+	const w = window;
+	return w.SpeechRecognition || w.webkitSpeechRecognition || null;
+}
+var VoiceNoteSheet = ({ open, editing, autoStartListening = false, defaultLanguage = "en-IN", vibrate, onSave, onDelete, onConvertToReminder, onCopied, onClose }) => {
+	const isSpeechSupported = (0, import_react.useMemo)(() => getSpeechCtor() !== null, []);
+	const [title, setTitle] = (0, import_react.useState)("");
+	const [content, setContent] = (0, import_react.useState)("");
+	const [interimText, setInterimText] = (0, import_react.useState)("");
+	const [pinned, setPinned] = (0, import_react.useState)(false);
+	const [lang, setLang] = (0, import_react.useState)(defaultLanguage);
+	const [isRecording, setIsRecording] = (0, import_react.useState)(false);
+	const [recordSeconds, setRecordSeconds] = (0, import_react.useState)(0);
+	const [errorMsg, setErrorMsg] = (0, import_react.useState)(null);
+	const [copiedState, setCopiedState] = (0, import_react.useState)(false);
+	const recRef = (0, import_react.useRef)(null);
+	const shouldKeepListeningRef = (0, import_react.useRef)(false);
+	const timerRef = (0, import_react.useRef)(null);
+	const langRef = (0, import_react.useRef)(lang);
+	langRef.current = lang;
+	const stopDictation = (0, import_react.useCallback)((abort = false) => {
+		shouldKeepListeningRef.current = false;
+		setIsRecording(false);
+		setInterimText("");
+		if (timerRef.current !== null) {
+			window.clearInterval(timerRef.current);
+			timerRef.current = null;
+		}
+		const rec = recRef.current;
+		if (!rec) return;
+		rec.onresult = null;
+		rec.onerror = null;
+		rec.onend = null;
+		recRef.current = null;
+		try {
+			if (abort) rec.abort();
+			else rec.stop();
+		} catch {}
+	}, []);
+	const startDictation = (0, import_react.useCallback)(() => {
+		const Ctor = getSpeechCtor();
+		if (!Ctor) {
+			setErrorMsg("Voice dictation requires Chrome, Edge, or Safari. You can still type your note below.");
+			return;
+		}
+		stopDictation(true);
+		setErrorMsg(null);
+		shouldKeepListeningRef.current = true;
+		setIsRecording(true);
+		triggerHaptic("light", vibrate);
+		timerRef.current = window.setInterval(() => {
+			setRecordSeconds((s) => s + 1);
+		}, 1e3);
+		const launch = () => {
+			if (!shouldKeepListeningRef.current) return;
+			try {
+				const rec = new Ctor();
+				rec.lang = getSpeechRecognitionLocale(langRef.current);
+				rec.continuous = true;
+				rec.interimResults = true;
+				rec.maxAlternatives = 1;
+				recRef.current = rec;
+				rec.onresult = (event) => {
+					let finalChunk = "";
+					let interimChunk = "";
+					for (let i = event.resultIndex; i < event.results.length; i++) {
+						const res = event.results[i];
+						const piece = res?.[0]?.transcript || "";
+						if (res?.isFinal) finalChunk += `${piece} `;
+						else interimChunk += `${piece} `;
+					}
+					if (finalChunk.trim()) {
+						const cleanFinal = finalChunk.trim();
+						setContent((prev) => {
+							const sep = prev.trim().length > 0 ? /[.!?]$/.test(prev.trim()) ? " " : " " : "";
+							return `${prev.trim()}${sep}${cleanFinal}`;
+						});
+					}
+					setInterimText(interimChunk.trim());
+				};
+				rec.onerror = (event) => {
+					const code = event?.error || "unknown";
+					if (code === "no-speech" || code === "aborted") return;
+					if (code === "not-allowed" || code === "service-not-allowed") {
+						setErrorMsg("Microphone permission blocked. Allow mic access in your browser bar.");
+						stopDictation(true);
+					} else {
+						setErrorMsg("Voice dictation paused. Tap the mic to continue speaking.");
+						stopDictation(true);
+					}
+				};
+				rec.onend = () => {
+					recRef.current = null;
+					setInterimText("");
+					if (shouldKeepListeningRef.current) window.setTimeout(launch, 220);
+				};
+				rec.start();
+			} catch {
+				setErrorMsg("Could not access microphone. Tap the mic button to try again.");
+				stopDictation(true);
+			}
+		};
+		launch();
+	}, [stopDictation, vibrate]);
+	(0, import_react.useEffect)(() => {
+		if (!open) {
+			stopDictation(true);
+			return;
+		}
+		if (editing) {
+			setTitle(editing.title);
+			setContent(editing.content);
+			setPinned(editing.pinned);
+			setRecordSeconds(editing.durationSec || 0);
+		} else {
+			setTitle("");
+			setContent("");
+			setPinned(false);
+			setRecordSeconds(0);
+		}
+		setLang(defaultLanguage);
+		setInterimText("");
+		setErrorMsg(null);
+		setCopiedState(false);
+		if (autoStartListening && !editing && isSpeechSupported) {
+			const id = window.setTimeout(() => startDictation(), 160);
+			return () => window.clearTimeout(id);
+		}
+	}, [
+		autoStartListening,
+		defaultLanguage,
+		editing,
+		isSpeechSupported,
+		open,
+		startDictation,
+		stopDictation
+	]);
+	(0, import_react.useEffect)(() => {
+		if (!open) return;
+		const onKey = (e) => {
+			if (e.key === "Escape") {
+				stopDictation(true);
+				onClose();
+			}
+		};
+		window.addEventListener("keydown", onKey);
+		return () => window.removeEventListener("keydown", onKey);
+	}, [
+		onClose,
+		open,
+		stopDictation
+	]);
+	if (!open) return null;
+	const fullContent = [content.trim(), interimText.trim()].filter(Boolean).join(" ");
+	const canSave = fullContent.length > 0 || title.trim().length > 0;
+	const formatTimer = (sec) => {
+		return `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
+	};
+	const handleSave = (e) => {
+		e.preventDefault();
+		if (!canSave) return;
+		stopDictation(true);
+		const finalBody = fullContent || title.trim();
+		onSave({
+			id: editing?.id,
+			title: deriveNoteTitle(title, finalBody),
+			content: finalBody,
+			pinned,
+			durationSec: recordSeconds > 0 ? recordSeconds : editing?.durationSec
+		});
+		onClose();
+	};
+	const handleCopy = async () => {
+		const text = [title.trim(), fullContent].filter(Boolean).join("\n\n");
+		if (!text) return;
+		try {
+			await navigator.clipboard.writeText(text);
+			setCopiedState(true);
+			onCopied?.();
+			window.setTimeout(() => setCopiedState(false), 1800);
+		} catch {}
+	};
+	const sheet = /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+		role: "dialog",
+		"aria-modal": "true",
+		"aria-label": editing ? "Edit voice note" : "New voice note",
+		onClick: () => {
+			stopDictation(true);
+			onClose();
+		},
+		className: "fixed inset-0 z-[85] flex items-end justify-center bg-black/70 backdrop-blur-sm sm:items-center sm:p-4",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+			onSubmit: handleSave,
+			onClick: (e) => e.stopPropagation(),
+			className: "glass-elevated animate-sheet-up flex max-h-[92dvh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex justify-center pt-3 sm:hidden",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-1.5 w-10 rounded-full bg-white/20" })
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between gap-2 border-b border-white/[0.08] px-5 py-4",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "min-w-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+							className: "font-display text-lg font-bold text-white",
+							children: editing ? "Voice Note" : "Voice Note Maker"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "mt-0.5 text-xs text-slate-400",
+							children: "Speak naturally to capture ideas, meeting points, or lists."
+						})]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex shrink-0 items-center gap-1.5",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: () => setPinned((p) => !p),
+							"aria-label": pinned ? "Unpin note" : "Pin note",
+							"aria-pressed": pinned,
+							className: `flex h-11 w-11 items-center justify-center rounded-xl border transition-colors ${pinned ? "border-amber-400/45 bg-amber-500/20 text-amber-300" : "border-white/[0.1] bg-white/[0.04] text-slate-400 hover:bg-white/[0.1] hover:text-white"}`,
+							children: pinned ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pin, { className: "h-4 w-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PinOff, { className: "h-4 w-4" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: () => {
+								stopDictation(true);
+								onClose();
+							},
+							"aria-label": "Close voice note maker",
+							className: "flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 hover:bg-white/[0.08] hover:text-white",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X$1, { className: "h-5 w-5" })
+						})]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex-1 space-y-4 overflow-y-auto px-5 py-4",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: `rounded-2xl border p-4 transition-colors ${isRecording ? "border-red-400/45 bg-red-500/12" : "border-white/[0.1] bg-white/[0.04]"}`,
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center justify-between gap-3",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: () => isRecording ? stopDictation(false) : startDictation(),
+										disabled: !isSpeechSupported,
+										className: `ios-spring-press flex min-h-[48px] items-center gap-2.5 rounded-2xl px-4 text-sm font-semibold text-white transition-all disabled:opacity-45 ${isRecording ? "bg-[#FF453A] shadow-[0_8px_24px_rgba(255,69,58,0.45)]" : "liquid-primary-btn"}`,
+										children: isRecording ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Square, { className: "h-4 w-4 fill-current" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Stop Dictating" })] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mic, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: content.trim() ? "Speak More" : "Start Dictating" })] })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-2",
+										children: [isRecording && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-red-300 tabular-nums",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2 w-2 animate-pulse rounded-full bg-red-400" }), formatTimer(recordSeconds)]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("select", {
+											"aria-label": "Dictation language",
+											value: lang,
+											onChange: (e) => {
+												setLang(e.target.value);
+												if (isRecording) {
+													stopDictation(true);
+													window.setTimeout(() => startDictation(), 150);
+												}
+											},
+											className: "min-h-[40px] max-w-[190px] rounded-xl border border-white/[0.12] bg-[#060812]/80 px-2.5 text-xs font-semibold text-slate-200 focus:border-[#0A84FF] focus:outline-none",
+											children: APP_LANGUAGES.map((l) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("option", {
+												value: l.id,
+												children: l.nativeName === l.name ? l.name : `${l.nativeName} · ${l.name}`
+											}, l.id))
+										})]
+									})]
+								}),
+								interimText && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "mt-3 rounded-xl border border-sky-400/25 bg-sky-500/10 px-3 py-2 text-xs text-sky-200 italic",
+									children: [
+										"Listening: “",
+										interimText,
+										"…”"
+									]
+								}),
+								errorMsg && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "mt-3 rounded-xl border border-amber-400/35 bg-amber-500/10 px-3 py-2 text-xs text-amber-100",
+									children: errorMsg
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+							className: "block",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-xs font-medium text-slate-400",
+								children: "Title (auto-generated if blank)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+								type: "text",
+								maxLength: 80,
+								value: title,
+								onChange: (e) => setTitle(e.target.value),
+								placeholder: "Meeting notes, Grocery list, Quick idea...",
+								className: "mt-1.5 min-h-[44px] w-full rounded-xl border border-white/[0.1] bg-[#060812]/80 px-3.5 text-base text-white placeholder:text-slate-500 focus:border-[#0A84FF] focus:outline-none sm:text-sm"
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("label", {
+							className: "block",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-xs font-medium text-slate-400",
+									children: "Note Content"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-mono text-[11px] text-slate-500 tabular-nums",
+									children: [fullContent.length, " chars"]
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("textarea", {
+								rows: 6,
+								value: content,
+								onChange: (e) => setContent(e.target.value),
+								placeholder: "Tap Start Dictating above or type your note here...",
+								className: "mt-1.5 w-full resize-none rounded-2xl border border-white/[0.1] bg-[#060812]/80 p-3.5 text-base leading-relaxed text-white placeholder:text-slate-500 focus:border-[#0A84FF] focus:outline-none sm:text-sm"
+							})]
+						}),
+						canSave && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-wrap items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => void handleCopy(),
+								className: "ios-spring-press inline-flex min-h-[42px] items-center gap-1.5 rounded-xl border border-white/[0.1] bg-white/[0.05] px-3.5 text-xs font-semibold text-slate-200 hover:bg-white/[0.1]",
+								children: copiedState ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5 text-emerald-400" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: "text-emerald-300",
+									children: "Copied"
+								})] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Copy, { className: "h-3.5 w-3.5 text-slate-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Copy Text" })] })
+							}), onConvertToReminder && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "button",
+								onClick: () => {
+									stopDictation(true);
+									const finalBody = fullContent || title.trim();
+									onConvertToReminder({
+										title: deriveNoteTitle(title, finalBody),
+										content: finalBody
+									});
+									onClose();
+								},
+								className: "ios-spring-press inline-flex min-h-[42px] items-center gap-1.5 rounded-xl border border-sky-400/30 bg-sky-500/15 px-3.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-3.5 w-3.5 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Turn into Reminder" })]
+							})]
+						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between gap-2.5 border-t border-white/[0.08] px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:py-4",
+					children: [editing && onDelete ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+						type: "button",
+						onClick: () => {
+							stopDictation(true);
+							onDelete(editing.id);
+							onClose();
+						},
+						className: "ios-spring-press flex min-h-[48px] items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 text-sm font-semibold text-red-400 hover:bg-red-500/20",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Delete" })]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						type: "button",
+						onClick: () => {
+							stopDictation(true);
+							onClose();
+						},
+						className: "ios-spring-press min-h-[48px] rounded-xl border border-white/[0.08] bg-white/[0.04] px-5 text-sm font-semibold text-slate-300 hover:bg-white/[0.08]",
+						children: "Cancel"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						type: "submit",
+						disabled: !canSave,
+						className: "liquid-primary-btn ios-spring-press min-h-[48px] flex-1 rounded-xl px-5 text-sm font-semibold text-white disabled:opacity-45",
+						children: editing ? "Save Note" : "Save Voice Note"
+					})]
+				})
+			]
+		})
+	});
+	return typeof document !== "undefined" ? (0, import_react_dom.createPortal)(sheet, document.body) : sheet;
+};
+// src/components/TodayView.tsx
+var TodayView = ({ reminders, notes, prefs, user = null, userName, deliveryHealth, calendarEvents, hasWorkspaceAccess, onToggleTimeFormat, onQuickAdd, onEditDraftInSheet, onSaveNote, onTogglePinNote, onDeleteNote, onOpenNewSheet, onOpenAuth, onGoogleSignIn, onToggleDone, onBulkComplete, onToggleSubtask, onSnooze, onDelete, onBulkDelete, onEdit, onFocus, onExportIcs, onApplyRoutine, onRequestDailyDigest, onConnectGoogle, onOpenDeliverySetup, onOpenVoiceShortcuts, liveAssistant, voiceNoteAutoTriggerSeq = 0, onRegisterVoiceClose }) => {
+	const { onTriggerIsland } = useDynamicIsland();
+	const deviceOs = (0, import_react.useMemo)(() => detectDeviceOs(), []);
+	const assistantProfile = (0, import_react.useMemo)(() => getPlatformAssistantProfile(deviceOs), [deviceOs]);
+	const [now, setNow] = (0, import_react.useState)(() => /* @__PURE__ */ new Date());
+	const [filter, setFilter] = (0, import_react.useState)("all");
+	const [selectedTag, setSelectedTag] = (0, import_react.useState)("all");
+	const [quickText, setQuickText] = (0, import_react.useState)("");
+	const [routinesOpen, setRoutinesOpen] = (0, import_react.useState)(false);
+	const [authPromptDismissed, setAuthPromptDismissed] = (0, import_react.useState)(false);
+	const [homeGoogleBusy, setHomeGoogleBusy] = (0, import_react.useState)(false);
+	const [homeAuthError, setHomeAuthError] = (0, import_react.useState)(null);
+	const [noteSheetOpen, setNoteSheetOpen] = (0, import_react.useState)(false);
+	const [editingNote, setEditingNote] = (0, import_react.useState)(null);
+	const [noteAutoStart, setNoteAutoStart] = (0, import_react.useState)(false);
+	const [showAllNotes, setShowAllNotes] = (0, import_react.useState)(false);
+	const lastNoteTriggerSeqRef = (0, import_react.useRef)(0);
+	const [selectionMode, setSelectionMode] = (0, import_react.useState)(false);
+	const [selectedIds, setSelectedIds] = (0, import_react.useState)(() => /* @__PURE__ */ new Set());
+	const [pendingBulkDeleteIds, setPendingBulkDeleteIds] = (0, import_react.useState)(null);
+	const openNewVoiceNote = (autoListen) => {
+		setEditingNote(null);
+		setNoteAutoStart(autoListen);
+		setNoteSheetOpen(true);
+	};
+	const openEditVoiceNote = (note) => {
+		setEditingNote(note);
+		setNoteAutoStart(false);
+		setNoteSheetOpen(true);
+	};
+	(0, import_react.useEffect)(() => {
+		if (!voiceNoteAutoTriggerSeq || voiceNoteAutoTriggerSeq === lastNoteTriggerSeqRef.current) return;
+		lastNoteTriggerSeqRef.current = voiceNoteAutoTriggerSeq;
+		openNewVoiceNote(true);
+	}, [voiceNoteAutoTriggerSeq]);
+	(0, import_react.useEffect)(() => {
+		if (!onRegisterVoiceClose) return;
+		onRegisterVoiceClose(noteSheetOpen ? () => setNoteSheetOpen(false) : null);
+		return () => onRegisterVoiceClose(null);
+	}, [noteSheetOpen, onRegisterVoiceClose]);
+	const toggleHomeOAuthHelp = () => {
+		setHomeAuthError((prev) => prev?.code === "auth/oauth-access-denied" ? null : buildGoogleOAuthTestingError({
+			hostname: typeof window !== "undefined" ? window.location.hostname : "",
+			projectId: FIREBASE_PROJECT_ID
+		}));
+	};
+	const handleHomeGoogleSignIn = async () => {
+		setHomeGoogleBusy(true);
+		setHomeAuthError(null);
+		const hostname = typeof window !== "undefined" ? window.location.hostname : "";
+		try {
+			await onGoogleSignIn();
+		} catch (err) {
+			const parsed = mapFirebaseAuthError(err, {
+				hostname,
+				projectId: FIREBASE_PROJECT_ID
+			});
+			if (parsed.code === "auth/popup-closed-by-user") setHomeAuthError(buildGoogleOAuthTestingError({
+				hostname,
+				projectId: FIREBASE_PROJECT_ID
+			}));
+			else {
+				setHomeAuthError(parsed);
+				onTriggerIsland("alert", {
+					title: parsed.title,
+					message: parsed.message
+				});
+			}
+		} finally {
+			setHomeGoogleBusy(false);
+		}
+	};
+	(0, import_react.useEffect)(() => {
+		const id = window.setInterval(() => setNow(/* @__PURE__ */ new Date()), 1e3);
+		return () => window.clearInterval(id);
+	}, []);
+	const todayKey = getTodayDateKey(now);
+	const clock = formatClockParts(now, prefs.timeFormat);
+	const dateLabel = formatLocalizedDate(now, prefs.language);
+	const todayItems = (0, import_react.useMemo)(() => reminders.filter((r) => isReminderScheduledForDate(r, now)), [reminders, now]);
+	const completedToday = (0, import_react.useMemo)(() => todayItems.filter((r) => isReminderDoneToday(r, todayKey)).length, [todayItems, todayKey]);
+	const pendingAlarmsToday = (0, import_react.useMemo)(() => todayItems.filter((r) => r.isAlarm && !isReminderDoneToday(r, todayKey)).length, [todayItems, todayKey]);
+	const nextCalendarEvent = (0, import_react.useMemo)(() => calendarEvents.filter((ev) => ev.dateKey === todayKey), [calendarEvents, todayKey])[0] || calendarEvents[0] || null;
+	const completionPct = todayItems.length === 0 ? 0 : Math.round(completedToday / todayItems.length * 100);
+	const upNext = (0, import_react.useMemo)(() => {
+		return reminders.filter((r) => !isReminderDoneToday(r, todayKey)).sort((a, b) => (a.dueAt || 0) - (b.dueAt || 0))[0] || null;
+	}, [reminders, todayKey]);
+	const availableTags = (0, import_react.useMemo)(() => {
+		const set = new Set(prefs.customTags);
+		reminders.forEach((r) => {
+			if (r.tag) set.add(r.tag);
+		});
+		return Array.from(set);
+	}, [prefs.customTags, reminders]);
+	const filteredReminders = (0, import_react.useMemo)(() => {
+		return reminders.filter((r) => {
+			const done = isReminderDoneToday(r, todayKey);
+			if (filter === "alarms" && !r.isAlarm) return false;
+			if (filter === "todo" && done) return false;
+			if (filter === "done" && !done) return false;
+			if (selectedTag !== "all" && r.tag !== selectedTag) return false;
+			return true;
+		}).sort((a, b) => {
+			const aDone = isReminderDoneToday(a, todayKey) ? 1 : 0;
+			const bDone = isReminderDoneToday(b, todayKey) ? 1 : 0;
+			if (aDone !== bDone) return aDone - bDone;
+			return a.time.localeCompare(b.time);
+		});
+	}, [
+		filter,
+		reminders,
+		selectedTag,
+		todayKey
+	]);
+	const visibleReminderIds = (0, import_react.useMemo)(() => filteredReminders.map((r) => r.id), [filteredReminders]);
+	(0, import_react.useEffect)(() => {
+		setSelectedIds((prev) => {
+			const pruned = pruneSelectedIds(prev, visibleReminderIds);
+			if (pruned.size === prev.size) return prev;
+			return pruned;
+		});
+		if (selectionMode && visibleReminderIds.length === 0) {
+			setSelectionMode(false);
+			setPendingBulkDeleteIds(null);
+		}
+	}, [selectionMode, visibleReminderIds]);
+	const exitSelectionMode = (0, import_react.useCallback)(() => {
+		setSelectionMode(false);
+		setSelectedIds(/* @__PURE__ */ new Set());
+		setPendingBulkDeleteIds(null);
+	}, []);
+	(0, import_react.useEffect)(() => {
+		if (!selectionMode || pendingBulkDeleteIds) return;
+		const handleKey = (e) => {
+			if (e.key === "Escape") {
+				e.preventDefault();
+				exitSelectionMode();
+			}
+		};
+		window.addEventListener("keydown", handleKey);
+		return () => window.removeEventListener("keydown", handleKey);
+	}, [
+		exitSelectionMode,
+		pendingBulkDeleteIds,
+		selectionMode
+	]);
+	const handleToggleSelectionMode = (0, import_react.useCallback)(() => {
+		if (selectionMode) exitSelectionMode();
+		else if (visibleReminderIds.length > 0) {
+			setSelectionMode(true);
+			setSelectedIds(/* @__PURE__ */ new Set());
+		}
+	}, [
+		exitSelectionMode,
+		selectionMode,
+		visibleReminderIds.length
+	]);
+	const handleEnterSelection = (0, import_react.useCallback)((id) => {
+		setSelectionMode(true);
+		setSelectedIds((prev) => {
+			const next = new Set(prev);
+			next.add(id);
+			return next;
+		});
+	}, []);
+	const handleToggleSelect = (0, import_react.useCallback)((id) => {
+		setSelectedIds((prev) => toggleSelectedId(prev, id));
+	}, []);
+	const handleToggleSelectAll = (0, import_react.useCallback)(() => {
+		setSelectedIds((prev) => toggleSelectAllVisible(prev, visibleReminderIds));
+	}, [visibleReminderIds]);
+	const pendingSelectedCount = (0, import_react.useMemo)(() => {
+		let count = 0;
+		for (const r of filteredReminders) if (selectedIds.has(r.id) && !isReminderDoneToday(r, todayKey)) count += 1;
+		return count;
+	}, [
+		filteredReminders,
+		selectedIds,
+		todayKey
+	]);
+	const allVisibleSelected = visibleReminderIds.length > 0 && visibleReminderIds.every((id) => selectedIds.has(id));
+	const handleBulkCompleteClick = (0, import_react.useCallback)(() => {
+		if (pendingSelectedCount === 0) return;
+		onBulkComplete(Array.from(selectedIds));
+		exitSelectionMode();
+	}, [
+		exitSelectionMode,
+		onBulkComplete,
+		pendingSelectedCount,
+		selectedIds
+	]);
+	const handleRequestBulkDelete = (0, import_react.useCallback)(() => {
+		if (selectedIds.size === 0) return;
+		setPendingBulkDeleteIds(Array.from(selectedIds));
+	}, [selectedIds]);
+	const bulkDeleteConfirmSpec = (0, import_react.useMemo)(() => {
+		if (!pendingBulkDeleteIds || pendingBulkDeleteIds.length === 0) return null;
+		const idSet = new Set(pendingBulkDeleteIds);
+		const targets = reminders.filter((r) => idSet.has(r.id));
+		if (targets.length === 0) return null;
+		const alarmCount = targets.filter((r) => r.isAlarm).length;
+		const previewItems = targets.slice(0, 5).map((r) => `• ${r.title}`);
+		if (targets.length > 5) previewItems.push(`…and ${targets.length - 5} more`);
+		const count = targets.length;
+		const previewLines = [{
+			label: "Reminders to delete",
+			value: `${count}`
+		}];
+		if (alarmCount > 0) previewLines.push({
+			label: "Active alarms canceled",
+			value: `${alarmCount}`
+		});
+		return {
+			kind: "bulk-delete",
+			title: `Delete ${count} reminder${count === 1 ? "" : "s"}?`,
+			description: "Selected reminders will be removed from your schedule and any scheduled OS alarms canceled. You can still tap Undo immediately after.",
+			confirmLabel: `Delete ${count}`,
+			previewLines,
+			bodyPreview: previewItems.join("\n"),
+			onConfirm: () => {
+				onBulkDelete(targets.map((r) => r.id));
+				exitSelectionMode();
+			}
+		};
+	}, [
+		exitSelectionMode,
+		onBulkDelete,
+		pendingBulkDeleteIds,
+		reminders
+	]);
+	const parsedPreview = (0, import_react.useMemo)(() => {
+		if (!quickText.trim()) return null;
+		return parseQuickInput(quickText, now);
+	}, [quickText, now]);
+	const visibleNotes = (0, import_react.useMemo)(() => showAllNotes ? notes : notes.slice(0, 3), [notes, showAllNotes]);
+	const handleQuickSubmit = (e) => {
+		e.preventDefault();
+		if (!quickText.trim()) return;
+		onQuickAdd(quickText.trim());
+		setQuickText("");
+	};
+	const handleOsAssistantActivate = () => {
+		if (!liveAssistant) return;
+		if (deviceOs === "ios") liveAssistant.activateSiriLive();
+		else if (deviceOs === "android") liveAssistant.activateGoogleAssistantLive();
+		else liveAssistant.activateNeutralVoiceLive();
+	};
+	const ringCircumference = 2 * Math.PI * 38;
+	const ringOffset = ringCircumference * (1 - completionPct / 100);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		className: "grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LiquidGlassCard, {
+				className: "rounded-[28px] p-5 sm:p-6 lg:sticky lg:top-6 lg:col-span-5",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex items-center justify-between gap-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "text-xs font-semibold tracking-wide text-slate-300/80 uppercase",
+							children: dateLabel
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
+							className: "font-display mt-1 text-lg font-bold tracking-tight text-white",
+							children: [getLocalizedGreeting(now, prefs.language), userName ? `, ${userName}` : ""]
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							type: "button",
+							onClick: onToggleTimeFormat,
+							className: "ios-spring-press min-h-[44px] rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] transition-colors hover:bg-white/[0.16] whitespace-nowrap shrink-0",
+							title: "Switch 12-hour or 24-hour clock",
+							children: prefs.timeFormat === "12h" ? "12H" : "24H"
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "bg-gradient-to-b from-white via-white to-sky-200/75 bg-clip-text font-mono text-[2.65rem] leading-none font-bold tracking-tight text-transparent tabular-nums drop-shadow-[0_6px_24px_rgba(10,132,255,0.28)] sm:text-6xl",
+								children: clock.hm
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+								className: "font-mono text-base font-medium text-slate-400 tabular-nums sm:text-lg",
+								children: [":", clock.sec]
+							}),
+							clock.period && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "ml-0.5 font-mono text-sm font-semibold text-sky-300 sm:ml-1 sm:text-base",
+								children: clock.period
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-5 flex items-center gap-4 border-t border-white/[0.14] pt-5 sm:mt-6 sm:gap-5",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "relative h-20 w-20 shrink-0 sm:h-24 sm:w-24",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", {
+								viewBox: "0 0 96 96",
+								className: "h-full w-full -rotate-90 drop-shadow-[0_8px_18px_rgba(48,209,88,0.4)]",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("defs", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("linearGradient", {
+										id: "liquidRingGrad",
+										x1: "0",
+										y1: "0",
+										x2: "1",
+										y2: "1",
+										children: [
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "0%",
+												stopColor: "#6EE7B7"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "55%",
+												stopColor: "#30D158"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("stop", {
+												offset: "100%",
+												stopColor: "#38BDF8"
+											})
+										]
+									}) }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: "48",
+										cy: "48",
+										r: "38",
+										fill: "none",
+										stroke: "rgba(255,255,255,0.12)",
+										strokeWidth: "8"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("circle", {
+										cx: "48",
+										cy: "48",
+										r: "38",
+										fill: "none",
+										stroke: "url(#liquidRingGrad)",
+										strokeWidth: "8",
+										strokeLinecap: "round",
+										strokeDasharray: ringCircumference,
+										strokeDashoffset: ringOffset,
+										className: "transition-[stroke-dashoffset] duration-500 ease-out"
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "absolute inset-0 flex flex-col items-center justify-center",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-mono text-xl font-bold text-white tabular-nums",
+									children: [completionPct, "%"]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									className: "font-mono text-[11px] text-slate-300/80 tabular-nums",
+									children: [
+										completedToday,
+										"/",
+										todayItems.length
+									]
+								})]
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "min-w-0 flex-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-xs font-semibold tracking-wide text-slate-300/75 uppercase",
+								children: "Up next"
+							}), upNext ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-1 truncate text-base font-bold text-white",
+								children: upNext.title
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-1 flex items-center gap-2 text-xs text-slate-300",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-mono font-semibold text-white tabular-nums",
+										children: formatTimeDisplay(upNext.time, prefs.timeFormat)
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										className: "text-slate-500",
+										children: "·"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-mono font-semibold text-sky-300 tabular-nums",
+										children: formatCountdown(upNext.dueAt, now.getTime())
+									})
+								]
+							})] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-1 text-sm font-semibold text-emerald-300",
+								children: "All clear for today"
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-5 flex items-center justify-between gap-3 border-t border-white/[0.14] pt-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "min-w-0 text-xs text-slate-300/85",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "font-semibold text-white",
+								children: deliveryHealth.notificationPermission === "granted" ? "Lock-Screen & Widget Active" : "Enable Lock-Screen Alarms"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-0.5 truncate text-slate-400",
+								children: deliveryHealth.notificationPermission === "granted" ? `${deliveryHealth.osScheduledCount} scheduled · Swipe-Up lock screen` : "Allow OS AlarmManager & Push for closed-app alerts"
+							})]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							onClick: onOpenDeliverySetup,
+							className: "ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-2xl border border-white/20 bg-white/[0.09] px-3.5 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] transition-colors hover:bg-white/[0.16] whitespace-nowrap",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldCheck, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: deliveryHealth.notificationPermission === "granted" ? "Inspect" : "Enable" })]
+						})]
+					}),
+					liveAssistant && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "mt-3.5 border-t border-white/[0.12] pt-3.5",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center justify-between gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "min-w-0 text-xs",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-semibold text-white",
+										children: assistantProfile.sectionTitle
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "mt-0.5 truncate text-slate-400",
+										children: "Tap once & speak — auto-saves with EMO eyes"
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: () => liveAssistant.toggleHandsFree(assistantProfile.source),
+									"aria-pressed": liveAssistant.handsFreeEnabled,
+									className: `ios-spring-press flex min-h-[38px] shrink-0 items-center gap-1.5 rounded-xl border px-3 text-xs font-semibold transition-colors whitespace-nowrap ${liveAssistant.handsFreeEnabled ? "border-emerald-400/50 bg-emerald-500/20 text-emerald-200" : "border-white/15 bg-white/[0.06] text-slate-200 hover:bg-white/[0.12]"}`,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radio, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: liveAssistant.handsFreeEnabled ? "Hands-Free ON" : "Hands-Free" })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "button",
+								onClick: handleOsAssistantActivate,
+								className: `ios-spring-press mt-2.5 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-2xl border px-4 text-xs font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] transition-all hover:brightness-110 whitespace-nowrap ${deviceOs === "ios" ? "border-indigo-400/35 bg-gradient-to-r from-indigo-500/25 via-sky-500/20 to-fuchsia-500/25" : deviceOs === "android" ? "border-emerald-400/35 bg-gradient-to-r from-sky-500/20 via-emerald-500/20 to-amber-500/20" : "border-sky-400/35 bg-gradient-to-r from-sky-500/22 via-blue-500/18 to-cyan-500/20"}`,
+								children: [deviceOs === "android" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "h-4 w-4 text-emerald-300" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mic, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: assistantProfile.buttonLabel })]
+							}),
+							onOpenVoiceShortcuts && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: onOpenVoiceShortcuts,
+								className: "mt-2 inline-flex min-h-[34px] w-full items-center justify-center rounded-xl text-[11px] font-medium text-sky-300/90 transition-colors hover:bg-white/[0.05] hover:text-sky-200",
+								children: "Quick voice examples & hands-free options"
+							})
+						]
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+				className: "flex flex-col gap-4 lg:col-span-7",
+				children: [
+					liveAssistant && (liveAssistant.oneTapActive || liveAssistant.handsFreeEnabled) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: `glass-surface rounded-2xl border p-3.5 ${liveAssistant.oneTapActive ? "border-sky-400/45 bg-sky-500/10" : "border-emerald-400/35 bg-emerald-500/10"}`,
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center justify-between gap-3",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex min-w-0 items-center gap-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									className: `flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white ${liveAssistant.oneTapActive ? "animate-pulse bg-[#FF453A] shadow-[0_0_20px_rgba(255,69,58,0.5)]" : "bg-emerald-500/80 shadow-[0_0_18px_rgba(48,209,88,0.35)]"}`,
+									children: liveAssistant.oneTapActive ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mic, { className: "h-4 w-4" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Radio, { className: "h-4 w-4" })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "min-w-0",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-bold text-white",
+										children: liveAssistant.oneTapActive ? assistantProfile.listeningTitle : liveAssistant.awaitingFollowUp ? "Listening for your command…" : `${assistantProfile.handsFreeTitle} Active`
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "mt-0.5 truncate text-xs text-slate-300",
+										children: liveAssistant.liveTranscript || (liveAssistant.oneTapActive ? "Speak your reminder & time — auto-saves automatically" : `Try ${assistantProfile.wakeExample}`)
+									})]
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex shrink-0 items-center gap-1.5",
+								children: [liveAssistant.oneTapActive && liveAssistant.liveTranscript && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: liveAssistant.finishOneTapSpeakNow,
+									className: "liquid-primary-btn ios-spring-press flex min-h-[40px] items-center gap-1 rounded-xl px-3 text-xs font-semibold text-white whitespace-nowrap",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Save" })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: () => liveAssistant.oneTapActive ? liveAssistant.cancelOneTapSpeak() : liveAssistant.setHandsFree(false),
+									"aria-label": "Stop live voice assistant",
+									className: "flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/[0.08] text-white hover:bg-white/[0.16]",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Square, { className: "h-3.5 w-3.5 fill-current" })
+								})]
+							})]
+						})
+					}),
+					!user && !authPromptDismissed && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "glass-surface rounded-2xl p-4",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-start justify-between gap-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "min-w-0",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+										className: "font-display text-sm font-bold text-white",
+										children: "Sign in & Connect Google"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "mt-0.5 text-xs leading-relaxed text-slate-400",
+										children: "Sign in right from Home with Google or Email & Password to keep your alarms synced."
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: () => setAuthPromptDismissed(true),
+									"aria-label": "Dismiss sign in card",
+									className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-400 hover:bg-white/[0.08] hover:text-white",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(X$1, { className: "h-4 w-4" })
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "mt-3 grid grid-cols-1 gap-2 sm:grid-cols-12",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "sm:col-span-7",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(GoogleSignInButton, {
+										onClick: handleHomeGoogleSignIn,
+										disabled: homeGoogleBusy,
+										label: homeGoogleBusy ? "Connecting…" : "Sign in with Google"
+									})
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: onOpenAuth,
+									className: "ios-spring-press flex min-h-[44px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.14] bg-white/[0.06] px-4 text-xs font-semibold text-white hover:bg-white/[0.12] sm:col-span-5 whitespace-nowrap",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LogIn, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Email / Sign In" })]
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "mt-2 flex items-center justify-end",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: toggleHomeOAuthHelp,
+									className: "inline-flex min-h-[36px] items-center gap-1.5 rounded-lg px-2 text-[11px] font-medium text-amber-200/90 transition-colors hover:bg-amber-500/10 hover:text-amber-100",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleQuestionMark, { className: "h-3.5 w-3.5 shrink-0" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Can’t proceed with Google Sign-In? Use Email instead" })]
+								})
+							}),
+							homeAuthError && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AuthRecoveryBanner, {
+								error: homeAuthError,
+								onUseEmailFallback: onOpenAuth
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("form", {
+						onSubmit: handleQuickSubmit,
+						className: "glass-surface rounded-2xl p-2.5",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
+								type: "text",
+								value: quickText,
+								onChange: (e) => setQuickText(e.target.value),
+								placeholder: t(prefs.language, "quickAddPlaceholder"),
+								maxLength: 100,
+								className: "min-h-[48px] min-w-0 flex-1 bg-transparent px-3 text-sm text-white placeholder:text-slate-400 focus:outline-none"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "submit",
+								disabled: !quickText.trim(),
+								className: "liquid-primary-btn ios-spring-press flex min-h-[48px] shrink-0 items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-45 whitespace-nowrap",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(prefs.language, "add") })]
+							})]
+						}), parsedPreview && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-2 flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.08] px-2.5 pt-2.5 text-xs",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-slate-300",
+								children: [
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										children: parsedPreview.emoji
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "truncate font-semibold text-white",
+										children: parsedPreview.title
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										className: "text-slate-500",
+										children: "·"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "inline-flex items-center gap-1 font-mono font-semibold text-sky-300 tabular-nums",
+										children: [parsedPreview.isAlarm ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-3.5 w-3.5 text-red-400" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, { className: "h-3.5 w-3.5 text-emerald-300" }), formatTimeDisplay(parsedPreview.time, prefs.timeFormat)]
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"aria-hidden": "true",
+										className: "text-slate-500",
+										children: "·"
+									}),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-slate-400",
+										children: formatDaysSummary(parsedPreview.days, parsedPreview.oneTimeDate)
+									})
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+								type: "button",
+								onClick: () => {
+									onEditDraftInSheet(parsedPreview);
+									setQuickText("");
+								},
+								className: "ios-spring-press inline-flex min-h-[34px] shrink-0 items-center gap-1 rounded-lg border border-white/[0.12] bg-white/[0.06] px-2.5 text-xs font-semibold text-slate-200 hover:bg-white/[0.12] whitespace-nowrap",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlidersHorizontal, { className: "h-3 w-3 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Customize" })]
+							})]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+						className: "glass-surface rounded-2xl p-4",
+						"aria-label": "Voice Notes",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "min-w-0",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-2",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "h-4 w-4 shrink-0 text-sky-300" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+											className: "font-display text-sm font-bold text-white",
+											children: t(prefs.language, "voiceNotes")
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											"aria-hidden": "true",
+											className: "text-slate-500",
+											children: "·"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-mono text-xs text-slate-400 tabular-nums",
+											children: [
+												notes.length,
+												" ",
+												notes.length === 1 ? "note" : "notes"
+											]
+										})
+									]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "mt-0.5 text-xs text-slate-400",
+									children: "Dictate thoughts, lists, or meeting notes hands-free and keep them pinned on Home."
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex shrink-0 items-center gap-2",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: () => openNewVoiceNote(true),
+									className: "liquid-primary-btn ios-spring-press inline-flex min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold text-white whitespace-nowrap sm:flex-none",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mic, { className: "h-4 w-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(prefs.language, "recordNote") })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: () => openNewVoiceNote(false),
+									"aria-label": "Write text note",
+									className: "ios-spring-press inline-flex min-h-[44px] items-center justify-center gap-1 rounded-xl border border-white/[0.12] bg-white/[0.05] px-3 text-xs font-semibold text-slate-200 hover:bg-white/[0.1] whitespace-nowrap",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(prefs.language, "writeNote") })]
+								})]
+							})]
+						}), notes.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-3.5 space-y-2 border-t border-white/[0.08] pt-3",
+							children: [visibleNotes.map((note) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "group flex items-start justify-between gap-3 rounded-2xl border border-white/[0.08] bg-[#0B1022]/65 p-3 transition-colors hover:border-sky-400/30 hover:bg-[#0E1530]/80",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: () => openEditVoiceNote(note),
+									className: "min-w-0 flex-1 text-left",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+										className: "flex items-center gap-2",
+										children: [
+											note.pinned && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pin, {
+												className: "h-3 w-3 shrink-0 text-amber-300",
+												"aria-label": "Pinned"
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+												className: "truncate text-xs font-bold text-white",
+												children: note.title
+											}),
+											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+												className: "shrink-0 font-mono text-[11px] text-slate-500 tabular-nums",
+												children: formatNoteTimestamp(note.updatedAt, now.getTime())
+											})
+										]
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "mt-1 line-clamp-2 text-xs leading-relaxed text-slate-400",
+										children: note.content
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: () => onTogglePinNote(note.id),
+									"aria-label": note.pinned ? `Unpin ${note.title}` : `Pin ${note.title}`,
+									className: `flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors ${note.pinned ? "bg-amber-500/15 text-amber-300 hover:bg-amber-500/25" : "text-slate-500 hover:bg-white/[0.08] hover:text-slate-200"}`,
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pin, { className: "h-3.5 w-3.5" })
+								})]
+							}, note.id)), notes.length > 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setShowAllNotes((v) => !v),
+								className: "inline-flex min-h-[36px] w-full items-center justify-center rounded-xl text-xs font-semibold text-sky-300 hover:bg-white/[0.05]",
+								children: showAllNotes ? "Show fewer notes" : `View all ${notes.length} notes`
+							})]
+						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "mt-3 rounded-xl border border-dashed border-white/[0.1] bg-white/[0.02] px-3.5 py-3 text-xs text-slate-400",
+							children: [
+								"Tap ",
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+									className: "text-slate-200",
+									children: "Record Note"
+								}),
+								" to turn your voice into a saved note — you can also convert any note into a scheduled reminder anytime."
+							]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "glass-surface rounded-2xl p-4",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "min-w-0 flex-1",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex flex-wrap items-center gap-x-2 gap-y-0.5",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Sparkles, { className: "h-4 w-4 shrink-0 text-sky-300" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+											className: "font-display text-sm font-bold text-white",
+											children: "Daily Briefing"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											"aria-hidden": "true",
+											className: "text-slate-500",
+											children: "·"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+											className: "font-mono text-xs text-slate-300 tabular-nums",
+											children: [
+												pendingAlarmsToday,
+												" alarm",
+												pendingAlarmsToday === 1 ? "" : "s",
+												" left"
+											]
+										})
+									]
+								}), nextCalendarEvent ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "mt-1 flex items-center gap-1.5 truncate text-xs text-slate-300",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3.5 w-3.5 shrink-0 text-emerald-300" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "font-mono font-semibold text-white tabular-nums",
+											children: nextCalendarEvent.allDay ? "All day" : formatTimeDisplay(nextCalendarEvent.timeHm, prefs.timeFormat)
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											"aria-hidden": "true",
+											className: "text-slate-500",
+											children: "·"
+										}),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+											className: "truncate",
+											children: nextCalendarEvent.summary
+										})
+									]
+								}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "mt-1 text-xs leading-relaxed text-slate-400",
+									children: hasWorkspaceAccess ? "No upcoming Google Calendar events found for today." : "Connect Google Calendar & Gmail to see events and send daily agenda digests."
+								})]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:items-center",
+								children: [hasWorkspaceAccess ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: onRequestDailyDigest,
+									className: "ios-spring-press inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.12] bg-white/[0.06] px-3 text-xs font-semibold text-slate-100 hover:bg-white/[0.12] whitespace-nowrap",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Mail, { className: "h-3.5 w-3.5 text-amber-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Email Digest" })]
+								}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: onConnectGoogle,
+									className: "ios-spring-press inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-xl border border-sky-400/30 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Calendar, { className: "h-3.5 w-3.5 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Connect Google" })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: () => setRoutinesOpen((v) => !v),
+									"aria-expanded": routinesOpen,
+									className: "ios-spring-press inline-flex min-h-[42px] items-center justify-center gap-1.5 rounded-xl border border-white/[0.12] bg-white/[0.06] px-3 text-xs font-semibold text-slate-100 hover:bg-white/[0.12] whitespace-nowrap",
+									children: [
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layers, { className: "h-3.5 w-3.5 text-sky-300" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Routines" }),
+										routinesOpen ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronUp, { className: "h-3.5 w-3.5 text-slate-400" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChevronDown, { className: "h-3.5 w-3.5 text-slate-400" })
+									]
+								})]
+							})]
+						}), routinesOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "mt-3.5 grid grid-cols-1 gap-2.5 border-t border-white/[0.08] pt-3.5 sm:grid-cols-3",
+							children: SMART_ROUTINES.map((pack) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex flex-col justify-between rounded-2xl border border-white/[0.08] bg-[#0B1022]/70 p-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "text-base",
+										"aria-hidden": "true",
+										children: pack.emoji
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs font-bold text-white",
+										children: pack.name
+									})]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+									className: "mt-1 text-[11px] leading-relaxed text-slate-400",
+									children: pack.subtitle
+								})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: () => onApplyRoutine(pack),
+									className: "ios-spring-press mt-3 inline-flex min-h-[38px] w-full items-center justify-center gap-1 rounded-xl border border-sky-400/25 bg-sky-500/15 px-3 text-xs font-semibold text-sky-200 hover:bg-sky-500/25",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "h-3.5 w-3.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
+										"Add ",
+										pack.items.length,
+										" ",
+										pack.items.length === 1 ? "step" : "steps"
+									] })]
+								})]
+							}, pack.id))
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "flex flex-col gap-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-wrap items-center justify-between gap-3",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SpringSegmentedControl, {
+								ariaLabel: "Filter reminders",
+								value: filter,
+								onChange: setFilter,
+								options: [
+									{
+										id: "all",
+										label: t(prefs.language, "filterAll")
+									},
+									{
+										id: "alarms",
+										label: t(prefs.language, "filterAlarms")
+									},
+									{
+										id: "todo",
+										label: t(prefs.language, "filterTodo")
+									},
+									{
+										id: "done",
+										label: t(prefs.language, "filterDone")
+									}
+								]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex items-center gap-2 shrink-0",
+								children: [(filteredReminders.length > 0 || selectionMode) && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: handleToggleSelectionMode,
+									"aria-pressed": selectionMode,
+									className: `ios-spring-press inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border px-3.5 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${selectionMode ? "border-sky-400/50 bg-[#0A84FF]/25 text-sky-100 hover:bg-[#0A84FF]/35" : "border-white/[0.1] bg-white/[0.05] text-slate-100 hover:bg-white/[0.1]"}`,
+									children: selectionMode ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X$1, { className: "h-4 w-4 text-sky-200" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Done" })] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SquareCheckBig, { className: "h-4 w-4 text-sky-300" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "Select" })] })
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									type: "button",
+									onClick: onOpenNewSheet,
+									className: "ios-spring-press hidden min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.09] sm:inline-flex whitespace-nowrap shrink-0",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-4 w-4 text-[#60A5FA]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: t(prefs.language, "detailedAlarm") })]
+								})]
+							})]
+						}), availableTags.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "no-scrollbar flex items-center gap-2 overflow-x-auto pb-1",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setSelectedTag("all"),
+								className: `ios-spring-press min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${selectedTag === "all" ? "bg-white/[0.14] text-white" : "bg-white/[0.04] text-slate-400 hover:text-slate-200"}`,
+								children: t(prefs.language, "allTags")
+							}), availableTags.map((tag) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: () => setSelectedTag(selectedTag === tag ? "all" : tag),
+								className: `ios-spring-press min-h-[36px] shrink-0 rounded-lg px-3 text-xs font-medium transition-colors whitespace-nowrap ${selectedTag === tag ? "bg-[#0A84FF]/25 text-[#93C5FD]" : "bg-white/[0.04] text-slate-400 hover:text-slate-200"}`,
+								children: tag
+							}, tag))]
+						})]
+					}),
+					filteredReminders.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "glass-surface flex flex-col items-center justify-center rounded-3xl px-6 py-12 text-center",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AlarmClock, { className: "h-9 w-9 text-slate-600" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+								className: "mt-3 text-base font-semibold text-slate-200",
+								children: t(prefs.language, "noRemindersYet")
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "mt-1 max-w-xs text-sm text-slate-400",
+								children: "Use the quick bar above or tap New Alarm to schedule an exact OS reminder."
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+								type: "button",
+								onClick: onOpenNewSheet,
+								className: "liquid-primary-btn ios-spring-press mt-5 min-h-[44px] rounded-xl px-5 text-sm font-semibold text-white",
+								children: t(prefs.language, "createAlarm")
+							})
+						]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: `flex flex-col gap-2.5 ${selectionMode ? "pb-24" : ""}`,
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "px-1 text-xs text-slate-500",
+							children: selectionMode ? "Tap reminders to select · Use the floating bar below to complete or delete" : "Swipe right to complete · Swipe left for snooze or delete · Hold a row to select"
+						}), filteredReminders.map((r) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SwipeableReminderRow, {
+							reminder: r,
+							timeFormat: prefs.timeFormat,
+							onToggleDone,
+							onToggleSubtask,
+							onSnooze,
+							onDelete,
+							onEdit,
+							onFocus,
+							onExportIcs,
+							selectionMode,
+							selected: selectedIds.has(r.id),
+							onToggleSelect: handleToggleSelect,
+							onEnterSelection: handleEnterSelection,
+							vibrate: prefs.vibrate
+						}, r.id))]
+					})
+				]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BulkActionBar, {
+				open: selectionMode,
+				selectedCount: selectedIds.size,
+				visibleCount: visibleReminderIds.length,
+				pendingSelectedCount,
+				allVisibleSelected,
+				onToggleSelectAll: handleToggleSelectAll,
+				onBulkComplete: handleBulkCompleteClick,
+				onRequestBulkDelete: handleRequestBulkDelete,
+				onCancel: exitSelectionMode
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ConfirmActionModal, {
+				action: bulkDeleteConfirmSpec,
+				busy: false,
+				onCancel: () => setPendingBulkDeleteIds(null),
+				onConfirm: () => {
+					bulkDeleteConfirmSpec?.onConfirm();
+				}
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)(VoiceNoteSheet, {
+				open: noteSheetOpen,
+				editing: editingNote,
+				autoStartListening: noteAutoStart,
+				defaultLanguage: prefs.language,
+				vibrate: prefs.vibrate,
+				onSave: onSaveNote,
+				onDelete: onDeleteNote,
+				onConvertToReminder: (noteDraft) => {
+					onEditDraftInSheet(buildReminderDraftFromNote(noteDraft, now));
+				},
+				onCopied: () => onTriggerIsland("success", {
+					title: "Note Copied",
+					message: "Copied voice note to clipboard"
+				}),
+				onClose: () => setNoteSheetOpen(false)
+			})
+		]
+	});
+};
+// src/lib/liveAssistant.ts
+var LIVE_PREFS_KEY = "rm_live_assistant_prefs_v1";
+var WAKE_PREFIX_REGEX = /^(?:(?:hey|ok|okay)\s+(siri|google|reminder\s*me)|reminder\s*me)(?:[\s,.:;!?-]+|$)/i;
+var ACTION_PREAMBLE_REGEX = /^(?:please\s+|can\s+you\s+|could\s+you\s+)?(?:(?:add|create|set|schedule|save|make|new)\s+(?:a\s+|an\s+|new\s+)?(alarm|reminder|task)|remind\s+me)(?:\s+(?:in|on|with|using)\s+(?:the\s+)?reminder\s*me(?:\s+app)?)?(?:\s+(?:to|that|for|about))?(?:[\s,.:;!?-]+|$)/i;
+var APP_ONLY_FILLER_REGEX = /^(?:(?:in|on|with|using)\s+(?:the\s+)?reminder\s*me(?:\s+app)?|open\s+reminder\s*me)(?:[\s,.:;!?-]+|$)/i;
+function normalizeWhitespace(raw) {
+	return raw.replace(/\s+/g, " ").trim();
+}
+function stripCommandPreambles(raw) {
+	let working = normalizeWhitespace(raw);
+	let isAlarmHint = false;
+	const actionMatch = working.match(ACTION_PREAMBLE_REGEX);
+	if (actionMatch) {
+		if ((actionMatch[1] || "").toLowerCase() === "alarm") isAlarmHint = true;
+		working = normalizeWhitespace(working.slice(actionMatch[0].length));
+	}
+	const appMatch = working.match(APP_ONLY_FILLER_REGEX);
+	if (appMatch) working = normalizeWhitespace(working.slice(appMatch[0].length));
+	working = normalizeWhitespace(working.replace(/\s+(?:in|on|using)\s+(?:the\s+)?reminder\s*me(?:\s+app)?[.!?]*$/i, ""));
+	working = normalizeWhitespace(working.replace(/^(?:to|that)\s+/i, ""));
+	if (/\b(alarm|wake\s+me)\b/i.test(working)) isAlarmHint = true;
+	return {
+		commandText: working,
+		isAlarmHint
+	};
+}
+/**
+* Checks whether a spoken transcript starts with a wake phrase
+* ("Hey Siri", "Hey Google", "OK Google", "Hey reminderme") and extracts
+* the reminder payload. Returns null if no wake phrase was spoken.
+*/
+function extractWakeCommand(transcript) {
+	const cleaned = normalizeWhitespace(transcript);
+	if (!cleaned) return null;
+	const wakeMatch = cleaned.match(WAKE_PREFIX_REGEX);
+	if (!wakeMatch) return null;
+	const wakeTarget = (wakeMatch[1] || "reminderme").toLowerCase().replace(/\s+/g, "");
+	const source = wakeTarget === "siri" ? "siri" : wakeTarget === "google" ? "google-assistant" : "voice";
+	const afterWake = normalizeWhitespace(cleaned.slice(wakeMatch[0].length));
+	if (!afterWake) return {
+		source,
+		commandText: "",
+		isAlarmHint: false,
+		needsFollowUp: true
+	};
+	const { commandText, isAlarmHint } = stripCommandPreambles(afterWake);
+	if (!commandText) return {
+		source,
+		commandText: "",
+		isAlarmHint,
+		needsFollowUp: true
+	};
+	return {
+		source,
+		commandText,
+		isAlarmHint,
+		needsFollowUp: false
+	};
+}
+/**
+* Parses direct speech from a 1-tap Live Assistant button.
+* Works whether the user says "Hey Siri, add a reminder to call Mom at 5pm"
+* OR just "Call Mom at 5pm".
+*/
+function parseDirectAssistantSpeech(transcript, defaultSource = "voice") {
+	const cleaned = normalizeWhitespace(transcript);
+	if (!cleaned) return null;
+	const wakeResult = extractWakeCommand(cleaned);
+	if (wakeResult) return wakeResult;
+	const { commandText, isAlarmHint } = stripCommandPreambles(cleaned);
+	if (!commandText) return {
+		source: defaultSource,
+		commandText: cleaned,
+		isAlarmHint,
+		needsFollowUp: false
+	};
+	return {
+		source: defaultSource,
+		commandText,
+		isAlarmHint,
+		needsFollowUp: false
+	};
+}
+function loadLiveAssistantPrefs() {
+	try {
+		const raw = localStorage.getItem(LIVE_PREFS_KEY);
+		if (!raw) return {
+			siriConnected: false,
+			googleAssistantConnected: false
+		};
+		const parsed = JSON.parse(raw);
+		return {
+			siriConnected: Boolean(parsed.siriConnected),
+			googleAssistantConnected: Boolean(parsed.googleAssistantConnected)
+		};
+	} catch {
+		return {
+			siriConnected: false,
+			googleAssistantConnected: false
+		};
+	}
+}
+function saveLiveAssistantPrefs(prefs) {
+	try {
+		localStorage.setItem(LIVE_PREFS_KEY, JSON.stringify(prefs));
+	} catch {}
+}
+// src/hooks/useLiveVoiceAssistant.ts
+function getSpeechRecognitionCtor() {
+	if (typeof window === "undefined") return null;
+	const w = window;
+	return w.SpeechRecognition || w.webkitSpeechRecognition || null;
+}
+function useLiveVoiceAssistant({ vibrate, speechLang, onAutoSaveCommand, onStatusNotice }) {
+	const isSupported = (0, import_react.useMemo)(() => getSpeechRecognitionCtor() !== null, []);
+	const [prefs, setPrefs] = (0, import_react.useState)(() => loadLiveAssistantPrefs());
+	const [handsFreeEnabled, setHandsFreeEnabled] = (0, import_react.useState)(false);
+	const [oneTapActive, setOneTapActive] = (0, import_react.useState)(false);
+	const [activeSource, setActiveSource] = (0, import_react.useState)("voice");
+	const [awaitingFollowUp, setAwaitingFollowUp] = (0, import_react.useState)(false);
+	const [liveTranscript, setLiveTranscript] = (0, import_react.useState)("");
+	const [errorMessage, setErrorMessage] = (0, import_react.useState)(null);
+	const recRef = (0, import_react.useRef)(null);
+	const restartTimerRef = (0, import_react.useRef)(null);
+	const silenceTimerRef = (0, import_react.useRef)(null);
+	const handsFreeRef = (0, import_react.useRef)(false);
+	const oneTapRef = (0, import_react.useRef)(false);
+	const activeSourceRef = (0, import_react.useRef)("voice");
+	const awaitingFollowUpRef = (0, import_react.useRef)(false);
+	const followUpSourceRef = (0, import_react.useRef)("voice");
+	const latestTranscriptRef = (0, import_react.useRef)("");
+	const lastCommittedRef = (0, import_react.useRef)({
+		key: "",
+		at: 0
+	});
+	const callbacksRef = (0, import_react.useRef)({
+		onAutoSaveCommand,
+		onStatusNotice
+	});
+	callbacksRef.current = {
+		onAutoSaveCommand,
+		onStatusNotice
+	};
+	const speechLangRef = (0, import_react.useRef)(speechLang);
+	speechLangRef.current = speechLang;
+	const clearTimers = (0, import_react.useCallback)(() => {
+		if (restartTimerRef.current !== null) {
+			window.clearTimeout(restartTimerRef.current);
+			restartTimerRef.current = null;
+		}
+		if (silenceTimerRef.current !== null) {
+			window.clearTimeout(silenceTimerRef.current);
+			silenceTimerRef.current = null;
+		}
+	}, []);
+	const stopEngine = (0, import_react.useCallback)((abort = true) => {
+		clearTimers();
+		const rec = recRef.current;
+		if (!rec) return;
+		rec.onresult = null;
+		rec.onerror = null;
+		rec.onend = null;
+		recRef.current = null;
+		try {
+			if (abort) rec.abort();
+			else rec.stop();
+		} catch {}
+	}, [clearTimers]);
+	const commitCommand = (0, import_react.useCallback)((payload) => {
+		const normalizedKey = `${payload.source}:${payload.commandText.toLowerCase().trim()}`;
+		const now = Date.now();
+		if (lastCommittedRef.current.key === normalizedKey && now - lastCommittedRef.current.at < 3e3) return;
+		lastCommittedRef.current = {
+			key: normalizedKey,
+			at: now
+		};
+		triggerHaptic("medium", vibrate);
+		callbacksRef.current.onAutoSaveCommand(payload);
+	}, [vibrate]);
+	const startEngine = (0, import_react.useCallback)((mode) => {
+		const Ctor = getSpeechRecognitionCtor();
+		if (!Ctor) {
+			setErrorMessage("Live microphone voice requires Chrome, Safari, or Edge.");
+			setHandsFreeEnabled(false);
+			handsFreeRef.current = false;
+			setOneTapActive(false);
+			oneTapRef.current = false;
+			callbacksRef.current.onStatusNotice?.("alert", "Voice Unsupported", "Open reminderme in Chrome or Safari for live voice.");
+			return false;
+		}
+		stopEngine(true);
+		setErrorMessage(null);
+		latestTranscriptRef.current = "";
+		setLiveTranscript("");
+		try {
+			const rec = new Ctor();
+			rec.lang = speechLangRef.current ? getSpeechRecognitionLocale(speechLangRef.current) : typeof navigator !== "undefined" && navigator.language ? navigator.language : "en-IN";
+			rec.continuous = mode === "hands-free";
+			rec.interimResults = true;
+			rec.maxAlternatives = 1;
+			recRef.current = rec;
+			rec.onresult = (event) => {
+				let combined = "";
+				let newestFinal = "";
+				for (let i = event.resultIndex; i < event.results.length; i++) {
+					const item = event.results[i];
+					const chunk = item?.[0]?.transcript || "";
+					combined += `${chunk} `;
+					if (item?.isFinal) newestFinal += `${chunk} `;
+				}
+				const displayText = combined.trim();
+				const finalText = newestFinal.trim();
+				latestTranscriptRef.current = displayText;
+				setLiveTranscript(displayText);
+				if (mode === "one-tap") {
+					if (silenceTimerRef.current !== null) {
+						window.clearTimeout(silenceTimerRef.current);
+						silenceTimerRef.current = null;
+					}
+					if (finalText) {
+						const parsed = parseDirectAssistantSpeech(finalText, activeSourceRef.current);
+						if (parsed && parsed.commandText) {
+							oneTapRef.current = false;
+							setOneTapActive(false);
+							stopEngine(true);
+							setLiveTranscript("");
+							commitCommand({
+								source: parsed.source,
+								commandText: parsed.commandText,
+								isAlarmHint: parsed.isAlarmHint
+							});
+							if (handsFreeRef.current) restartTimerRef.current = window.setTimeout(() => {
+								if (handsFreeRef.current && !oneTapRef.current) startEngine("hands-free");
+							}, 600);
+						}
+					} else if (displayText) silenceTimerRef.current = window.setTimeout(() => {
+						if (!oneTapRef.current) return;
+						const spoken = latestTranscriptRef.current.trim();
+						if (!spoken) return;
+						const parsed = parseDirectAssistantSpeech(spoken, activeSourceRef.current);
+						oneTapRef.current = false;
+						setOneTapActive(false);
+						stopEngine(true);
+						setLiveTranscript("");
+						if (parsed && parsed.commandText) commitCommand({
+							source: parsed.source,
+							commandText: parsed.commandText,
+							isAlarmHint: parsed.isAlarmHint
+						});
+						if (handsFreeRef.current) restartTimerRef.current = window.setTimeout(() => {
+							if (handsFreeRef.current && !oneTapRef.current) startEngine("hands-free");
+						}, 600);
+					}, 1450);
+					return;
+				}
+				if (!finalText) return;
+				if (awaitingFollowUpRef.current) {
+					const followParsed = parseDirectAssistantSpeech(finalText, followUpSourceRef.current);
+					awaitingFollowUpRef.current = false;
+					setAwaitingFollowUp(false);
+					setLiveTranscript("");
+					if (followParsed && followParsed.commandText) commitCommand({
+						source: followParsed.source,
+						commandText: followParsed.commandText,
+						isAlarmHint: followParsed.isAlarmHint
+					});
+					return;
+				}
+				const wake = extractWakeCommand(finalText);
+				if (!wake) return;
+				if (wake.needsFollowUp) {
+					awaitingFollowUpRef.current = true;
+					followUpSourceRef.current = wake.source;
+					setAwaitingFollowUp(true);
+					triggerHaptic("light", vibrate);
+					callbacksRef.current.onStatusNotice?.("created", wake.source === "siri" ? "Siri Listening…" : wake.source === "google-assistant" ? "Google Assistant Listening…" : "reminderme Listening…", "Say your reminder & time now");
+					return;
+				}
+				setLiveTranscript("");
+				commitCommand({
+					source: wake.source,
+					commandText: wake.commandText,
+					isAlarmHint: wake.isAlarmHint
+				});
+			};
+			rec.onerror = (event) => {
+				const code = event?.error || "unknown";
+				if (code === "no-speech" || code === "aborted") return;
+				if (code === "not-allowed" || code === "service-not-allowed") {
+					setErrorMessage("Microphone permission blocked. Allow mic access in your browser bar.");
+					handsFreeRef.current = false;
+					setHandsFreeEnabled(false);
+					oneTapRef.current = false;
+					setOneTapActive(false);
+					stopEngine(true);
+					callbacksRef.current.onStatusNotice?.("alert", "Microphone Blocked", "Allow microphone access to use live voice.");
+				}
+			};
+			rec.onend = () => {
+				recRef.current = null;
+				if (mode === "one-tap") {
+					if (oneTapRef.current) {
+						const spoken = latestTranscriptRef.current.trim();
+						oneTapRef.current = false;
+						setOneTapActive(false);
+						setLiveTranscript("");
+						if (spoken) {
+							const parsed = parseDirectAssistantSpeech(spoken, activeSourceRef.current);
+							if (parsed && parsed.commandText) commitCommand({
+								source: parsed.source,
+								commandText: parsed.commandText,
+								isAlarmHint: parsed.isAlarmHint
+							});
+						}
+					}
+					if (handsFreeRef.current) restartTimerRef.current = window.setTimeout(() => {
+						if (handsFreeRef.current && !oneTapRef.current) startEngine("hands-free");
+					}, 500);
+					return;
+				}
+				if (handsFreeRef.current && !oneTapRef.current) restartTimerRef.current = window.setTimeout(() => {
+					if (handsFreeRef.current && !oneTapRef.current) startEngine("hands-free");
+				}, 450);
+			};
+			rec.start();
+			return true;
+		} catch {
+			setErrorMessage("Could not start microphone. Please try tapping again.");
+			return false;
+		}
+	}, [
+		commitCommand,
+		stopEngine,
+		vibrate
+	]);
+	const startOneTapSpeak = (0, import_react.useCallback)((source = "voice") => {
+		activeSourceRef.current = source;
+		setActiveSource(source);
+		oneTapRef.current = true;
+		setOneTapActive(true);
+		awaitingFollowUpRef.current = false;
+		setAwaitingFollowUp(false);
+		triggerHaptic("light", vibrate);
+		if (startEngine("one-tap")) {
+			const label = source === "siri" ? "Siri Voice Active" : source === "google-assistant" ? "Google Assistant Active" : "Live Voice Active";
+			callbacksRef.current.onStatusNotice?.("created", label, "Speak your reminder — auto-saves automatically");
+		}
+	}, [startEngine, vibrate]);
+	const finishOneTapSpeakNow = (0, import_react.useCallback)(() => {
+		const spoken = latestTranscriptRef.current.trim();
+		oneTapRef.current = false;
+		setOneTapActive(false);
+		stopEngine(true);
+		setLiveTranscript("");
+		if (spoken) {
+			const parsed = parseDirectAssistantSpeech(spoken, activeSourceRef.current);
+			if (parsed && parsed.commandText) commitCommand({
+				source: parsed.source,
+				commandText: parsed.commandText,
+				isAlarmHint: parsed.isAlarmHint
+			});
+		}
+		if (handsFreeRef.current) restartTimerRef.current = window.setTimeout(() => {
+			if (handsFreeRef.current && !oneTapRef.current) startEngine("hands-free");
+		}, 500);
+	}, [
+		commitCommand,
+		startEngine,
+		stopEngine
+	]);
+	const cancelOneTapSpeak = (0, import_react.useCallback)(() => {
+		oneTapRef.current = false;
+		setOneTapActive(false);
+		stopEngine(true);
+		setLiveTranscript("");
+		if (handsFreeRef.current) restartTimerRef.current = window.setTimeout(() => {
+			if (handsFreeRef.current && !oneTapRef.current) startEngine("hands-free");
+		}, 450);
+	}, [startEngine, stopEngine]);
+	const setHandsFree = (0, import_react.useCallback)((enabled, preferredSource) => {
+		if (enabled) {
+			handsFreeRef.current = true;
+			setHandsFreeEnabled(true);
+			awaitingFollowUpRef.current = false;
+			setAwaitingFollowUp(false);
+			if (startEngine("hands-free")) {
+				triggerHaptic("light", vibrate);
+				const phraseHint = preferredSource === "siri" ? "Say “Hey Siri, add a reminder in reminderme…”" : preferredSource === "google-assistant" ? "Say “Hey Google, add a reminder in reminderme…”" : "Say “Hey reminderme, add a reminder…”";
+				callbacksRef.current.onStatusNotice?.("success", "Hands-Free Live", phraseHint);
+			}
+		} else {
+			handsFreeRef.current = false;
+			setHandsFreeEnabled(false);
+			awaitingFollowUpRef.current = false;
+			setAwaitingFollowUp(false);
+			if (!oneTapRef.current) {
+				stopEngine(true);
+				setLiveTranscript("");
+			}
+		}
+	}, [
+		startEngine,
+		stopEngine,
+		vibrate
+	]);
+	const toggleHandsFree = (0, import_react.useCallback)((preferredSource) => {
+		setHandsFree(!handsFreeRef.current, preferredSource);
+	}, [setHandsFree]);
+	const activateSiriLive = (0, import_react.useCallback)(() => {
+		const next = {
+			...prefs,
+			siriConnected: true
+		};
+		setPrefs(next);
+		saveLiveAssistantPrefs(next);
+		startOneTapSpeak("siri");
+	}, [prefs, startOneTapSpeak]);
+	const activateGoogleAssistantLive = (0, import_react.useCallback)(() => {
+		const next = {
+			...prefs,
+			googleAssistantConnected: true
+		};
+		setPrefs(next);
+		saveLiveAssistantPrefs(next);
+		startOneTapSpeak("google-assistant");
+	}, [prefs, startOneTapSpeak]);
+	const activateNeutralVoiceLive = (0, import_react.useCallback)(() => {
+		startOneTapSpeak("voice");
+	}, [startOneTapSpeak]);
+	(0, import_react.useEffect)(() => {
+		return () => {
+			handsFreeRef.current = false;
+			oneTapRef.current = false;
+			stopEngine(true);
+		};
+	}, [stopEngine]);
+	return {
+		isSupported,
+		siriConnected: prefs.siriConnected,
+		googleAssistantConnected: prefs.googleAssistantConnected,
+		handsFreeEnabled,
+		oneTapActive,
+		activeSource,
+		awaitingFollowUp,
+		liveTranscript,
+		errorMessage,
+		startOneTapSpeak,
+		finishOneTapSpeakNow,
+		cancelOneTapSpeak,
+		setHandsFree,
+		toggleHandsFree,
+		activateSiriLive,
+		activateGoogleAssistantLive,
+		activateNeutralVoiceLive
+	};
+}
+// src/lib/api.ts
+var memoryToken = null;
+var configuredBaseUrl = "";
+/**
+* Safely normalize a user-provided backend URL.
+* Allows empty string (same origin) or valid http(s):// origins only.
+*/
+function normalizeServerBaseUrl(raw) {
+	const trimmed = (raw || "").trim().replace(/\/+$/, "");
+	if (!trimmed) return "";
+	try {
+		const parsed = new URL(trimmed);
+		if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return "";
+		return `${parsed.origin}${parsed.pathname}`.replace(/\/+$/, "");
+	} catch {
+		return "";
+	}
+}
+function setApiBaseUrl(url) {
+	configuredBaseUrl = normalizeServerBaseUrl(url);
+}
+function getApiBaseUrl() {
+	if (configuredBaseUrl) return configuredBaseUrl;
+	return normalizeServerBaseUrl("reminder.makeuperfect.in");
+}
+async function hydrateAuthToken() {
+	if (memoryToken) return memoryToken;
+	if (isNativeApp()) memoryToken = await nativeTokenGet();
+	return memoryToken;
+}
+async function setAuthToken(token) {
+	memoryToken = token;
+	if (isNativeApp()) await nativeTokenSet(token);
+}
+async function apiRequest(path, options = {}) {
+	const base = options.baseOverride !== void 0 ? normalizeServerBaseUrl(options.baseOverride) : getApiBaseUrl();
+	const headers = { "X-Requested-With": "reminderme-app" };
+	if (options.body !== void 0) headers["Content-Type"] = "application/json";
+	const token = await hydrateAuthToken();
+	if (token) headers["Authorization"] = `Bearer ${token}`;
+	const controller = new AbortController();
+	const timer = globalThis.setTimeout(() => controller.abort(), options.timeoutMs ?? 6e3);
+	try {
+		const res = await fetch(`${base}${path}`, {
+			method: options.method || "GET",
+			credentials: "include",
+			headers,
+			signal: controller.signal,
+			body: options.body !== void 0 ? JSON.stringify(options.body) : void 0
+		});
+		const data = await res.json().catch(() => ({}));
+		if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+		return data;
+	} catch (err) {
+		if (err?.name === "AbortError") throw new Error("Server timed out — working offline");
+		throw err;
+	} finally {
+		globalThis.clearTimeout(timer);
+	}
+}
+var api = {
+	ping: async (baseOverride) => {
+		const target = baseOverride !== void 0 ? normalizeServerBaseUrl(baseOverride) : getApiBaseUrl();
+		const start = performance.now();
+		const res = await apiRequest("/api/health", {
+			timeoutMs: 4500,
+			baseOverride: target
+		});
+		const latencyMs = Math.max(1, Math.round(performance.now() - start));
+		return {
+			ok: !!res.ok,
+			latencyMs,
+			engine: res.engine === "cloudflare-worker-d1" ? "Cloudflare Edge + D1" : res.engine === "node-server" ? "Node.js Server" : res.service || "Cloud Backend",
+			target: target || "Same Origin"
+		};
+	},
+	me: () => apiRequest("/api/me"),
+	login: (payload) => apiRequest("/api/login", {
+		method: "POST",
+		body: payload
+	}),
+	signup: (payload) => apiRequest("/api/signup", {
+		method: "POST",
+		body: payload
+	}),
+	logout: () => apiRequest("/api/logout", { method: "POST" }),
+	saveReminders: (reminders) => apiRequest("/api/reminders", {
+		method: "PUT",
+		body: { reminders }
+	}),
+	markDone: (id, source = "app") => apiRequest(`/api/reminders/${encodeURIComponent(id)}/done`, {
+		method: "POST",
+		body: { source }
+	}),
+	snooze: (id, minutes, source = "app") => apiRequest(`/api/reminders/${encodeURIComponent(id)}/snooze`, {
+		method: "POST",
+		body: {
+			minutes,
+			source
+		}
+	}),
+	sendEvents: (events) => apiRequest("/api/events", {
+		method: "POST",
+		body: { events }
+	}),
+	analytics: () => apiRequest("/api/analytics"),
+	adminAnalytics: () => apiRequest("/api/admin/analytics"),
+	pushKey: () => apiRequest("/api/push/key"),
+	pushSubscribe: (subscription, tz) => apiRequest("/api/push/subscribe", {
+		method: "POST",
+		body: {
+			subscription,
+			tz
+		}
+	}),
+	pushFcm: (token, platform, tz) => apiRequest("/api/push/fcm", {
+		method: "POST",
+		body: {
+			token,
+			platform,
+			tz
+		}
+	}),
+	pushTest: (delaySec = 0) => apiRequest("/api/push/test", {
+		method: "POST",
+		body: { delaySec }
+	})
+};
+// src/lib/audio.ts
+var ALARM_SOUNDS = [
+	{
+		id: "radar",
+		label: "Radar Sonar",
+		subtitle: "Crisp ascending alarm pulse"
+	},
+	{
+		id: "marimba",
+		label: "Marimba Chimes",
+		subtitle: "Warm melodic wake pattern"
+	},
+	{
+		id: "apex",
+		label: "Apex Alert",
+		subtitle: "High-clarity dual-tone beacon"
+	},
+	{
+		id: "digital-alarm",
+		label: "Classic Digital",
+		subtitle: "Traditional quadruple beep"
+	},
+	{
+		id: "morning",
+		label: "Morning Breeze",
+		subtitle: "Gentle rising major chord"
+	},
+	{
+		id: "synth",
+		label: "Arcade Pulse",
+		subtitle: "Bright rhythmic arpeggio"
+	},
+	{
+		id: "gong",
+		label: "Zen Gong",
+		subtitle: "Deep resonant harmonic bell"
+	}
+];
+var NOTIF_SOUNDS = [
+	{
+		id: "glass",
+		label: "Glass Chime"
+	},
+	{
+		id: "digital",
+		label: "Digital Ping"
+	},
+	{
+		id: "bell",
+		label: "Soft Vibraphone"
+	},
+	{
+		id: "zen",
+		label: "Singing Bowl"
+	},
+	{
+		id: "droplet",
+		label: "Water Droplet"
+	}
+];
+/**
+* Resolves the human-readable ringtone label for Dynamic Island, Settings, and Ringing Screen.
+* Always shows the actual uploaded custom filename when `sound === 'custom'`.
+*/
+function getAlarmSoundLabel(sound, customAudioName) {
+	const id = sound || "radar";
+	if (id === "custom") {
+		const cleaned = customAudioName?.trim();
+		return cleaned ? cleaned : "Custom Ringtone";
+	}
+	return ALARM_SOUNDS.find((s) => s.id === id)?.label ?? "Radar Sonar";
+}
+var sharedCtx = null;
+var alarmLoopTimer = null;
+var alarmStopTimeout = null;
+var customAudioEl = null;
+var customAudioBlobUrl = null;
+var previewAudioEl = null;
+var previewBlobUrl = null;
+var previewStopTimeout = null;
+var previewOnEndedCb = null;
+function getAudioContext() {
+	if (typeof window === "undefined") return null;
+	const Ctx = window.AudioContext || window.webkitAudioContext;
+	if (!Ctx) return null;
+	if (!sharedCtx) sharedCtx = new Ctx();
+	if (sharedCtx.state === "suspended") sharedCtx.resume().catch(() => {});
+	return sharedCtx;
+}
+function playTone(ctx, freq, startOffset, duration, type = "sine", gainPeak = .22) {
+	const now = ctx.currentTime + startOffset;
+	const osc = ctx.createOscillator();
+	const gain = ctx.createGain();
+	osc.type = type;
+	osc.frequency.setValueAtTime(freq, now);
+	gain.gain.setValueAtTime(1e-4, now);
+	gain.gain.exponentialRampToValueAtTime(gainPeak, now + .015);
+	gain.gain.exponentialRampToValueAtTime(1e-4, now + duration);
+	osc.connect(gain);
+	gain.connect(ctx.destination);
+	osc.start(now);
+	osc.stop(now + duration + .02);
+}
+function playNotificationChime(sound = "glass") {
+	const ctx = getAudioContext();
+	if (!ctx) return;
+	switch (sound) {
+		case "digital":
+			playTone(ctx, 880, 0, .1, "triangle", .2);
+			playTone(ctx, 1174, .11, .14, "triangle", .22);
+			break;
+		case "bell":
+			playTone(ctx, 523.25, 0, .45, "sine", .22);
+			playTone(ctx, 1046.5, .02, .35, "sine", .1);
+			break;
+		case "zen":
+			playTone(ctx, 432, 0, .9, "sine", .22);
+			playTone(ctx, 648, .04, .7, "sine", .08);
+			break;
+		case "droplet":
+			playTone(ctx, 600, 0, .08, "sine", .18);
+			playTone(ctx, 980, .07, .12, "sine", .22);
+			break;
+		default:
+			playTone(ctx, 1046.5, 0, .25, "sine", .18);
+			playTone(ctx, 1568, .12, .35, "sine", .16);
+	}
+}
+function playAlarmCycle(sound = "radar") {
+	const ctx = getAudioContext();
+	if (!ctx) return;
+	switch (sound) {
+		case "marimba":
+			[
+				523.25,
+				659.25,
+				783.99,
+				1046.5
+			].forEach((f, i) => playTone(ctx, f, i * .14, .22, "triangle", .26));
+			break;
+		case "apex":
+			[
+				987.77,
+				1318.5,
+				987.77,
+				1318.5
+			].forEach((f, i) => playTone(ctx, f, i * .16, .14, "sawtooth", .16));
+			break;
+		case "digital-alarm":
+			[
+				0,
+				.14,
+				.28,
+				.42
+			].forEach((t) => playTone(ctx, 1760, t, .09, "square", .14));
+			break;
+		case "morning":
+			[
+				440,
+				554.37,
+				659.25,
+				880
+			].forEach((f, i) => playTone(ctx, f, i * .18, .42, "sine", .22));
+			break;
+		case "synth":
+			[
+				440,
+				587.33,
+				659.25,
+				880,
+				659.25
+			].forEach((f, i) => playTone(ctx, f, i * .11, .14, "square", .12));
+			break;
+		case "gong":
+			playTone(ctx, 196, 0, 1.3, "sine", .28);
+			playTone(ctx, 294, .03, 1, "triangle", .14);
+			break;
+		default: [
+			0,
+			.22,
+			.44
+		].forEach((t) => {
+			playTone(ctx, 880, t, .14, "sine", .26);
+			playTone(ctx, 1320, t + .05, .12, "triangle", .18);
+		});
+	}
+}
+var IDB_NAME = "reminderme-audio-v1";
+var IDB_STORE = "ringtones";
+function openAudioDb() {
+	return new Promise((resolve, reject) => {
+		const req = indexedDB.open(IDB_NAME, 1);
+		req.onupgradeneeded = () => {
+			if (!req.result.objectStoreNames.contains(IDB_STORE)) req.result.createObjectStore(IDB_STORE);
+		};
+		req.onsuccess = () => resolve(req.result);
+		req.onerror = () => reject(req.error);
+	});
+}
+async function saveCustomRingtone(file) {
+	const db = await openAudioDb();
+	const buf = await file.arrayBuffer();
+	return new Promise((resolve, reject) => {
+		const tx = db.transaction(IDB_STORE, "readwrite");
+		tx.objectStore(IDB_STORE).put({
+			name: file.name,
+			type: file.type,
+			data: buf
+		}, "primary");
+		tx.oncomplete = () => resolve(file.name);
+		tx.onerror = () => reject(tx.error);
+	});
+}
+async function fileToBase64(file) {
+	const buf = await file.arrayBuffer();
+	const bytes = new Uint8Array(buf);
+	let binary = "";
+	const chunkSize = 32768;
+	for (let i = 0; i < bytes.length; i += chunkSize) binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+	return btoa(binary);
+}
+async function loadCustomRingtoneUrl() {
+	try {
+		const db = await openAudioDb();
+		return await new Promise((resolve) => {
+			const req = db.transaction(IDB_STORE, "readonly").objectStore(IDB_STORE).get("primary");
+			req.onsuccess = () => {
+				const val = req.result;
+				if (!val?.data) return resolve(null);
+				const blob = new Blob([val.data], { type: val.type || "audio/mpeg" });
+				resolve({
+					name: val.name,
+					url: URL.createObjectURL(blob)
+				});
+			};
+			req.onerror = () => resolve(null);
+		});
+	} catch {
+		return null;
+	}
+}
+async function deleteCustomRingtone() {
+	stopPreviewSound();
+	try {
+		const db = await openAudioDb();
+		await new Promise((resolve) => {
+			const tx = db.transaction(IDB_STORE, "readwrite");
+			tx.objectStore(IDB_STORE).delete("primary");
+			tx.oncomplete = () => resolve();
+			tx.onerror = () => resolve();
+		});
+	} catch {}
+}
+function stopPreviewSound() {
+	if (previewStopTimeout !== null) {
+		window.clearTimeout(previewStopTimeout);
+		previewStopTimeout = null;
+	}
+	if (previewAudioEl) {
+		try {
+			previewAudioEl.onended = null;
+			previewAudioEl.pause();
+			previewAudioEl.currentTime = 0;
+		} catch {}
+		previewAudioEl = null;
+	}
+	if (previewBlobUrl) {
+		try {
+			URL.revokeObjectURL(previewBlobUrl);
+		} catch {}
+		previewBlobUrl = null;
+	}
+	if (previewOnEndedCb) {
+		const cb = previewOnEndedCb;
+		previewOnEndedCb = null;
+		cb();
+	}
+}
+/**
+* Plays a clean preview of either a built-in alarm synth OR the actual uploaded custom audio file
+* stored in IndexedDB, returning the exact ringtone display label for Dynamic Island.
+*/
+async function previewAlarmSound(sound = "radar", options) {
+	stopPreviewSound();
+	const maxDurationMs = options?.maxDurationMs ?? 1e4;
+	if (sound === "custom") {
+		const loaded = await loadCustomRingtoneUrl();
+		if (!loaded) {
+			const fallbackLabel = getAlarmSoundLabel("radar");
+			playAlarmCycle("radar");
+			return {
+				playing: false,
+				label: fallbackLabel,
+				usedCustom: false,
+				error: "Custom ringtone file not found. Choose an audio file again."
+			};
+		}
+		const label = loaded.name || options?.customAudioName || "Custom Ringtone";
+		const el = new Audio(loaded.url);
+		el.loop = false;
+		el.preload = "auto";
+		previewAudioEl = el;
+		previewBlobUrl = loaded.url;
+		previewOnEndedCb = options?.onEnded ?? null;
+		el.onended = () => {
+			stopPreviewSound();
+		};
+		try {
+			await el.play();
+			previewStopTimeout = window.setTimeout(() => {
+				stopPreviewSound();
+			}, maxDurationMs);
+			return {
+				playing: true,
+				label,
+				usedCustom: true
+			};
+		} catch {
+			stopPreviewSound();
+			return {
+				playing: false,
+				label,
+				usedCustom: false,
+				error: "Browser blocked audio playback. Tap Preview again to listen."
+			};
+		}
+	}
+	const label = getAlarmSoundLabel(sound, options?.customAudioName);
+	playAlarmCycle(sound);
+	previewOnEndedCb = options?.onEnded ?? null;
+	previewStopTimeout = window.setTimeout(() => {
+		stopPreviewSound();
+	}, 1500);
+	return {
+		playing: true,
+		label,
+		usedCustom: false
+	};
+}
+function stopAlarmSound() {
+	if (alarmLoopTimer !== null) {
+		window.clearInterval(alarmLoopTimer);
+		alarmLoopTimer = null;
+	}
+	if (alarmStopTimeout !== null) {
+		window.clearTimeout(alarmStopTimeout);
+		alarmStopTimeout = null;
+	}
+	if (customAudioEl) {
+		try {
+			customAudioEl.pause();
+			customAudioEl.currentTime = 0;
+		} catch {}
+		customAudioEl = null;
+	}
+	if (customAudioBlobUrl) {
+		try {
+			URL.revokeObjectURL(customAudioBlobUrl);
+		} catch {}
+		customAudioBlobUrl = null;
+	}
+	if (typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate(0);
+}
+async function startAlarmSound(sound = "radar", durationSec = 30, vibrate = true) {
+	stopPreviewSound();
+	stopAlarmSound();
+	if (sound === "custom") {
+		const loaded = await loadCustomRingtoneUrl();
+		if (loaded) {
+			const el = new Audio(loaded.url);
+			el.loop = true;
+			customAudioEl = el;
+			customAudioBlobUrl = loaded.url;
+			el.play().catch(() => {
+				playAlarmCycle("radar");
+				alarmLoopTimer = window.setInterval(() => playAlarmCycle("radar"), 1500);
+			});
+		} else {
+			playAlarmCycle("radar");
+			alarmLoopTimer = window.setInterval(() => playAlarmCycle("radar"), 1500);
+		}
+	} else {
+		playAlarmCycle(sound);
+		alarmLoopTimer = window.setInterval(() => {
+			playAlarmCycle(sound);
+			if (vibrate && typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate([
+				320,
+				160,
+				320
+			]);
+		}, 1500);
+	}
+	if (vibrate && typeof navigator !== "undefined" && "vibrate" in navigator) navigator.vibrate([
+		380,
+		160,
+		380,
+		160,
+		500
+	]);
+	if (durationSec > 0) alarmStopTimeout = window.setTimeout(() => stopAlarmSound(), durationSec * 1e3);
 }
 // src/lib/icsExport.ts
 var DAY_MAP = [
@@ -53238,6 +56320,48 @@ function formatDailyDigestEmail(reminders, calendarEvents, timeFormat) {
 		].join("\n")
 	};
 }
+function formatGoogleCalDateUtc(date) {
+	const pad = (n) => String(n).padStart(2, "0");
+	return `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}T${pad(date.getUTCHours())}${pad(date.getUTCMinutes())}00Z`;
+}
+/**
+* Builds an official Google Calendar template link that pre-fills the event
+* directly in the user's Google Calendar with ZERO OAuth verification warning.
+*/
+function buildDirectGoogleCalendarUrl(reminder) {
+	const [hh, mm] = (reminder.time || "09:00").split(":").map((n) => parseInt(n, 10) || 0);
+	const startDate = reminder.oneTimeDate ? /* @__PURE__ */ new Date(`${reminder.oneTimeDate}T${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}:00`) : new Date(reminder.dueAt || Date.now());
+	startDate.setHours(hh, mm, 0, 0);
+	const endDate = new Date(startDate.getTime() + 18e5);
+	const checklistText = reminder.subtasks && reminder.subtasks.length > 0 ? `\n\nChecklist:\n${reminder.subtasks.map((s) => `${s.done ? "[x]" : "[ ]"} ${s.title}`).join("\n")}` : "";
+	const params = new URLSearchParams({
+		action: "TEMPLATE",
+		text: `${reminder.emoji || "⏰"} ${reminder.title}`,
+		dates: `${formatGoogleCalDateUtc(startDate)}/${formatGoogleCalDateUtc(endDate)}`,
+		details: `${reminder.note || "Scheduled via reminderme"}${checklistText}`.trim()
+	});
+	if (!reminder.oneTimeDate) {
+		if (Array.isArray(reminder.days) && reminder.days.length > 0 && reminder.days.length < 7) {
+			const byDay = reminder.days.filter((d) => d >= 0 && d <= 6).map((d) => DAY_TO_RRULE[d]).join(",");
+			if (byDay) params.set("recur", `RRULE:FREQ=WEEKLY;BYDAY=${byDay}`);
+		} else params.set("recur", "RRULE:FREQ=DAILY");
+	}
+	return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+/**
+* Builds an official Gmail web compose link pre-filled with recipient, subject,
+* and body — works for any Gmail account with ZERO OAuth verification warning.
+*/
+function buildDirectGmailComposeUrl(payload) {
+	const params = new URLSearchParams({
+		view: "cm",
+		fs: "1",
+		su: payload.subject,
+		body: payload.bodyText
+	});
+	if (payload.to?.trim()) params.set("to", payload.to.trim());
+	return `https://mail.google.com/mail/?${params.toString()}`;
+}
 // src/hooks/usePWAInstall.ts
 function usePWAInstall() {
 	const [deferredPrompt, setDeferredPrompt] = (0, import_react.useState)(null);
@@ -53297,6 +56421,7 @@ function useOnlineStatus() {
 }
 // src/hooks/useReminderApp.ts
 var KEY_REMINDERS = "rm_reminders_v3";
+var KEY_NOTES = "rm_notes_v1";
 var KEY_PREFS = "rm_prefs_v3";
 var KEY_EVENTS = "rm_events_v3";
 var KEY_PENDING_SYNC = "rm_pending_sync_v3";
@@ -53315,7 +56440,8 @@ var DEFAULT_PREFS = {
 		"Personal"
 	],
 	customAudioName: null,
-	serverBaseUrl: ""
+	serverBaseUrl: "",
+	language: "en-IN"
 };
 function createStarterReminders() {
 	const now = /* @__PURE__ */ new Date();
@@ -53397,15 +56523,11 @@ function createStarterReminders() {
 function makeId(prefix = "r") {
 	return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
 }
-function formatServerAuthError(err) {
-	const msg = err instanceof Error ? err.message : String(err);
-	if (/failed to fetch|networkerror|load failed|timed out/i.test(msg)) return "No custom backend server is reachable on this host. Use \"Sign in with Google\" above for instant serverless cloud sync.";
-	return msg || "Authentication failed";
-}
-function useReminderApp(onHardwareBack) {
+function useReminderApp(onHardwareBack, onAppUrlOpen) {
 	const isOnline = useOnlineStatus();
 	const [hydrated, setHydrated] = (0, import_react.useState)(false);
 	const [reminders, setReminders] = (0, import_react.useState)([]);
+	const [notes, setNotes] = (0, import_react.useState)([]);
 	const [prefs, setPrefs] = (0, import_react.useState)(DEFAULT_PREFS);
 	const [events, setEvents] = (0, import_react.useState)([]);
 	const [user, setUser] = (0, import_react.useState)(null);
@@ -53432,12 +56554,14 @@ function useReminderApp(onHardwareBack) {
 	const [gmailError, setGmailError] = (0, import_react.useState)(null);
 	const firedInSessionRef = (0, import_react.useRef)(/* @__PURE__ */ new Set());
 	const remindersRef = (0, import_react.useRef)([]);
+	const notesRef = (0, import_react.useRef)([]);
 	const prefsRef = (0, import_react.useRef)(DEFAULT_PREFS);
 	const userRef = (0, import_react.useRef)(null);
 	const cloudIdsRef = (0, import_react.useRef)(/* @__PURE__ */ new Set());
 	const firestoreUnsubRef = (0, import_react.useRef)(null);
 	const firestoreReadyRef = (0, import_react.useRef)(false);
 	remindersRef.current = reminders;
+	notesRef.current = notes;
 	prefsRef.current = prefs;
 	userRef.current = user;
 	const pushToast = (0, import_react.useCallback)((text, opts) => {
@@ -53476,7 +56600,7 @@ function useReminderApp(onHardwareBack) {
 			swRegistered = !!reg;
 			if (reg && "pushManager" in reg) pushSub = !!await reg.pushManager.getSubscription();
 		} catch {}
-		const osScheduledCount = await syncOsSchedules(remindersRef.current);
+		const osScheduledCount = await syncOsSchedules(remindersRef.current, prefsRef.current.timeFormat);
 		setDeliveryHealth((prev) => ({
 			...prev,
 			platform: getRuntimePlatform(),
@@ -53552,7 +56676,7 @@ function useReminderApp(onHardwareBack) {
 		setReminders((prev) => {
 			const next = updater(prev);
 			deviceStorageSet(KEY_REMINDERS, JSON.stringify(next));
-			syncOsSchedules(next).then((count) => {
+			syncOsSchedules(next, prefsRef.current.timeFormat).then((count) => {
 				setDeliveryHealth((h) => ({
 					...h,
 					osScheduledCount: count
@@ -53562,6 +56686,74 @@ function useReminderApp(onHardwareBack) {
 			return next;
 		});
 	}, [scheduleCloudSync]);
+	const commitNotes = (0, import_react.useCallback)((updater) => {
+		setNotes((prev) => {
+			const next = sortVoiceNotes(updater(prev));
+			deviceStorageSet(KEY_NOTES, JSON.stringify(next));
+			return next;
+		});
+	}, []);
+	const upsertNote = (0, import_react.useCallback)((draft) => {
+		const now = Date.now();
+		if (draft.id) {
+			commitNotes((prev) => prev.map((n) => n.id === draft.id ? {
+				...n,
+				title: draft.title.trim() || "Voice Note",
+				content: draft.content.trim(),
+				pinned: draft.pinned,
+				durationSec: draft.durationSec ?? n.durationSec,
+				updatedAt: now
+			} : n));
+			triggerHaptic("light", prefsRef.current.vibrate);
+			pushToast(`Updated note "${draft.title}"`, {
+				title: "Note Saved",
+				tone: "success",
+				expression: "happy"
+			});
+		} else {
+			const created = createVoiceNote({
+				title: draft.title,
+				content: draft.content,
+				pinned: draft.pinned,
+				durationSec: draft.durationSec,
+				nowMs: now
+			});
+			commitNotes((prev) => [created, ...prev]);
+			recordEvent("voice_note_created", { id: created.id });
+			triggerHaptic("success", prefsRef.current.vibrate);
+			pushToast(`Saved "${created.title}"`, {
+				title: "Voice Note Saved",
+				tone: "success",
+				expression: "excited"
+			});
+		}
+	}, [
+		commitNotes,
+		pushToast,
+		recordEvent
+	]);
+	const togglePinNote = (0, import_react.useCallback)((id) => {
+		commitNotes((prev) => prev.map((n) => n.id === id ? {
+			...n,
+			pinned: !n.pinned,
+			updatedAt: Date.now()
+		} : n));
+		triggerHaptic("light", prefsRef.current.vibrate);
+	}, [commitNotes]);
+	const deleteNote = (0, import_react.useCallback)((id) => {
+		const target = notesRef.current.find((n) => n.id === id);
+		if (!target) return;
+		const snapshot = [...notesRef.current];
+		commitNotes((prev) => prev.filter((n) => n.id !== id));
+		triggerHaptic("warning", prefsRef.current.vibrate);
+		pushToast(`Deleted note "${target.title}"`, {
+			title: "Note Removed",
+			tone: "danger",
+			expression: "sad",
+			undoLabel: "Undo",
+			onUndo: () => commitNotes(() => snapshot)
+		});
+	}, [commitNotes, pushToast]);
 	const updatePrefs = (0, import_react.useCallback)((patch) => {
 		setPrefs((prev) => {
 			const next = {
@@ -53570,6 +56762,7 @@ function useReminderApp(onHardwareBack) {
 			};
 			deviceStorageSet(KEY_PREFS, JSON.stringify(next));
 			if (patch.serverBaseUrl !== void 0) setApiBaseUrl(patch.serverBaseUrl);
+			if (patch.timeFormat !== void 0) syncOsSchedules(remindersRef.current, next.timeFormat);
 			return next;
 		});
 	}, []);
@@ -53838,6 +57031,68 @@ function useReminderApp(onHardwareBack) {
 		pushToast,
 		recordEvent
 	]);
+	const completeRemindersBulk = (0, import_react.useCallback)((ids) => {
+		if (ids.length === 0) return;
+		const todayKey = getTodayDateKey();
+		const snapshot = [...remindersRef.current];
+		const result = applyBulkComplete(snapshot, ids, todayKey, prefsRef.current.autoDeleteCompleted, /* @__PURE__ */ new Date());
+		if (result.completedCount === 0) return;
+		triggerHaptic("success", prefsRef.current.vibrate);
+		commitReminders(() => result.next);
+		result.completedIds.forEach((id) => {
+			recordEvent("reminder_done", {
+				id,
+				bulk: true
+			});
+			if (userRef.current?.authProvider === "server" && navigator.onLine) api.markDone(id, "app").catch(() => {});
+		});
+		if (ringingReminder && result.completedIds.includes(ringingReminder.id)) {
+			stopAlarmSound();
+			setRingingReminder(null);
+		}
+		const label = result.completedCount === 1 ? "Completed 1 reminder" : `Completed ${result.completedCount} reminders`;
+		const detail = result.clearedCount > 0 ? `${label} (${result.clearedCount} one-time cleared)` : label;
+		pushToast(detail, {
+			title: "Completed",
+			tone: "success",
+			expression: "happy",
+			undoLabel: "Undo",
+			onUndo: () => commitReminders(() => snapshot)
+		});
+	}, [
+		commitReminders,
+		pushToast,
+		recordEvent,
+		ringingReminder
+	]);
+	const deleteRemindersBulk = (0, import_react.useCallback)((ids) => {
+		if (ids.length === 0) return;
+		const snapshot = [...remindersRef.current];
+		const result = applyBulkDelete(snapshot, ids);
+		if (result.deletedCount === 0) return;
+		triggerHaptic("warning", prefsRef.current.vibrate);
+		commitReminders(() => result.next);
+		result.deletedIds.forEach((id) => recordEvent("reminder_delete", {
+			id,
+			bulk: true
+		}));
+		if (ringingReminder && result.deletedIds.includes(ringingReminder.id)) {
+			stopAlarmSound();
+			setRingingReminder(null);
+		}
+		pushToast(result.deletedCount === 1 ? "Removed 1 reminder" : `Removed ${result.deletedCount} reminders`, {
+			title: "Deleted",
+			tone: "danger",
+			expression: "sad",
+			undoLabel: "Undo",
+			onUndo: () => commitReminders(() => snapshot)
+		});
+	}, [
+		commitReminders,
+		pushToast,
+		recordEvent,
+		ringingReminder
+	]);
 	const triggerRingingNow = (0, import_react.useCallback)((r) => {
 		setRingingReminder(r);
 		if (r.isAlarm) startAlarmSound(r.sound || prefsRef.current.defaultAlarmSound, prefsRef.current.alarmDurationSec, prefsRef.current.vibrate);
@@ -53981,6 +57236,28 @@ function useReminderApp(onHardwareBack) {
 		});
 	}, []);
 	const signInWithGoogle = (0, import_react.useCallback)(async () => {
+		const { user: fbUser } = await signInWithGoogleBasic();
+		const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+		const profile = {
+			id: fbUser.uid,
+			email: fbUser.email || "",
+			name: fbUser.displayName || fbUser.email?.split("@")[0] || "User",
+			tz,
+			createdAt: Date.now(),
+			photoURL: fbUser.photoURL,
+			authProvider: "firebase"
+		};
+		setUser(profile);
+		setSyncStatus(isFirestoreEnabled ? "syncing" : "idle");
+		attachFirestoreSync(fbUser);
+		pushToast(`Welcome, ${profile.name}`, {
+			title: "Signed In with Google",
+			tone: "success",
+			expression: "happy"
+		});
+		return profile;
+	}, [attachFirestoreSync, pushToast]);
+	const connectGoogleWorkspace = (0, import_react.useCallback)(async () => {
 		const { user: fbUser, accessToken } = await signInWithGoogleWorkspace();
 		const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 		const profile = {
@@ -54012,62 +57289,58 @@ function useReminderApp(onHardwareBack) {
 		refreshGmailMessages
 	]);
 	const signIn = (0, import_react.useCallback)(async (email, password) => {
-		try {
-			const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-			const res = await api.login({
-				email,
-				password,
-				tz
-			});
-			if (res.token) await setAuthToken(res.token);
-			const serverUser = {
-				...res.user,
-				authProvider: "server"
-			};
-			setUser(serverUser);
-			if (Array.isArray(res.reminders) && res.reminders.length > 0) commitReminders(() => res.reminders, false);
-			else if (remindersRef.current.length > 0) await api.saveReminders(remindersRef.current).catch(() => {});
-			setSyncStatus("synced");
-			deviceStorageSet(KEY_SIGNED_IN_HINT, "1");
-			setDeliveryHealth((prev) => ({
-				...prev,
-				lastServerSync: Date.now()
-			}));
-			pushToast(`Signed in as ${res.user.name}`, { tone: "success" });
-			return serverUser;
-		} catch (err) {
-			throw new Error(formatServerAuthError(err));
-		}
-	}, [commitReminders, pushToast]);
+		const fbUser = await signInWithEmailPassword(email, password);
+		const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+		const profile = {
+			id: fbUser.uid,
+			email: fbUser.email || email.trim(),
+			name: fbUser.displayName || email.trim().split("@")[0] || "User",
+			tz,
+			createdAt: Date.now(),
+			photoURL: fbUser.photoURL,
+			authProvider: "firebase"
+		};
+		setUser(profile);
+		setSyncStatus(isFirestoreEnabled ? "syncing" : "idle");
+		attachFirestoreSync(fbUser);
+		pushToast(`Welcome back, ${profile.name}`, {
+			title: "Signed In",
+			tone: "success",
+			expression: "happy"
+		});
+		return profile;
+	}, [attachFirestoreSync, pushToast]);
 	const signUp = (0, import_react.useCallback)(async (name, email, password) => {
-		try {
-			const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-			const res = await api.signup({
-				name,
-				email,
-				password,
-				tz,
-				reminders: remindersRef.current
-			});
-			if (res.token) await setAuthToken(res.token);
-			const serverUser = {
-				...res.user,
-				authProvider: "server"
-			};
-			setUser(serverUser);
-			if (Array.isArray(res.reminders)) commitReminders(() => res.reminders, false);
-			setSyncStatus("synced");
-			deviceStorageSet(KEY_SIGNED_IN_HINT, "1");
-			setDeliveryHealth((prev) => ({
-				...prev,
-				lastServerSync: Date.now()
-			}));
-			pushToast("Account created & synced", { tone: "success" });
-			return serverUser;
-		} catch (err) {
-			throw new Error(formatServerAuthError(err));
-		}
-	}, [commitReminders, pushToast]);
+		const fbUser = await signUpWithEmailPassword(name, email, password);
+		const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+		const resolvedName = name.trim() || fbUser.displayName || email.trim().split("@")[0] || "User";
+		const profile = {
+			id: fbUser.uid,
+			email: fbUser.email || email.trim(),
+			name: resolvedName,
+			tz,
+			createdAt: Date.now(),
+			photoURL: fbUser.photoURL,
+			authProvider: "firebase"
+		};
+		setUser(profile);
+		setSyncStatus(isFirestoreEnabled ? "syncing" : "idle");
+		attachFirestoreSync(fbUser);
+		pushToast(`Welcome to reminderme, ${profile.name}`, {
+			title: "Account Created",
+			tone: "success",
+			expression: "excited"
+		});
+		return profile;
+	}, [attachFirestoreSync, pushToast]);
+	const resetPassword = (0, import_react.useCallback)(async (email) => {
+		await sendFirebasePasswordReset(email);
+		pushToast(`Password reset link sent to ${email.trim()}`, {
+			title: "Reset Email Sent",
+			tone: "success",
+			expression: "happy"
+		});
+	}, [pushToast]);
 	const signOut = (0, import_react.useCallback)(async () => {
 		const provider = userRef.current?.authProvider;
 		firestoreUnsubRef.current?.();
@@ -54110,7 +57383,7 @@ function useReminderApp(onHardwareBack) {
 		const res = await scheduleDelayedLockScreenTest(delaySec, userRef.current?.authProvider === "server" && navigator.onLine ? async (sec) => {
 			const out = await api.pushTest(sec);
 			return !!(out.scheduled || out.sent);
-		} : void 0);
+		} : void 0, prefsRef.current.timeFormat);
 		pushToast(res.message, { tone: res.ok ? "success" : "warning" });
 		return res;
 	}, [pushToast]);
@@ -54118,7 +57391,7 @@ function useReminderApp(onHardwareBack) {
 		const testRem = {
 			id: "test-alarm",
 			title: "Lock-Screen Alarm Test",
-			note: "Slide right to dismiss or slide left to snooze",
+			note: "Swipe up to dismiss or tap a snooze pill",
 			time: (/* @__PURE__ */ new Date()).toTimeString().slice(0, 5),
 			dueAt: Date.now(),
 			days: null,
@@ -54136,9 +57409,10 @@ function useReminderApp(onHardwareBack) {
 	const exportBackupJson = (0, import_react.useCallback)(() => {
 		const payload = {
 			app: "reminderme",
-			version: 3,
+			version: 4,
 			exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
 			reminders: remindersRef.current,
+			notes: notesRef.current,
 			prefs: prefsRef.current
 		};
 		const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -54156,12 +57430,14 @@ function useReminderApp(onHardwareBack) {
 			const parsed = JSON.parse(text);
 			if (!Array.isArray(parsed.reminders)) throw new Error("Invalid backup file format");
 			commitReminders(() => parsed.reminders);
+			if (Array.isArray(parsed.notes)) commitNotes(() => parsed.notes);
 			if (parsed.prefs && typeof parsed.prefs === "object") updatePrefs(parsed.prefs);
 			pushToast(`Imported ${parsed.reminders.length} reminders`, { tone: "success" });
 		} catch {
 			pushToast("Could not import backup file", { tone: "danger" });
 		}
 	}, [
+		commitNotes,
 		commitReminders,
 		pushToast,
 		updatePrefs
@@ -54239,8 +57515,9 @@ function useReminderApp(onHardwareBack) {
 	(0, import_react.useEffect)(() => {
 		let active = true;
 		(async () => {
-			const [rawRem, rawPrefs, rawEvents, rawPending, signedInHint] = await Promise.all([
+			const [rawRem, rawNotes, rawPrefs, rawEvents, rawPending, signedInHint] = await Promise.all([
 				deviceStorageGet(KEY_REMINDERS),
+				deviceStorageGet(KEY_NOTES),
 				deviceStorageGet(KEY_PREFS),
 				deviceStorageGet(KEY_EVENTS),
 				deviceStorageGet(KEY_PENDING_SYNC),
@@ -54266,6 +57543,10 @@ function useReminderApp(onHardwareBack) {
 				deviceStorageSet(KEY_REMINDERS, JSON.stringify(loadedReminders));
 			}
 			setReminders(loadedReminders);
+			if (rawNotes) try {
+				const parsedNotes = JSON.parse(rawNotes);
+				if (Array.isArray(parsedNotes)) setNotes(sortVoiceNotes(parsedNotes));
+			} catch {}
 			if (rawEvents) try {
 				const parsed = JSON.parse(rawEvents);
 				if (Array.isArray(parsed)) setEvents(parsed);
@@ -54294,11 +57575,20 @@ function useReminderApp(onHardwareBack) {
 				deviceStorageSet(KEY_SIGNED_IN_HINT, "0");
 			}
 			await refreshDeliveryHealth();
+			const pendingNative = await consumePendingNativeAlarmAction();
+			if (pendingNative?.reminderId && pendingNative.reminderId !== "lockscreen-test") {
+				if (pendingNative.action === "dismiss") toggleCompleteReminder(pendingNative.reminderId);
+				else if (pendingNative.action === "snooze") snoozeReminder(pendingNative.reminderId, pendingNative.minutes || 5);
+			}
 		})();
 		return () => {
 			active = false;
 		};
-	}, [refreshDeliveryHealth]);
+	}, [
+		refreshDeliveryHealth,
+		snoozeReminder,
+		toggleCompleteReminder
+	]);
 	(0, import_react.useEffect)(() => {
 		let cleanup;
 		initNativePlatform({
@@ -54308,7 +57598,8 @@ function useReminderApp(onHardwareBack) {
 				const found = remindersRef.current.find((r) => r.id === rid);
 				if (found) triggerRingingNow(found);
 			},
-			onHardwareBack
+			onHardwareBack,
+			onAppUrlOpen
 		}).then((fn) => {
 			cleanup = fn;
 		});
@@ -54316,6 +57607,7 @@ function useReminderApp(onHardwareBack) {
 			cleanup?.();
 		};
 	}, [
+		onAppUrlOpen,
 		onHardwareBack,
 		snoozeReminder,
 		toggleCompleteReminder,
@@ -54356,6 +57648,7 @@ function useReminderApp(onHardwareBack) {
 		hydrated,
 		isOnline,
 		reminders,
+		notes,
 		prefs,
 		user,
 		workspaceToken,
@@ -54376,17 +57669,24 @@ function useReminderApp(onHardwareBack) {
 		pushToast,
 		updatePrefs,
 		upsertReminder,
+		upsertNote,
+		togglePinNote,
+		deleteNote,
 		toggleSubtask,
 		applyRoutinePack,
 		toggleCompleteReminder,
+		completeRemindersBulk,
 		snoozeReminder,
 		deleteReminder,
+		deleteRemindersBulk,
 		triggerRingingNow,
 		dismissRinging,
 		snoozeRinging,
 		signInWithGoogle,
+		connectGoogleWorkspace,
 		signIn,
 		signUp,
+		resetPassword,
 		signOut,
 		syncNow: () => syncWithCloud(remindersRef.current),
 		refreshCalendarEvents,
@@ -54403,19 +57703,123 @@ function useReminderApp(onHardwareBack) {
 		importBackupJson
 	};
 }
+// src/lib/assistantIntents.ts
+function formatAssistantLabel(source) {
+	if (source === "siri") return "Siri";
+	if (source === "google-assistant") return "Google Assistant";
+	if (source === "share") return "Share Sheet";
+	return "Voice Shortcut";
+}
+/**
+* Builds an HTTPS deep-link URL that Siri Shortcuts, Google Assistant Routines,
+* NFC tags, or launchers can open to auto-save a reminder or open voice capture.
+*/
+function buildAssistantDeepLink(origin, shortcut, sampleText) {
+	const cleanOrigin = (origin || "https://makeuperfect.in").replace(/\/+$/, "");
+	const params = new URLSearchParams();
+	params.set("action", shortcut.action);
+	params.set("source", shortcut.assistant);
+	params.set("mode", shortcut.autoSave ? "auto" : "review");
+	if (shortcut.defaultAlertMode !== "auto") params.set("alert", shortcut.defaultAlertMode);
+	if (shortcut.id) params.set("sid", shortcut.id);
+	if (shortcut.action === "add") {
+		if (sampleText !== void 0) params.set("text", sampleText);
+		else return `${cleanOrigin}/?${params.toString()}&text=`;
+	}
+	return `${cleanOrigin}/?${params.toString()}`;
+}
+/**
+* Parses incoming web query strings, Web Share Target payloads, or native `reminderme://` URLs
+* into a structured assistant intent. Returns null when the URL does not contain an assistant intent.
+*/
+function parseAssistantIntentUrl(rawUrl) {
+	if (!rawUrl || typeof rawUrl !== "string") return null;
+	let parsedUrl;
+	try {
+		parsedUrl = new URL(rawUrl, "https://reminderme.local");
+	} catch {
+		return null;
+	}
+	const params = parsedUrl.searchParams;
+	const hostAction = parsedUrl.protocol === "reminderme:" ? parsedUrl.hostname.toLowerCase() : "";
+	const pathAction = parsedUrl.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
+	const resolvedAction = (params.get("action") || "").trim().toLowerCase() || hostAction || pathAction;
+	const rawSource = (params.get("source") || "").trim().toLowerCase();
+	const source = rawSource === "siri" || rawSource === "ios" ? "siri" : rawSource === "google-assistant" || rawSource === "assistant" || rawSource === "google" ? "google-assistant" : resolvedAction === "share" ? "share" : "shortcut";
+	const mode = (params.get("mode") || "").trim().toLowerCase() === "review" ? "review" : "auto";
+	const rawAlert = (params.get("alert") || params.get("alarm") || "").trim().toLowerCase();
+	const alertOverride = rawAlert === "alarm" || rawAlert === "1" || rawAlert === "true" ? "alarm" : rawAlert === "reminder" || rawAlert === "0" || rawAlert === "false" ? "reminder" : "auto";
+	const shortcutId = params.get("sid")?.trim() || void 0;
+	if (resolvedAction === "voice") return {
+		action: "voice",
+		text: "",
+		source,
+		mode,
+		alertOverride,
+		shortcutId,
+		signature: `voice|${source}|${shortcutId || ""}`
+	};
+	if (resolvedAction === "add" || resolvedAction === "create" || resolvedAction === "share") {
+		const combinedText = [
+			(params.get("title") || "").trim(),
+			(params.get("text") || params.get("q") || params.get("phrase") || "").trim(),
+			(params.get("time") || "").trim()
+		].filter((part, idx, arr) => Boolean(part) && arr.indexOf(part) === idx).join(" ").trim();
+		if (!combinedText) return {
+			action: "voice",
+			text: "",
+			source,
+			mode,
+			alertOverride,
+			shortcutId,
+			signature: `voice-empty|${source}|${shortcutId || ""}`
+		};
+		return {
+			action: "add",
+			text: combinedText,
+			source,
+			mode,
+			alertOverride,
+			shortcutId,
+			signature: `add|${source}|${alertOverride}|${combinedText.toLowerCase()}`
+		};
+	}
+	return null;
+}
+/**
+* Converts a parsed assistant intent into a ready-to-save ParsedQuickReminder
+* applying any explicit Loud Alarm / Gentle Reminder override.
+*/
+function buildReminderFromAssistantIntent(intent, now = /* @__PURE__ */ new Date()) {
+	const parsed = parseQuickInput(intent.text, now);
+	if (intent.alertOverride === "alarm") return {
+		...parsed,
+		isAlarm: true,
+		emoji: parsed.emoji === "🔔" ? "⏰" : parsed.emoji
+	};
+	if (intent.alertOverride === "reminder") return {
+		...parsed,
+		isAlarm: false,
+		emoji: parsed.emoji === "⏰" ? "🔔" : parsed.emoji
+	};
+	return parsed;
+}
 // src/App.tsx
-var ScheduleView = (0, import_react.lazy)(() => __vitePreload(() => import("./ScheduleView-0aVM6n8y.js").then((m) => ({ default: m.ScheduleView })), __vite__mapDeps([0,1,2,3])));
-var InsightsView = (0, import_react.lazy)(() => __vitePreload(() => import("./InsightsView-B1wTshCk.js").then((m) => ({ default: m.InsightsView })), __vite__mapDeps([4,1])));
-var ProfileView = (0, import_react.lazy)(() => __vitePreload(() => import("./ProfileView-350bj-1n.js").then((m) => ({ default: m.ProfileView })), __vite__mapDeps([5,1,2,6,3,7,8])));
-var ReminderSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./ReminderSheet-DTbGrUsf.js").then((m) => ({ default: m.ReminderSheet })), __vite__mapDeps([9,1,6,2])));
-var FocusTimerSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./FocusTimerSheet-CRYFBBg0.js").then((m) => ({ default: m.FocusTimerSheet })), __vite__mapDeps([10,1,2,6,7])));
-var AuthSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./AuthSheet-Bmp7HYHH.js").then((m) => ({ default: m.AuthSheet })), __vite__mapDeps([11,1,8])));
-var RingingAlarmOverlay = (0, import_react.lazy)(() => __vitePreload(() => import("./RingingAlarmOverlay-C3evqJ9f.js").then((m) => ({ default: m.RingingAlarmOverlay })), __vite__mapDeps([12,1])));
+var ScheduleView = (0, import_react.lazy)(() => __vitePreload(() => import("./ScheduleView-_DFGwkcK.js").then((m) => ({ default: m.ScheduleView })), __vite__mapDeps([6,7,8,9,10])));
+var InsightsView = (0, import_react.lazy)(() => __vitePreload(() => import("./InsightsView-CBVlX6SL.js").then((m) => ({ default: m.InsightsView })), __vite__mapDeps([11,7,10])));
+var ProfileView = (0, import_react.lazy)(() => __vitePreload(() => import("./ProfileView-DuhWYLLD.js").then((m) => ({ default: m.ProfileView })), __vite__mapDeps([12,7,8,13,14,9,15])));
+var ReminderSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./ReminderSheet-DFzpjdJy.js").then((m) => ({ default: m.ReminderSheet })), __vite__mapDeps([16,7,14,8,10])));
+var FocusTimerSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./FocusTimerSheet-BoDO0pCt.js").then((m) => ({ default: m.FocusTimerSheet })), __vite__mapDeps([17,7,8,14,15])));
+var AuthSheet = (0, import_react.lazy)(() => __vitePreload(() => import("./AuthSheet-Baaua6mT.js").then((m) => ({ default: m.AuthSheet })), __vite__mapDeps([18,7])));
+var RingingAlarmOverlay = (0, import_react.lazy)(() => __vitePreload(() => import("./RingingAlarmOverlay-CRfR873F.js").then((m) => ({ default: m.RingingAlarmOverlay })), __vite__mapDeps([19,7,15,8,10])));
+var VoiceShortcutsModal = (0, import_react.lazy)(() => __vitePreload(() => import("./VoiceShortcutsModal-UFRvjIcu.js").then((m) => ({ default: m.VoiceShortcutsModal })), __vite__mapDeps([20,7,13,8])));
+var LanguagePickerModal = (0, import_react.lazy)(() => __vitePreload(() => import("./LanguagePickerModal-BRmjSgs2.js").then((m) => ({ default: m.LanguagePickerModal })), __vite__mapDeps([21,7,8])));
 var INTRO_SEEN_KEY = "rm_intro_seen_session";
 function shouldShowIntroInitially() {
 	try {
 		const params = new URLSearchParams(window.location.search);
-		if (params.get("autostart") === "1" || params.get("action") === "new" || params.get("tab")) return false;
+		const action = (params.get("action") || "").toLowerCase();
+		if (params.get("autostart") === "1" || params.get("tab") || params.get("ring") || action === "new" || action === "add" || action === "voice" || action === "share" || action === "create") return false;
 		return sessionStorage.getItem(INTRO_SEEN_KEY) !== "1";
 	} catch {
 		return true;
@@ -54434,10 +57838,15 @@ function App() {
 	const [defaultDate, setDefaultDate] = (0, import_react.useState)(null);
 	const [focusReminder, setFocusReminder] = (0, import_react.useState)(null);
 	const [authOpen, setAuthOpen] = (0, import_react.useState)(false);
+	const [voiceShortcutsOpen, setVoiceShortcutsOpen] = (0, import_react.useState)(false);
+	const [languagePickerOpen, setLanguagePickerOpen] = (0, import_react.useState)(false);
+	const [voiceAutoTriggerSeq, setVoiceAutoTriggerSeq] = (0, import_react.useState)(0);
 	const [confirmAction, setConfirmAction] = (0, import_react.useState)(null);
 	const [confirmBusy, setConfirmBusy] = (0, import_react.useState)(false);
 	const [showIntro, setShowIntro] = (0, import_react.useState)(shouldShowIntroInitially);
 	const voiceCloseRef = (0, import_react.useRef)(null);
+	const appShellRef = (0, import_react.useRef)(null);
+	const startupIntentHandledRef = (0, import_react.useRef)(null);
 	const registerVoiceClose = (0, import_react.useCallback)((fn) => {
 		voiceCloseRef.current = fn;
 	}, []);
@@ -54454,7 +57863,7 @@ function App() {
 			sessionStorage.setItem(INTRO_SEEN_KEY, "1");
 		} catch {}
 	}, []);
-	const app = useReminderApp((0, import_react.useCallback)(() => {
+	const handleHardwareBack = (0, import_react.useCallback)(() => {
 		if (showIntro) {
 			finishIntro();
 			return true;
@@ -54465,6 +57874,14 @@ function App() {
 		}
 		if (voiceCloseRef.current) {
 			voiceCloseRef.current();
+			return true;
+		}
+		if (languagePickerOpen) {
+			setLanguagePickerOpen(false);
+			return true;
+		}
+		if (voiceShortcutsOpen) {
+			setVoiceShortcutsOpen(false);
 			return true;
 		}
 		if (authOpen) {
@@ -54491,10 +57908,134 @@ function App() {
 		confirmBusy,
 		finishIntro,
 		focusReminder,
+		languagePickerOpen,
 		selectTab,
 		sheetOpen,
-		showIntro
-	]));
+		showIntro,
+		voiceShortcutsOpen
+	]);
+	const appRef = (0, import_react.useRef)(null);
+	const handleAssistantUrl = (0, import_react.useCallback)((rawUrl, options) => {
+		const intent = parseAssistantIntentUrl(rawUrl);
+		if (!intent) return;
+		if (options?.fromStartup) {
+			if (startupIntentHandledRef.current === rawUrl) return;
+			startupIntentHandledRef.current = rawUrl;
+		}
+		const sourceLabel = formatAssistantLabel(intent.source);
+		setShowIntro(false);
+		setActiveTab("today");
+		if (intent.action === "voice") {
+			setVoiceShortcutsOpen(false);
+			setVoiceAutoTriggerSeq((seq) => seq + 1);
+			appShellRef.current?.onTriggerIsland("created", {
+				title: `${sourceLabel} Listening`,
+				message: "Speak your reminder or alarm now…",
+				durationMs: 3200
+			});
+		} else {
+			const parsed = buildReminderFromAssistantIntent(intent);
+			if (intent.mode === "review") {
+				setVoiceShortcutsOpen(false);
+				setEditingReminder(null);
+				setSheetDraft(parsed);
+				setDefaultDate(null);
+				setSheetOpen(true);
+				appShellRef.current?.onTriggerIsland("created", {
+					title: `${sourceLabel} Draft Ready`,
+					message: parsed.title,
+					durationMs: 3e3
+				});
+			} else {
+				const currentApp = appRef.current;
+				if (currentApp) {
+					currentApp.upsertReminder({
+						title: parsed.title,
+						note: "",
+						time: parsed.time,
+						days: parsed.days,
+						oneTimeDate: parsed.oneTimeDate,
+						emoji: parsed.emoji,
+						color: parsed.isAlarm ? "#0A84FF" : "#30D158",
+						priority: parsed.priority,
+						tag: parsed.tag,
+						isAlarm: parsed.isAlarm,
+						sound: parsed.isAlarm ? currentApp.prefs.defaultAlarmSound : null,
+						subtasks: []
+					});
+					appShellRef.current?.onTriggerIsland("created", {
+						title: `Added via ${sourceLabel}`,
+						message: `${parsed.title} · ${formatTimeDisplay(parsed.time, currentApp.prefs.timeFormat)}`,
+						durationMs: 3800
+					});
+				}
+			}
+		}
+		if (options?.fromStartup && typeof window !== "undefined" && window.location.search) try {
+			window.history.replaceState({}, "", window.location.pathname + window.location.hash);
+		} catch {}
+	}, []);
+	const app = useReminderApp(handleHardwareBack, handleAssistantUrl);
+	appRef.current = app;
+	const liveAssistant = useLiveVoiceAssistant({
+		vibrate: app.prefs.vibrate,
+		speechLang: app.prefs.language,
+		onAutoSaveCommand: ({ source, commandText, isAlarmHint }) => {
+			const parsed = buildReminderFromAssistantIntent({
+				action: "add",
+				text: commandText,
+				source: source === "voice" ? "shortcut" : source,
+				mode: "auto",
+				alertOverride: isAlarmHint ? "alarm" : "auto",
+				signature: `live:${source}:${commandText}`
+			});
+			const currentApp = appRef.current;
+			if (!currentApp) return;
+			currentApp.upsertReminder({
+				title: parsed.title,
+				note: "",
+				time: parsed.time,
+				days: parsed.days,
+				oneTimeDate: parsed.oneTimeDate,
+				emoji: parsed.emoji,
+				color: parsed.isAlarm ? "#0A84FF" : "#30D158",
+				priority: parsed.priority,
+				tag: parsed.tag,
+				isAlarm: parsed.isAlarm,
+				sound: parsed.isAlarm ? currentApp.prefs.defaultAlarmSound : null,
+				subtasks: []
+			});
+			const label = source === "siri" ? "Siri" : source === "google-assistant" ? "Google Assistant" : "Voice";
+			appShellRef.current?.onTriggerIsland("created", {
+				title: `Added via ${label}`,
+				message: `${parsed.title} · ${formatTimeDisplay(parsed.time, currentApp.prefs.timeFormat)}`,
+				durationMs: 3800
+			});
+		},
+		onStatusNotice: (kind, title, message) => {
+			appShellRef.current?.onTriggerIsland(kind, {
+				title,
+				message,
+				durationMs: 3200
+			});
+		}
+	});
+	(0, import_react.useEffect)(() => {
+		if (app.ringingReminder) {
+			const soundLabel = app.ringingReminder.isAlarm ? getAlarmSoundLabel(app.ringingReminder.sound, app.prefs.customAudioName) : "";
+			appShellRef.current?.onTriggerIsland("alert", {
+				title: app.ringingReminder.isAlarm ? "Alarm Ringing" : "Reminder Alert",
+				message: soundLabel ? `${app.ringingReminder.title} · ${soundLabel}` : app.ringingReminder.title,
+				durationMs: 4200
+			});
+		}
+	}, [app.prefs.customAudioName, app.ringingReminder]);
+	(0, import_react.useEffect)(() => {
+		if (typeof document === "undefined") return;
+		const opt = getLanguageOption(app.prefs.language);
+		document.documentElement.lang = opt.id;
+	}, [app.prefs.language]);
+	const ringParamHandledRef = (0, import_react.useRef)(null);
 	(0, import_react.useEffect)(() => {
 		const params = new URLSearchParams(window.location.search);
 		const tabParam = params.get("tab");
@@ -54504,7 +58045,26 @@ function App() {
 			setDefaultDate(null);
 			setSheetOpen(true);
 		}
-	}, []);
+		handleAssistantUrl(window.location.href, { fromStartup: true });
+	}, [handleAssistantUrl]);
+	(0, import_react.useEffect)(() => {
+		if (!app.hydrated) return;
+		const ringId = new URLSearchParams(window.location.search).get("ring");
+		if (!ringId || ringParamHandledRef.current === ringId) return;
+		ringParamHandledRef.current = ringId;
+		const found = app.reminders.find((r) => r.id === ringId);
+		if (found) {
+			setShowIntro(false);
+			app.triggerRingingNow(found);
+		}
+		try {
+			window.history.replaceState({}, "", window.location.pathname + window.location.hash);
+		} catch {}
+	}, [
+		app.hydrated,
+		app.reminders,
+		app.triggerRingingNow
+	]);
 	const openNewReminder = (date = null) => {
 		setEditingReminder(null);
 		setSheetDraft(null);
@@ -54555,8 +58115,7 @@ function App() {
 		setDefaultDate(null);
 		setSheetOpen(true);
 	};
-	const handleQuickAdd = (rawText) => {
-		const parsed = parseQuickInput(rawText);
+	const handleSaveParsedReminder = (parsed) => {
 		app.upsertReminder({
 			title: parsed.title,
 			note: "",
@@ -54572,14 +58131,39 @@ function App() {
 			subtasks: []
 		});
 	};
+	const handleQuickAdd = (rawText) => {
+		handleSaveParsedReminder(parseQuickInput(rawText));
+	};
 	const handleAddCustomTag = (tag) => {
 		if (app.prefs.customTags.includes(tag)) return;
 		app.updatePrefs({ customTags: [...app.prefs.customTags, tag] });
 	};
 	const requestAddToGoogleCalendar = (reminder) => {
+		const directUrl = buildDirectGoogleCalendarUrl(reminder);
 		if (!app.hasWorkspaceAccess) {
-			app.pushToast("Connect Google first to add events to Google Calendar", { tone: "info" });
-			setAuthOpen(true);
+			setConfirmAction({
+				kind: "calendar-add",
+				title: "Add to Google Calendar?",
+				description: "Opens your Google Calendar with this reminder pre-filled — no Google app verification needed.",
+				confirmLabel: "Open Calendar",
+				externalHref: directUrl,
+				previewLines: [
+					{
+						label: "Event",
+						value: `${reminder.emoji || "⏰"} ${reminder.title}`
+					},
+					{
+						label: "Time",
+						value: formatTimeDisplay(reminder.time, app.prefs.timeFormat)
+					},
+					{
+						label: "Schedule",
+						value: formatDaysSummary(reminder.days, reminder.oneTimeDate)
+					}
+				],
+				bodyPreview: reminder.note || void 0,
+				onConfirm: async () => {}
+			});
 			return;
 		}
 		setConfirmAction({
@@ -54612,13 +58196,31 @@ function App() {
 		});
 	};
 	const requestEmailReminder = (reminder) => {
-		if (!app.hasWorkspaceAccess || !app.user?.email) {
-			app.pushToast("Sign in with Google to send reminder alerts via Gmail", { tone: "info" });
-			setAuthOpen(true);
+		const { subject, bodyText } = formatReminderEmail(reminder, app.prefs.timeFormat);
+		const recipient = app.user?.email || "";
+		if (!app.hasWorkspaceAccess || !recipient) {
+			setConfirmAction({
+				kind: "gmail-send",
+				title: "Open Reminder in Gmail?",
+				description: "Opens Gmail with this reminder pre-filled so you can send it right away — no Google app verification needed.",
+				confirmLabel: "Open Gmail",
+				externalHref: buildDirectGmailComposeUrl({
+					to: recipient,
+					subject,
+					bodyText
+				}),
+				previewLines: [{
+					label: "To",
+					value: recipient || "Choose recipient in Gmail"
+				}, {
+					label: "Subject",
+					value: subject
+				}],
+				bodyPreview: bodyText,
+				onConfirm: async () => {}
+			});
 			return;
 		}
-		const { subject, bodyText } = formatReminderEmail(reminder, app.prefs.timeFormat);
-		const recipient = app.user.email;
 		setConfirmAction({
 			kind: "gmail-send",
 			title: "Send Reminder via Gmail?",
@@ -54642,13 +58244,38 @@ function App() {
 		});
 	};
 	const requestDailyDigestEmail = () => {
-		if (!app.hasWorkspaceAccess || !app.user?.email) {
-			app.pushToast("Sign in with Google to email your daily digest via Gmail", { tone: "info" });
-			setAuthOpen(true);
+		const { subject, bodyText } = formatDailyDigestEmail(app.reminders, app.calendarEvents, app.prefs.timeFormat);
+		const recipient = app.user?.email || "";
+		if (!app.hasWorkspaceAccess || !recipient) {
+			setConfirmAction({
+				kind: "gmail-send",
+				title: "Open Daily Digest in Gmail?",
+				description: "Opens a pre-filled Gmail draft with your schedule — works on any account with zero verification warning.",
+				confirmLabel: "Open Gmail",
+				externalHref: buildDirectGmailComposeUrl({
+					to: recipient,
+					subject,
+					bodyText
+				}),
+				previewLines: [
+					{
+						label: "To",
+						value: recipient || "Choose recipient in Gmail"
+					},
+					{
+						label: "Subject",
+						value: subject
+					},
+					{
+						label: "Included",
+						value: `${app.reminders.length} reminders · ${app.calendarEvents.length} events`
+					}
+				],
+				bodyPreview: bodyText,
+				onConfirm: async () => {}
+			});
 			return;
 		}
-		const { subject, bodyText } = formatDailyDigestEmail(app.reminders, app.calendarEvents, app.prefs.timeFormat);
-		const recipient = app.user.email;
 		setConfirmAction({
 			kind: "gmail-send",
 			title: "Send Daily Agenda Digest?",
@@ -54698,36 +58325,62 @@ function App() {
 	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 		/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(AppShell, {
+			ref: appShellRef,
 			activeTab,
 			tabDirection,
 			onSelectTab: selectTab,
 			onOpenNewSheet: () => openNewReminder(null),
+			user: app.user,
+			language: app.prefs.language,
+			onOpenAuth: () => setAuthOpen(true),
+			onOpenLanguagePicker: () => setLanguagePickerOpen(true),
 			isOnline: app.isOnline,
 			syncStatus: app.syncStatus,
 			toasts: app.toasts,
 			onDismissToast: app.dismissToast,
 			children: [activeTab === "today" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TodayView, {
 				reminders: app.reminders,
+				notes: app.notes,
 				prefs: app.prefs,
+				user: app.user,
 				userName: app.user?.name,
 				deliveryHealth: app.deliveryHealth,
 				calendarEvents: app.calendarEvents,
 				hasWorkspaceAccess: app.hasWorkspaceAccess,
 				onToggleTimeFormat: () => app.updatePrefs({ timeFormat: app.prefs.timeFormat === "12h" ? "24h" : "12h" }),
 				onQuickAdd: handleQuickAdd,
-				onEditVoiceDraft: openVoiceDraftInSheet,
+				onEditDraftInSheet: openVoiceDraftInSheet,
+				onSaveNote: app.upsertNote,
+				onTogglePinNote: app.togglePinNote,
+				onDeleteNote: app.deleteNote,
 				onOpenNewSheet: () => openNewReminder(null),
+				onOpenAuth: () => setAuthOpen(true),
+				onGoogleSignIn: app.signInWithGoogle,
 				onToggleDone: app.toggleCompleteReminder,
+				onBulkComplete: app.completeRemindersBulk,
 				onToggleSubtask: app.toggleSubtask,
 				onSnooze: app.snoozeReminder,
 				onDelete: app.deleteReminder,
+				onBulkDelete: app.deleteRemindersBulk,
 				onEdit: openEditReminder,
-				onFocus: (r) => setFocusReminder(r),
+				onFocus: (r) => {
+					setFocusReminder(r);
+					appShellRef.current?.onTriggerIsland("created", {
+						title: "Focus Mode",
+						message: r.title
+					});
+				},
 				onExportIcs: app.exportSingleIcs,
 				onApplyRoutine: app.applyRoutinePack,
 				onRequestDailyDigest: requestDailyDigestEmail,
-				onConnectGoogle: () => setAuthOpen(true),
+				onConnectGoogle: () => {
+					if (app.user) app.connectGoogleWorkspace().catch(() => setAuthOpen(true));
+					else setAuthOpen(true);
+				},
 				onOpenDeliverySetup: () => selectTab("profile"),
+				onOpenVoiceShortcuts: () => setVoiceShortcutsOpen(true),
+				liveAssistant,
+				voiceNoteAutoTriggerSeq: voiceAutoTriggerSeq,
 				onRegisterVoiceClose: registerVoiceClose
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_react.Suspense, {
 				fallback: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabSkeleton, {}),
@@ -54742,7 +58395,10 @@ function App() {
 						gmailLoading: app.gmailLoading,
 						gmailError: app.gmailError,
 						hasWorkspaceAccess: app.hasWorkspaceAccess,
-						onConnectGoogle: () => setAuthOpen(true),
+						onConnectGoogle: () => {
+							if (app.user) app.connectGoogleWorkspace().catch(() => setAuthOpen(true));
+							else setAuthOpen(true);
+						},
 						onRefreshCalendar: () => void app.refreshCalendarEvents(),
 						onRefreshGmail: () => void app.refreshGmailMessages(),
 						onImportCalendarEvent: openCalendarEventInSheet,
@@ -54774,6 +58430,7 @@ function App() {
 						gmailCount: app.gmailMessages.length,
 						onUpdatePrefs: app.updatePrefs,
 						onGoogleSignIn: app.signInWithGoogle,
+						onConnectGoogleWorkspace: app.connectGoogleWorkspace,
 						onOpenAuth: () => setAuthOpen(true),
 						onSignOut: app.signOut,
 						onSyncNow: app.syncNow,
@@ -54785,6 +58442,8 @@ function App() {
 						onInstantAlarmTest: app.triggerInstantTestAlarm,
 						onExportBackup: app.exportBackupJson,
 						onImportBackup: app.importBackupJson,
+						onOpenVoiceShortcuts: () => setVoiceShortcutsOpen(true),
+						onOpenLanguagePicker: () => setLanguagePickerOpen(true),
 						onToast: (msg) => app.pushToast(msg, { tone: "info" })
 					})
 				]
@@ -54832,13 +58491,38 @@ function App() {
 					onGoogleSignIn: app.signInWithGoogle,
 					onSignIn: app.signIn,
 					onSignUp: app.signUp,
+					onResetPassword: app.resetPassword,
+					onTriggerIsland: (type, opts) => appShellRef.current?.onTriggerIsland(type, opts),
 					onClose: () => setAuthOpen(false)
 				}),
 				app.ringingReminder && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RingingAlarmOverlay, {
 					reminder: app.ringingReminder,
 					timeFormat: app.prefs.timeFormat,
+					customAudioName: app.prefs.customAudioName,
+					vibrate: app.prefs.vibrate,
 					onSnooze: app.snoozeRinging,
 					onDismiss: app.dismissRinging
+				}),
+				voiceShortcutsOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(VoiceShortcutsModal, {
+					open: voiceShortcutsOpen,
+					liveAssistant,
+					onExecuteAssistantUrl: (url) => handleAssistantUrl(url),
+					onTriggerIsland: (type, opts) => appShellRef.current?.onTriggerIsland(type, opts),
+					onClose: () => setVoiceShortcutsOpen(false)
+				}),
+				languagePickerOpen && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LanguagePickerModal, {
+					open: languagePickerOpen,
+					selectedLanguage: app.prefs.language,
+					onSelectLanguage: (langCode) => {
+						const chosen = getLanguageOption(langCode);
+						app.updatePrefs({ language: chosen.id });
+						appShellRef.current?.onTriggerIsland("success", {
+							title: chosen.nativeName,
+							message: `Language switched to ${chosen.name}`,
+							durationMs: 2800
+						});
+					},
+					onClose: () => setLanguagePickerOpen(false)
 				})
 			]
 		})
@@ -54895,4 +58579,4 @@ var ErrorBoundary = class extends import_react.Component {
 };
 // src/main.tsx
 import_client.createRoot(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(App, {}) }) }));
-export { Mail as A, require_react_dom as B, ImpactStyle as C, Trash as D, X$1 as E, Check as F, Calendar as I, CalendarPlus as L, Clock as M, ChevronUp as N, ShieldCheck as O, ChevronDown as P, CalendarArrowDown as R, isReminderScheduledForDate as S, WebPlugin as T, getDateKeyFromDate as _, playAlarmCycle as a, getWeekStripDates as b, CLOUDFLARE_EDGE_URL as c, SpringSegmentedControl as d, isNativeApp as f, formatTimeDisplay as g, DAY_SHORT as h, deleteCustomRingtone as i, ListChecks as j, Plus as k, api as l, DAY_LETTERS as m, ALARM_SOUNDS as n, playNotificationChime as o, openExactAlarmSettings as p, NOTIF_SOUNDS as r, saveCustomRingtone as s, usePWAInstall as t, SwipeableReminderRow as u, getMonthCalendarDays as v, NotificationType as w, isReminderDoneToday as x, getTodayDateKey as y, AlarmClock as z };
+export { Calendar as $, t as A, Sparkles as B, AuthRecoveryBanner as C, mapFirebaseAuthError as D, buildGoogleOAuthTestingError as E, getLanguageOption as F, Mail as G, Radio as H, getLanguagesForState as I, Globe as J, LogIn as K, X$1 as L, INDIA_STATES_AND_UTS as M, filterLanguagesByQuery as N, FIREBASE_PROJECT_ID as O, filterStatesByQuery as P, Check as Q, Trash as R, GoogleSignInButton as S, getPlatformAssistantProfile as T, Plus as U, ShieldCheck as V, Mic as W, CircleQuestionMark as X, Clock as Y, ChevronUp as Z, syncNativeCustomRingtone as _, deleteCustomRingtone as a, NotificationType as b, playNotificationChime as c, stopPreviewSound as d, CalendarPlus as et, api as f, openExactAlarmSettings as g, isNativeApp as h, NOTIF_SOUNDS as i, APP_LANGUAGES as j, useDynamicIsland as k, previewAlarmSound as l, clearNativeCustomRingtone as m, usePWAInstall as n, AlarmClock as nt, fileToBase64 as o, SwipeableReminderRow as p, ListChecks as q, ALARM_SOUNDS as r, require_react_dom as rt, getAlarmSoundLabel as s, buildAssistantDeepLink as t, CalendarArrowDown as tt, saveCustomRingtone as u, triggerHaptic as v, detectDeviceOs as w, SpringSegmentedControl as x, ImpactStyle as y, Square as z };

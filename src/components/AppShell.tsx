@@ -267,72 +267,76 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
 
           {/* Main Content Wrapper */}
           <div className="relative z-10 flex min-h-[100dvh] min-w-0 flex-1 flex-col lg:pl-64">
-            {/* Compact Mobile iOS Liquid Glass Top Bar (52px height) */}
-            <header className="liquid-nav sticky top-0 z-30 flex h-[52px] items-center justify-between gap-2 border-b border-white/[0.14] px-4 lg:hidden">
-              <div className="flex min-w-0 items-center gap-2.5">
-                <img
-                  src="/icons/icon-192.png"
-                  alt="reminderme icon"
-                  className="h-7 w-7 shrink-0 rounded-lg shadow-[0_4px_14px_rgba(10,132,255,0.45)]"
-                />
-                <span className="font-display truncate text-base font-bold tracking-tight text-white whitespace-nowrap">
-                  reminderme
-                </span>
-              </div>
+            {/* Compact Mobile iOS Liquid Glass Top Bar (Safe-Area Aware for All Phones) */}
+            <header className="liquid-nav sticky top-0 z-30 border-b border-white/[0.14] pt-[env(safe-area-inset-top,0px)] lg:hidden">
+              <div className="flex min-h-[54px] items-center justify-between gap-1.5 px-3 sm:gap-2 sm:px-4">
+                <div className="flex min-w-0 items-center gap-2">
+                  <img
+                    src="/icons/icon-192.png"
+                    alt="reminderme icon"
+                    className="h-7 w-7 shrink-0 rounded-lg shadow-[0_4px_14px_rgba(10,132,255,0.45)]"
+                  />
+                  <span className="font-display truncate text-[15px] font-bold tracking-tight text-white whitespace-nowrap sm:text-base">
+                    reminderme
+                  </span>
+                </div>
 
-              <div className="flex shrink-0 items-center gap-2">
-                {onOpenLanguagePicker && (
-                  <button
-                    type="button"
-                    onClick={onOpenLanguagePicker}
-                    aria-label="Choose India state or language"
-                    className="ios-spring-press flex min-h-[38px] items-center gap-1 rounded-full border border-white/[0.15] bg-white/[0.06] px-2.5 text-xs font-semibold text-slate-100 hover:bg-white/[0.14] whitespace-nowrap shrink-0"
-                  >
-                    <Globe className="h-3.5 w-3.5 text-sky-300" />
-                    <span className="max-w-[68px] truncate">{activeLanguage.shortLabel}</span>
-                  </button>
-                )}
-
-                {user ? (
-                  <button
-                    type="button"
-                    onClick={() => onSelectTab('profile')}
-                    aria-label={`Account: ${user.name}`}
-                    className="ios-spring-press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-white/25 bg-white/[0.09] text-xs font-bold text-white"
-                  >
-                    {user.photoURL ? (
-                      <img
-                        src={user.photoURL}
-                        alt={user.name}
-                        referrerPolicy="no-referrer"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <span>{user.name.charAt(0).toUpperCase()}</span>
-                    )}
-                  </button>
-                ) : (
-                  onOpenAuth && (
+                <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+                  {onOpenLanguagePicker && (
                     <button
                       type="button"
-                      onClick={onOpenAuth}
-                      className="ios-spring-press flex min-h-[38px] items-center gap-1.5 rounded-full border border-sky-400/35 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap shrink-0"
+                      onClick={onOpenLanguagePicker}
+                      aria-label="Choose India state or language"
+                      className="ios-spring-press flex min-h-[36px] items-center gap-1 rounded-full border border-white/[0.15] bg-white/[0.06] px-2 text-xs font-semibold text-slate-100 hover:bg-white/[0.14] whitespace-nowrap shrink-0 sm:min-h-[38px] sm:px-2.5"
                     >
-                      <LogIn className="h-3.5 w-3.5 text-sky-300" />
-                      <span>{t(language, 'signIn')}</span>
+                      <Globe className="h-3.5 w-3.5 text-sky-300" />
+                      <span className="max-w-[54px] truncate sm:max-w-[68px]">
+                        {activeLanguage.shortLabel}
+                      </span>
                     </button>
-                  )
-                )}
+                  )}
 
-                <button
-                  type="button"
-                  onClick={onOpenNewSheet}
-                  aria-label="Create new alarm or reminder"
-                  className="liquid-primary-btn ios-spring-press flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-white whitespace-nowrap shrink-0"
-                >
-                  <Plus className="h-4 w-4" />
-                  <span>{t(language, 'newShort')}</span>
-                </button>
+                  {user ? (
+                    <button
+                      type="button"
+                      onClick={() => onSelectTab('profile')}
+                      aria-label={`Account: ${user.name}`}
+                      className="ios-spring-press flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-white/25 bg-white/[0.09] text-xs font-bold text-white"
+                    >
+                      {user.photoURL ? (
+                        <img
+                          src={user.photoURL}
+                          alt={user.name}
+                          referrerPolicy="no-referrer"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span>{user.name.charAt(0).toUpperCase()}</span>
+                      )}
+                    </button>
+                  ) : (
+                    onOpenAuth && (
+                      <button
+                        type="button"
+                        onClick={onOpenAuth}
+                        className="ios-spring-press flex min-h-[36px] items-center gap-1 rounded-full border border-sky-400/35 bg-sky-500/15 px-2.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap shrink-0 sm:min-h-[38px] sm:gap-1.5 sm:px-3"
+                      >
+                        <LogIn className="h-3.5 w-3.5 text-sky-300" />
+                        <span>{t(language, 'signIn')}</span>
+                      </button>
+                    )
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={onOpenNewSheet}
+                    aria-label="Create new alarm or reminder"
+                    className="liquid-primary-btn ios-spring-press flex min-h-[36px] items-center gap-1 rounded-full px-2.5 text-xs font-semibold text-white whitespace-nowrap shrink-0 sm:min-h-[38px] sm:gap-1.5 sm:px-3.5"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span>{t(language, 'newShort')}</span>
+                  </button>
+                </div>
               </div>
             </header>
 
@@ -347,7 +351,7 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
             )}
 
             {/* Active View Content with Apple Directional Spring Transition */}
-            <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-5 pb-24 sm:px-6 lg:px-8 lg:py-8">
+            <main className="mx-auto w-full max-w-6xl flex-1 px-3.5 pt-4 pb-[calc(6rem+env(safe-area-inset-bottom,0px))] sm:px-6 sm:pt-5 lg:px-8 lg:py-8">
               <div
                 key={activeTab}
                 className={tabDirection === 'right' ? 'animate-view-right' : 'animate-view-left'}
