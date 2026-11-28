@@ -1,6 +1,8 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { BarChart3, CalendarDays, Clock, LogIn, Plus, User, WifiOff } from 'lucide-react';
+import { BarChart3, CalendarDays, Clock, Globe, LogIn, Plus, User, WifiOff } from 'lucide-react';
 import { buildIslandEventFromTrigger } from '../lib/emoExpression';
+import { t } from '../lib/i18n';
+import { getLanguageOption } from '../lib/indianLanguages';
 import type {
   DynamicIslandTriggerOptions,
   DynamicIslandTriggerType,
@@ -29,7 +31,9 @@ interface AppShellProps {
   onSelectTab: (tab: TabId) => void;
   onOpenNewSheet: () => void;
   user?: UserProfile | null;
+  language?: string;
   onOpenAuth?: () => void;
+  onOpenLanguagePicker?: () => void;
   isOnline: boolean;
   syncStatus: string;
   toasts: ToastMessage[];
@@ -56,7 +60,9 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
       onSelectTab,
       onOpenNewSheet,
       user = null,
+      language = 'en-IN',
       onOpenAuth,
+      onOpenLanguagePicker,
       isOnline,
       syncStatus,
       toasts,
@@ -105,6 +111,21 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
       NAV_ITEMS.findIndex((item) => item.id === activeTab)
     );
 
+    const activeLanguage = useMemo(() => getLanguageOption(language), [language]);
+
+    const getNavLabel = (id: TabId): string => {
+      switch (id) {
+        case 'today':
+          return t(language, 'navToday');
+        case 'schedule':
+          return t(language, 'navSchedule');
+        case 'insights':
+          return t(language, 'navInsights');
+        case 'profile':
+          return t(language, 'navProfile');
+      }
+    };
+
     const resolvedChildren =
       typeof children === 'function' ? children({ onTriggerIsland: triggerIsland }) : children;
 
@@ -134,7 +155,7 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
                 className="liquid-primary-btn ios-spring-press mt-6 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-semibold text-white"
               >
                 <Plus className="h-4 w-4" />
-                <span>New Alarm</span>
+                <span>{t(language, 'newAlarm')}</span>
               </button>
 
               <nav aria-label="Primary navigation" className="relative mt-6 flex flex-col gap-1.5">
@@ -162,11 +183,27 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
                           active ? 'scale-110 text-sky-300' : 'text-slate-400'
                         }`}
                       />
-                      <span>{item.label}</span>
+                      <span>{getNavLabel(item.id)}</span>
                     </button>
                   );
                 })}
               </nav>
+
+              {onOpenLanguagePicker && (
+                <button
+                  type="button"
+                  onClick={onOpenLanguagePicker}
+                  className="ios-spring-press mt-5 flex min-h-[42px] w-full items-center justify-between gap-2 rounded-2xl border border-white/[0.12] bg-white/[0.05] px-3.5 text-xs font-semibold text-slate-200 transition-colors hover:bg-white/[0.11] hover:text-white"
+                >
+                  <span className="flex min-w-0 items-center gap-2">
+                    <Globe className="h-4 w-4 shrink-0 text-sky-300" />
+                    <span className="truncate">{activeLanguage.nativeName}</span>
+                  </span>
+                  <span className="shrink-0 font-mono text-[10px] text-sky-300">
+                    {activeLanguage.id.split('-')[0].toUpperCase()}
+                  </span>
+                </button>
+              )}
             </div>
 
             <div className="border-t border-white/[0.12] px-2 pt-4 text-xs text-slate-400">
@@ -203,7 +240,7 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
                     className="ios-spring-press mb-3 flex min-h-[42px] w-full items-center justify-center gap-2 rounded-2xl border border-sky-400/35 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 transition-colors hover:bg-sky-500/25 whitespace-nowrap"
                   >
                     <LogIn className="h-4 w-4 text-sky-300" />
-                    <span>Sign In / Google</span>
+                    <span>{t(language, 'signInGoogle')}</span>
                   </button>
                 )
               )}
@@ -244,6 +281,18 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
               </div>
 
               <div className="flex shrink-0 items-center gap-2">
+                {onOpenLanguagePicker && (
+                  <button
+                    type="button"
+                    onClick={onOpenLanguagePicker}
+                    aria-label="Choose India state or language"
+                    className="ios-spring-press flex min-h-[38px] items-center gap-1 rounded-full border border-white/[0.15] bg-white/[0.06] px-2.5 text-xs font-semibold text-slate-100 hover:bg-white/[0.14] whitespace-nowrap shrink-0"
+                  >
+                    <Globe className="h-3.5 w-3.5 text-sky-300" />
+                    <span className="max-w-[68px] truncate">{activeLanguage.shortLabel}</span>
+                  </button>
+                )}
+
                 {user ? (
                   <button
                     type="button"
@@ -270,7 +319,7 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
                       className="ios-spring-press flex min-h-[38px] items-center gap-1.5 rounded-full border border-sky-400/35 bg-sky-500/15 px-3 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap shrink-0"
                     >
                       <LogIn className="h-3.5 w-3.5 text-sky-300" />
-                      <span>Sign In</span>
+                      <span>{t(language, 'signIn')}</span>
                     </button>
                   )
                 )}
@@ -282,7 +331,7 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
                   className="liquid-primary-btn ios-spring-press flex min-h-[38px] items-center gap-1.5 rounded-full px-3.5 text-xs font-semibold text-white whitespace-nowrap shrink-0"
                 >
                   <Plus className="h-4 w-4" />
-                  <span>New</span>
+                  <span>{t(language, 'newShort')}</span>
                 </button>
               </div>
             </header>
@@ -354,7 +403,7 @@ export const AppShell = forwardRef<AppShellHandle, AppShellProps>(
                         active ? 'scale-110' : 'scale-100'
                       }`}
                     />
-                    <span className="text-[11px] font-semibold tracking-tight">{item.label}</span>
+                    <span className="text-[11px] font-semibold tracking-tight">{getNavLabel(item.id)}</span>
                   </button>
                 );
               })}

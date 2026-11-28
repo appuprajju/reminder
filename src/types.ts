@@ -80,6 +80,7 @@ export interface UserPreferences {
   customTags: string[];
   customAudioName: string | null;
   serverBaseUrl: string;
+  language: string;
 }
 
 export interface GoogleCalendarEvent {

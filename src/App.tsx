@@ -12,6 +12,7 @@ import {
   parseAssistantIntentUrl,
 } from './lib/assistantIntents';
 import { getAlarmSoundLabel } from './lib/audio';
+import { getLanguageOption } from './lib/indianLanguages';
 import { parseQuickInput, type ParsedQuickReminder } from './lib/parser';
 import { formatDaysSummary, formatTimeDisplay } from './lib/time';
 import {
@@ -46,6 +47,9 @@ const RingingAlarmOverlay = lazy(() =>
 );
 const VoiceShortcutsModal = lazy(() =>
   import('./components/VoiceShortcutsModal').then((m) => ({ default: m.VoiceShortcutsModal }))
+);
+const LanguagePickerModal = lazy(() =>
+  import('./components/LanguagePickerModal').then((m) => ({ default: m.LanguagePickerModal }))
 );
 
 const INTRO_SEEN_KEY = 'rm_intro_seen_session';
@@ -89,6 +93,7 @@ export function App() {
   const [focusReminder, setFocusReminder] = useState<Reminder | null>(null);
   const [authOpen, setAuthOpen] = useState(false);
   const [voiceShortcutsOpen, setVoiceShortcutsOpen] = useState(false);
+  const [languagePickerOpen, setLanguagePickerOpen] = useState(false);
   const [voiceAutoTriggerSeq, setVoiceAutoTriggerSeq] = useState(0);
   const [confirmAction, setConfirmAction] = useState<ConfirmActionSpec | null>(null);
   const [confirmBusy, setConfirmBusy] = useState(false);
@@ -134,6 +139,10 @@ export function App() {
       voiceCloseRef.current();
       return true;
     }
+    if (languagePickerOpen) {
+      setLanguagePickerOpen(false);
+      return true;
+    }
     if (voiceShortcutsOpen) {
       setVoiceShortcutsOpen(false);
       return true;
@@ -162,6 +171,7 @@ export function App() {
     confirmBusy,
     finishIntro,
     focusReminder,
+    languagePickerOpen,
     selectTab,
     sheetOpen,
     showIntro,
@@ -246,6 +256,7 @@ export function App() {
 
   const liveAssistant = useLiveVoiceAssistant({
     vibrate: app.prefs.vibrate,
+    speechLang: app.prefs.language,
     onAutoSaveCommand: ({ source, commandText, isAlarmHint }) => {
       const parsed = buildReminderFromAssistantIntent({
         action: 'add',
@@ -307,6 +318,13 @@ export function App() {
       });
     }
   }, [app.prefs.customAudioName, app.ringingReminder]);
+
+  /* Keep HTML lang attribute aligned with the selected Indian state/regional language */
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const opt = getLanguageOption(app.prefs.language);
+    document.documentElement.lang = opt.id;
+  }, [app.prefs.language]);
 
   /* Support Android / PWA manifest launch shortcuts, /?ring=<id> notification clicks & Voice intents */
   const ringParamHandledRef = useRef<string | null>(null);
@@ -575,7 +593,9 @@ export function App() {
         onSelectTab={selectTab}
         onOpenNewSheet={() => openNewReminder(null)}
         user={app.user}
+        language={app.prefs.language}
         onOpenAuth={() => setAuthOpen(true)}
+        onOpenLanguagePicker={() => setLanguagePickerOpen(true)}
         isOnline={app.isOnline}
         syncStatus={app.syncStatus}
         toasts={app.toasts}
@@ -603,9 +623,11 @@ export function App() {
             onOpenAuth={() => setAuthOpen(true)}
             onGoogleSignIn={app.signInWithGoogle}
             onToggleDone={app.toggleCompleteReminder}
+            onBulkComplete={app.completeRemindersBulk}
             onToggleSubtask={app.toggleSubtask}
             onSnooze={app.snoozeReminder}
             onDelete={app.deleteReminder}
+            onBulkDelete={app.deleteRemindersBulk}
             onEdit={openEditReminder}
             onFocus={(r) => {
               setFocusReminder(r);
@@ -701,6 +723,7 @@ export function App() {
               onExportBackup={app.exportBackupJson}
               onImportBackup={app.importBackupJson}
               onOpenVoiceShortcuts={() => setVoiceShortcutsOpen(true)}
+              onOpenLanguagePicker={() => setLanguagePickerOpen(true)}
               onToast={(msg) => app.pushToast(msg, { tone: 'info' })}
             />
           )}
@@ -779,6 +802,23 @@ export function App() {
             onExecuteAssistantUrl={(url) => handleAssistantUrl(url)}
             onTriggerIsland={(type, opts) => appShellRef.current?.onTriggerIsland(type, opts)}
             onClose={() => setVoiceShortcutsOpen(false)}
+          />
+        )}
+
+        {languagePickerOpen && (
+          <LanguagePickerModal
+            open={languagePickerOpen}
+            selectedLanguage={app.prefs.language}
+            onSelectLanguage={(langCode) => {
+              const chosen = getLanguageOption(langCode);
+              app.updatePrefs({ language: chosen.id });
+              appShellRef.current?.onTriggerIsland('success', {
+                title: chosen.nativeName,
+                message: `Language switched to ${chosen.name}`,
+                durationMs: 2800,
+              });
+            }}
+            onClose={() => setLanguagePickerOpen(false)}
           />
         )}
       </Suspense>

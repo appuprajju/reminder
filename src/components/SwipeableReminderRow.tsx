@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   AlarmClock,
   Bell,
@@ -11,6 +11,7 @@ import {
   Timer,
   Trash2,
 } from 'lucide-react';
+import { triggerHaptic } from '../lib/nativeBridge';
 import type { Reminder } from '../types';
 import { formatDaysSummary, formatTimeDisplay, isReminderDoneToday } from '../lib/time';
 
@@ -24,7 +25,14 @@ interface SwipeableReminderRowProps {
   onFocus: (reminder: Reminder) => void;
   onToggleSubtask?: (reminderId: string, subtaskId: string) => void;
   onExportIcs?: (reminder: Reminder) => void;
+  selectionMode?: boolean;
+  selected?: boolean;
+  onToggleSelect?: (id: string) => void;
+  onEnterSelection?: (id: string) => void;
+  vibrate?: boolean;
 }
+
+const LONG_PRESS_MS = 450;
 
 export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
   reminder,
@@ -36,6 +44,11 @@ export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
   onFocus,
   onToggleSubtask,
   onExportIcs,
+  selectionMode = false,
+  selected = false,
+  onToggleSelect,
+  onEnterSelection,
+  vibrate = true,
 }) => {
   const done = isReminderDoneToday(reminder);
   const [offsetX, setOffsetX] = useState(0);
@@ -46,23 +59,63 @@ export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
   const startYRef = useRef(0);
   const lockedAxisRef = useRef<'x' | 'y' | null>(null);
   const movedRef = useRef(false);
+  const longPressTimerRef = useRef<number | null>(null);
+  const longPressedRef = useRef(false);
+
+  const clearLongPressTimer = () => {
+    if (longPressTimerRef.current !== null) {
+      window.clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    if (selectionMode) {
+      clearLongPressTimer();
+      setOffsetX(0);
+      setActionsOpen(false);
+      setDragging(false);
+    }
+  }, [selectionMode]);
+
+  useEffect(() => clearLongPressTimer, []);
 
   const subtasks = reminder.subtasks || [];
   const subtasksDone = subtasks.filter((s) => s.done).length;
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (selectionMode) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     if ((e.target as HTMLElement).closest('button, [data-subtask-drawer]')) return;
     startXRef.current = e.clientX;
     startYRef.current = e.clientY;
     lockedAxisRef.current = null;
     movedRef.current = false;
+    longPressedRef.current = false;
     setDragging(true);
+
+    if (onEnterSelection) {
+      clearLongPressTimer();
+      longPressTimerRef.current = window.setTimeout(() => {
+        longPressTimerRef.current = null;
+        longPressedRef.current = true;
+        setDragging(false);
+        setOffsetX(0);
+        setActionsOpen(false);
+        triggerHaptic('medium', vibrate);
+        onEnterSelection(reminder.id);
+      }, LONG_PRESS_MS);
+    }
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging) return;
+    if (!dragging || selectionMode) return;
     const dx = e.clientX - startXRef.current;
     const dy = e.clientY - startYRef.current;
+
+    if (Math.hypot(dx, dy) > 10) {
+      clearLongPressTimer();
+    }
 
     if (!lockedAxisRef.current) {
       if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
@@ -78,6 +131,7 @@ export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
   };
 
   const handlePointerEnd = () => {
+    clearLongPressTimer();
     if (!dragging) return;
     setDragging(false);
     if (lockedAxisRef.current === 'x') {
@@ -102,7 +156,14 @@ export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
   const isSnoozed = !!(reminder.snoozedUntil && reminder.snoozedUntil > Date.now());
 
   return (
-    <div className="relative overflow-hidden rounded-[22px] border border-white/[0.18] bg-white/[0.06] shadow-[0_14px_34px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.3)] backdrop-blur-2xl">
+    <div
+      data-selected={selectionMode && selected ? 'true' : 'false'}
+      className={`relative overflow-hidden rounded-[22px] border backdrop-blur-2xl transition-colors duration-150 ${
+        selectionMode && selected
+          ? 'border-[#0A84FF]/70 bg-[#0A84FF]/15 shadow-[0_14px_34px_rgba(10,132,255,0.22),inset_0_1px_0_rgba(147,197,253,0.4)]'
+          : 'border-white/[0.18] bg-white/[0.06] shadow-[0_14px_34px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.3)]'
+      }`}
+    >
       {/* Left reveal (Swipe right to complete) */}
       <div
         className={`pointer-events-none absolute inset-y-0 left-0 flex w-28 items-center justify-start bg-[#30D158]/25 pl-5 text-emerald-300 transition-opacity duration-150 ${
@@ -157,7 +218,19 @@ export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerEnd}
         onPointerCancel={handlePointerEnd}
+        onPointerLeave={clearLongPressTimer}
+        onContextMenu={(e) => {
+          if (onEnterSelection) e.preventDefault();
+        }}
         onClick={() => {
+          if (longPressedRef.current) {
+            longPressedRef.current = false;
+            return;
+          }
+          if (selectionMode) {
+            onToggleSelect?.(reminder.id);
+            return;
+          }
           if (movedRef.current) return;
           if (actionsOpen) {
             setOffsetX(0);
@@ -167,32 +240,60 @@ export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
           onEdit(reminder);
         }}
         style={{
-          transform: `translate3d(${offsetX}px, 0, 0)`,
+          transform: `translate3d(${selectionMode ? 0 : offsetX}px, 0, 0)`,
           transition: dragging ? 'none' : 'transform 280ms cubic-bezier(0.22, 1, 0.36, 1)',
         }}
-        className="relative z-10 cursor-pointer bg-gradient-to-br from-[#161E3B]/92 to-[#0D1329]/92 select-none touch-pan-y hover:from-[#1B2547]/95 hover:to-[#111936]/95"
+        className={`relative z-10 cursor-pointer select-none touch-pan-y transition-colors duration-150 ${
+          selectionMode && selected
+            ? 'bg-gradient-to-br from-[#162752]/95 to-[#0D1A3B]/95'
+            : 'bg-gradient-to-br from-[#161E3B]/92 to-[#0D1329]/92 hover:from-[#1B2547]/95 hover:to-[#111936]/95'
+        }`}
       >
         <div className="flex min-h-[76px] items-center gap-3.5 px-4 py-3.5">
-          {/* Check completion button (44px touch target) */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleDone(reminder.id);
-            }}
-            aria-label={done ? `Mark ${reminder.title} not done` : `Complete ${reminder.title}`}
-            className="ios-spring-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#0A84FF]"
-          >
-            <span
-              className={`flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-150 ${
-                done
-                  ? 'animate-check-pop border-[#30D158] bg-[#30D158] text-[#050712] shadow-[0_0_16px_rgba(48,209,88,0.6)]'
-                  : 'border-white/40 bg-white/[0.04] text-transparent hover:border-white/75'
-              }`}
+          {/* Selection checkbox (selection mode) OR completion circle (normal mode) */}
+          {selectionMode ? (
+            <button
+              type="button"
+              role="checkbox"
+              aria-checked={selected}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleSelect?.(reminder.id);
+              }}
+              aria-label={selected ? `Deselect ${reminder.title}` : `Select ${reminder.title}`}
+              className="ios-spring-press flex h-11 w-11 shrink-0 items-center justify-center rounded-xl focus-visible:outline-2 focus-visible:outline-[#0A84FF]"
             >
-              <Check className="h-3.5 w-3.5 stroke-[3]" />
-            </span>
-          </button>
+              <span
+                className={`flex h-6 w-6 items-center justify-center rounded-lg border transition-all duration-150 ${
+                  selected
+                    ? 'animate-check-pop border-[#0A84FF] bg-[#0A84FF] text-white shadow-[0_0_16px_rgba(10,132,255,0.6)]'
+                    : 'border-white/45 bg-white/[0.05] text-transparent hover:border-sky-300/80'
+                }`}
+              >
+                <Check className="h-3.5 w-3.5 stroke-[3]" />
+              </span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleDone(reminder.id);
+              }}
+              aria-label={done ? `Mark ${reminder.title} not done` : `Complete ${reminder.title}`}
+              className="ios-spring-press flex h-11 w-11 shrink-0 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-[#0A84FF]"
+            >
+              <span
+                className={`flex h-6 w-6 items-center justify-center rounded-full border transition-all duration-150 ${
+                  done
+                    ? 'animate-check-pop border-[#30D158] bg-[#30D158] text-[#050712] shadow-[0_0_16px_rgba(48,209,88,0.6)]'
+                    : 'border-white/40 bg-white/[0.04] text-transparent hover:border-white/75'
+                }`}
+              >
+                <Check className="h-3.5 w-3.5 stroke-[3]" />
+              </span>
+            </button>
+          )}
 
           {/* Glossy 3D iOS Emblem Squircle */}
           <div
@@ -280,61 +381,63 @@ export const SwipeableReminderRow: React.FC<SwipeableReminderRowProps> = ({
             )}
           </div>
 
-          {/* Quick desktop / accessible actions */}
-          <div className="flex shrink-0 items-center gap-1">
-            {!done && (
+          {/* Quick desktop / accessible actions (step aside in selection mode) */}
+          {!selectionMode && (
+            <div className="flex shrink-0 items-center gap-1">
+              {!done && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onFocus(reminder);
+                  }}
+                  title="Start focus session with ambient soundscapes"
+                  aria-label={`Focus on ${reminder.title}`}
+                  className="ios-spring-press flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-slate-100"
+                >
+                  <Timer className="h-4 w-4" />
+                </button>
+              )}
+              {onExportIcs && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onExportIcs(reminder);
+                  }}
+                  title="Export .ics for Apple Calendar"
+                  aria-label={`Export ${reminder.title} to Apple Calendar`}
+                  className="ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-sky-300 sm:flex"
+                >
+                  <CalendarArrowDown className="h-4 w-4" />
+                </button>
+              )}
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onFocus(reminder);
+                  onSnooze(reminder.id, 10);
                 }}
-                title="Start focus session with ambient soundscapes"
-                aria-label={`Focus on ${reminder.title}`}
-                className="ios-spring-press flex h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-slate-100"
+                title="Snooze 10 minutes"
+                aria-label={`Snooze ${reminder.title}`}
+                className="ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-amber-300 sm:flex"
               >
-                <Timer className="h-4 w-4" />
+                <Clock className="h-4 w-4" />
               </button>
-            )}
-            {onExportIcs && (
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onExportIcs(reminder);
+                  onDelete(reminder.id);
                 }}
-                title="Export .ics for Apple Calendar"
-                aria-label={`Export ${reminder.title} to Apple Calendar`}
-                className="ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-sky-300 sm:flex"
+                title="Delete reminder"
+                aria-label={`Delete ${reminder.title}`}
+                className="ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-500/15 hover:text-red-400 sm:flex"
               >
-                <CalendarArrowDown className="h-4 w-4" />
+                <Trash2 className="h-4 w-4" />
               </button>
-            )}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onSnooze(reminder.id, 10);
-              }}
-              title="Snooze 10 minutes"
-              aria-label={`Snooze ${reminder.title}`}
-              className="ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-amber-300 sm:flex"
-            >
-              <Clock className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDelete(reminder.id);
-              }}
-              title="Delete reminder"
-              aria-label={`Delete ${reminder.title}`}
-              className="ios-spring-press hidden h-11 w-11 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-red-500/15 hover:text-red-400 sm:flex"
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Inline Expandable Subtasks Checklist Drawer */}

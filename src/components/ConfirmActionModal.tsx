@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { CalendarPlus, ExternalLink, Mail, X } from 'lucide-react';
+import { CalendarPlus, ExternalLink, Mail, Trash2, X } from 'lucide-react';
 
 export interface ConfirmActionSpec {
-  kind: 'calendar-add' | 'gmail-send';
+  kind: 'calendar-add' | 'gmail-send' | 'bulk-delete';
   title: string;
   description: string;
   confirmLabel: string;
   previewLines: { label: string; value: string }[];
   bodyPreview?: string;
   externalHref?: string;
-  onConfirm: () => Promise<void>;
+  onConfirm: () => Promise<void> | void;
 }
 
 interface ConfirmActionModalProps {
@@ -26,7 +26,21 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
   onCancel,
   onConfirm,
 }) => {
+  useEffect(() => {
+    if (!action) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !busy) {
+        e.preventDefault();
+        onCancel();
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [action, busy, onCancel]);
+
   if (!action) return null;
+
+  const isDestructive = action.kind === 'bulk-delete';
 
   const content = (
     <div
@@ -45,9 +59,17 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
 
         <div className="flex items-start justify-between gap-3 border-b border-white/[0.08] px-5 py-4">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-sky-500/20 text-sky-300">
+            <div
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${
+                isDestructive
+                  ? 'border-red-400/35 bg-[#FF453A]/20 text-red-300'
+                  : 'border-white/20 bg-sky-500/20 text-sky-300'
+              }`}
+            >
               {action.kind === 'calendar-add' ? (
                 <CalendarPlus className="h-5 w-5" />
+              ) : action.kind === 'bulk-delete' ? (
+                <Trash2 className="h-5 w-5" />
               ) : (
                 <Mail className="h-5 w-5" />
               )}
@@ -80,7 +102,9 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
 
           {action.bodyPreview && (
             <div className="rounded-2xl border border-white/[0.08] bg-[#060812]/70 p-3.5">
-              <p className="text-[11px] font-medium text-slate-400">Message preview</p>
+              <p className="text-[11px] font-medium text-slate-400">
+                {isDestructive ? 'Selected reminders' : 'Message preview'}
+              </p>
               <pre className="mt-1.5 max-h-40 overflow-y-auto whitespace-pre-wrap font-sans text-xs leading-relaxed text-slate-200">
                 {action.bodyPreview}
               </pre>
@@ -113,7 +137,11 @@ export const ConfirmActionModal: React.FC<ConfirmActionModalProps> = ({
               type="button"
               disabled={busy}
               onClick={onConfirm}
-              className="liquid-primary-btn ios-spring-press min-h-[48px] rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-50"
+              className={`ios-spring-press min-h-[48px] rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-50 ${
+                isDestructive
+                  ? 'border border-red-400/40 bg-[#FF453A] shadow-[0_10px_24px_rgba(255,69,58,0.35)] hover:bg-[#FF3B30]'
+                  : 'liquid-primary-btn'
+              }`}
             >
               {busy ? 'Working…' : action.confirmLabel}
             </button>

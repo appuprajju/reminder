@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlarmClock,
   Bell,
   Calendar,
   Check,
+  CheckSquare,
   ChevronDown,
   ChevronUp,
   FileText,
@@ -21,12 +22,18 @@ import {
   Square,
   X,
 } from 'lucide-react';
+import {
+  pruneSelectedIds,
+  toggleSelectAllVisible,
+  toggleSelectedId,
+} from '../lib/bulkSelection';
 import { FIREBASE_PROJECT_ID } from '../lib/firebase';
 import {
   buildGoogleOAuthTestingError,
   mapFirebaseAuthError,
   type ParsedFirebaseAuthError,
 } from '../lib/firebaseAuthErrors';
+import { formatLocalizedDate, getLocalizedGreeting, t } from '../lib/i18n';
 import { buildReminderDraftFromNote, formatNoteTimestamp } from '../lib/notes';
 import { parseQuickInput, type ParsedQuickReminder } from '../lib/parser';
 import { detectDeviceOs, getPlatformAssistantProfile } from '../lib/platform';
@@ -36,7 +43,6 @@ import {
   formatCountdown,
   formatDaysSummary,
   formatTimeDisplay,
-  getGreeting,
   getTodayDateKey,
   isReminderDoneToday,
   isReminderScheduledForDate,
@@ -52,6 +58,8 @@ import type {
   VoiceNote,
 } from '../types';
 import { AuthRecoveryBanner } from './AuthRecoveryBanner';
+import { BulkActionBar } from './BulkActionBar';
+import { ConfirmActionModal, type ConfirmActionSpec } from './ConfirmActionModal';
 import { useDynamicIsland } from './DynamicIsland';
 import { GoogleSignInButton } from './GoogleSignInButton';
 import { LiquidGlassCard } from './LiquidGlassCard';
@@ -86,9 +94,11 @@ interface TodayViewProps {
   onOpenAuth: () => void;
   onGoogleSignIn: () => Promise<unknown>;
   onToggleDone: (id: string) => void;
+  onBulkComplete: (ids: string[]) => void;
   onToggleSubtask: (reminderId: string, subtaskId: string) => void;
   onSnooze: (id: string, minutes: number) => void;
   onDelete: (id: string) => void;
+  onBulkDelete: (ids: string[]) => void;
   onEdit: (reminder: Reminder) => void;
   onFocus: (reminder: Reminder) => void;
   onExportIcs: (reminder: Reminder) => void;
@@ -121,9 +131,11 @@ export const TodayView: React.FC<TodayViewProps> = ({
   onOpenAuth,
   onGoogleSignIn,
   onToggleDone,
+  onBulkComplete,
   onToggleSubtask,
   onSnooze,
   onDelete,
+  onBulkDelete,
   onEdit,
   onFocus,
   onExportIcs,
@@ -155,6 +167,11 @@ export const TodayView: React.FC<TodayViewProps> = ({
   const [noteAutoStart, setNoteAutoStart] = useState(false);
   const [showAllNotes, setShowAllNotes] = useState(false);
   const lastNoteTriggerSeqRef = useRef(0);
+
+  // Multi-select bulk actions state
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
+  const [pendingBulkDeleteIds, setPendingBulkDeleteIds] = useState<string[] | null>(null);
 
   const openNewVoiceNote = (autoListen: boolean) => {
     setEditingNote(null);
@@ -230,11 +247,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
 
   const todayKey = getTodayDateKey(now);
   const clock = formatClockParts(now, prefs.timeFormat);
-  const dateLabel = now.toLocaleDateString(undefined, {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-  });
+  const dateLabel = formatLocalizedDate(now, prefs.language);
 
   const todayItems = useMemo(
     () => reminders.filter((r) => isReminderScheduledForDate(r, now)),
@@ -294,6 +307,131 @@ export const TodayView: React.FC<TodayViewProps> = ({
       });
   }, [filter, reminders, selectedTag, todayKey]);
 
+  const visibleReminderIds = useMemo(
+    () => filteredReminders.map((r) => r.id),
+    [filteredReminders]
+  );
+
+  // Keep active selection scoped strictly to visible reminders
+  useEffect(() => {
+    setSelectedIds((prev) => {
+      const pruned = pruneSelectedIds(prev, visibleReminderIds);
+      if (pruned.size === prev.size) return prev;
+      return pruned;
+    });
+    if (selectionMode && visibleReminderIds.length === 0) {
+      setSelectionMode(false);
+      setPendingBulkDeleteIds(null);
+    }
+  }, [selectionMode, visibleReminderIds]);
+
+  const exitSelectionMode = useCallback(() => {
+    setSelectionMode(false);
+    setSelectedIds(new Set());
+    setPendingBulkDeleteIds(null);
+  }, []);
+
+  // Press Escape to exit selection mode when no delete modal is open
+  useEffect(() => {
+    if (!selectionMode || pendingBulkDeleteIds) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        exitSelectionMode();
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [exitSelectionMode, pendingBulkDeleteIds, selectionMode]);
+
+  const handleToggleSelectionMode = useCallback(() => {
+    if (selectionMode) {
+      exitSelectionMode();
+    } else if (visibleReminderIds.length > 0) {
+      setSelectionMode(true);
+      setSelectedIds(new Set());
+    }
+  }, [exitSelectionMode, selectionMode, visibleReminderIds.length]);
+
+  const handleEnterSelection = useCallback((id: string) => {
+    setSelectionMode(true);
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+  }, []);
+
+  const handleToggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) => toggleSelectedId(prev, id));
+  }, []);
+
+  const handleToggleSelectAll = useCallback(() => {
+    setSelectedIds((prev) => toggleSelectAllVisible(prev, visibleReminderIds));
+  }, [visibleReminderIds]);
+
+  const pendingSelectedCount = useMemo(() => {
+    let count = 0;
+    for (const r of filteredReminders) {
+      if (selectedIds.has(r.id) && !isReminderDoneToday(r, todayKey)) {
+        count += 1;
+      }
+    }
+    return count;
+  }, [filteredReminders, selectedIds, todayKey]);
+
+  const allVisibleSelected =
+    visibleReminderIds.length > 0 && visibleReminderIds.every((id) => selectedIds.has(id));
+
+  const handleBulkCompleteClick = useCallback(() => {
+    if (pendingSelectedCount === 0) return;
+    onBulkComplete(Array.from(selectedIds));
+    exitSelectionMode();
+  }, [exitSelectionMode, onBulkComplete, pendingSelectedCount, selectedIds]);
+
+  const handleRequestBulkDelete = useCallback(() => {
+    if (selectedIds.size === 0) return;
+    setPendingBulkDeleteIds(Array.from(selectedIds));
+  }, [selectedIds]);
+
+  const bulkDeleteConfirmSpec = useMemo<ConfirmActionSpec | null>(() => {
+    if (!pendingBulkDeleteIds || pendingBulkDeleteIds.length === 0) return null;
+    const idSet = new Set(pendingBulkDeleteIds);
+    const targets = reminders.filter((r) => idSet.has(r.id));
+    if (targets.length === 0) return null;
+
+    const alarmCount = targets.filter((r) => r.isAlarm).length;
+    const previewItems = targets.slice(0, 5).map((r) => `• ${r.title}`);
+    if (targets.length > 5) {
+      previewItems.push(`…and ${targets.length - 5} more`);
+    }
+
+    const count = targets.length;
+    const previewLines: { label: string; value: string }[] = [
+      { label: 'Reminders to delete', value: `${count}` },
+    ];
+    if (alarmCount > 0) {
+      previewLines.push({
+        label: 'Active alarms canceled',
+        value: `${alarmCount}`,
+      });
+    }
+
+    return {
+      kind: 'bulk-delete',
+      title: `Delete ${count} reminder${count === 1 ? '' : 's'}?`,
+      description:
+        'Selected reminders will be removed from your schedule and any scheduled OS alarms canceled. You can still tap Undo immediately after.',
+      confirmLabel: `Delete ${count}`,
+      previewLines,
+      bodyPreview: previewItems.join('\n'),
+      onConfirm: () => {
+        onBulkDelete(targets.map((r) => r.id));
+        exitSelectionMode();
+      },
+    };
+  }, [exitSelectionMode, onBulkDelete, pendingBulkDeleteIds, reminders]);
+
   const parsedPreview: ParsedQuickReminder | null = useMemo(() => {
     if (!quickText.trim()) return null;
     return parseQuickInput(quickText, now);
@@ -335,7 +473,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
               {dateLabel}
             </p>
             <h1 className="font-display mt-1 text-lg font-bold tracking-tight text-white">
-              {getGreeting(now)}
+              {getLocalizedGreeting(now, prefs.language)}
               {userName ? `, ${userName}` : ''}
             </h1>
           </div>
@@ -660,7 +798,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
               type="text"
               value={quickText}
               onChange={(e) => setQuickText(e.target.value)}
-              placeholder='Quick add: "Wake me at 6:30am" or "Take pills 9pm"'
+              placeholder={t(prefs.language, 'quickAddPlaceholder')}
               maxLength={100}
               className="min-h-[48px] min-w-0 flex-1 bg-transparent px-3 text-sm text-white placeholder:text-slate-400 focus:outline-none"
             />
@@ -670,7 +808,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
               className="liquid-primary-btn ios-spring-press flex min-h-[48px] shrink-0 items-center gap-1.5 rounded-xl px-4 text-sm font-semibold text-white disabled:opacity-45 whitespace-nowrap"
             >
               <Plus className="h-4 w-4" />
-              <span>Add</span>
+              <span>{t(prefs.language, 'add')}</span>
             </button>
           </div>
 
@@ -718,7 +856,9 @@ export const TodayView: React.FC<TodayViewProps> = ({
             <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <FileText className="h-4 w-4 shrink-0 text-sky-300" />
-                <h2 className="font-display text-sm font-bold text-white">Voice Notes</h2>
+                <h2 className="font-display text-sm font-bold text-white">
+                  {t(prefs.language, 'voiceNotes')}
+                </h2>
                 <span aria-hidden="true" className="text-slate-500">
                   ·
                 </span>
@@ -738,7 +878,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
                 className="liquid-primary-btn ios-spring-press inline-flex min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-xl px-3.5 text-xs font-semibold text-white whitespace-nowrap sm:flex-none"
               >
                 <Mic className="h-4 w-4" />
-                <span>Record Note</span>
+                <span>{t(prefs.language, 'recordNote')}</span>
               </button>
               <button
                 type="button"
@@ -747,7 +887,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
                 className="ios-spring-press inline-flex min-h-[44px] items-center justify-center gap-1 rounded-xl border border-white/[0.12] bg-white/[0.05] px-3 text-xs font-semibold text-slate-200 hover:bg-white/[0.1] whitespace-nowrap"
               >
                 <Plus className="h-3.5 w-3.5" />
-                <span>Write</span>
+                <span>{t(prefs.language, 'writeNote')}</span>
               </button>
             </div>
           </div>
@@ -927,21 +1067,48 @@ export const TodayView: React.FC<TodayViewProps> = ({
               value={filter}
               onChange={setFilter}
               options={[
-                { id: 'all', label: 'All' },
-                { id: 'alarms', label: 'Alarms' },
-                { id: 'todo', label: 'To Do' },
-                { id: 'done', label: 'Done' },
+                { id: 'all', label: t(prefs.language, 'filterAll') },
+                { id: 'alarms', label: t(prefs.language, 'filterAlarms') },
+                { id: 'todo', label: t(prefs.language, 'filterTodo') },
+                { id: 'done', label: t(prefs.language, 'filterDone') },
               ]}
             />
 
-            <button
-              type="button"
-              onClick={onOpenNewSheet}
-              className="ios-spring-press hidden min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.09] sm:inline-flex whitespace-nowrap shrink-0"
-            >
-              <AlarmClock className="h-4 w-4 text-[#60A5FA]" />
-              <span>Detailed Alarm</span>
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              {(filteredReminders.length > 0 || selectionMode) && (
+                <button
+                  type="button"
+                  onClick={handleToggleSelectionMode}
+                  aria-pressed={selectionMode}
+                  className={`ios-spring-press inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border px-3.5 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
+                    selectionMode
+                      ? 'border-sky-400/50 bg-[#0A84FF]/25 text-sky-100 hover:bg-[#0A84FF]/35'
+                      : 'border-white/[0.1] bg-white/[0.05] text-slate-100 hover:bg-white/[0.1]'
+                  }`}
+                >
+                  {selectionMode ? (
+                    <>
+                      <X className="h-4 w-4 text-sky-200" />
+                      <span>Done</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckSquare className="h-4 w-4 text-sky-300" />
+                      <span>Select</span>
+                    </>
+                  )}
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={onOpenNewSheet}
+                className="ios-spring-press hidden min-h-[44px] items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 text-xs font-semibold text-slate-100 transition-colors hover:bg-white/[0.09] sm:inline-flex whitespace-nowrap shrink-0"
+              >
+                <AlarmClock className="h-4 w-4 text-[#60A5FA]" />
+                <span>{t(prefs.language, 'detailedAlarm')}</span>
+              </button>
+            </div>
           </div>
 
           {availableTags.length > 0 && (
@@ -955,7 +1122,7 @@ export const TodayView: React.FC<TodayViewProps> = ({
                     : 'bg-white/[0.04] text-slate-400 hover:text-slate-200'
                 }`}
               >
-                All Tags
+                {t(prefs.language, 'allTags')}
               </button>
               {availableTags.map((tag) => (
                 <button
@@ -979,7 +1146,9 @@ export const TodayView: React.FC<TodayViewProps> = ({
         {filteredReminders.length === 0 ? (
           <div className="glass-surface flex flex-col items-center justify-center rounded-3xl px-6 py-12 text-center">
             <AlarmClock className="h-9 w-9 text-slate-600" />
-            <h2 className="mt-3 text-base font-semibold text-slate-200">No reminders here yet</h2>
+            <h2 className="mt-3 text-base font-semibold text-slate-200">
+              {t(prefs.language, 'noRemindersYet')}
+            </h2>
             <p className="mt-1 max-w-xs text-sm text-slate-400">
               Use the quick bar above or tap New Alarm to schedule an exact OS reminder.
             </p>
@@ -988,13 +1157,15 @@ export const TodayView: React.FC<TodayViewProps> = ({
               onClick={onOpenNewSheet}
               className="liquid-primary-btn ios-spring-press mt-5 min-h-[44px] rounded-xl px-5 text-sm font-semibold text-white"
             >
-              Create Alarm
+              {t(prefs.language, 'createAlarm')}
             </button>
           </div>
         ) : (
-          <div className="flex flex-col gap-2.5">
+          <div className={`flex flex-col gap-2.5 ${selectionMode ? 'pb-24' : ''}`}>
             <p className="px-1 text-xs text-slate-500">
-              Swipe right to complete · Swipe left for snooze or delete
+              {selectionMode
+                ? 'Tap reminders to select · Use the floating bar below to complete or delete'
+                : 'Swipe right to complete · Swipe left for snooze or delete · Hold a row to select'}
             </p>
             {filteredReminders.map((r) => (
               <SwipeableReminderRow
@@ -1008,16 +1179,43 @@ export const TodayView: React.FC<TodayViewProps> = ({
                 onEdit={onEdit}
                 onFocus={onFocus}
                 onExportIcs={onExportIcs}
+                selectionMode={selectionMode}
+                selected={selectedIds.has(r.id)}
+                onToggleSelect={handleToggleSelect}
+                onEnterSelection={handleEnterSelection}
+                vibrate={prefs.vibrate}
               />
             ))}
           </div>
         )}
       </section>
 
+      <BulkActionBar
+        open={selectionMode}
+        selectedCount={selectedIds.size}
+        visibleCount={visibleReminderIds.length}
+        pendingSelectedCount={pendingSelectedCount}
+        allVisibleSelected={allVisibleSelected}
+        onToggleSelectAll={handleToggleSelectAll}
+        onBulkComplete={handleBulkCompleteClick}
+        onRequestBulkDelete={handleRequestBulkDelete}
+        onCancel={exitSelectionMode}
+      />
+
+      <ConfirmActionModal
+        action={bulkDeleteConfirmSpec}
+        busy={false}
+        onCancel={() => setPendingBulkDeleteIds(null)}
+        onConfirm={() => {
+          bulkDeleteConfirmSpec?.onConfirm();
+        }}
+      />
+
       <VoiceNoteSheet
         open={noteSheetOpen}
         editing={editingNote}
         autoStartListening={noteAutoStart}
+        defaultLanguage={prefs.language}
         vibrate={prefs.vibrate}
         onSave={onSaveNote}
         onDelete={onDeleteNote}

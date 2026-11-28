@@ -11,6 +11,7 @@ import {
   Trash2,
   X,
 } from 'lucide-react';
+import { APP_LANGUAGES, getSpeechRecognitionLocale } from '../lib/indianLanguages';
 import { triggerHaptic } from '../lib/nativeBridge';
 import { deriveNoteTitle } from '../lib/notes';
 import type { VoiceNote } from '../types';
@@ -53,16 +54,11 @@ function getSpeechCtor(): SpeechRecognitionCtor | null {
   return w.SpeechRecognition || w.webkitSpeechRecognition || null;
 }
 
-const NOTE_LANGS = [
-  { code: 'en-US', label: 'EN (US)' },
-  { code: 'en-IN', label: 'EN (IN)' },
-  { code: 'hi-IN', label: 'हिंदी' },
-];
-
 interface VoiceNoteSheetProps {
   open: boolean;
   editing: VoiceNote | null;
   autoStartListening?: boolean;
+  defaultLanguage?: string;
   vibrate: boolean;
   onSave: (draft: {
     id?: string;
@@ -81,6 +77,7 @@ export const VoiceNoteSheet: React.FC<VoiceNoteSheetProps> = ({
   open,
   editing,
   autoStartListening = false,
+  defaultLanguage = 'en-IN',
   vibrate,
   onSave,
   onDelete,
@@ -93,7 +90,7 @@ export const VoiceNoteSheet: React.FC<VoiceNoteSheetProps> = ({
   const [content, setContent] = useState('');
   const [interimText, setInterimText] = useState('');
   const [pinned, setPinned] = useState(false);
-  const [lang, setLang] = useState('en-US');
+  const [lang, setLang] = useState(defaultLanguage);
   const [isRecording, setIsRecording] = useState(false);
   const [recordSeconds, setRecordSeconds] = useState(0);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -148,7 +145,7 @@ export const VoiceNoteSheet: React.FC<VoiceNoteSheetProps> = ({
       if (!shouldKeepListeningRef.current) return;
       try {
         const rec = new Ctor();
-        rec.lang = langRef.current;
+        rec.lang = getSpeechRecognitionLocale(langRef.current);
         rec.continuous = true;
         rec.interimResults = true;
         rec.maxAlternatives = 1;
@@ -223,6 +220,7 @@ export const VoiceNoteSheet: React.FC<VoiceNoteSheetProps> = ({
       setPinned(false);
       setRecordSeconds(0);
     }
+    setLang(defaultLanguage);
     setInterimText('');
     setErrorMsg(null);
     setCopiedState(false);
@@ -231,7 +229,7 @@ export const VoiceNoteSheet: React.FC<VoiceNoteSheetProps> = ({
       const id = window.setTimeout(() => startDictation(), 160);
       return () => window.clearTimeout(id);
     }
-  }, [autoStartListening, editing, isSpeechSupported, open, startDictation, stopDictation]);
+  }, [autoStartListening, defaultLanguage, editing, isSpeechSupported, open, startDictation, stopDictation]);
 
   useEffect(() => {
     if (!open) return;
@@ -393,11 +391,11 @@ export const VoiceNoteSheet: React.FC<VoiceNoteSheetProps> = ({
                       window.setTimeout(() => startDictation(), 150);
                     }
                   }}
-                  className="min-h-[40px] rounded-xl border border-white/[0.12] bg-[#060812]/80 px-2.5 text-xs font-semibold text-slate-200 focus:border-[#0A84FF] focus:outline-none"
+                  className="min-h-[40px] max-w-[190px] rounded-xl border border-white/[0.12] bg-[#060812]/80 px-2.5 text-xs font-semibold text-slate-200 focus:border-[#0A84FF] focus:outline-none"
                 >
-                  {NOTE_LANGS.map((l) => (
-                    <option key={l.code} value={l.code}>
-                      {l.label}
+                  {APP_LANGUAGES.map((l) => (
+                    <option key={l.id} value={l.id}>
+                      {l.nativeName === l.name ? l.name : `${l.nativeName} · ${l.name}`}
                     </option>
                   ))}
                 </select>

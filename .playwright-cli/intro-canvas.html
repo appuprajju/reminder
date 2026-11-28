@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>reminderme Smooth 30fps Intro Renderer</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 1280px; height: 720px; overflow: hidden; background: #050712; }
+    canvas { display: block; width: 1280px; height: 720px; }
+  </style>
+</head>
+<body>
+  <canvas id="intro-canvas" width="1280" height="720"></canvas>
+  <script>
+    const W = 1280;
+    const H = 720;
+    const FPS = 30;
+    const DURATION = 63.0;
+    const TOTAL_FRAMES = Math.round(DURATION * FPS);
+    const canvas = document.getElementById('intro-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const FONT_DISPLAY = '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", sans-serif';
+    const FONT_SANS = '"DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", sans-serif';
+    const FONT_MONO = '"JetBrains Mono", ui-monospace, SFMono-Regular, monospace';
+
+    const CHAPTERS = [
+      { id: 0, start: 0.0,  end: 6.5,  tag: 'CHAPTER 01', label: 'Meet reminderme' },
+      { id: 1, start: 6.5,  end: 14.5, tag: 'CHAPTER 02 · NEW', label: 'India All-State Languages' },
+      { id: 2, start: 14.5, end: 21.5, tag: 'CHAPTER 03', label: 'Voice Note Maker' },
+      { id: 3, start: 21.5, end: 29.0, tag: 'CHAPTER 04', label: 'OS-Aware Voice Assistants' },
+      { id: 4, start: 29.0, end: 36.0, tag: 'CHAPTER 05', label: 'Custom MP3 & EMO Island' },
+      { id: 5, start: 36.0, end: 43.5, tag: 'CHAPTER 06', label: 'Lock-Screen & Home Widget' },
+      { id: 6, start: 43.5, end: 50.5, tag: 'CHAPTER 07', label: 'Schedule, Insights & Focus' },
+      { id: 7, start: 50.5, end: 57.0, tag: 'CHAPTER 08', label: 'Google Sync & Flexible Sign-In' },
+      { id: 8, start: 57.0, end: 63.0, tag: 'CHAPTER 09', label: 'Start Organizing Today' },
+    ];
+
+    const clamp = (v, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, v));
+    const easeOut = (t) => 1 - Math.pow(1 - clamp(t), 3);
+    const easeInOut = (t) => {
+      const x = clamp(t);
+      return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    };
+    const easeBack = (t) => {
+      const c1 = 1.70158, c3 = c1 + 1;
+      const x = clamp(t);
+      return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+    };
+
+    function roundRect(x, y, w, h, r) {
+      const rad = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + rad, y);
+      ctx.arcTo(x + w, y, x + w, y + h, rad);
+      ctx.arcTo(x + w, y + h, x, y + h, rad);
+      ctx.arcTo(x, y + h, x, y, rad);
+      ctx.arcTo(x, y, x + w, y, rad);
+      ctx.closePath();
+    }
+
+    function drawWrappedText(text, x, y, maxWidth, lineHeight, maxLines = 4) {
+      const words = text.split(' ');
+      let line = '';
+      let cy = y;
+      let lines = 0;
+      for (const word of words) {
+        const test = line ? `${line} ${word}` : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          ctx.fillText(line, x, cy);
+          line = word;
+          cy += lineHeight;
+          lines += 1;
+          if (lines >= maxLines - 1) break;
+        } else {
+          line = test;
+        }
+      }
+      if (line) ctx.fillText(line, x, cy);
+    }
+
+    function drawGlassCard(x, y, w, h, r = 24, borderAlpha = 0.22, tint = null) {
+      ctx.save();
+      roundRect(x, y + 7, w, h, r);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.32)';
+      ctx.fill();
+
+      roundRect(x, y, w, h, r);
+      const grad = ctx.createLinearGradient(x, y, x + w, y + h);
+      if (tint) {
+        grad.addColorStop(0, tint[0]);
+        grad.addColorStop(1, tint[1]);
+      } else {
+        grad.addColorStop(0, 'rgba(24, 33, 62, 0.86)');
+        grad.addColorStop(1, 'rgba(11, 16, 36, 0.92)');
+      }
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      ctx.strokeStyle = `rgba(255, 255, 255, ${borderAlpha})`;
+      ctx.lineWidth = 1.25;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(x + r, y + 1);
+      ctx.lineTo(x + w - r, y + 1);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.34)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawPill(x, y, text, bg, border, color, fontSize = 13, padX = 12) {
+      ctx.save();
+      ctx.font = `700 ${fontSize}px ${FONT_SANS}`;
+      const tw = ctx.measureText(text).width;
+      const pw = tw + padX * 2;
+      const ph = fontSize + 14;
+      roundRect(x, y, pw, ph, ph / 2);
+      ctx.fillStyle = bg;
+      ctx.fill();
+      ctx.strokeStyle = border;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.fillStyle = color;
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, x + padX, y + ph / 2 + 0.5);
+      ctx.restore();
+      return pw;
+    }
+
+    function makeGlowSprite(color) {
+      const c = document.createElement('canvas');
+      c.width = 256;
+      c.height = 256;
+      const gctx = c.getContext('2d');
+      const rg = gctx.createRadialGradient(128, 128, 4, 128, 128, 128);
+      rg.addColorStop(0, color);
+      rg.addColorStop(1, 'rgba(5, 7, 18, 0)');
+      gctx.fillStyle = rg;
+      gctx.fillRect(0, 0, 256, 256);
+      return c;
+    }
+
+    function makeOrbSprite(c1, c2) {
+      const c = document.createElement('canvas');
+      c.width = 180;
+      c.height = 180;
+      const octx = c.getContext('2d');
+      const og = octx.createRadialGradient(64, 64, 8, 90, 90, 86);
+      og.addColorStop(0, 'rgba(255,255,255,0.72)');
+      og.addColorStop(0.28, c1);
+      og.addColorStop(1, c2);
+      octx.fillStyle = og;
+      octx.beginPath();
+      octx.arc(90, 90, 86, 0, Math.PI * 2);
+      octx.fill();
+      return c;
+    }
+
+    const GLOW_SPRITES = [
+      makeGlowSprite('rgba(56, 35, 146, 0.45)'),
+      makeGlowSprite('rgba(14, 116, 180, 0.40)'),
+      makeGlowSprite('rgba(130, 32, 108, 0.32)'),
+    ];
+    const ORB_SPRITES = [
+      makeOrbSprite('#38BDF8', '#1D4ED8'),
+      makeOrbSprite('#A855F7', '#4C1D95'),
+      makeOrbSprite('#30D158', '#065F46'),
+    ];
+
+    function drawBackground(t) {
+      ctx.fillStyle = '#050712';
+      ctx.fillRect(0, 0, W, H);
+
+      const glows = [
+        { x: 200 + Math.sin(t * 0.45) * 85, y: 120 + Math.cos(t * 0.38) * 50, r: 440, s: GLOW_SPRITES[0] },
+        { x: 1080 + Math.cos(t * 0.40) * 80, y: 160 + Math.sin(t * 0.35) * 65, r: 420, s: GLOW_SPRITES[1] },
+        { x: 640 + Math.sin(t * 0.32) * 110, y: 660 + Math.cos(t * 0.28) * 45, r: 460, s: GLOW_SPRITES[2] },
+      ];
+      for (const g of glows) {
+        ctx.drawImage(g.s, g.x - g.r, g.y - g.r, g.r * 2, g.r * 2);
+      }
+
+      const orbs = [
+        { x: 145 + Math.sin(t * 0.75) * 28, y: 540 + Math.cos(t * 0.65) * 22, r: 72, s: ORB_SPRITES[0] },
+        { x: 1150 + Math.cos(t * 0.68) * 26, y: 510 + Math.sin(t * 0.58) * 24, r: 86, s: ORB_SPRITES[1] },
+        { x: 980 + Math.sin(t * 0.55) * 20, y: 110 + Math.cos(t * 0.62) * 18, r: 46, s: ORB_SPRITES[2] },
+      ];
+      ctx.save();
+      ctx.globalAlpha = 0.54;
+      for (const o of orbs) {
+        ctx.drawImage(o.s, o.x - o.r, o.y - o.r, o.r * 2, o.r * 2);
+      }
+      ctx.restore();
+
+      ctx.save();
+      for (let i = 0; i < 40; i++) {
+        const px = ((i * 197.3 + t * 5) % W);
+        const py = ((i * 113.7 + t * (9 + (i % 5) * 3)) % H);
+        const a = 0.12 + 0.18 * Math.sin(t * 2.0 + i);
+        ctx.fillStyle = `rgba(186, 230, 253, ${a})`;
+        ctx.beginPath();
+        ctx.arc(px, py, (i % 3 === 0 ? 1.8 : 1.1), 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawEmoDynamicIsland(cx, y, title, subtitle, accent = '#38BDF8', mood = 'happy', t = 0) {
+      const iw = 410;
+      const ih = 58;
+      const ix = cx - iw / 2;
+      ctx.save();
+      roundRect(ix - 3, y + 5, iw + 6, ih + 4, 31);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+      ctx.fill();
+
+      roundRect(ix, y, iw, ih, 29);
+      ctx.fillStyle = '#03050C';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.24)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      const eyeY = y + ih / 2;
+      const blinkCycle = (t * 0.42) % 1;
+      const blink = blinkCycle > 0.94 ? 0.16 : 1;
+      const bounce = mood === 'excited' ? Math.sin(t * 7.5) * 2.4 : Math.sin(t * 3.0) * 1.0;
+      const lookX = Math.sin(t * 1.4) * 1.8;
+      ctx.fillStyle = accent;
+      roundRect(ix + 24 + lookX, eyeY - 9 * blink + bounce, 14, 18 * blink, 6);
+      ctx.fill();
+      roundRect(ix + 44 + lookX, eyeY - 9 * blink + bounce, 14, 18 * blink, 6);
+      ctx.fill();
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 13.5px ${FONT_SANS}`;
+      ctx.textBaseline = 'top';
+      ctx.fillText(title, ix + 74, y + 13);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 12px ${FONT_SANS}`;
+      ctx.fillText(subtitle, ix + 74, y + 32);
+      ctx.restore();
+    }
+
+    function drawBellIcon(cx, cy, size, glow = '#0A84FF') {
+      ctx.save();
+      const halo = ctx.createRadialGradient(cx, cy, size * 0.2, cx, cy, size * 0.85);
+      halo.addColorStop(0, 'rgba(10, 132, 255, 0.42)');
+      halo.addColorStop(1, 'rgba(10, 132, 255, 0)');
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(cx, cy, size * 0.85, 0, Math.PI * 2);
+      ctx.fill();
+
+      roundRect(cx - size / 2, cy - size / 2, size, size, size * 0.28);
+      const bg = ctx.createLinearGradient(cx - size / 2, cy - size / 2, cx + size / 2, cy + size / 2);
+      bg.addColorStop(0, '#4BA3FF');
+      bg.addColorStop(1, '#0A64E8');
+      ctx.fillStyle = bg;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.arc(cx, cy - size * 0.08, size * 0.21, Math.PI, 0);
+      ctx.lineTo(cx + size * 0.25, cy + size * 0.17);
+      ctx.lineTo(cx - size * 0.25, cy + size * 0.17);
+      ctx.closePath();
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy + size * 0.24, size * 0.075, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawHeaderAndProgress(ch, t) {
+      drawBellIcon(56, 44, 34);
+      ctx.save();
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 19px ${FONT_DISPLAY}`;
+      ctx.textBaseline = 'middle';
+      ctx.fillText('reminderme', 84, 44);
+
+      const badgeText = `${ch.tag}  ·  ${ch.label}`;
+      ctx.font = `700 12px ${FONT_SANS}`;
+      const bw = ctx.measureText(badgeText).width + 24;
+      drawPill(W - bw - 36, 30, badgeText, 'rgba(14,165,233,0.18)', 'rgba(56,189,248,0.45)', '#BAE6FD', 12, 12);
+
+      const barY = H - 24;
+      const barX = 44;
+      const barW = W - 88;
+      roundRect(barX, barY, barW, 5, 3);
+      ctx.fillStyle = 'rgba(255,255,255,0.12)';
+      ctx.fill();
+      const prog = clamp(t / DURATION);
+      roundRect(barX, barY, Math.max(8, barW * prog), 5, 3);
+      const pg = ctx.createLinearGradient(barX, 0, barX + barW, 0);
+      pg.addColorStop(0, '#38BDF8');
+      pg.addColorStop(0.5, '#0A84FF');
+      pg.addColorStop(1, '#30D158');
+      ctx.fillStyle = pg;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function chapterAlpha(lt, dur) {
+      const fadeIn = easeOut(lt / 0.42);
+      const fadeOut = easeOut((dur - lt) / 0.35);
+      return Math.min(fadeIn, fadeOut);
+    }
+
+    function drawCh1(lt, t, dur) {
+      const a = chapterAlpha(lt, dur);
+      const pop = easeBack(lt / 0.85);
+      const floatY = Math.sin(t * 2.2) * 4;
+      ctx.save();
+      ctx.globalAlpha = a;
+
+      drawEmoDynamicIsland(W / 2, 74 - (1 - easeOut(lt / 0.6)) * 22, 'reminderme Ready', 'All-India Languages · Voice Notes · Exact Alarms', '#38BDF8', 'excited', t);
+      drawBellIcon(W / 2, 230 + floatY, 92 * pop);
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 54px ${FONT_DISPLAY}`;
+      ctx.fillText('reminderme', W / 2, 336);
+
+      ctx.fillStyle = '#BAE6FD';
+      ctx.font = `600 22px ${FONT_SANS}`;
+      ctx.fillText('Smart Alarms, Voice Notes & All-India Multi-Language Planner', W / 2, 378);
+
+      const features = [
+        { k: '28 Languages', v: 'All 28 States & 8 UTs', c: '#38BDF8' },
+        { k: 'Voice Note Maker', v: 'Multi-language dictation', c: '#A855F7' },
+        { k: 'OS Voice AI', v: 'Siri · Google · Desktop', c: '#30D158' },
+        { k: 'Lock-Screen', v: 'Swipe-up & Home Widget', c: '#FF9F0A' },
+      ];
+      const cardW = 258, gap = 22, startX = (W - (cardW * 4 + gap * 3)) / 2;
+      features.forEach((f, idx) => {
+        const fp = easeOut((lt - 0.35 - idx * 0.16) / 0.55);
+        const cx = startX + idx * (cardW + gap);
+        const cy = 432 + (1 - fp) * 26 + Math.sin(t * 2 + idx) * 2.5;
+        ctx.save();
+        ctx.globalAlpha = a * fp;
+        drawGlassCard(cx, cy, cardW, 114, 20, 0.24);
+        ctx.fillStyle = f.c;
+        ctx.beginPath();
+        ctx.arc(cx + 28, cy + 38, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `700 18px ${FONT_DISPLAY}`;
+        ctx.fillText(f.k, cx + 44, cy + 44);
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = `500 14px ${FONT_SANS}`;
+        ctx.fillText(f.v, cx + 22, cy + 82);
+        ctx.restore();
+      });
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `600 14px ${FONT_MONO}`;
+      ctx.fillText('DEVELOPED BY  PRAJWAL M </yourstudio>', W / 2, 610);
+      ctx.restore();
+    }
+
+    function drawCh2(lt, t, dur) {
+      const a = chapterAlpha(lt, dur);
+      ctx.save();
+      ctx.globalAlpha = a;
+
+      const locales = [
+        { state: 'Karnataka', native: 'ಕನ್ನಡ', eng: 'Kannada', code: 'KN', greeting: 'ಶುಭ ಸಂಜೆ', newAlarm: '+ ಹೊಸ ಅಲಾರಾಂ', notes: 'ಧ್ವನಿ ಟಿಪ್ಪಣಿಗಳು', nav: ['ಇಂದು', 'ವೇಳಾಪಟ್ಟಿ', 'ವಿಶ್ಲೇಷಣೆ', 'ಪ್ರೊಫೈಲ್'] },
+        { state: 'Delhi / UP', native: 'हिन्दी', eng: 'Hindi', code: 'HI', greeting: 'शुभ संध्या', newAlarm: '+ नया अलार्म', notes: 'वॉइस नोट्स', nav: ['आज', 'शेड्यूल', 'इनसाइट्स', 'प्रोफ़ाइल'] },
+        { state: 'Tamil Nadu', native: 'தமிழ்', eng: 'Tamil', code: 'TA', greeting: 'மாலை வணக்கம்', newAlarm: '+ புதிய அலாரம்', notes: 'குரல் குறிப்புகள்', nav: ['இன்று', 'அட்டவணை', 'புள்ளிவிவரம்', 'சுயவிவரம்'] },
+        { state: 'Maharashtra', native: 'मराठी', eng: 'Marathi', code: 'MR', greeting: 'शुभ संध्याकाळ', newAlarm: '+ नवीन अलार्म', notes: 'व्हॉइस नोट्स', nav: ['आज', 'वेळापत्रक', 'विश्लेषण', 'प्रोफाइल'] },
+      ];
+      const slot = 1.95;
+      const activeIdx = Math.min(locales.length - 1, Math.floor(lt / slot));
+      const slotT = lt - activeIdx * slot;
+      const cur = locales[activeIdx];
+      const morphP = easeOut(slotT / 0.32);
+
+      drawEmoDynamicIsland(W / 2, 74, cur.native, `Language switched to ${cur.eng} (${cur.state})`, '#30D158', 'happy', t);
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 38px ${FONT_DISPLAY}`;
+      ctx.fillText('Every State. Every Language.', 56, 174);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 17px ${FONT_SANS}`;
+      ctx.fillText('All 28 Indian States & 8 Union Territories — 22 Eighth Schedule + Regional Languages', 56, 206);
+
+      drawGlassCard(56, 232, 620, 426, 24, 0.26);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 18px ${FONT_DISPLAY}`;
+      ctx.fillText('India State & Regional Languages', 84, 268);
+      drawPill(434, 248, 'By State / UT (36)', 'rgba(10,132,255,0.28)', 'rgba(56,189,248,0.65)', '#E0F2FE', 12, 12);
+
+      roundRect(84, 290, 564, 42, 12);
+      ctx.fillStyle = 'rgba(255,255,255,0.06)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(56,189,248,0.35)';
+      ctx.stroke();
+      const typedLen = Math.ceil(clamp(slotT / 0.45) * cur.state.length);
+      ctx.fillStyle = '#CBD5E1';
+      ctx.font = `500 14px ${FONT_SANS}`;
+      ctx.fillText(`Search state or script…  "${cur.state.slice(0, typedLen)}"`, 104, 316);
+
+      const stateCards = [
+        { s: 'Karnataka', chips: ['ಕನ್ನಡ · Kannada', 'कोंकणी'], active: activeIdx === 0 },
+        { s: 'Delhi · UP · Bihar', chips: ['हिन्दी · Hindi', 'मैथिली'], active: activeIdx === 1 },
+        { s: 'Tamil Nadu · Puducherry', chips: ['தமிழ் · Tamil', 'English (IN)'], active: activeIdx === 2 },
+        { s: 'Maharashtra · Goa', chips: ['मराठी · Marathi', 'कोंकणी'], active: activeIdx === 3 },
+        { s: 'AP · Telangana · Kerala', chips: ['తెలుగు · Telugu', 'മലയാളം'], active: false },
+        { s: 'WB · Gujarat · Punjab · NE', chips: ['বাংলা', 'ગુજરાતી', 'ਪੰਜਾਬੀ', 'অসমীয়া'], active: false },
+      ];
+      stateCards.forEach((sc, idx) => {
+        const col = idx % 2;
+        const row = Math.floor(idx / 2);
+        const sx = 84 + col * 288;
+        const sy = 348 + row * 98;
+        roundRect(sx, sy, 274, 86, 16);
+        ctx.fillStyle = sc.active ? 'rgba(10,132,255,0.22)' : 'rgba(255,255,255,0.045)';
+        ctx.fill();
+        ctx.strokeStyle = sc.active ? 'rgba(56,189,248,0.85)' : 'rgba(255,255,255,0.12)';
+        ctx.lineWidth = sc.active ? 1.8 : 1;
+        ctx.stroke();
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `700 13.5px ${FONT_SANS}`;
+        ctx.fillText(sc.s, sx + 14, sy + 24);
+
+        let cx = sx + 14;
+        sc.chips.forEach((chLabel, ci) => {
+          const isHl = sc.active && ci === 0;
+          const pw = drawPill(
+            cx,
+            sy + 42,
+            chLabel,
+            isHl ? '#0A84FF' : 'rgba(255,255,255,0.08)',
+            isHl ? '#7DD3FC' : 'rgba(255,255,255,0.16)',
+            '#FFFFFF',
+            11.5,
+            9
+          );
+          cx += pw + 6;
+        });
+      });
+
+      // Right Card: Live Localized App Preview with smooth slide/fade morph
+      drawGlassCard(704, 232, 520, 426, 24, 0.28, ['rgba(18, 28, 56, 0.92)', 'rgba(9, 14, 32, 0.96)']);
+
+      ctx.save();
+      ctx.globalAlpha = a * (0.35 + 0.65 * morphP);
+      roundRect(720, 248, 152, 394, 16);
+      ctx.fillStyle = 'rgba(255,255,255,0.05)';
+      ctx.fill();
+      roundRect(732, 264, 128, 36, 12);
+      ctx.fillStyle = '#0A84FF';
+      ctx.fill();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 13px ${FONT_SANS}`;
+      ctx.textAlign = 'center';
+      ctx.fillText(cur.newAlarm, 796, 287);
+
+      ctx.textAlign = 'left';
+      cur.nav.forEach((nLabel, ni) => {
+        const ny = 324 + ni * 40;
+        if (ni === 0) {
+          roundRect(732, ny - 16, 128, 32, 10);
+          ctx.fillStyle = 'rgba(255,255,255,0.12)';
+          ctx.fill();
+        }
+        ctx.fillStyle = ni === 0 ? '#FFFFFF' : '#94A3B8';
+        ctx.font = `600 13.5px ${FONT_SANS}`;
+        ctx.fillText(nLabel, 746, ny + 4);
+      });
+
+      roundRect(732, 502, 128, 38, 12);
+      ctx.fillStyle = 'rgba(14,165,233,0.20)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(56,189,248,0.6)';
+      ctx.stroke();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 13px ${FONT_SANS}`;
+      ctx.fillText(cur.native, 746, 525);
+      ctx.fillStyle = '#7DD3FC';
+      ctx.font = `700 11px ${FONT_MONO}`;
+      ctx.fillText(cur.code, 830, 525);
+
+      const sec = String(Math.floor(t) % 60).padStart(2, '0');
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `600 12px ${FONT_SANS}`;
+      ctx.fillText('LIVE LOCALIZED HOME SCREEN', 896, 276);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 30px ${FONT_DISPLAY}`;
+      ctx.fillText(cur.greeting, 896, 318 - (1 - morphP) * 6);
+      ctx.font = `800 42px ${FONT_MONO}`;
+      ctx.fillStyle = '#E0F2FE';
+      ctx.fillText(`08:30`, 896, 376);
+      ctx.font = `700 18px ${FONT_MONO}`;
+      ctx.fillStyle = '#38BDF8';
+      ctx.fillText(`:${sec} PM`, 1036, 374);
+
+      roundRect(896, 408, 304, 108, 16);
+      ctx.fillStyle = 'rgba(255,255,255,0.06)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+      ctx.stroke();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 16px ${FONT_SANS}`;
+      ctx.fillText(cur.notes, 914, 438);
+      ctx.fillStyle = '#CBD5E1';
+      ctx.font = `500 12.5px ${FONT_SANS}`;
+      ctx.fillText(`Dictation synced to ${cur.native} (${cur.eng})`, 914, 466);
+      drawPill(914, 478, 'Persists Offline & Cloud', 'rgba(48,209,88,0.18)', 'rgba(48,209,88,0.45)', '#86EFAC', 11.5, 10);
+
+      ctx.fillStyle = '#CBD5E1';
+      ctx.font = `600 12.5px ${FONT_SANS}`;
+      ctx.fillText('Also includes: Mizo · Khasi · Kokborok · Ladakhi', 896, 558);
+      ctx.fillText('Kashmiri · Dogri · Bodo · Maithili · Santali · Sindhi · Sanskrit', 896, 580);
+      ctx.fillStyle = '#7DD3FC';
+      ctx.fillText('1-Tap switch from Sidebar, Mobile Header & Profile', 896, 616);
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    function drawCh3(lt, t, dur) {
+      const a = chapterAlpha(lt, dur);
+      ctx.save();
+      ctx.globalAlpha = a;
+
+      drawEmoDynamicIsland(W / 2, 74, 'Voice Note Saved', 'Pinned to Home · Multi-Language Dictation', '#A855F7', 'happy', t);
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 38px ${FONT_DISPLAY}`;
+      ctx.fillText('Dedicated Voice Note Maker', 56, 174);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 17px ${FONT_SANS}`;
+      ctx.fillText('Dictate thoughts, lists, or meeting notes in any of 28 Indian languages — right from Home', 56, 206);
+
+      drawGlassCard(56, 236, 580, 418, 24, 0.28);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 20px ${FONT_DISPLAY}`;
+      ctx.fillText('Voice Note Maker', 86, 276);
+      drawPill(390, 254, 'ಕನ್ನಡ · Kannada ▾', 'rgba(168,85,247,0.22)', 'rgba(192,132,252,0.55)', '#E9D5FF', 13, 12);
+
+      roundRect(86, 304, 520, 96, 18);
+      ctx.fillStyle = 'rgba(168,85,247,0.12)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(192,132,252,0.35)';
+      ctx.stroke();
+
+      for (let i = 0; i < 34; i++) {
+        const h = 14 + Math.abs(Math.sin(t * 7.5 + i * 0.48)) * 56;
+        const bx = 112 + i * 14;
+        const by = 352 - h / 2;
+        roundRect(bx, by, 7, h, 3.5);
+        ctx.fillStyle = i % 2 === 0 ? '#C084FC' : '#38BDF8';
+        ctx.fill();
+      }
+
+      roundRect(86, 420, 520, 148, 16);
+      ctx.fillStyle = 'rgba(255,255,255,0.05)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.stroke();
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `600 12px ${FONT_SANS}`;
+      ctx.fillText('LIVE TRANSCRIPT', 106, 446);
+
+      const fullText = '"Pick up fresh vegetables at 6 PM, call Mom before dinner, and prepare tomorrow’s sprint agenda."';
+      const chars = Math.floor(clamp(lt / 3.6) * fullText.length);
+      const shown = fullText.slice(0, chars);
+      ctx.fillStyle = '#F8FAFC';
+      ctx.font = `600 17px ${FONT_SANS}`;
+      drawWrappedText(shown, 106, 480, 480, 28, 3);
+
+      drawPill(86, 586, 'Pin on Home', 'rgba(255,159,10,0.2)', 'rgba(255,159,10,0.5)', '#FDE68A', 13, 12);
+      drawPill(224, 586, 'Turn into Reminder', 'rgba(14,165,233,0.2)', 'rgba(56,189,248,0.5)', '#BAE6FD', 13, 12);
+      drawPill(414, 586, 'Save Voice Note', '#0A84FF', '#7DD3FC', '#FFFFFF', 13, 12);
+
+      drawGlassCard(664, 236, 560, 418, 24, 0.24);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 20px ${FONT_DISPLAY}`;
+      ctx.fillText('Pinned on Home · Voice Notes', 694, 276);
+
+      const notes = [
+        { title: 'Evening Errands & Family Call', body: 'Pick up vegetables at 6 PM, call Mom before dinner…', lang: 'ಕನ್ನಡ', pin: true },
+        { title: 'Product Demo Checklist', body: 'Highlight 28 Indian languages, MP3 ringtones & lock screen…', lang: 'English (IN)', pin: true },
+        { title: 'Travel Packing List', body: 'Charger, passport, power bank, headphones…', lang: 'हिन्दी', pin: false },
+      ];
+      notes.forEach((n, idx) => {
+        const np = easeOut((lt - 0.35 - idx * 0.32) / 0.55);
+        const ny = 308 + idx * 108 + (1 - np) * 18;
+        ctx.save();
+        ctx.globalAlpha = a * np;
+        roundRect(694, ny, 500, 92, 16);
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.fill();
+        ctx.strokeStyle = n.pin ? 'rgba(255,159,10,0.45)' : 'rgba(255,255,255,0.14)';
+        ctx.stroke();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `700 16px ${FONT_SANS}`;
+        ctx.fillText(n.title, 714, ny + 32);
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = `500 13.5px ${FONT_SANS}`;
+        ctx.fillText(n.body, 714, ny + 60);
+        drawPill(1078, ny + 14, n.lang, 'rgba(56,189,248,0.18)', 'rgba(56,189,248,0.4)', '#BAE6FD', 11.5, 10);
+        ctx.restore();
+      });
+
+      ctx.restore();
+    }
+
+    function drawCh4(lt, t, dur) {
+      const a = chapterAlpha(lt, dur);
+      ctx.save();
+      ctx.globalAlpha = a;
+
+      drawEmoDynamicIsland(W / 2, 74, 'OS-Aware Voice Assistant', 'Automatically Matches iOS, Android & Desktop', '#30D158', 'happy', t);
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 38px ${FONT_DISPLAY}`;
+      ctx.fillText('Right Voice Assistant for Every Device', W / 2, 174);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 17px ${FONT_SANS}`;
+      ctx.fillText('Zero cross-platform confusion — reminderme detects your OS automatically', W / 2, 206);
+
+      const cards = [
+        { os: 'iPhone & iPad (iOS)', title: 'Hey Siri', desc: 'Shown exclusively on iOS devices with Apple Shortcuts integration & native cyan glow.', accent: '#38BDF8', pillBg: 'rgba(56,189,248,0.22)', cmd: '"Hey Siri, open reminderme"' },
+        { os: 'Android Phones & Tablets', title: 'Hey Google', desc: 'Shown exclusively on Android devices with Google Assistant voice trigger & AlarmManager.', accent: '#30D158', pillBg: 'rgba(48,209,88,0.22)', cmd: '"Hey Google, start voice note"' },
+        { os: 'Desktop Browsers', title: 'Hands-Free Voice', desc: 'Clean neutral voice button on macOS, Windows & Linux — no Siri or Android clutter.', accent: '#A855F7', pillBg: 'rgba(168,85,247,0.22)', cmd: '1-Tap Live Mic + 28 Languages' },
+      ];
+
+      const cw = 368, gap = 28, startX = (W - (cw * 3 + gap * 2)) / 2;
+      cards.forEach((c, idx) => {
+        const cp = easeBack((lt - 0.2 - idx * 0.35) / 0.7);
+        const cx = startX + idx * (cw + gap);
+        const cy = 248 + (1 - cp) * 28 + Math.sin(t * 2.2 + idx * 1.2) * 3;
+        ctx.save();
+        ctx.globalAlpha = a * clamp(cp);
+        drawGlassCard(cx, cy, cw, 396, 26, 0.28);
+
+        const ox = cx + cw / 2, oy = cy + 114;
+        const pulse = 1 + Math.sin(t * 4.5 + idx * 1.4) * 0.1;
+        const og = ctx.createRadialGradient(ox, oy, 8, ox, oy, 58 * pulse);
+        og.addColorStop(0, '#FFFFFF');
+        og.addColorStop(0.4, c.accent);
+        og.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = og;
+        ctx.beginPath();
+        ctx.arc(ox, oy, 58 * pulse, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = c.accent;
+        ctx.font = `700 13px ${FONT_MONO}`;
+        ctx.fillText(c.os.toUpperCase(), ox, cy + 204);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `800 30px ${FONT_DISPLAY}`;
+        ctx.fillText(c.title, ox, cy + 244);
+
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = `500 14.5px ${FONT_SANS}`;
+        drawWrappedText(c.desc, ox, cy + 282, cw - 52, 22, 3);
+
+        roundRect(cx + 28, cy + 340, cw - 56, 36, 18);
+        ctx.fillStyle = c.pillBg;
+        ctx.fill();
+        ctx.strokeStyle = c.accent;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `600 13px ${FONT_SANS}`;
+        ctx.fillText(c.cmd, ox, cy + 363);
+        ctx.restore();
+      });
+
+      ctx.restore();
+    }
+
+    function drawCh5(lt, t, dur) {
+      const a = chapterAlpha(lt, dur);
+      ctx.save();
+      ctx.globalAlpha = a;
+
+      drawEmoDynamicIsland(W / 2, 74, 'Playing Custom Ringtone', 'morning_melody.mp3 · Live Preview', '#FF9F0A', 'excited', t);
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 38px ${FONT_DISPLAY}`;
+      ctx.fillText('True Custom MP3 Ringtones', 56, 174);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 17px ${FONT_SANS}`;
+      ctx.fillText('Pick any song or MP3 from your device — instant preview & real filename on EMO Dynamic Island', 56, 206);
+
+      drawGlassCard(56, 240, 1168, 408, 28, 0.26);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 22px ${FONT_DISPLAY}`;
+      ctx.fillText('Sounds & Alarm Ringtones', 96, 290);
+
+      roundRect(96, 322, 540, 92, 18);
+      ctx.fillStyle = 'rgba(255,159,10,0.14)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,159,10,0.62)';
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+      ctx.fillStyle = '#FDE68A';
+      ctx.font = `700 12px ${FONT_MONO}`;
+      ctx.fillText('ACTIVE CUSTOM DEVICE AUDIO', 118, 348);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 20px ${FONT_DISPLAY}`;
+      ctx.fillText('morning_melody.mp3', 118, 382);
+      drawPill(494, 348, '■ Stop Preview', '#FF453A', '#FCA5A5', '#FFFFFF', 13, 12);
+
+      const tones = ['Radar Sonar — Crisp ascending pulse', 'Glass Chime — Gentle morning bell', 'Digital Beep — Classic alarm'];
+      tones.forEach((tn, idx) => {
+        roundRect(96, 432 + idx * 62, 540, 50, 14);
+        ctx.fillStyle = 'rgba(255,255,255,0.05)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+        ctx.stroke();
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = `500 15px ${FONT_SANS}`;
+        ctx.fillText(tn, 118, 462 + idx * 62);
+      });
+
+      roundRect(676, 280, 508, 328, 22);
+      ctx.fillStyle = 'rgba(5, 9, 24, 0.72)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(56,189,248,0.35)';
+      ctx.stroke();
+
+      ctx.fillStyle = '#7DD3FC';
+      ctx.font = `700 13px ${FONT_MONO}`;
+      ctx.fillText('LIVE AUDIO ENGINE · INDEXEDDB + NATIVE ALARM STREAM', 706, 316);
+
+      for (let i = 0; i < 24; i++) {
+        const bh = 22 + Math.abs(Math.sin(t * 8.2 + i * 0.55) * Math.cos(t * 2.1 + i * 0.25)) * 114;
+        const bx = 708 + i * 19;
+        const by = 486 - bh;
+        const g = ctx.createLinearGradient(0, by, 0, 486);
+        g.addColorStop(0, '#FF9F0A');
+        g.addColorStop(0.5, '#38BDF8');
+        g.addColorStop(1, '#0A84FF');
+        roundRect(bx, by, 11, bh, 5.5);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 17px ${FONT_DISPLAY}`;
+      ctx.fillText('Plays your exact uploaded MP3 — never falls back', 706, 534);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 14px ${FONT_SANS}`;
+      ctx.fillText('Synced with EMO Dynamic Island & Lock-Screen Alarm audio.', 706, 564);
+      ctx.restore();
+    }
+
+    function drawCh6(lt, t, dur) {
+      const a = chapterAlpha(lt, dur);
+      ctx.save();
+      ctx.globalAlpha = a;
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 38px ${FONT_DISPLAY}`;
+      ctx.fillText('Closed-App Lock-Screen Alarms', 56, 134);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 17px ${FONT_SANS}`;
+      ctx.fillText('Rings over locked screens with Swipe-Up dismiss, Tap Snooze pills & Home-Screen Alarm Widget', 56, 166);
+
+      const px = 94, py = 196, pw = 370, ph = 478;
+      drawGlassCard(px, py, pw, ph, 38, 0.34, ['rgba(12, 16, 36, 0.96)', 'rgba(5, 7, 18, 0.99)']);
+
+      // Dual smooth pulsing coral alarm ring waves
+      for (let w = 0; w < 2; w++) {
+        const rWave = (t * 0.85 + w * 0.5) % 1;
+        ctx.save();
+        ctx.strokeStyle = `rgba(255, 69, 58, ${0.72 * (1 - rWave)})`;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(px + pw / 2, py + 148, 28 + rWave * 48, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 54px ${FONT_MONO}`;
+      ctx.fillText('06:30', px + pw / 2, py + 94);
+
+      ctx.fillStyle = 'rgba(255,69,58,0.22)';
+      ctx.beginPath();
+      ctx.arc(px + pw / 2, py + 148, 28, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#FF453A';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 22px ${FONT_DISPLAY}`;
+      ctx.fillText('Morning Run & Vitamins', px + pw / 2, py + 214);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 13px ${FONT_SANS}`;
+      ctx.fillText('♪ morning_melody.mp3', px + pw / 2, py + 240);
+
+      const snoozes = ['5m', '10m', '15m'];
+      snoozes.forEach((s, si) => {
+        const sx = px + 36 + si * 104;
+        roundRect(sx, py + 276, 90, 44, 14);
+        ctx.fillStyle = si === 1 ? 'rgba(10,132,255,0.28)' : 'rgba(255,255,255,0.08)';
+        ctx.fill();
+        ctx.strokeStyle = si === 1 ? '#38BDF8' : 'rgba(255,255,255,0.2)';
+        ctx.stroke();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `700 15px ${FONT_SANS}`;
+        ctx.fillText(s, sx + 45, py + 303);
+      });
+
+      const cycle = (lt % 2.8) / 2.8;
+      const swipeNorm = cycle < 0.55 ? easeInOut(cycle / 0.55) : easeInOut(1 - (cycle - 0.55) / 0.45);
+      const swipeOffset = swipeNorm * 56;
+
+      roundRect(px + 54, py + 344, pw - 108, 110, 22);
+      ctx.fillStyle = `rgba(48,209,88,${0.10 + swipeNorm * 0.16})`;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(48,209,88,0.48)';
+      ctx.stroke();
+
+      ctx.fillStyle = '#86EFAC';
+      ctx.font = `700 12px ${FONT_SANS}`;
+      ctx.fillText('▲  SWIPE UP TO DISMISS', px + pw / 2, py + 368);
+
+      roundRect(px + 66, py + 400 - swipeOffset, pw - 132, 44, 14);
+      ctx.fillStyle = swipeNorm > 0.72 ? '#30D158' : '#FFFFFF';
+      ctx.fill();
+      ctx.fillStyle = '#050814';
+      ctx.font = `800 14px ${FONT_SANS}`;
+      ctx.fillText(swipeNorm > 0.72 ? '✓ Dismissing' : '▲ Slide Up', px + pw / 2, py + 427 - swipeOffset);
+
+      drawGlassCard(524, 214, 700, 224, 26, 0.28);
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#7DD3FC';
+      ctx.font = `700 12.5px ${FONT_MONO}`;
+      ctx.fillText('HOME-SCREEN ALARM WIDGET (EVEN WHEN APP IS CLOSED)', 556, 250);
+
+      roundRect(556, 272, 636, 134, 22);
+      ctx.fillStyle = 'rgba(10, 18, 42, 0.92)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(56,189,248,0.45)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      drawBellIcon(608, 339, 54);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `700 12px ${FONT_MONO}`;
+      ctx.fillText('NEXT ACTIVE ALARM', 656, 304);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 32px ${FONT_MONO}`;
+      ctx.fillText('06:30 AM', 656, 344);
+      ctx.fillStyle = '#CBD5E1';
+      ctx.font = `600 16px ${FONT_SANS}`;
+      ctx.fillText('Morning Run & Vitamins · In 8h 12m', 656, 378);
+      drawPill(1062, 322, 'Active ●', 'rgba(48,209,88,0.2)', 'rgba(48,209,88,0.55)', '#86EFAC', 13, 12);
+
+      drawGlassCard(524, 462, 700, 198, 24, 0.22);
+      const pts = [
+        'Android AlarmManager.setAlarmClock() bypasses Doze & closed-app limits',
+        'Full-screen LockScreenAlarmActivity wakes & lights the locked display',
+        'Auto-reschedules alarms & updates Home Widget after device reboot',
+      ];
+      pts.forEach((pt, idx) => {
+        ctx.fillStyle = '#30D158';
+        ctx.beginPath();
+        ctx.arc(556, 510 + idx * 52, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#F8FAFC';
+        ctx.font = `600 16px ${FONT_SANS}`;
+        ctx.fillText(pt, 576, 516 + idx * 52);
+      });
+
+      ctx.restore();
+    }
+
+    function drawCh7(lt, t, dur) {
+      const a = chapterAlpha(lt, dur);
+      ctx.save();
+      ctx.globalAlpha = a;
+
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 38px ${FONT_DISPLAY}`;
+      ctx.fillText('Schedule, Insights & Focus Mode', 56, 150);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 17px ${FONT_SANS}`;
+      ctx.fillText('Pinned desktop sidebar across every tab · Monthly calendar · Streaks & Pomodoro timer', 56, 182);
+
+      drawGlassCard(56, 214, 570, 444, 24, 0.24);
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 20px ${FONT_DISPLAY}`;
+      ctx.fillText('Schedule · Monthly Calendar', 86, 256);
+
+      const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+      days.forEach((d, i) => {
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = `700 13px ${FONT_MONO}`;
+        ctx.textAlign = 'center';
+        ctx.fillText(d, 118 + i * 74, 300);
+      });
+      for (let d = 1; d <= 28; d++) {
+        const col = (d - 1) % 7;
+        const row = Math.floor((d - 1) / 7);
+        const dx = 118 + col * 74;
+        const dy = 346 + row * 68;
+        const active = d === 27;
+        if (active) {
+          roundRect(dx - 24, dy - 22, 48, 44, 14);
+          ctx.fillStyle = '#0A84FF';
+          ctx.fill();
+        }
+        ctx.fillStyle = active ? '#FFFFFF' : '#E2E8F0';
+        ctx.font = `700 16px ${FONT_MONO}`;
+        ctx.fillText(String(d), dx, dy + 6);
+        if (d % 3 === 0 || active) {
+          ctx.fillStyle = active ? '#FFFFFF' : '#38BDF8';
+          ctx.beginPath();
+          ctx.arc(dx, dy + 16, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      drawGlassCard(654, 214, 570, 444, 24, 0.24);
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 20px ${FONT_DISPLAY}`;
+      ctx.fillText('Daily Insights & Focus Timer', 686, 256);
+
+      const rx = 816, ry = 414, rr = 84;
+      ctx.lineWidth = 14;
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.beginPath();
+      ctx.arc(rx, ry, rr, 0, Math.PI * 2);
+      ctx.stroke();
+
+      const pct = 0.88 * easeOut(lt / 1.5);
+      ctx.strokeStyle = '#30D158';
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.arc(rx, ry, rr, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+      ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 36px ${FONT_MONO}`;
+      ctx.fillText(`${Math.round(pct * 100)}%`, rx, ry + 8);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `600 13px ${FONT_SANS}`;
+      ctx.fillText('Today Done', rx, ry + 34);
+
+      const kpis = [
+        { l: 'Active Streak', v: '14 Days', c: '#FF9F0A' },
+        { l: 'Focus Sprint', v: '25:00 Timer', c: '#38BDF8' },
+        { l: 'Sidebar Layout', v: 'Pinned Fixed', c: '#A855F7' },
+      ];
+      ctx.textAlign = 'left';
+      kpis.forEach((k, idx) => {
+        const ky = 316 + idx * 82;
+        roundRect(950, ky, 244, 68, 16);
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+        ctx.stroke();
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = `600 12px ${FONT_SANS}`;
+        ctx.fillText(k.l, 968, ky + 26);
+        ctx.fillStyle = k.c;
+        ctx.font = `800 20px ${FONT_DISPLAY}`;
+        ctx.fillText(k.v, 968, ky + 52);
+      });
+
+      ctx.fillStyle = '#CBD5E1';
+      ctx.font = `500 14.5px ${FONT_SANS}`;
+      ctx.fillText('Swipe reminders right to complete or left to snooze / delete.', 686, 608);
+      ctx.restore();
+    }
+
+    function drawCh8(lt, t, dur) {
+      const a = chapterAlpha(lt, dur);
+      ctx.save();
+      ctx.globalAlpha = a;
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 38px ${FONT_DISPLAY}`;
+      ctx.fillText('Cloud Sync, Calendar & Offline Privacy', W / 2, 160);
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = `500 17px ${FONT_SANS}`;
+      ctx.fillText('Sign in with Google, create an Email & Password account, or use 100% Offline On-Device Mode', W / 2, 192);
+
+      const items = [
+        { t: 'Google Calendar & Gmail', d: 'Sync alarms to Google Calendar, inspect inbox reminders, and send daily agenda digests.', c: '#38BDF8' },
+        { t: 'Flexible Account Options', d: 'Sign in with Google or Email & Password anytime — zero blockers if Google Sign-In is skipped.', c: '#30D158' },
+        { t: 'Apple Calendar (.ics) & Backup', d: 'Export schedules to Apple Calendar and back up reminders, notes & language prefs as JSON.', c: '#FF9F0A' },
+      ];
+      items.forEach((it, idx) => {
+        const ip = easeOut((lt - 0.2 - idx * 0.28) / 0.6);
+        const iy = 236 + idx * 136 + (1 - ip) * 20;
+        ctx.save();
+        ctx.globalAlpha = a * ip;
+        drawGlassCard(140, iy, 1000, 114, 22, 0.26);
+        ctx.fillStyle = it.c;
+        roundRect(166, iy + 28, 6, 58, 3);
+        ctx.fill();
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `700 22px ${FONT_DISPLAY}`;
+        ctx.fillText(it.t, 194, iy + 48);
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = `500 15.5px ${FONT_SANS}`;
+        ctx.fillText(it.d, 194, iy + 82);
+        ctx.restore();
+      });
+      ctx.restore();
+    }
+
+    function drawCh9(lt, t, dur) {
+      const a = easeOut(lt / 0.55) * easeOut((dur - lt) / 0.5);
+      ctx.save();
+      ctx.globalAlpha = a;
+
+      drawBellIcon(W / 2, 206 + Math.sin(t * 2.2) * 3, 98 * easeBack(lt / 0.85));
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `800 54px ${FONT_DISPLAY}`;
+      ctx.fillText('reminderme', W / 2, 314);
+      ctx.fillStyle = '#BAE6FD';
+      ctx.font = `600 22px ${FONT_SANS}`;
+      ctx.fillText('Smart Daily Planner for Every Language & Every Device', W / 2, 356);
+
+      const badges = [
+        '28 Indian States & 8 UTs',
+        '28 Languages',
+        'Voice Note Maker',
+        'Hey Siri · Hey Google · Hands-Free',
+        'Custom MP3 Ringtones',
+        'Lock-Screen Gestures & Widget',
+      ];
+      let bx = 136, by = 406;
+      ctx.textAlign = 'left';
+      badges.forEach((b) => {
+        ctx.font = `700 14px ${FONT_SANS}`;
+        const estW = ctx.measureText(b).width + 24;
+        if (bx + estW > W - 136) {
+          bx = 220;
+          by += 48;
+        }
+        const pw = drawPill(bx, by, b, 'rgba(14,165,233,0.18)', 'rgba(56,189,248,0.48)', '#E0F2FE', 14, 12);
+        bx += pw + 14;
+      });
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `700 18px ${FONT_DISPLAY}`;
+      ctx.fillText('Developed by Prajwal M', W / 2, 566);
+      ctx.fillStyle = '#38BDF8';
+      ctx.font = `700 16px ${FONT_MONO}`;
+      ctx.fillText('</yourstudio>', W / 2, 594);
+      ctx.restore();
+    }
+
+    function renderFrame(timeSec) {
+      const t = clamp(timeSec, 0, DURATION);
+      drawBackground(t);
+      let ch = CHAPTERS[CHAPTERS.length - 1];
+      for (const c of CHAPTERS) {
+        if (t >= c.start && t < c.end) { ch = c; break; }
+      }
+      const lt = t - ch.start;
+      const dur = ch.end - ch.start;
+
+      switch (ch.id) {
+        case 0: drawCh1(lt, t, dur); break;
+        case 1: drawCh2(lt, t, dur); break;
+        case 2: drawCh3(lt, t, dur); break;
+        case 3: drawCh4(lt, t, dur); break;
+        case 4: drawCh5(lt, t, dur); break;
+        case 5: drawCh6(lt, t, dur); break;
+        case 6: drawCh7(lt, t, dur); break;
+        case 7: drawCh8(lt, t, dur); break;
+        case 8: drawCh9(lt, t, dur); break;
+      }
+
+      drawHeaderAndProgress(ch, t);
+    }
+
+    function canvasToJpegBlob() {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (blob) resolve(blob);
+          else reject(new Error('canvas.toBlob returned null'));
+        }, 'image/jpeg', 0.88);
+      });
+    }
+
+    let started = false;
+    window.__renderAndPipeAllFrames = async () => {
+      if (started) return TOTAL_FRAMES;
+      started = true;
+      try {
+        await document.fonts.ready;
+        const BATCH = 15;
+        let batch = [];
+        for (let f = 0; f < TOTAL_FRAMES; f++) {
+          renderFrame(f / FPS);
+          const blob = await canvasToJpegBlob();
+          batch.push(blob);
+          if (batch.length === BATCH || f === TOTAL_FRAMES - 1) {
+            const count = batch.length;
+            const body = new Blob(batch);
+            batch = [];
+            const res = await fetch('/frames?count=' + count, { method: 'POST', body });
+            if (!res.ok) throw new Error('Failed piping frame ' + f);
+          }
+        }
+        const doneRes = await fetch('/done', { method: 'POST' });
+        if (!doneRes.ok) throw new Error('FFmpeg finalize failed');
+        return TOTAL_FRAMES;
+      } catch (err) {
+        await fetch('/error', { method: 'POST', body: String(err && err.stack ? err.stack : err) }).catch(() => {});
+        throw err;
+      }
+    };
+
+    renderFrame(0);
+    window.__introCanvasReady = true;
+    if (location.search.includes('autostart=1')) {
+      setTimeout(() => { window.__renderAndPipeAllFrames(); }, 100);
+    }
+  </script>
+</body>
+</html>

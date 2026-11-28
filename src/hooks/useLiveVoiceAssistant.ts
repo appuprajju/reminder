@@ -7,6 +7,7 @@ import {
   type LiveAssistantPrefs,
   type LiveAssistantSource,
 } from '../lib/liveAssistant';
+import { getSpeechRecognitionLocale } from '../lib/indianLanguages';
 import { triggerHaptic } from '../lib/nativeBridge';
 
 interface SpeechRecognitionResultLike {
@@ -55,12 +56,14 @@ export interface LiveVoiceCommandPayload {
 
 export interface UseLiveVoiceAssistantOptions {
   vibrate: boolean;
+  speechLang?: string;
   onAutoSaveCommand: (payload: LiveVoiceCommandPayload) => void;
   onStatusNotice?: (kind: 'created' | 'success' | 'alert', title: string, message: string) => void;
 }
 
 export function useLiveVoiceAssistant({
   vibrate,
+  speechLang,
   onAutoSaveCommand,
   onStatusNotice,
 }: UseLiveVoiceAssistantOptions) {
@@ -85,6 +88,8 @@ export function useLiveVoiceAssistant({
   const lastCommittedRef = useRef<{ key: string; at: number }>({ key: '', at: 0 });
   const callbacksRef = useRef({ onAutoSaveCommand, onStatusNotice });
   callbacksRef.current = { onAutoSaveCommand, onStatusNotice };
+  const speechLangRef = useRef(speechLang);
+  speechLangRef.current = speechLang;
 
   const clearTimers = useCallback(() => {
     if (restartTimerRef.current !== null) {
@@ -157,7 +162,11 @@ export function useLiveVoiceAssistant({
 
       try {
         const rec = new Ctor();
-        rec.lang = typeof navigator !== 'undefined' && navigator.language ? navigator.language : 'en-US';
+        rec.lang = speechLangRef.current
+          ? getSpeechRecognitionLocale(speechLangRef.current)
+          : typeof navigator !== 'undefined' && navigator.language
+            ? navigator.language
+            : 'en-IN';
         rec.continuous = mode === 'hands-free';
         rec.interimResults = true;
         rec.maxAlternatives = 1;

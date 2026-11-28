@@ -35,10 +35,14 @@ body {
   background-color: #050712;
   color: #F8FAFC;
   font-family: var(--font-sans);
-  letter-spacing: 0.01em;
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Preserve Indic & regional script ligature shaping (non-zero letter-spacing breaks vowel matras in Chromium/HarfBuzz) */
+html:not([lang^="en"]) *:not(.font-mono) {
+  letter-spacing: 0 !important;
 }
 
 h1, h2, h3, h4, .font-display {

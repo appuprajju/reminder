@@ -6,6 +6,7 @@ import {
   Command,
   Download,
   FileJson,
+  Globe,
   HelpCircle,
   Lock,
   LogIn,
@@ -43,6 +44,8 @@ import {
   openExactAlarmSettings,
   syncNativeCustomRingtone,
 } from '../lib/nativeBridge';
+import { t } from '../lib/i18n';
+import { getLanguageOption } from '../lib/indianLanguages';
 import { detectDeviceOs, getPlatformAssistantProfile } from '../lib/platform';
 import type {
   AlarmSoundId,
@@ -81,6 +84,7 @@ interface ProfileViewProps {
   onExportBackup: () => void;
   onImportBackup: (file: File) => void;
   onOpenVoiceShortcuts?: () => void;
+  onOpenLanguagePicker?: () => void;
   onToast: (msg: string) => void;
 }
 
@@ -108,12 +112,14 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onExportBackup,
   onImportBackup,
   onOpenVoiceShortcuts,
+  onOpenLanguagePicker,
   onToast,
 }) => {
   const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
   const { onTriggerIsland } = useDynamicIsland();
   const deviceOs = useMemo(() => detectDeviceOs(), []);
   const assistantProfile = useMemo(() => getPlatformAssistantProfile(deviceOs), [deviceOs]);
+  const activeLanguage = useMemo(() => getLanguageOption(prefs.language), [prefs.language]);
   const [showIOSGuide, setShowIOSGuide] = useState(false);
   const [googleBusy, setGoogleBusy] = useState(false);
   const [googleAuthError, setGoogleAuthError] = useState<ParsedFirebaseAuthError | null>(null);
@@ -752,6 +758,28 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               >
                 <Command className="h-3.5 w-3.5 text-emerald-300" />
                 <span>Open Live</span>
+              </button>
+            </div>
+          )}
+
+          {onOpenLanguagePicker && (
+            <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/[0.08] pt-4">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-slate-200">
+                  {t(prefs.language, 'languageTitle')}
+                </p>
+                <p className="text-xs text-slate-400">
+                  {activeLanguage.nativeName} ({activeLanguage.name}) ·{' '}
+                  {activeLanguage.states.slice(0, 2).join(', ')}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={onOpenLanguagePicker}
+                className="ios-spring-press flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-xl border border-sky-400/35 bg-sky-500/15 px-3.5 text-xs font-semibold text-sky-100 hover:bg-sky-500/25 whitespace-nowrap"
+              >
+                <Globe className="h-3.5 w-3.5 text-sky-300" />
+                <span>{t(prefs.language, 'changeLanguage')}</span>
               </button>
             </div>
           )}

@@ -31,6 +31,7 @@ import {
   syncOsSchedules,
   triggerHaptic,
 } from '../lib/nativeBridge';
+import { applyBulkComplete, applyBulkDelete } from '../lib/bulkSelection';
 import { createVoiceNote, sortVoiceNotes } from '../lib/notes';
 import { computeNextDueAt, getTodayDateKey } from '../lib/time';
 import {
@@ -74,6 +75,7 @@ const DEFAULT_PREFS: UserPreferences = {
   customTags: ['Health', 'Work', 'Focus', 'Personal'],
   customAudioName: null,
   serverBaseUrl: '',
+  language: 'en-IN',
 };
 
 function createStarterReminders(): Reminder[] {
@@ -741,6 +743,86 @@ export function useReminderApp(
       });
     },
     [commitReminders, pushToast, recordEvent]
+  );
+
+  const completeRemindersBulk = useCallback(
+    (ids: string[]) => {
+      if (ids.length === 0) return;
+      const todayKey = getTodayDateKey();
+      const snapshot = [...remindersRef.current];
+      const result = applyBulkComplete(
+        snapshot,
+        ids,
+        todayKey,
+        prefsRef.current.autoDeleteCompleted,
+        new Date()
+      );
+      if (result.completedCount === 0) return;
+
+      triggerHaptic('success', prefsRef.current.vibrate);
+      commitReminders(() => result.next);
+      result.completedIds.forEach((id) => {
+        recordEvent('reminder_done', { id, bulk: true });
+        if (userRef.current?.authProvider === 'server' && navigator.onLine) {
+          api.markDone(id, 'app').catch(() => {});
+        }
+      });
+
+      if (ringingReminder && result.completedIds.includes(ringingReminder.id)) {
+        stopAlarmSound();
+        setRingingReminder(null);
+      }
+
+      const label =
+        result.completedCount === 1
+          ? 'Completed 1 reminder'
+          : `Completed ${result.completedCount} reminders`;
+      const detail =
+        result.clearedCount > 0
+          ? `${label} (${result.clearedCount} one-time cleared)`
+          : label;
+
+      pushToast(detail, {
+        title: 'Completed',
+        tone: 'success',
+        expression: 'happy',
+        undoLabel: 'Undo',
+        onUndo: () => commitReminders(() => snapshot),
+      });
+    },
+    [commitReminders, pushToast, recordEvent, ringingReminder]
+  );
+
+  const deleteRemindersBulk = useCallback(
+    (ids: string[]) => {
+      if (ids.length === 0) return;
+      const snapshot = [...remindersRef.current];
+      const result = applyBulkDelete(snapshot, ids);
+      if (result.deletedCount === 0) return;
+
+      triggerHaptic('warning', prefsRef.current.vibrate);
+      commitReminders(() => result.next);
+      result.deletedIds.forEach((id) => recordEvent('reminder_delete', { id, bulk: true }));
+
+      if (ringingReminder && result.deletedIds.includes(ringingReminder.id)) {
+        stopAlarmSound();
+        setRingingReminder(null);
+      }
+
+      pushToast(
+        result.deletedCount === 1
+          ? 'Removed 1 reminder'
+          : `Removed ${result.deletedCount} reminders`,
+        {
+          title: 'Deleted',
+          tone: 'danger',
+          expression: 'sad',
+          undoLabel: 'Undo',
+          onUndo: () => commitReminders(() => snapshot),
+        }
+      );
+    },
+    [commitReminders, pushToast, recordEvent, ringingReminder]
   );
 
   const triggerRingingNow = useCallback((r: Reminder) => {
@@ -1426,8 +1508,10 @@ export function useReminderApp(
     toggleSubtask,
     applyRoutinePack,
     toggleCompleteReminder,
+    completeRemindersBulk,
     snoozeReminder,
     deleteReminder,
+    deleteRemindersBulk,
     triggerRingingNow,
     dismissRinging,
     snoozeRinging,
